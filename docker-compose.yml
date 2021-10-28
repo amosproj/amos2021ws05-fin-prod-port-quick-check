@@ -1,0 +1,22 @@
+version: '3.9'
+services:
+  backend: #todo
+    image: nginx:latest
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=pw
+      - POSTGRES_DB=user_db
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+  adminer:  # only used to test the database (on login, use server 'postgres')
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
