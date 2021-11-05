@@ -34,3 +34,7 @@ bin/
 
 # MacOS
 .DS_Store
+
+service/target/
+service/.idea/
+service/*.iml
