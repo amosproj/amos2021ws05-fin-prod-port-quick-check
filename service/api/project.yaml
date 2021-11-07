@@ -1,12 +1,8 @@
-swagger: '3.0'
+openapi: '3.0.0'
 info:
-  description: API for projects of the AMOS5 Financial Quick Check
-  version: 0.1
-  title: "Financial Quick Check API for projects"
-  # Contact info for development team
-   contact:
-     email: ber-amos-proj5@group.riehle.org
-
+  description: Project API for AMOS5 Financial QuickCheck
+  version: '0.1'
+  title: "Project API"
 
 paths:
   /project:
