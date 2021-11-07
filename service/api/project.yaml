@@ -1,0 +1,225 @@
+swagger: '3.0'
+info:
+  description: API for projects of the AMOS5 Financial Quick Check
+  version: 0.1
+  title: "Financial Quick Check API for projects"
+  # Contact info for development team
+   contact:
+     email: ber-amos-proj5@group.riehle.org
+
+
+paths:
+  /project:
+    get:
+      summary: retrieves all assigned projects of user with specified userID
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items: 
+              type: string
+        404:
+          description: not found
+        500:
+          description: internal error
+    post:
+      summary: creates a project with specified projectName
+      requestBody:
+        description:
+        required: true
+        content:
+          application/json:
+#            schema: (userID, projectName, produktbereiche)
+#              $ref: '#/project
+      # - in: query
+      #   name: authentication token
+      #   description: mandatory authentication token for access validation
+      #   required: true
+      #   type: string
+      responses:
+        200:
+          description: successful operation
+        # 401:
+        #   description: unauthorized authentication
+        403:
+          description: bad request (project name and/or authentication token)
+        500:
+          description: internal error
+  /project/{projectID}:
+    get:
+      summary: retrieves all data of project with specified projectID
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: projectID
+          description: mandatory name for project
+          required: true
+          type: integer
+      responses:
+        200:
+          description: successful operation
+        404:
+          description: not found
+        500:
+          description: internal error
+    delete:
+      summary: deletes all data of project with specified projectID
+      parameters:
+      - in: path
+        name: projectID
+        description: mandatory name for project
+        required: true
+        type: integer
+      # - in: query
+      #   name: authentication token
+      #   description: mandatory authentication token for access validation
+      #   required: true
+      #   type: string
+      responses:
+        200:
+          description: successful operation
+        # 401:
+        #   description: unauthorized authentication
+        403: 
+          description: bad request (project name and/or authentication token)
+        500:
+          description: internal error
+  /project/{projectID}/product:
+    get:
+      summary: retrieves all product data of project with specified projectID
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: projectID
+          description: mandatory name for project
+          required: true
+          type: integer
+      responses:
+        200:
+          description: successful operation
+        404:
+          description: not found
+        500:
+          description: internal error
+    post:
+      summary: creates a product
+      requestBody:
+        description:
+        required: true
+        content:
+          application/json:
+      #            schema: (productName)
+      #              $ref: '#/product
+      # - in: query
+      #   name: authentication token
+      #   description: mandatory authentication token for access validation
+      #   required: true
+      #   type: string
+      responses:
+        200:
+          description: successful operation
+        # 401:
+        #   description: unauthorized authentication
+        403:
+          description: bad request (project name and/or authentication token)
+        500:
+          description: internal error
+  /project/{projectID}/product/{productID}:
+    delete:
+      summary: deletes product
+      parameters:
+        - in: path
+          name: projectID
+          description: mandatory name for project
+          required: true
+          type: integer
+      # - in: query
+      #   name: authentication token
+      #   description: mandatory authentication token for access validation
+      #   required: true
+      #   type: string
+      responses:
+        200:
+          description: successful operation
+        # 401:
+        #   description: unauthorized authentication
+        403:
+          description: bad request (project name and/or authentication token)
+        500:
+          description: internal error
+  /project/{projectID}/product/{productID}/rating:
+    get:
+      summary: retrieves data for "wirtschaftliche Bewertung" and "Komplexitätsbewertung" for specified productID
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: projectID
+          description: mandatory name for project
+          required: true
+          type: integer
+        - in: path
+          name: productID
+          description: mandatory name for project
+          required: true
+          type: integer
+      responses:
+        200:
+          description: successful operation
+        404:
+          description: not found
+        500:
+          description: internal error
+    post:
+      summary: adds data for "wirtschaftliche Bewertung" and "Komplexitätsbewertung" for specified productID
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: projectID
+          description: mandatory name for project
+          required: true
+          type: integer
+        - in: path
+          name: productID
+          description: mandatory name for project
+          required: true
+          type: integer
+      responses:
+        200:
+          description: successful operation
+        404:
+          description: not found
+        500:
+          description: internal error
+  /project/{projectID}/product/{productID}/rating/{ratingID}:
+    post:
+      summary: adds data for one specific data
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: projectID
+          description: mandatory name for project
+          required: true
+          type: integer
+        - in: path
+          name: productID
+          description: mandatory name for project
+          required: true
+          type: integer
+        - in: path
+          name: ratingID
+          description: mandatory name for project
+          required: true
+          type: integer
+      responses:
+        200:
+          description: successful operation
+        404:
+          description: not found
+        500:
+          description: internal error
