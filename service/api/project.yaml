@@ -149,28 +149,8 @@ paths:
         '5XX':
           $ref: '#/components/responses/5XXserverError'
 
-    post:
-      summary: adds data for "wirtschaftliche Bewertung" and "Komplexitätsbewertung" for specified productID
-      produces:
-        - application/json
-      parameters:
-        - in: path
-          name: projectID
-          description: mandatory name for project
-          required: true
-          type: integer
-        - in: path
-          name: productID
-          description: mandatory name for project
-          required: true
-          type: integer
-      responses:
-        200:
-          description: successful operation
-        404:
-          description: not found
-        500:
-          description: internal error
+
+
   /project/{projectID}/product/{productID}/rating/{ratingID}:
     post:
       summary: adds data for one specific data
