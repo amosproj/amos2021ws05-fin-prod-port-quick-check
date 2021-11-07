@@ -133,16 +133,8 @@ paths:
       produces:
         - application/json
       parameters:
-        - in: path
-          name: projectID
-          description: mandatory name for project
-          required: true
-          type: integer
-        - in: path
-          name: productID
-          description: mandatory name for project
-          required: true
-          type: integer
+        - $ref: '#/components/parameters/projectID'
+        - $ref: '#/components/parameters/productID'
       responses:
         200:
           description: JSON containing all product ratings 
@@ -181,21 +173,9 @@ paths:
       produces:
         - application/json
       parameters:
-        - in: path
-          name: projectID
-          description: mandatory name for project
-          required: true
-          type: integer
-        - in: path
-          name: productID
-          description: mandatory name for project
-          required: true
-          type: integer
-        - in: path
-          name: ratingID
-          description: mandatory name for project
-          required: true
-          type: integer
+        - $ref: '#/components/parameters/projectID'
+        - $ref: '#/components/parameters/productID'
+        - $ref: '#/components/parameters/ratingID'
       responses:
         200:
           description: product rating successful 
@@ -209,6 +189,13 @@ paths:
 
 components: 
   parameters:
+    ratingID:
+      name: ratingID
+      in: query
+      required: true
+      description: unique product rating ID
+      schema:
+        type: integer
     productID:
       name: productID
       in: query
