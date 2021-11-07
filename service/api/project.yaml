@@ -11,7 +11,7 @@ info:
 paths:
   /project:
     get:
-      summary: retrieves all assigned projects of user with specified userID
+      summary: retrieves all projects accessible to the user
       responses:
         200:
           description: JSON containing projects
@@ -22,17 +22,12 @@ paths:
     post:
       summary: creates a project with specified projectName
       requestBody:
-        description:
+        description: Project object
         required: true
         content:
           application/json:
-#            schema: (userID, projectName, produktbereiche)
-#              $ref: '#/project
-      # - in: query
-      #   name: authentication token
-      #   description: mandatory authentication token for access validation
-      #   required: true
-      #   type: string
+            schema:
+              $ref: '#/components/schemas/project'
       responses:
         200:
           description: project created successfully
@@ -42,16 +37,19 @@ paths:
           $ref: '#/components/responses/5XXserverError'
 
 
+
   /project/{projectID}:
     get:
-      summary: retrieves all data of project with specified projectID
-      produces:
-        - application/json
+      summary: return project with the given projectID
       parameters:
         - $ref: '#/components/parameters/projectID'
       responses:
         200:
           description: JSON containing project data
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/project'
         401:
           $ref: '#/components/responses/401unauthorized'
         '5XX':
@@ -70,17 +68,22 @@ paths:
           $ref: '#/components/responses/403forbidden'
         '5XX':
           $ref: '#/components/responses/5XXserverError'
+
+
+
   /project/{projectID}/product:
     get:
       summary: retrieves all product data of project with specified projectID
-      produces:
-        - application/json
       parameters:
         - $ref: '#/components/parameters/projectID'
       responses:
         200:
           description: JSON containing list of products
-        401: 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/product'
+        401:
           $ref: '#/components/responses/401unauthorized'
         403:
           $ref: '#/components/responses/403forbidden'
@@ -92,17 +95,12 @@ paths:
       parameters:
         - $ref: '#/components/parameters/projectID'
       requestBody:
-        description:
+        description: Definition of the new Product
         required: true
         content:
           application/json:
-      #            schema: (productName)
-      #              $ref: '#/product
-      # - in: query
-      #   name: authentication token
-      #   description: mandatory authentication token for access validation
-      #   required: true
-      #   type: string
+            schema:
+              $ref: '#/components/schemas/product'
       responses:
         200:
           description: Product created successfully
@@ -112,6 +110,9 @@ paths:
           $ref: '#/components/responses/403forbidden'
         '5XX':
           $ref: '#/components/responses/5XXserverError'
+
+
+
   /project/{projectID}/product/{productID}:
     delete:
       summary: deletes product
@@ -127,17 +128,24 @@ paths:
           $ref: '#/components/responses/403forbidden'
         '5XX':
           $ref: '#/components/responses/5XXserverError'
+
+
+
   /project/{projectID}/product/{productID}/rating:
     get:
-      summary: retrieves data for "wirtschaftliche Bewertung" and "Komplexitätsbewertung" for specified productID
-      produces:
-        - application/json
+      summary: retrieves ratings for a specified product
       parameters:
         - $ref: '#/components/parameters/projectID'
         - $ref: '#/components/parameters/productID'
       responses:
         200:
-          description: JSON containing all product ratings 
+          description: JSON containing all product ratings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  '$ref': '#/components/schemas/rating'
         401:
           $ref: '#/components/responses/401unauthorized'
         403:
@@ -170,15 +178,21 @@ paths:
   /project/{projectID}/product/{productID}/rating/{ratingID}:
     post:
       summary: adds data for one specific data
-      produces:
-        - application/json
+      requestBody:
+        description: Rating object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/rating'
+
       parameters:
         - $ref: '#/components/parameters/projectID'
         - $ref: '#/components/parameters/productID'
         - $ref: '#/components/parameters/ratingID'
       responses:
         200:
-          description: product rating successful 
+          description: product rating successful
         401:
           $ref: '#/components/responses/401unauthorized'
         403:
@@ -187,7 +201,8 @@ paths:
           $ref: '#/components/responses/5XXserverError'
 
 
-components: 
+
+components:
   parameters:
     ratingID:
       name: ratingID
@@ -213,24 +228,39 @@ components:
         type: integer
 
   schemas:
-      product:
-        type: object
-        properties:
-          property:
-            type: integer
-      project:
-        type: object
-        properties:
-          creatorID:
-            type: integer
-          name:
-            type: string
-          members:
-            type: array
-            example: [1, 2]
-          areas:
-            type: array
-            example: ['credit']
+    rating:
+      type: object
+      properties:
+        answer:
+          type: string
+        category:
+          type: string
+          enum:
+            - low
+            - mid
+            - high
+        annotation:
+          type: string
+        reference: # link zu referenzdatei
+          type: object
+    product:
+      type: object
+      properties:
+        property:
+          type: integer
+    project:
+      type: object
+      properties:
+        creatorID:
+          type: integer
+        name:
+          type: string
+        members:
+          type: array
+          example: [1, 2]
+        areas:
+          type: array
+          example: ['credit']
 
   responses:
     5XXserverError:
@@ -251,5 +281,5 @@ components:
         application/json:
           schema:
             type: string
-    genericError: 
+    genericError:
       description: Error
