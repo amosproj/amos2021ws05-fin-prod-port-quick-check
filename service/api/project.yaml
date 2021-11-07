@@ -48,11 +48,7 @@ paths:
       produces:
         - application/json
       parameters:
-        - in: path
-          name: projectID
-          description: mandatory name for project
-          required: true
-          type: integer
+        - $ref: '#/components/parameters/projectID'
       responses:
         200:
           description: JSON containing project data
@@ -64,20 +60,11 @@ paths:
     delete:
       summary: deletes all data of project with specified projectID
       parameters:
-      - in: path
-        name: projectID
-        description: mandatory name for project
-        required: true
-        type: integer
-      # - in: query
-      #   name: authentication token
-      #   description: mandatory authentication token for access validation
-      #   required: true
-      #   type: string
+      - $ref: '#/components/parameters/projectID'
       responses:
         200:
           description: project deleted successfully
-        401: 
+        401:
           $ref: '#/components/responses/401unauthorized'
         403:
           $ref: '#/components/responses/403forbidden'
@@ -89,11 +76,7 @@ paths:
       produces:
         - application/json
       parameters:
-        - in: path
-          name: projectID
-          description: mandatory name for project
-          required: true
-          type: integer
+        - $ref: '#/components/parameters/projectID'
       responses:
         200:
           description: JSON containing list of products
@@ -106,6 +89,8 @@ paths:
 
     post:
       summary: creates a product
+      parameters:
+        - $ref: '#/components/parameters/projectID'
       requestBody:
         description:
         required: true
@@ -131,16 +116,8 @@ paths:
     delete:
       summary: deletes product
       parameters:
-        - in: path
-          name: projectID
-          description: mandatory name for project
-          required: true
-          type: integer
-      # - in: query
-      #   name: authentication token
-      #   description: mandatory authentication token for access validation
-      #   required: true
-      #   type: string
+        - $ref: '#/components/parameters/projectID'
+        - $ref: '#/components/parameters/productID'
       responses:
         200:
           description: product deleted successfully
@@ -231,6 +208,42 @@ paths:
 
 
 components: 
+  parameters:
+    productID:
+      name: productID
+      in: query
+      required: true
+      description: unique Product ID
+      schema:
+        type: integer
+
+    projectID:
+      name: projectID
+      in: path
+      description: unique project ID
+      required: true
+      schema:
+        type: integer
+
+  schemas:
+      product:
+        type: object
+        properties:
+          property:
+            type: integer
+      project:
+        type: object
+        properties:
+          creatorID:
+            type: integer
+          name:
+            type: string
+          members:
+            type: array
+            example: [1, 2]
+          areas:
+            type: array
+            example: ['credit']
 
   responses:
     5XXserverError:
