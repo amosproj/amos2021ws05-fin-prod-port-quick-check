@@ -14,15 +14,11 @@ paths:
       summary: retrieves all assigned projects of user with specified userID
       responses:
         200:
-          description: successful operation
-          schema:
-            type: array
-            items: 
-              type: string
-        404:
-          description: not found
-        500:
-          description: internal error
+          description: JSON containing projects
+        401:
+          $ref: '#/components/responses/401unauthorized'
+        '5XX':
+          $ref: '#/components/responses/5XXserverError'
     post:
       summary: creates a project with specified projectName
       requestBody:
@@ -39,13 +35,13 @@ paths:
       #   type: string
       responses:
         200:
-          description: successful operation
-        # 401:
-        #   description: unauthorized authentication
-        403:
-          description: bad request (project name and/or authentication token)
-        500:
-          description: internal error
+          description: project created successfully
+        401:
+          $ref: '#/components/responses/401unauthorized'
+        '5XX':
+          $ref: '#/components/responses/5XXserverError'
+
+
   /project/{projectID}:
     get:
       summary: retrieves all data of project with specified projectID
@@ -59,11 +55,12 @@ paths:
           type: integer
       responses:
         200:
-          description: successful operation
-        404:
-          description: not found
-        500:
-          description: internal error
+          description: JSON containing project data
+        401:
+          $ref: '#/components/responses/401unauthorized'
+        '5XX':
+          $ref: '#/components/responses/5XXserverError'
+
     delete:
       summary: deletes all data of project with specified projectID
       parameters:
@@ -79,13 +76,13 @@ paths:
       #   type: string
       responses:
         200:
-          description: successful operation
-        # 401:
-        #   description: unauthorized authentication
-        403: 
-          description: bad request (project name and/or authentication token)
-        500:
-          description: internal error
+          description: project deleted successfully
+        401: 
+          $ref: '#/components/responses/401unauthorized'
+        403:
+          $ref: '#/components/responses/403forbidden'
+        '5XX':
+          $ref: '#/components/responses/5XXserverError'
   /project/{projectID}/product:
     get:
       summary: retrieves all product data of project with specified projectID
@@ -99,11 +96,14 @@ paths:
           type: integer
       responses:
         200:
-          description: successful operation
-        404:
-          description: not found
-        500:
-          description: internal error
+          description: JSON containing list of products
+        401: 
+          $ref: '#/components/responses/401unauthorized'
+        403:
+          $ref: '#/components/responses/403forbidden'
+        '5XX':
+          $ref: '#/components/responses/5XXserverError'
+
     post:
       summary: creates a product
       requestBody:
@@ -120,13 +120,13 @@ paths:
       #   type: string
       responses:
         200:
-          description: successful operation
-        # 401:
-        #   description: unauthorized authentication
+          description: Product created successfully
+        401:
+          $ref: '#/components/responses/401unauthorized'
         403:
-          description: bad request (project name and/or authentication token)
-        500:
-          description: internal error
+          $ref: '#/components/responses/403forbidden'
+        '5XX':
+          $ref: '#/components/responses/5XXserverError'
   /project/{projectID}/product/{productID}:
     delete:
       summary: deletes product
@@ -143,13 +143,13 @@ paths:
       #   type: string
       responses:
         200:
-          description: successful operation
-        # 401:
-        #   description: unauthorized authentication
+          description: product deleted successfully
+        401:
+          $ref: '#/components/responses/401unauthorized'
         403:
-          description: bad request (project name and/or authentication token)
-        500:
-          description: internal error
+          $ref: '#/components/responses/403forbidden'
+        '5XX':
+          $ref: '#/components/responses/5XXserverError'
   /project/{projectID}/product/{productID}/rating:
     get:
       summary: retrieves data for "wirtschaftliche Bewertung" and "Komplexitätsbewertung" for specified productID
@@ -168,11 +168,14 @@ paths:
           type: integer
       responses:
         200:
-          description: successful operation
-        404:
-          description: not found
-        500:
-          description: internal error
+          description: JSON containing all product ratings 
+        401:
+          $ref: '#/components/responses/401unauthorized'
+        403:
+          $ref: '#/components/responses/403forbidden'
+        '5XX':
+          $ref: '#/components/responses/5XXserverError'
+
     post:
       summary: adds data for "wirtschaftliche Bewertung" and "Komplexitätsbewertung" for specified productID
       produces:
@@ -218,8 +221,35 @@ paths:
           type: integer
       responses:
         200:
-          description: successful operation
-        404:
-          description: not found
-        500:
-          description: internal error
+          description: product rating successful 
+        401:
+          $ref: '#/components/responses/401unauthorized'
+        403:
+          $ref: '#/components/responses/403forbidden'
+        '5XX':
+          $ref: '#/components/responses/5XXserverError'
+
+
+components: 
+
+  responses:
+    5XXserverError:
+      description: Internal error
+      content:
+        application/json:
+          schema:
+            type: string
+    403forbidden:
+      description: User is not authorized to access this resource
+      content:
+        application/json:
+          schema:
+            type: string
+    401unauthorized:
+      description: User not authenticated
+      content:
+        application/json:
+          schema:
+            type: string
+    genericError: 
+      description: Error
