@@ -12,7 +12,7 @@ services:
       - "3306:3306"
 
   service:
-    image: "openjdk:11"
+    image: "maven:3.6.3-jdk-11-slim"
     container_name: service
     command: mvn -f /app/ compile spring-boot:run
     volumes:

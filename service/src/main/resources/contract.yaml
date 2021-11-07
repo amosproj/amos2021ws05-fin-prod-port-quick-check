@@ -1,0 +1,341 @@
+swagger: '2.0'
+info:
+  description: This is the API for the Financial Quick Check Webapplication 
+  version: 1.0.0
+  title: "Financial Quick Check API"
+  # Contact info for development team
+   contact:
+     email: ber-amos-proj5@group.riehle.org
+
+
+paths:  
+  /user/create:
+    post:
+      parameters:
+      - in: query
+        name: username
+        description: the uername for login
+        required: true
+        type: string
+      - in: query
+        name: role
+        description: the role of the user
+        required: true
+        type: string
+      - in: query
+        name: password
+        description: the password for login
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful operation
+        403:
+          description: bad request (username and/or password and/or role)
+        500:
+          description: internal error  
+  /user/delete:
+    delete:
+      parameters:
+      - in: query
+        name: username
+        description: the uername of the user to be deleted
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful operation
+        403:
+          description: bad request (username and/or password)
+        404:
+          description: not found 
+        500:
+          description: internal error  
+  /user/role:
+    put:
+      parameters:
+      - in: query
+        name: username
+        description: the uername of the user which role will be changed
+        required: true
+        type: string
+      - in: query
+        name: role
+        description: the new role of the user
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful operation
+        403:
+          description: bad request (username and/or role)
+        404:
+          description: not found 
+        500:
+          description: internal error
+    get:
+      parameters:
+      - in: query
+        name: username
+        description: the uername to research the role for
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            "type": "string"
+        403:
+          description: bad request (username)
+        404:
+          description: not found 
+        500:
+          description: internal error
+  /user/password/reset:
+    post:
+      parameters:
+      - in: query
+        name: email address
+        description: user email to send reset link to 
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful operation
+        403:
+          description: bad request (email address)
+        500:
+          description: internal error
+  /login:
+    post:
+      parameters:
+      - in: query
+        name: username
+        description: the uername for login
+        required: true
+        type: string
+      - in: query
+        name: password
+        description: the password for login
+        required: true
+        type: string
+        format: password
+      - in: query 
+        name: rememberMe
+        description: check-box to indicate to remember user login
+        required: false
+        type: boolean
+        format: checkbox  
+      responses:
+        200:
+          description: successful operation
+        403:
+          description: bad request (username and/or password)
+        404:
+          description: not found 
+        500:
+          description: internal error  
+  /logout:
+    get:
+      responses:
+        200:
+          description: successful operation
+        500:
+          description: internal error
+  /myprojects:
+    get:
+      summary: retrieves all assigned projects of user with specified userID
+      parameters:
+      - in: query
+        name: userID
+        description: userID to identify projects
+        required: true
+        type: integer
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items: 
+              type: string
+        404:
+          description: not found
+        500:
+          description: internal error
+  /myprojects/project:
+    get:
+      summary: retrieves all data of project with specified projectID
+      produces:
+        - application/json
+      parameters:
+      - in: query
+        name: projectID
+        description: an mandatory project id
+        required: true
+        type: integer
+      responses:
+        200:
+          description: successful operation
+        404:
+          description: not found
+        500:
+          description: internal error
+    post:
+      summary: creates a project with specified projectName
+      parameters:
+      - in: query
+        name: projectName
+        description: mandatory name for project
+        required: true
+        type: string
+      # - in: query
+      #   name: authentication token
+      #   description: mandatory authentication token for access validation
+      #   required: true
+      #   type: string
+      responses:
+        200:
+          description: successful operation
+        # 401:
+        #   description: unauthorized authentication
+        403: 
+          description: bad request (project name and/or authentication token)
+        500:
+          description: internal error
+    delete:
+      summary: deletes all data of project with specified projectID
+      parameters:
+      - in: query
+        name: projectID
+        description: mandatory name for project
+        required: true
+        type: integer
+      # - in: query
+      #   name: authentication token
+      #   description: mandatory authentication token for access validation
+      #   required: true
+      #   type: string
+      responses:
+        200:
+          description: successful operation
+        # 401:
+        #   description: unauthorized authentication
+        403: 
+          description: bad request (project name and/or authentication token)
+        500:
+          description: internal error
+  /myprojects/project/product-area:
+    get:
+      parameters: 
+      - in: query
+        name: product area name
+        description: mandatory name for project area
+        required: true
+        type: string
+      # - in: query
+      #   name: authentication token
+      #   description: mandatory authentication token for access validation
+      #   required: true
+      #   type: string  
+      responses:
+        200:
+          description: successful operation
+        # 401:
+        #   description: unauthorized authentication
+        403: 
+          description: bad request (project name and/or authentication token)
+        500:
+          description: internal error
+    post:
+      parameters: 
+      - in: query
+        name: selection of product areas
+        description: mandatory selection of product areas
+        required: true
+        type: string
+        enum: [Kunde, Kredit, Payments]
+      responses:
+        200:
+          description: successful operation
+        # 401:
+        #   description: unauthorized authentication
+        403: 
+          description: bad request (product areas and/or authentication token)
+        500:
+          description: internal error
+  /myprojects/project/product-area/data:
+    get:
+      produces:
+        - application/json
+      # - in: query
+      #   name: authentication token
+      #   description: mandatory authentication token for access validation
+      #   required: true
+      #   type: string  
+      responses:
+        200:
+          description: successful operation
+        # 401:
+        #   description: unauthorized authentication
+        500:
+          description: internal error
+    post:
+      consumes:
+        - application/json
+      responses:
+        200:
+          description: successful operation
+        # 401:
+        #   description: unauthorized authentication
+        403: 
+          description: bad request (json file)
+        500:
+          description: internal error
+  /myprojects/project/eval:
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: product name
+          description: mandatory name for project
+          required: true
+          type: string
+      # - in: query
+      #   name: authentication token
+      #   description: mandatory authentication token for access validation
+      #   required: true
+      #   type: string  
+      responses:
+        200:
+          description: successful operation
+        # 401:
+        #   description: unauthorized authentication
+        403: 
+          description: bad request (project name)
+        500:
+          description: internal error
+    
+      
+      
+      
+    
+    
+  
+# definitions:
+#   Project:
+#     required:
+#     - name
+#     properties:
+#       id:
+#         type: uuid
+#       name:
+#         type: string
+#         example: Commerzbank
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+# basePath: /AMOS5/Test/1.0.0
+schemes:
+ - https
+# Added by API Auto Mocking Plugin
+basePath: /AMOS5/QuickCheck/1.0.0
