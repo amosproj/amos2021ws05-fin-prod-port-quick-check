@@ -182,19 +182,18 @@ components:
   parameters:
     ratingID:
       name: ratingID
-      in: query
+      in: path
       required: true
       description: unique product rating ID
       schema:
         type: integer
     productID:
       name: productID
-      in: query
+      in: path
       required: true
       description: unique Product ID
       schema:
         type: integer
-
     projectID:
       name: projectID
       in: path
