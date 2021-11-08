@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Folie 3 Auswahö Produkt Bereich</title>
+        <link rel="stylesheet" href="./stylesAMOS.css">
+    </head>
+    <body>
+        <!--class id for css for headings-->
+        <div style="border: solid black; background-color: #023b88; margin: 3%;">
+            <form action="/action_page.php" method="get" target="_blank">
+                <tr>
+                    <td> <p style="text-align: center; color: white;">FORM TITLE </p></td>
+                    <td><button type="cancel">Cancel</button></td>
+                    <td><button type="submit" formmethod="post">Save using POST</button></td>
+                </tr> 
+            </form>
+
+            
+        </div>
+    
+
+        <div style="border: black solid; background-color: whitesmoke; width: 20%; margin: 3%;">
+           
+            <div style="border: solid black; background-color: #023b88; margin: 3%;height: auto;">
+                <p style="text-align: center; color: white;">Auswahl Produktbereich</p>  
+            </div>
+           <!--selection a JS function to get all types of Products--> 
+            <form method="post" action="/Tests/Post" onchange="return fktValidateProduktBereich();">
+                <input type="radio" name="AuswahlProductBereich" value="Kunde" checked>Kunde<br>
+                <input type="radio" name="AuswahlProductBereich" value="Kredit">Kredit<br>
+                <input type="radio" name="AuswahlProductBereich" value="Payment">Payment<br>
+                <br>   
+            </form>
+        </div>
+
+        <div style="border:black solid; background-color: whitesmoke; width: 30%; margin: 3%; position: relative; left: 60%; top: -30%;">
+            <p>RESULTS COME HERE, Produkt Auswahl</p>
+                <input type="radio" name="AuswahlProductBereich" aria-checked="Kunde" checked>Komplexitätstreiber<br>
+                <input type="radio" name="AuswahlProductBereich" checked="Kredit">Strategische Beratung des Produktes<br>
+                <input type="radio" name="AuswahlProductBereich" checked="Payment">Informationserfassung<br>
+                <br>   
+            </form>
+        </div>
+    </body>
+
+
+
+    <script type="text/javascript">
+        function fktValidateProduktBereich(){
+            var radioButtons = document.getElementsByName("AuswahlProductBereich");
+            for(var i = 0; i < radioButtons.length; i++){
+                if(radioButtons[i].checked == true){
+                    if(confirm("Sie haben Das Produkt Bereich:  " + radioButtons[i].value + " ausgewählt , ist das korrekt?"))
+                        return true;
+                    else
+                        return false;
+                }
+            }
+        }
+    </script>    
+</html>
