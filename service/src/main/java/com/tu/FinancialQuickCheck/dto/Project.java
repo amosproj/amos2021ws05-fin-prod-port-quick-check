@@ -17,18 +17,18 @@ public class Project {
     {
         this.name = name;
         this.id = id;
-        this.products = convertEntities(productEntity);
+//        this.products = convertEntities(productEntity);
     }
 
-    private List<Product> convertEntities(List<ProductEntity> productEntity) {
-        List<Product> products = new ArrayList<>();
-        for (ProductEntity p:productEntity)
-        {
-            if(p.productVariations != null)
-                products.add(new Product(p.id, p.name, p.productVariations, p.ratingEntities));
-            else
-                products.add(new Product(p.id, p.name, p.ratingEntities));
-        }
-        return products;
-    }
+//    private List<Product> convertEntities(List<ProductEntity> productEntity) {
+//        List<Product> products = new ArrayList<>();
+//        for (ProductEntity p:productEntity)
+//        {
+//            if(p.productVariations != null)
+//                products.add(new Product(p.id, p.name, p.productVariations, p.ratingEntities));
+//            else
+//                products.add(new Product(p.id, p.name, p.ratingEntities));
+//        }
+//        return products;
+//    }
 }

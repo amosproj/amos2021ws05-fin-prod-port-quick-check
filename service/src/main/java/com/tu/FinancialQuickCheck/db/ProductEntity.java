@@ -16,11 +16,11 @@ public class ProductEntity {
     @Column(name = "name")
     public String name;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id")
-    public List<ProductEntity> productVariations;
+//    @OneToMany(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "id")
+//    public List<ProductEntity> productVariations;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     public List<RatingEntity> ratingEntities;
 }
