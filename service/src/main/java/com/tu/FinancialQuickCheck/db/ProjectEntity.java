@@ -1,5 +1,7 @@
 package com.tu.FinancialQuickCheck.db;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -15,5 +17,13 @@ public class ProjectEntity {
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "project_id")
     public List<ProductEntity> productEntities;
+
+    public ProjectEntity(){
+    }
+
+    public ProjectEntity(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
 }
