@@ -9,33 +9,6 @@
 Welcome to the Financial Portfolio Quick Check repository. This repository contains the source code and the documentation of the Quick Check project. The student team is to develop a software which is helping consultants by evaluating financial products in terms of complexity and by other economical factors. This project is created in cooperation with the [BearingPoint GmbH](https://www.bearingpoint.com/en/).
 
 
-<!-- Development -->
-## **Development**
-### Prerequisites
-Docker is used to isolate each service (i.e. mysql database, springboot application)
-that we are working on and to be able to develop across different environments.
-
-1. [Install Docker](https://docs.docker.com/get-docker/)
-2. Start Docker on your machine
-
-### Launch development container
-
-1. Open terminal and ```cd``` in root directory
-2. Run command ```docker compose up```
-
-By executing the last command, docker will create two containers.
-* Container "database" is based on an image of a mysql:8 database
-* Container "service" is based on an image of openjdk:11, which is running the service
-
-### Extending the service
-To be able to deploy your changes to the service you need to fire a build command within your IDE.
-
-To fire a build command in Intellij press ```command``` + ```F9``` on Mac or from ```Menu Build``` --> ```Build Project```
-
-The build command causes the springboot to restart within the container and apply your changes.
-
-
-
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
