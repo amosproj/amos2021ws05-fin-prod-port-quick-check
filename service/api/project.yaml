@@ -45,7 +45,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#components/schemas/project'
+                $ref: '#/components/schemas/project'
         401:
           $ref: '#/components/responses/401unauthorized'
         '5XX':
@@ -233,9 +233,13 @@ components:
         members:
           type: array
           example: [1, 2]
+          items: 
+            type: integer
         areas:
           type: array
           example: ['credit']
+          items: 
+            type: string
 
   responses:
     5XXserverError:
