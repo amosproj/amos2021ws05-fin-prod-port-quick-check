@@ -25,9 +25,9 @@ public class Project {
         for (ProductEntity p:productEntity)
         {
             if(p.productVariations != null)
-                products.add(new Product(p.product_id, p.name, p.productVariations, p.ratingEntities));
+                products.add(new Product(p.id, p.name, p.productVariations, p.ratingEntities));
             else
-                products.add(new Product(p.product_id, p.name, p.ratingEntities));
+                products.add(new Product(p.id, p.name, p.ratingEntities));
         }
         return products;
     }

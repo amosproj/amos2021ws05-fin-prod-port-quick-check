@@ -30,15 +30,15 @@ public class Product {
         this.name = name;
         this.productVariations = new ArrayList<>();
         for (ProductEntity p: productEntities) {
-            productVariations.add(new Product(p.product_id, p.name, p.ratingEntities));
+            productVariations.add(new Product(p.id, p.name, p.ratingEntities));
         }
         this.economicRatingCriterions = new ArrayList<>();
         this.complexityRatingCriterions = new ArrayList<>();
         for (RatingEntity r: ratingEntities) {
             if (r.area == RatingArea.ECONOMIC)
-                economicRatingCriterions.add(new Rating(r.rating_id, r.criterion, r.score,r.criterionValue,r.comment));
+                economicRatingCriterions.add(new Rating(r.id, r.criterion, r.score,r.criterionValue,r.comment));
             else
-                complexityRatingCriterions.add(new Rating(r.rating_id, r.criterion, r.score,r.criterionValue,r.comment));
+                complexityRatingCriterions.add(new Rating(r.id, r.criterion, r.score,r.criterionValue,r.comment));
         }
         economicRating = computeRating(economicRatingCriterions);
         complexityRating = computeRating(complexityRatingCriterions);
@@ -55,9 +55,9 @@ public class Product {
 
         for (RatingEntity r: ratingEntities) {
             if (r.area == RatingArea.ECONOMIC)
-                economicRatingCriterions.add(new Rating(r.rating_id, r.criterion, r.score,r.criterionValue,r.comment));
+                economicRatingCriterions.add(new Rating(r.id, r.criterion, r.score,r.criterionValue,r.comment));
             else
-                complexityRatingCriterions.add(new Rating(r.rating_id, r.criterion, r.score,r.criterionValue,r.comment));
+                complexityRatingCriterions.add(new Rating(r.id, r.criterion, r.score,r.criterionValue,r.comment));
         }
 
         economicRating = computeRating(economicRatingCriterions);

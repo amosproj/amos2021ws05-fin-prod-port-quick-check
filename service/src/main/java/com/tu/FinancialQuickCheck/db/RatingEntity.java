@@ -11,7 +11,10 @@ public class RatingEntity {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    public int rating_id;
+    public int id;
+
+    @Column(name = "product_id")
+    public int product_id;
 
     @Column(name = "criterion")
     public String criterion;

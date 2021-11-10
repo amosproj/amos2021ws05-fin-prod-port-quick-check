@@ -13,7 +13,7 @@ public class ProjectEntity {
     public String name;
 
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "project_id")
     public List<ProductEntity> productEntities;
 
 }
