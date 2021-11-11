@@ -1,6 +1,5 @@
 package com.tu.FinancialQuickCheck.db;
 
-import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
 import java.util.List;

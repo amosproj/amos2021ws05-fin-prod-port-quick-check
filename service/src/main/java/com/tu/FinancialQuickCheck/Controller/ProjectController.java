@@ -2,7 +2,6 @@ package com.tu.FinancialQuickCheck.Controller;
 
 import com.tu.FinancialQuickCheck.Service.ProjectService;
 import com.tu.FinancialQuickCheck.db.ProjectEntity;
-import com.tu.FinancialQuickCheck.db.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
