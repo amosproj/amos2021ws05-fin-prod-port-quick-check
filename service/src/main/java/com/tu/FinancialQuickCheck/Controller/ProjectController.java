@@ -37,4 +37,9 @@ public class ProjectController {
         projectService.deleteProject(projectID);
     }
 
+    @GetMapping("/test")
+    public String index() {
+        return "Test";
+    }
+
 }
