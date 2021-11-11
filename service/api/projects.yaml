@@ -1,22 +1,28 @@
 openapi: '3.0.0'
 info:
   description: Project API for AMOS5 Financial QuickCheck
-  version: '0.1'
+  version: '0.2'
   title: "Project API"
 
 paths:
-  /project:
+  /projects:
     get:
       summary: retrieves all projects accessible to the user
       responses:
         200:
-          description: JSON containing projects
+          description: JSON containing all projects
+          content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    '$ref': '#/components/schemas/limitprojects'
         401:
           $ref: '#/components/responses/401unauthorized'
         '5XX':
           $ref: '#/components/responses/5XXserverError'
     post:
-      summary: creates a project with specified projectName
+      summary: creates a new project
       requestBody:
         description: Project object
         required: true
@@ -33,10 +39,9 @@ paths:
           $ref: '#/components/responses/5XXserverError'
 
 
-
-  /project/{projectID}:
+  /projects/{projectID}:
     get:
-      summary: return project with the given projectID
+      summary: returns project with given projectID
       parameters:
         - $ref: '#/components/parameters/projectID'
       responses:
@@ -50,9 +55,26 @@ paths:
           $ref: '#/components/responses/401unauthorized'
         '5XX':
           $ref: '#/components/responses/5XXserverError'
-
+    put: 
+      summary: updates project with given projectID
+      parameters:
+        - $ref: '#/components/parameters/projectID'
+      requestBody:
+        description: Project object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/project'
+      responses:
+        200:
+          description: project updated successfully
+        401:
+          $ref: '#/components/responses/401unauthorized'
+        '5XX':
+          $ref: '#/components/responses/5XXserverError'
     delete:
-      summary: deletes all data of project with specified projectID
+      summary: deletes project with given projectID
       parameters:
       - $ref: '#/components/parameters/projectID'
       responses:
@@ -67,7 +89,7 @@ paths:
 
 
 
-  /project/{projectID}/product:
+  /projects/{projectID}/products:
     get:
       summary: retrieves all product data of project with specified projectID
       parameters:
@@ -223,6 +245,13 @@ components:
       properties:
         property:
           type: integer
+    limitprojects:
+      type: object
+      properties:
+        projectID:
+          type: integer
+        name:
+          type: string
     project:
       type: object
       properties:
