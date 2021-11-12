@@ -1,5 +1,6 @@
 package com.tu.FinancialQuickCheck.Service;
 
+import com.tu.FinancialQuickCheck.Exceptions.ProjectNotFound;
 import com.tu.FinancialQuickCheck.db.ProjectEntity;
 import com.tu.FinancialQuickCheck.db.ProjectRepository;
 import com.tu.FinancialQuickCheck.dto.ProjectDto;
@@ -46,12 +47,28 @@ public class ProjectService {
         return project;
     }
 
-    public Optional<ProjectEntity> findById(int projectID) {
-        return projectRepository.findById(projectID);
+    // TODO: hier fehlen noch die members und die productAreas
+    public ProjectDto findById(int projectID) {
+
+        Optional<ProjectEntity> projectEntity = projectRepository.findById(projectID);
+
+        if (projectEntity.isEmpty()) {
+            throw new ProjectNotFound("projectID " + projectID + " not found");
+        }else{
+            Integer[] members = {1,2,3};
+            Integer[] productAreas = {1,3};
+            return new ProjectDto(projectEntity.get().id, projectEntity.get().name,
+                    projectEntity.get().creator_id, members, productAreas);
+        }
     }
 
     public void deleteProject(int projectID) {
-        projectRepository.deleteById(projectID);
+        Optional<ProjectEntity> projectEntity = projectRepository.findById(projectID);
+        if (projectEntity.isEmpty()) {
+            throw new ProjectNotFound("projectID " + projectID + " not found");
+        }else{
+            projectRepository.deleteById(projectID);
+        }
     }
 
 }

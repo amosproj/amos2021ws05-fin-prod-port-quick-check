@@ -16,6 +16,14 @@ public class ProjectDto {
     //necessary for mapping
     public ProjectDto() {}
 
+    public ProjectDto(int projectID, String projectName, int creatorID, Integer[] members, Integer[] productAreas ){
+        this.id = projectID;
+        this.name = projectName;
+        this.creatorID = creatorID;
+        this.members = members;
+        this.productAreas = productAreas;
+    }
+
 
 
 //    public ProjectDto(int id, String name)

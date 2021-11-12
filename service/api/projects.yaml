@@ -32,7 +32,7 @@ paths:
               $ref: '#/components/schemas/projectCreation'
       responses:
         201:
-          description: project successfully created
+          description: JSON containing project meta data
           content:
             application/json:
               schema:
@@ -48,13 +48,15 @@ paths:
         - $ref: '#/components/parameters/projectID'
       responses:
         200:
-          description: JSON containing project data
+          description: JSON containing project meta data
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/projectCreation'
+                $ref: '#/components/schemas/project'
         401:
           $ref: '#/components/responses/401unauthorized'
+        404:
+          $ref: '#/components/responses/404notfound'
         '5XX':
           $ref: '#/components/responses/5XXserverError'
     put: 
@@ -73,6 +75,8 @@ paths:
           description: project updated successfully
         401:
           $ref: '#/components/responses/401unauthorized'
+        404:
+          $ref: '#/components/responses/404notfound'
         '5XX':
           $ref: '#/components/responses/5XXserverError'
     delete:
@@ -86,6 +90,8 @@ paths:
           $ref: '#/components/responses/401unauthorized'
         403:
           $ref: '#/components/responses/403forbidden'
+        404:
+          $ref: '#/components/responses/404notfound'
         '5XX':
           $ref: '#/components/responses/5XXserverError'
 
@@ -290,7 +296,7 @@ components:
             type: integer
         productAreas:
           type: array
-          example: [1,2,3]
+          example: [1,3]
           items: 
             type: integer
     project:
@@ -309,7 +315,7 @@ components:
             type: integer
         productAreas:
           type: array
-          example: [ 1,2,3 ]
+          example: [ 1, 2 ,3]
           items:
             type: integer
 
@@ -320,6 +326,8 @@ components:
         application/json:
           schema:
             type: string
+    404notfound:
+      description: resource not found
     403forbidden:
       description: User is not authorized to access this resource
       content:

@@ -27,24 +27,24 @@ public class ProjectsController {
     }
 
     // TODO: custome http responses implementieren (siehe projects.yaml)
-    // TODO: response body evtl. nochmal anpassen
+    // TODO: response body evtl. nochmal anpassen, wenn klar ist ob nur projectID zurück geschickt werden soll
     @PostMapping(consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public ProjectDto createByName(@RequestBody ProjectDto projectDto) {
         return projectService.createProject(projectDto);
     }
 
-
-    // TODO: id nicht gefunden
     @GetMapping("/{projectID}")
-    public Optional<ProjectEntity> findById(@PathVariable int projectID) {
+    public ProjectDto findById(@PathVariable int projectID) {
         return projectService.findById(projectID);
     }
 
-    // TODO: id nicht gefunden
+    
     @DeleteMapping("/{projectID}")
     void deleteByID(@PathVariable int projectID) {
+
         projectService.deleteProject(projectID);
+
     }
 
 }
