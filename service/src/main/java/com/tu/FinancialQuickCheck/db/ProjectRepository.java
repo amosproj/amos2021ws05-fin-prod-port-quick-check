@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ProjectRepository extends CrudRepository<ProjectEntity, Integer> {
 
-    @Query("select new ProjectEntity(f.id, f.name) from ProjectEntity as f")
-    List<ProjectEntity> getProjects();
+//    @Query("select new ProjectEntity(f.id, f.name) from ProjectEntity as f")
+//    List<ProjectEntity> getProjects();
 
 }

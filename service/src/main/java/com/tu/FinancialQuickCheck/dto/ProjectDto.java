@@ -1,24 +1,29 @@
 package com.tu.FinancialQuickCheck.dto;
 
-import com.tu.FinancialQuickCheck.db.ProductEntity;
-
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.List;
 
-public class Project {
 
-    public String name;
+public class ProjectDto {
 
     public int id;
+    public String name;
+    public int creatorID;
+    public Integer[] members;
+    public Integer[] productAreas;
+//    public List<Product> products;
 
-    public List<Product> products;
+    //necessary for mapping
+    public ProjectDto() {}
 
-    public Project(String name, int id, List<ProductEntity> productEntity)
-    {
-        this.name = name;
-        this.id = id;
-//        this.products = convertEntities(productEntity);
-    }
+
+
+//    public ProjectDto(int id, String name)
+//    {
+//        this.name = name;
+//        this.id = id;
+////        this.products = convertEntities(productEntity);
+//    }
 
 //    private List<Product> convertEntities(List<ProductEntity> productEntity) {
 //        List<Product> products = new ArrayList<>();
