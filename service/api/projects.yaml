@@ -7,7 +7,7 @@ info:
 paths:
   /projects:
     get:
-      summary: retrieves all projects accessible to the user
+      summary: retrieves all projects
       responses:
         200:
           description: JSON containing all projects
@@ -16,7 +16,7 @@ paths:
                 schema:
                   type: array
                   items:
-                    '$ref': '#/components/schemas/limitprojects'
+                    '$ref': '#/components/schemas/smallProject'
         401:
           $ref: '#/components/responses/401unauthorized'
         '5XX':
@@ -37,8 +37,6 @@ paths:
           $ref: '#/components/responses/401unauthorized'
         '5XX':
           $ref: '#/components/responses/5XXserverError'
-
-
   /projects/{projectID}:
     get:
       summary: returns project with given projectID
@@ -87,7 +85,17 @@ paths:
         '5XX':
           $ref: '#/components/responses/5XXserverError'
 
-
+  /productarea:
+    get:
+      summary: retrieves all available product areas 
+      responses:
+        200:
+          description: JSON containing project data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productArea'
+      
 
   /projects/{projectID}/products:
     get:
@@ -245,13 +253,24 @@ components:
       properties:
         property:
           type: integer
-    limitprojects:
+    smallProject:
       type: object
       properties:
         projectID:
           type: integer
         name:
           type: string
+    productArea:
+      type: object
+      properties:
+        productAreaID:
+          type: integer
+        name:
+          type: string
+          example: "Kredit"
+        category:
+          type: string
+          example: "Privat"
     project:
       type: object
       properties:
@@ -259,6 +278,7 @@ components:
           type: integer
         name:
           type: string
+          example: "Commerzbank"
         members:
           type: array
           example: [1, 2]
@@ -266,9 +286,9 @@ components:
             type: integer
         areas:
           type: array
-          example: ['credit']
+          example: [1,2,3]
           items: 
-            type: string
+            type: integer
 
   responses:
     5XXserverError:
