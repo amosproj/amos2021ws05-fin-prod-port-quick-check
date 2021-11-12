@@ -95,7 +95,7 @@ paths:
         '5XX':
           $ref: '#/components/responses/5XXserverError'
 
-  /productarea:
+  /productareas:
     get:
       summary: retrieves all available product areas 
       responses:
@@ -273,7 +273,7 @@ components:
     productArea:
       type: object
       properties:
-        productAreaID:
+        id:
           type: integer
         name:
           type: string
