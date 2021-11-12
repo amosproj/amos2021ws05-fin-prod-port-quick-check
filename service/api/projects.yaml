@@ -29,10 +29,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/project'
+              $ref: '#/components/schemas/projectCreation'
       responses:
-        200:
-          description: project created successfully
+        201:
+          description: project successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/project'
         401:
           $ref: '#/components/responses/401unauthorized'
         '5XX':
@@ -48,7 +52,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/project'
+                $ref: '#/components/schemas/projectCreation'
         401:
           $ref: '#/components/responses/401unauthorized'
         '5XX':
@@ -258,7 +262,7 @@ components:
       properties:
         projectID:
           type: integer
-        name:
+        projectName:
           type: string
     productArea:
       type: object
@@ -271,7 +275,7 @@ components:
         category:
           type: string
           example: "Privat"
-    project:
+    projectCreation:
       type: object
       properties:
         creatorID:
@@ -284,10 +288,29 @@ components:
           example: [1, 2]
           items: 
             type: integer
-        areas:
+        productAreas:
           type: array
           example: [1,2,3]
           items: 
+            type: integer
+    project:
+      type: object
+      properties:
+        id:
+          type: integer
+        creatorID:
+          type: integer
+        name:
+          type: string
+        members:
+          type: array
+          example: [ 1, 2 ]
+          items:
+            type: integer
+        productAreas:
+          type: array
+          example: [ 1,2,3 ]
+          items:
             type: integer
 
   responses:
