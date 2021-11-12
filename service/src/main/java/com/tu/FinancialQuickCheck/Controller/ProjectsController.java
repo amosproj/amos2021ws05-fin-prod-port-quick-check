@@ -39,7 +39,13 @@ public class ProjectsController {
         return projectService.findById(projectID);
     }
 
-    
+
+    @PutMapping("/{projectID}")
+    public void findById(@RequestBody ProjectDto projectDto) {
+        projectService.updateById(projectDto);
+    }
+
+
     @DeleteMapping("/{projectID}")
     void deleteByID(@PathVariable int projectID) {
 

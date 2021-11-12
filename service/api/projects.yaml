@@ -266,9 +266,9 @@ components:
     smallProject:
       type: object
       properties:
-        projectID:
+        id:
           type: integer
-        projectName:
+        name:
           type: string
     productArea:
       type: object

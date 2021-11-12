@@ -60,6 +60,25 @@ public class ProjectService {
             return new ProjectDto(projectEntity.get().id, projectEntity.get().name,
                     projectEntity.get().creator_id, members, productAreas);
         }
+
+    }
+
+    // TODO: hier fehlen noch die members und die productAreas
+    // kann man bestehend Produktbereiche ändern? oder nur neue hinzufügen?
+    public void updateById(ProjectDto projectDto) {
+
+        if (!projectRepository.existsById(projectDto.id)) {
+            throw new ProjectNotFound("projectID " + projectDto.id + " not found");
+        }else{
+
+            projectRepository.findById(projectDto.id).map(
+                    project -> {
+                        project.id = projectDto.id;
+                        project.name = projectDto.name;
+                        project.creator_id = projectDto.creatorID;
+                        return projectRepository.save(project);
+                    });
+        }
     }
 
     public void deleteProject(int projectID) {
