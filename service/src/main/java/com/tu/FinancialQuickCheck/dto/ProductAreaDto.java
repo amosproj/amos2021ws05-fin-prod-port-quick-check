@@ -1,5 +1,6 @@
 package com.tu.FinancialQuickCheck.dto;
 
+
 public class ProductAreaDto {
 
     public int id;
@@ -11,4 +12,5 @@ public class ProductAreaDto {
         this.name = name;
         this.category = category;
     }
+
 }

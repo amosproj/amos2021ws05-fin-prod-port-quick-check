@@ -1,8 +1,8 @@
 openapi: '3.0.0'
 info:
-  description: Project API for AMOS5 Financial QuickCheck
-  version: '0.2'
-  title: "Project API"
+  description: API for AMOS5 Financial QuickCheck
+  version: "0.3"
+  title: "Currently implemented Endpoints"
 
 paths:
   /projects:
@@ -23,13 +23,6 @@ paths:
           $ref: '#/components/responses/5XXserverError'
     post:
       summary: creates a new project
-      requestBody:
-        description: Project object
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/projectCreation'
       responses:
         201:
           description: JSON containing project meta data
@@ -107,133 +100,11 @@ paths:
                 $ref: '#/components/schemas/productArea'
       
 
-  /projects/{projectID}/products:
-    get:
-      summary: retrieves all product data of project with specified projectID
-      parameters:
-        - $ref: '#/components/parameters/projectID'
-      responses:
-        200:
-          description: JSON containing list of products
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/product'
-        401:
-          $ref: '#/components/responses/401unauthorized'
-        403:
-          $ref: '#/components/responses/403forbidden'
-        '5XX':
-          $ref: '#/components/responses/5XXserverError'
-
-    post:
-      summary: creates a product
-      parameters:
-        - $ref: '#/components/parameters/projectID'
-      requestBody:
-        description: Definition of the new Product
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/product'
-      responses:
-        200:
-          description: Product created successfully
-        401:
-          $ref: '#/components/responses/401unauthorized'
-        403:
-          $ref: '#/components/responses/403forbidden'
-        '5XX':
-          $ref: '#/components/responses/5XXserverError'
-
-
-
-  /project/{projectID}/product/{productID}:
-    delete:
-      summary: deletes product
-      parameters:
-        - $ref: '#/components/parameters/projectID'
-        - $ref: '#/components/parameters/productID'
-      responses:
-        200:
-          description: product deleted successfully
-        401:
-          $ref: '#/components/responses/401unauthorized'
-        403:
-          $ref: '#/components/responses/403forbidden'
-        '5XX':
-          $ref: '#/components/responses/5XXserverError'
-
-
-
-  /project/{projectID}/product/{productID}/rating:
-    get:
-      summary: retrieves ratings for a specified product
-      parameters:
-        - $ref: '#/components/parameters/projectID'
-        - $ref: '#/components/parameters/productID'
-      responses:
-        200:
-          description: JSON containing all product ratings
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  '$ref': '#/components/schemas/rating'
-        401:
-          $ref: '#/components/responses/401unauthorized'
-        403:
-          $ref: '#/components/responses/403forbidden'
-        '5XX':
-          $ref: '#/components/responses/5XXserverError'
-
-
-
-  /project/{projectID}/product/{productID}/rating/{ratingID}:
-    post:
-      summary: adds data for one specific data
-      requestBody:
-        description: Rating object
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/rating'
-
-      parameters:
-        - $ref: '#/components/parameters/projectID'
-        - $ref: '#/components/parameters/productID'
-        - $ref: '#/components/parameters/ratingID'
-      responses:
-        200:
-          description: product rating successful
-        401:
-          $ref: '#/components/responses/401unauthorized'
-        403:
-          $ref: '#/components/responses/403forbidden'
-        '5XX':
-          $ref: '#/components/responses/5XXserverError'
 
 
 
 components:
   parameters:
-    ratingID:
-      name: ratingID
-      in: path
-      required: true
-      description: unique product rating ID
-      schema:
-        type: integer
-    productID:
-      name: productID
-      in: path
-      required: true
-      description: unique Product ID
-      schema:
-        type: integer
     projectID:
       name: projectID
       in: path
@@ -243,26 +114,6 @@ components:
         type: integer
 
   schemas:
-    rating:
-      type: object
-      properties:
-        answer:
-          type: string
-        category:
-          type: string
-          enum:
-            - low
-            - mid
-            - high
-        annotation:
-          type: string
-        reference: # link zu referenzdatei
-          type: object
-    product:
-      type: object
-      properties:
-        property:
-          type: integer
     smallProject:
       type: object
       properties:
@@ -270,35 +121,6 @@ components:
           type: integer
         name:
           type: string
-    productArea:
-      type: object
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-          example: "Kredit"
-        category:
-          type: string
-          example: "Privat"
-    projectCreation:
-      type: object
-      properties:
-        creatorID:
-          type: integer
-        name:
-          type: string
-          example: "Commerzbank"
-        members:
-          type: array
-          example: [1, 2]
-          items: 
-            type: integer
-        productAreas:
-          type: array
-          example: [1,3]
-          items: 
-            type: integer
     project:
       type: object
       properties:
@@ -318,6 +140,17 @@ components:
           example: [ 1, 2 ,3]
           items:
             type: integer
+    productArea:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          example: "Kredit"
+        category:
+          type: string
+          example: "Privat"
 
   responses:
     5XXserverError:

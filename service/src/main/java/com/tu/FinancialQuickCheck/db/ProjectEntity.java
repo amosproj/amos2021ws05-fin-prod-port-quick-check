@@ -18,7 +18,7 @@ public class ProjectEntity {
 
 
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "project_id")
+    @JoinColumn(name = "projectid")
     public List<ProductEntity> productEntities;
 
 //    @OneToMany(fetch = FetchType.EAGER)
@@ -28,9 +28,5 @@ public class ProjectEntity {
     public ProjectEntity(){
     }
 
-    public ProjectEntity(String name, int creatorID) {
-        this.name = name;
-        this.creator_id = creatorID;
-    }
 
 }

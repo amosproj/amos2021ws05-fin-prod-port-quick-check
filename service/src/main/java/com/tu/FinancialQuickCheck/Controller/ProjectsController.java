@@ -19,18 +19,17 @@ public class ProjectsController {
     private ProjectService projectService;
 
 
-    // TODO: custome http responses implementieren (siehe projects.yaml)
+    // TODO: custom http responses implementieren (siehe projects.yaml)
     @GetMapping(produces = "application/json")
     public List<SmallProjectDto> findALL() {
         return projectService.getAllProjects();
     }
 
     // TODO: custome http responses implementieren (siehe projects.yaml)
-    // TODO: response body evtl. nochmal anpassen, wenn klar ist ob nur projectID zurück geschickt werden soll
-    @PostMapping(consumes = "application/json")
+    @PostMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public ProjectDto createByName(@RequestBody ProjectDto projectDto) {
-        return projectService.createProject(projectDto);
+    public ProjectDto createByName() {
+        return projectService.createProject();
     }
 
     @GetMapping("/{projectID}")
@@ -40,8 +39,9 @@ public class ProjectsController {
 
 
     @PutMapping("/{projectID}")
-    public void findById(@RequestBody ProjectDto projectDto) {
-        projectService.updateById(projectDto);
+    public void findById(@RequestBody ProjectDto projectDto, @PathVariable Integer projectID) {
+
+        projectService.updateById(projectDto, projectID);
     }
 
 

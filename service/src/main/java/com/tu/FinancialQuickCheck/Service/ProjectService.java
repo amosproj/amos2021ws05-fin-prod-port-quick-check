@@ -1,9 +1,12 @@
 package com.tu.FinancialQuickCheck.Service;
 
 import com.tu.FinancialQuickCheck.Exceptions.ProjectNotFound;
+import com.tu.FinancialQuickCheck.db.ProductRepository;
 import com.tu.FinancialQuickCheck.db.ProjectEntity;
+import com.tu.FinancialQuickCheck.db.ProductEntity;
 import com.tu.FinancialQuickCheck.db.ProjectRepository;
 import com.tu.FinancialQuickCheck.dto.ProjectDto;
+import com.tu.FinancialQuickCheck.dto.ProductAreaDto;
 import com.tu.FinancialQuickCheck.dto.SmallProjectDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,10 +21,13 @@ public class ProjectService {
 
 
     private ProjectRepository projectRepository;
+    private ProductRepository productRepository;
 
     @Autowired
-    public ProjectService(ProjectRepository projectRepository) {
+    public ProjectService(ProjectRepository projectRepository, ProductRepository productRepository) {
+
         this.projectRepository = projectRepository;
+        this.productRepository = productRepository;
     }
 
     // only return projectId, projectName
@@ -38,16 +44,15 @@ public class ProjectService {
         return smallProjectDtos;
     }
 
-    // TODO: muss noch um ProductBereiche erweitert werden und Mitglieder
-    // die Erweiterung für Produktbereiche hängt von der Definition für Produktbereiche ab
-    public ProjectDto createProject(ProjectDto project) {
-        ProjectEntity newProject = new ProjectEntity(project.name, project.creatorID);
+
+    public ProjectDto createProject() {
+        ProjectEntity newProject = new ProjectEntity();
         projectRepository.save(newProject);
-        project.id = newProject.id;
-        return project;
+        return new ProjectDto(newProject.id);
     }
 
-    // TODO: hier fehlen noch die members und die productAreas
+
+    // TODO: hier fehlen noch die members
     public ProjectDto findById(int projectID) {
 
         Optional<ProjectEntity> projectEntity = projectRepository.findById(projectID);
@@ -55,31 +60,44 @@ public class ProjectService {
         if (projectEntity.isEmpty()) {
             throw new ProjectNotFound("projectID " + projectID + " not found");
         }else{
-            Integer[] members = {1,2,3};
-            Integer[] productAreas = {1,3};
+            Integer[] members = {99};
             return new ProjectDto(projectEntity.get().id, projectEntity.get().name,
-                    projectEntity.get().creator_id, members, productAreas);
+                    projectEntity.get().creator_id, members, projectEntity.get().productEntities);
         }
 
     }
 
-    // TODO: hier fehlen noch die members und die productAreas
-    // kann man bestehend Produktbereiche ändern? oder nur neue hinzufügen?
-    public void updateById(ProjectDto projectDto) {
 
-        if (!projectRepository.existsById(projectDto.id)) {
-            throw new ProjectNotFound("projectID " + projectDto.id + " not found");
+    // TODO: hier fehlt noch das update von den members
+    public void updateById(ProjectDto projectDto, Integer projectID) {
+
+        if (!projectRepository.existsById(projectID)) {
+            throw new ProjectNotFound("projectID " + projectID + " not found");
         }else{
 
-            projectRepository.findById(projectDto.id).map(
+            // update project name
+            projectRepository.findById(projectID).map(
                     project -> {
-                        project.id = projectDto.id;
                         project.name = projectDto.name;
                         project.creator_id = projectDto.creatorID;
                         return projectRepository.save(project);
                     });
+
+            // add none existing product areas
+            for (int productArea : projectDto.productAreas){
+
+                if(!productRepository.existsByProjectidAndProductareaid(projectID, productArea)){
+                    ProductEntity product = new ProductEntity();
+                    product.projectid = projectID;
+                    product.productareaid = productArea;
+                    product.name = "DUMMY";
+                    productRepository.save(product);
+
+                }
+            }
         }
     }
+
 
     public void deleteProject(int projectID) {
         Optional<ProjectEntity> projectEntity = projectRepository.findById(projectID);

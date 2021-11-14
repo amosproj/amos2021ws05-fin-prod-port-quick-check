@@ -18,7 +18,7 @@ public class ProductAreaEntity {
     public String category;
 
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "productArea_id")
+    @JoinColumn(name = "productareaid")
     public List<ProductEntity> productEntities;
 
 

@@ -13,11 +13,11 @@ public class ProductEntity {
     @Column(name = "name")
     public String name;
 
-    @Column(name = "project_id")
-    public int project_id;
+    @Column(name = "projectid")
+    public int projectid;
 
-    @Column(name = "productArea_id")
-    public int productArea_id;
+    @Column(name = "productareaid")
+    public int productareaid;
 
 
 //    @OneToMany(fetch = FetchType.LAZY)
@@ -25,6 +25,6 @@ public class ProductEntity {
 //    public List<ProductEntity> productVariations;
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "productid")
     public List<RatingEntity> ratingEntities;
 }
