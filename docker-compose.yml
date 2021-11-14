@@ -22,11 +22,11 @@ services:
     ports:
       - "8080:8080"
 
-  webserver:
-    image: "nginx"
-    container_name: webserver
+  frontend:
+    build: ./frontend
+    container_name: "frontend"
     volumes:
-      - ./UI:/usr/share/nginx/html
+      - ./frontend/quickcheck:/app
     ports:
-      - "8000:80"
-
+      - "3000:3000"
+      - "80:3000" # just for convenience
