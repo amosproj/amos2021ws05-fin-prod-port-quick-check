@@ -8,13 +8,15 @@ package com.tu.FinancialQuickCheck.dto;
 //import java.util.ArrayList;
 //import java.util.List;
 
-public class Product {
+public class ProductDto {
 
     public int id;
 
     public String name;
 
     public int productAreaID;
+
+    public int projectID;
 
 //    public Score economicRating;
 //
@@ -26,9 +28,24 @@ public class Product {
 //
 //    public List<Rating> complexityRatingCriterions;
 
-    public Product(int id, String name, int productAreaID){
+    public ProductDto(){}
+
+    public ProductDto(int id, String name, int productAreaID){
         this.id = id;
         this.name = name;
+        this.productAreaID = productAreaID;
+    }
+
+    public ProductDto(int id, int projectID, int productAreaID){
+        this.id = id;
+        this.projectID = projectID;
+        this.productAreaID = productAreaID;
+    }
+
+    public ProductDto(int id, String name, int projectID, int productAreaID){
+        this.id = id;
+        this.name = name;
+        this.projectID = projectID;
         this.productAreaID = productAreaID;
     }
 

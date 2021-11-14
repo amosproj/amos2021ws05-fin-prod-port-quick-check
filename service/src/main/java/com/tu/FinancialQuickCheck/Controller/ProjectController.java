@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("projects")
-public class ProjectsController {
+public class ProjectController {
 
     @Autowired
     private ProjectService projectService;

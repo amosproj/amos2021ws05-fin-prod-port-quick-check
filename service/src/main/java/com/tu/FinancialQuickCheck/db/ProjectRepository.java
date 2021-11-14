@@ -12,9 +12,5 @@ import java.util.List;
 
 public interface ProjectRepository extends CrudRepository<ProjectEntity, Integer> {
 
-//    @Query("select distinct f.product_area_id from ProjectEntity as f where f.product_area_id == productAreaId")
-//    Integer getDistinctProduct(int productAreaId, int projectID);
-
-
 
 }
