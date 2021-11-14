@@ -1,12 +1,11 @@
 package com.tu.FinancialQuickCheck.Service;
 
-import com.tu.FinancialQuickCheck.Exceptions.ProjectNotFound;
+import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.db.ProductRepository;
 import com.tu.FinancialQuickCheck.db.ProjectEntity;
 import com.tu.FinancialQuickCheck.db.ProductEntity;
 import com.tu.FinancialQuickCheck.db.ProjectRepository;
 import com.tu.FinancialQuickCheck.dto.ProjectDto;
-import com.tu.FinancialQuickCheck.dto.ProductAreaDto;
 import com.tu.FinancialQuickCheck.dto.SmallProjectDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,7 +57,7 @@ public class ProjectService {
         Optional<ProjectEntity> projectEntity = projectRepository.findById(projectID);
 
         if (projectEntity.isEmpty()) {
-            throw new ProjectNotFound("projectID " + projectID + " not found");
+            throw new ResourceNotFound("projectID " + projectID + " not found");
         }else{
             Integer[] members = {99};
             return new ProjectDto(projectEntity.get().id, projectEntity.get().name,
@@ -72,7 +71,7 @@ public class ProjectService {
     public void updateById(ProjectDto projectDto, Integer projectID) {
 
         if (!projectRepository.existsById(projectID)) {
-            throw new ProjectNotFound("projectID " + projectID + " not found");
+            throw new ResourceNotFound("projectID " + projectID + " not found");
         }else{
 
             // update project name
@@ -102,7 +101,7 @@ public class ProjectService {
     public void deleteProject(int projectID) {
         Optional<ProjectEntity> projectEntity = projectRepository.findById(projectID);
         if (projectEntity.isEmpty()) {
-            throw new ProjectNotFound("projectID " + projectID + " not found");
+            throw new ResourceNotFound("projectID " + projectID + " not found");
         }else{
             projectRepository.deleteById(projectID);
         }
