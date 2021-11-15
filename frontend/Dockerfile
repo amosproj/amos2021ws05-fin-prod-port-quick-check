@@ -6,8 +6,8 @@ COPY ./quickcheck/package*.json ./
 
 RUN yarn install
 
-# use copy instead of mount real deployment
-# COPY ./quickcheck .
+# overwritten in dev-container by mount
+COPY ./quickcheck .
 
 EXPOSE 3000
 

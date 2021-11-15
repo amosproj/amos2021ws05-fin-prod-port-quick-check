@@ -24,9 +24,14 @@ services:
 
   frontend:
     build: ./frontend
-    container_name: "frontend"
+    container_name: frontend
+    ports:
+      - "80:3000"
+
+  frontend-dev: # this container requires you to run "yarn install" in /frontend/quickcheck
+    build: ./frontend
+    container_name: frontend-dev
     volumes:
       - ./frontend/quickcheck:/app
     ports:
       - "3000:3000"
-      - "80:3000" # just for convenience
