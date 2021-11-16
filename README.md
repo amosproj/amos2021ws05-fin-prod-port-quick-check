@@ -46,7 +46,9 @@ Published under the <a href="#license">MIT license</a>, the aim is to make it ac
 
 ### Project Mission
 
----
+Our project mission is to provide a web application which allows structured data entry for financial products, comparison and evaluation among products and product variants as well as with source documents annotated visualization.
+The core feature of the software is a calculation of benchmarks regarding complexity combined with annotated result charts.
+To meet the objectives mentioned above, we will maintain a helpful and friendly team atmosphere.
 
 <!-- GETTING STARTED -->
 ## **Getting Started**
