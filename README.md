@@ -60,7 +60,7 @@ To meet the objectives mentioned above, we will maintain a helpful and friendly 
     <li>
        <a href="https://github.com/amosproj/amos2021ws05-fin-prod-port-quick-check/wiki/Build-&-Deployment-Documentation#deployment">Docker</a>
       
-    </li>
+   
   </ul>
 
 
