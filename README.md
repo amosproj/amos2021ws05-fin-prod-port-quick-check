@@ -56,9 +56,18 @@ To meet the objectives mentioned above, we will maintain a helpful and friendly 
 
 ### Prerequisites
 
+  <ul>
+    <li>
+       <a href="https://github.com/amosproj/amos2021ws05-fin-prod-port-quick-check/wiki/Build-&-Deployment-Documentation#deployment">Docker</a>
+      
+    </li>
+  </ul>
+
 
 <!--### Installation -->
 ### Installation
+
+
 
 --- 
 <!-- USAGE EXAMPLES -->
