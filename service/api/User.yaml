@@ -1,0 +1,137 @@
+openapi: '3.0.0'
+info:
+  version: '0.1'
+  title: "User API for AMOS5 Financial QuickCheck"
+  description: defines endpoints for resource "User"
+
+paths:
+  /users:
+    post:
+      summary: creates a new user
+      requestBody:
+        description: JSON containing user data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Users'
+      responses:
+        201:
+          $ref: '#/components/schemas/User'
+        401:
+          $ref: '#/components/responses/401unauthorized'
+        403:
+          $ref: '#/components/responses/403forbidden'
+        '5XX':
+          $ref: '#/components/responses/5XXserverError'
+    get:
+      summary: retrieve list of all users
+      responses:
+        200:
+          description: JSON containing list of all users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+        401:
+          $ref: '#/components/responses/401unauthorized'
+        403:
+          $ref: '#/components/responses/403forbidden'
+        404:
+          $ref: '#/components/responses/404notfound'
+        '5XX':
+          $ref: '#/components/responses/5XXserverError'
+  /users/email/{email}:
+    get:
+      summary: retrieve list of all users
+      parameters:
+        - $ref: '#/components/parameters/userEmail'
+      responses:
+        200:
+          description: JSON containing list of all users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+        401:
+          $ref: '#/components/responses/401unauthorized'
+        403:
+          $ref: '#/components/responses/403forbidden'
+        404:
+          $ref: '#/components/responses/404notfound'
+        '5XX':
+          $ref: '#/components/responses/5XXserverError'
+    put:
+      summary: updates user with given email adress
+      parameters:
+        - $ref: '#/components/parameters/userEmail'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user'
+      responses:
+        200:
+          description: user updated successfully
+        401:
+          $ref: '#/components/responses/401unauthorized'
+        403:
+          $ref: '#/components/responses/403forbidden'
+        404:
+          $ref: '#/components/responses/404notfound'
+        '5XX':
+          $ref: '#/components/responses/5XXserverError'
+    delete:
+      summary: deletes user with given email adress
+      parameters:
+        - $ref: '#/components/parameters/userEmail'
+      responses:
+        200:
+          description: user deleted successfully
+        401:
+          $ref: '#/components/responses/401unauthorized'
+        403:
+          $ref: '#/components/responses/403forbidden'
+        404:
+          $ref: '#/components/responses/404notfound'
+        '5XX':
+          $ref: '#/components/responses/5XXserverError'
+
+components:
+  parameters:
+    userEmail:
+      name: userEmail
+      in: path
+      required: true
+      description: unique email adress
+      schema:
+        type: string
+
+  schemas:
+    User:
+      type: object
+      properties:
+        userEmail:
+          type: string
+        password:
+          type: string
+          format: password
+        userID:
+          type: string
+          format: uuid
+        role:
+          type: string
+          enum: [user, admin, contributor]
+
+
+  responses:
+    5XXserverError:
+      description: Internal error
+    404notfound:
+      description: Resource does not exist
+    403forbidden:
+      description: User is not authorized to access this resource
+    401unauthorized:
+      description: User not authenticated
+    genericError:
+      description: Error
