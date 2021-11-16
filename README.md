@@ -66,8 +66,18 @@ To meet the objectives mentioned above, we will maintain a helpful and friendly 
 <!--### Installation -->
 ### Installation
 
+1. Clone the amos2021ws05-fin-prod-port-quick-check
+```sh
+   git clone https://github.com/amosproj/amos2021ws05-fin-prod-port-quick-check.git
+   ```
 
+2. If you want to clone it in a docker environment, build it like in the following example:
+```sh
+    cd amos2021ws05-fin-prod-port-quick-check
+    docker-compose up --build 
+    ```
 
+ ```
 --- 
 <!-- USAGE EXAMPLES -->
 ## Usage
@@ -89,8 +99,8 @@ Distributed under the MIT License.
 <!-- CONTACT -->
 ## Contact
 
-AMOS Project Group - amos-fau-proj5@group.riehle.org
+AMOS Project Group: amos-fau-proj5@group.riehle.org
 
-Industry Partner - [Bearing Point GmbH](https://www.bearingpoint.com/en/)
+Industry Partner: [Bearing Point GmbH](https://www.bearingpoint.com/en/)
 
 Project Link: [https://github.com/amosproj/amos2021ws05-fin-prod-port-quick-check](https://github.com/amosproj/amos2021ws05-fin-prod-port-quick-check)
