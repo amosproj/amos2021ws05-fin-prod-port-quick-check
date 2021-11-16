@@ -6,7 +6,7 @@
 
   <h3 align="center">Financial Portfolio Quick Check | AMOS Project 5</h3>
   
-Welcome to the Financial Portfolio Quick Check repository. This repository contains the source code and the documentation of the Quick Check project. The student team is to develop a software which is helping consultants by evaluating financial products in terms of complexity and by other economical factors. This project is created in cooperation with [BearingPoint GmbH](https://www.bearingpoint.com/en/).
+Welcome to the Financial Portfolio Quick Check repository. This repository contains the source code and the documentation of the Quick Check project. The student team is to develop a software which is helping consultants by evaluating financial products in terms of complexity and by other economical factors. This project is created in cooperation with the [BearingPoint GmbH](https://www.bearingpoint.com/en/).
 
 
 
@@ -35,7 +35,7 @@ Welcome to the Financial Portfolio Quick Check repository. This repository conta
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
--Introduction-
+The project implements a software which helps consultants quickly assessing the status of financial institutions. In addition, it evaluates data entered by consultants which is presented in easy and understandable visualizations.
 
 ### Product Vision
 
