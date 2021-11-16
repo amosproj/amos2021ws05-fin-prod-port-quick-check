@@ -19,13 +19,13 @@ public class ProjectController {
     private ProjectService projectService;
 
 
-    // TODO: custom http responses implementieren (siehe projects.yaml)
+
     @GetMapping(produces = "application/json")
     public List<SmallProjectDto> findALL() {
         return projectService.getAllProjects();
     }
 
-    // TODO: custome http responses implementieren (siehe projects.yaml)
+
     @PostMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public ProjectDto createByName() {
@@ -37,9 +37,9 @@ public class ProjectController {
         return projectService.findById(projectID);
     }
 
-
-    @PutMapping("/{projectID}")
-    public void findById(@RequestBody ProjectDto projectDto, @PathVariable Integer projectID) {
+    // TODO: Should we return the updated ProjectedDTO?
+    @PutMapping(value = "/{projectID}", consumes = "application/json")
+    public void updateById(@RequestBody ProjectDto projectDto, @PathVariable Integer projectID) {
 
         projectService.updateById(projectDto, projectID);
     }
