@@ -41,7 +41,7 @@ The project implements a software which helps consultants quickly assessing the 
 
 <p>With growing opportunities of derivating and customizing financial products the product range of financial institutions is emerging rapidly. Hence, the difficulty of good consulting is rising equally while high complexity products drive the largest costs which are outgrowing benefits and revenue of conventional consulting. <br>
 The Financial Product Portfolio Quick-Check simplifies financial consulting by providing an information-rich project-related overview of financial products. 
-This overview helps banking and other types of financial institutions to understand the risks and opportunities of different financial products, while it tries to maximize profits by identifying overly complex products, which do not contribute to the business volume.. <br>
+This overview helps banking and other types of financial institutions to understand the risks and opportunities of different financial products, while it tries to maximize profits by identifying overly complex products, which do not contribute to the business volume. <br>
 Additionally, the product provides useful visualisations annotated with source documents to ensure an increase of a consultants efficiency in assessing the benefit of a product.<br>
 Published under the <a href="#license">MIT license</a>, the aim is to make it accessible for our business partner as well as for any other organization and enable an enormous amount of other use cases. </p>
 
