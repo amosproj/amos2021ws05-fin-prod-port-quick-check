@@ -1,7 +1,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/amosproj/amos2021ws05-fin-prod-port-quick-check/blob/main/Deliverables/2021-10-27_sprint-01-team-logo.png">
-    <img src="Deliverables/2021-10-27_sprint-01-team-logo.png " alt="Logo" width="350" height="350">
+    <img src="Deliverables/sprint01/2021-10-27_sprint-01-team-logo.png " alt="Logo" width="350" height="350">
   </a>
 
   <h3 align="center">Financial Portfolio Quick Check | AMOS Project 5</h3>
