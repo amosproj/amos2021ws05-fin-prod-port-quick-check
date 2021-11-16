@@ -89,7 +89,7 @@ Distributed under the MIT License.
 <!-- CONTACT -->
 ## Contact
 
-AMOS PROJECT GROUP - amos-fau-proj5@group.riehle.org
+AMOS Project Group - amos-fau-proj5@group.riehle.org
 
 Industry Partner - [Bearing Point GmbH](https://www.bearingpoint.com/en/)
 
