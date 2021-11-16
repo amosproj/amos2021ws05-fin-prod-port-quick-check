@@ -1,5 +1,9 @@
 package com.tu.FinancialQuickCheck;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +31,21 @@ public class ProjectControllerTest {
     private String projects = "/projects";
     private String projectIDExistsNot = "/0";
     private String projectIDExists = "/1";
+
+    @Before
+    public void initEach(){
+        // creates an entry with projectID 1 in test db
+        restTemplate.exchange(
+                host + port + projects,
+                HttpMethod.POST,
+                null,
+                String.class);
+
+    }
+
+//    @After --> should delete all entries in test db
+
+
 
     @Test
     public void notAllowedHTTPMethodsProjects() throws Exception {
@@ -77,7 +96,7 @@ public class ProjectControllerTest {
         HttpMethod[] notAllowed = new HttpMethod[]{HttpMethod.POST};
         for (HttpMethod httpMethod : notAllowed) {
             ResponseEntity<String> response = restTemplate.exchange(
-                    host + port + projects + "/" + projectIDExistsNot,
+                    host + port + projects + projectIDExists,
                     httpMethod,
                     null,
                     String.class);
@@ -106,11 +125,7 @@ public class ProjectControllerTest {
 
     @Test
     public void listenHTTPMethodProjectIdExists() throws Exception {
-        // TODO: wie kann ich sicherstellen, dass projectID immer existiert?
-        // Mögliche Lösung: selbst einfügen (evtl Problem: unnötiger Datensatz in der DB?)
-
-        // TODO: HttpMethod.PUT --> benötigt JSON Input
-        HttpMethod[] allowed = new HttpMethod[]{HttpMethod.GET, HttpMethod.DELETE};
+        HttpMethod[] allowed = new HttpMethod[]{HttpMethod.GET};
         for (HttpMethod httpMethod : allowed) {
             ResponseEntity<String> response = restTemplate.exchange(
                     host + port + projects + projectIDExists,
@@ -119,7 +134,7 @@ public class ProjectControllerTest {
                     String.class);
 
             assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-            //        System.out.println("Response Status: " + response.getStatusCode());
+                    System.out.println("Response Status: " + response.getStatusCode());
         }
     }
 
@@ -139,8 +154,6 @@ public class ProjectControllerTest {
 //
 //    @Test
 //    public void listenHTTPMethodProjectIdExists() throws Exception {
-//        // TODO: wie kann ich sicherstellen, dass projectID immer existiert?
-//        // Mögliche Lösung: selbst einfügen (evtl Problem: unnötiger Datensatz in der DB?)
 //
 //        // TODO: change requestEntity to expected JSON input
 //        ResponseEntity<String> response = restTemplate.exchange(
