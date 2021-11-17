@@ -1,5 +1,6 @@
-import { Heading } from "@chakra-ui/react";
 import React from "react";
+
+import Menubar from "../components/Menubar";
 // import {Flex, VStack, Heading, Input, Button, FormControl, FormLabel} from "@chakra-ui/react"
 
 
@@ -7,7 +8,7 @@ function ProjectOverview() {
 
 
     return (
-        <Heading>Overview</Heading>
+        <Menubar title="Project Overview"></Menubar>
     )
 }
 
