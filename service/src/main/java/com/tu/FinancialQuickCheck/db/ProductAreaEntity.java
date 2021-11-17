@@ -4,8 +4,9 @@ package com.tu.FinancialQuickCheck.db;
 import javax.persistence.*;
 import java.util.List;
 
+
 @Entity // This tells Hibernate to make a table out of this class
-public class ProjectEntity {
+public class ProductAreaEntity {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     public int id;
@@ -13,20 +14,12 @@ public class ProjectEntity {
     @Column(name = "name")
     public String name;
 
-    @Column(name = "creator_id")
-    public int creator_id;
-
+    @Column(name = "category")
+    public String category;
 
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "projectid")
+    @JoinColumn(name = "productareaid")
     public List<ProductEntity> productEntities;
-
-//    @OneToMany(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "id")
-//    public List<UserEntity> userEntities;
-
-    public ProjectEntity(){
-    }
 
 
 }

@@ -17,8 +17,8 @@ services:
     container_name: service
     command: mvn -f /app/ spring-boot:run
     volumes:
-      - ./service/src:/app/src
-      - ./service/pom.xml:/app/pom.xml
+      - ./service:/app
+#      - ./service/pom.xml:/app/pom.xml
     ports:
       - "8080:8080"
 

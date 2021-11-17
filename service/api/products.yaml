@@ -1,0 +1,206 @@
+openapi: '3.0.0'
+info:
+  version: '0.1'
+  title: "Product API for AMOS5 Financial QuickCheck"
+  description: defines endpoints for resource "products"
+
+paths:
+  /products:
+    post:
+      summary: creates a new product
+      requestBody:
+        description: JSON containing product data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/productCreation'
+      responses:
+        201:
+          description: JSON containing product data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/product'
+        401:
+          $ref: '#/components/responses/401unauthorized'
+        403:
+          $ref: '#/components/responses/403forbidden'
+        '5XX':
+          $ref: '#/components/responses/5XXserverError'
+  
+  
+  /products/{productID}:
+    get:
+      summary: retrieve data for one single product
+      parameters:
+        - $ref: '#/components/parameters/productID'
+      responses:
+        200:
+          description: JSON containing updated product data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/product'
+        401:
+          $ref: '#/components/responses/401unauthorized'
+        403:
+          $ref: '#/components/responses/403forbidden'
+        404:
+          $ref: '#/components/responses/404notfound'
+        '5XX':
+          $ref: '#/components/responses/5XXserverError'  
+    put: 
+      summary: updates product with given productID
+      parameters: 
+        - $ref: '#/components/parameters/productID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/product'
+      responses:
+        200:
+          description: JSON containing updated product data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/product'
+        401:
+          $ref: '#/components/responses/401unauthorized'
+        403:
+          $ref: '#/components/responses/403forbidden'
+        404:
+          $ref: '#/components/responses/404notfound'
+        '5XX':
+          $ref: '#/components/responses/5XXserverError'
+    delete:
+      summary: deletes product with given productID
+      parameters: 
+        - $ref: '#/components/parameters/productID'
+      responses:
+        200:
+          description: product deleted successfully
+        401:
+          $ref: '#/components/responses/401unauthorized'
+        403:
+          $ref: '#/components/responses/403forbidden'
+        404:
+          $ref: '#/components/responses/404notfound'
+        '5XX':
+          $ref: '#/components/responses/5XXserverError'
+  
+  /products/projects/{projectID}:
+    get:
+      summary: retrieves all products of given projectID
+      parameters:
+        - $ref: '#/components/parameters/projectID'
+      responses:
+        200:
+          description: JSON containing list of products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/product'
+        401:
+          $ref: '#/components/responses/401unauthorized'
+        403:
+          $ref: '#/components/responses/403forbidden'
+        404:
+          $ref: '#/components/responses/404notfound'
+        '5XX':
+          $ref: '#/components/responses/5XXserverError'
+    
+    
+  /products/projects/{projectID}/productArea/{projectAreaID}:  
+    get:
+      summary: retrieves all products of given project and project area
+      parameters:
+        - $ref: '#/components/parameters/projectID'
+        - $ref: '#/components/parameters/productAreaID'
+      responses:
+        200:
+          description: JSON containing list of products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/product'
+        401:
+          $ref: '#/components/responses/401unauthorized'
+        403:
+          $ref: '#/components/responses/403forbidden'
+        404:
+          $ref: '#/components/responses/404notfound'
+        '5XX':
+          $ref: '#/components/responses/5XXserverError'
+    
+          
+  
+
+
+components:
+  parameters:
+    productID:
+      name: productID
+      in: path
+      required: true
+      description: unique product ID
+      schema:
+        type: integer
+    productAreaID:
+      name: productAreaID
+      in: path
+      required: true
+      description: unique product area ID
+      schema:
+        type: integer
+    projectID:
+      name: projectID
+      in: path
+      description: unique project ID
+      required: true
+      schema:
+        type: integer
+
+  schemas:
+    productCreation:
+      type: object
+      properties:
+        projectID:
+          type: integer
+          example: 5
+        productAreaID:
+          type: integer
+          example: 1
+    product:
+      type: object
+      properties:
+        productID:
+          type: integer
+          example: 111
+        productName:
+          type: string
+          example: "Optionen"
+        projectID:
+          type: integer
+          example: 5
+        productAreaID:
+          type: integer
+          example: 1
+    
+
+  responses:
+    5XXserverError:
+      description: Internal error
+    404notfound:
+      description: Resource does not exist
+    403forbidden:
+      description: User is not authorized to access this resource
+    401unauthorized:
+      description: User not authenticated
+    genericError:
+      description: Error

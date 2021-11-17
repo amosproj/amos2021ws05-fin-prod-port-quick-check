@@ -10,17 +10,21 @@ public class ProductEntity {
     @GeneratedValue(strategy= GenerationType.AUTO)
     public int id;
 
-    @Column(name = "project_id")
-    public String project_id;
-
     @Column(name = "name")
     public String name;
+
+    @Column(name = "projectid")
+    public int projectid;
+
+    @Column(name = "productareaid")
+    public int productareaid;
+
 
 //    @OneToMany(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "id")
 //    public List<ProductEntity> productVariations;
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "productid")
     public List<RatingEntity> ratingEntities;
 }
