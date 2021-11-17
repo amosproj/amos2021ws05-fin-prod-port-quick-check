@@ -22,12 +22,13 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public ProductDto createProduct(ProductDto productDto){
+    public ProductDto createProduct(int projectID,  int productAreaID, ProductDto productDto){
         ProductEntity newProduct = new ProductEntity();
-        newProduct.projectid = productDto.projectID;
-        newProduct.productareaid = productDto.productAreaID;
+        newProduct.projectid = projectID;
+        newProduct.productareaid = productAreaID;
         productRepository.save(newProduct);
-        return new ProductDto(newProduct.id, newProduct.projectid, newProduct.productareaid);
+        productDto.id = newProduct.id;
+        return productDto;
     }
 
 
@@ -42,6 +43,7 @@ public class ProductService {
                 productEntity.get().productareaid);
         }
     }
+
 
     public void updateById(ProductDto productDto, Integer productID) {
 

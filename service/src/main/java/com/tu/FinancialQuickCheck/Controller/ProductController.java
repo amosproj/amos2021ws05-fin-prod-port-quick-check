@@ -18,12 +18,6 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @PostMapping(produces = "application/json")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ProductDto createProduct(@RequestBody ProductDto productDto) {
-        return productService.createProduct(productDto);
-    }
-
     @GetMapping("/{productID}")
     public ProductDto findById(@PathVariable int productID) {
         return productService.findById(productID);
@@ -36,21 +30,10 @@ public class ProductController {
         productService.updateById(productDto, productID);
     }
 
+
     @DeleteMapping("/{productID}")
     void deleteByID(@PathVariable int productID) {
         productService.deleteProduct(productID);
     }
-
-    @GetMapping("/projects/{projectID}")
-    public List<ProductDto> findProductsByProject(@PathVariable int projectID) {
-        return productService.getProductsByProjectId(projectID);
-    }
-
-    @GetMapping("projects/{projectID}/productArea/{projectAreaID}")
-    public List<ProductDto> findProductsByProductAndProjectArea(@PathVariable int projectID,
-                                                                @PathVariable int projectAreaID) {
-        return productService.getProductsByProjectIdAndProductAreaId(projectID, projectAreaID);
-    }
-
 
 }

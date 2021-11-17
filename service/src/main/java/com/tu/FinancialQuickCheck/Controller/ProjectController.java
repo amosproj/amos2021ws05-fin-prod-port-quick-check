@@ -1,6 +1,8 @@
 package com.tu.FinancialQuickCheck.Controller;
 
+import com.tu.FinancialQuickCheck.Service.ProductService;
 import com.tu.FinancialQuickCheck.Service.ProjectService;
+import com.tu.FinancialQuickCheck.dto.ProductDto;
 import com.tu.FinancialQuickCheck.dto.ProjectDto;
 import com.tu.FinancialQuickCheck.dto.SmallProjectDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ public class ProjectController {
 
     @Autowired
     private ProjectService projectService;
+    private ProductService productService;
 
 
 
@@ -50,6 +53,26 @@ public class ProjectController {
 
         projectService.deleteProject(projectID);
 
+    }
+
+
+    @GetMapping("/{projectID}/products")
+    public List<ProductDto> findProductsByProject(@PathVariable int projectID) {
+        return productService.getProductsByProjectId(projectID);
+    }
+
+
+    @GetMapping("{projectID}/productArea/{projectAreaID}/products")
+    public List<ProductDto> findProductsByProductAndProjectArea(@PathVariable int projectID,
+                                                                @PathVariable int projectAreaID) {
+        return productService.getProductsByProjectIdAndProductAreaId(projectID, projectAreaID);
+    }
+
+    @PostMapping(value = "/{projectID}/productArea/{productAreaID}/products",
+            consumes = "application/json", produces = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ProductDto createProduct(@PathVariable int projectID, @PathVariable int productAreaID, @RequestBody ProductDto productDto) {
+        return productService.createProduct(projectID, productAreaID,productDto);
     }
 
 }
