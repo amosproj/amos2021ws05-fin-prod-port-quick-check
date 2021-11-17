@@ -42,8 +42,8 @@ function Card(props) {
                       </Box >
                       <Spacer/>
 
-                      <Button
-                          type='submit' bg='teal.400' hover={{bg: 'teal.300'}} w='20' style={{alignSelf: 'flex-right'}}
+                      <Button onclick={props.link}
+                           bg='teal.400' hover={{bg: 'teal.300'}} w='20' style={{alignSelf: 'flex-right'}}
                       >Open</Button>
                       </VStack>
                       </Flex>
