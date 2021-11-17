@@ -22,6 +22,7 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
+
     public ProductDto createProduct(int projectID,  int productAreaID, ProductDto productDto){
         ProductEntity newProduct = new ProductEntity();
         newProduct.projectid = projectID;
@@ -82,6 +83,7 @@ public class ProductService {
         return productsByProject;
     }
 
+
     public List<ProductDto> getProductsByProjectIdAndProductAreaId(int projectID, int projectAreaID){
 
         List<ProductDto> productsByProjectAndProductArea = new ArrayList<>() {
@@ -95,8 +97,6 @@ public class ProductService {
 
         return productsByProjectAndProductArea;
     }
-
-
 
 
 }
