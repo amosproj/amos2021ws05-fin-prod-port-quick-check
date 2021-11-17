@@ -11,9 +11,10 @@ function Card(props) {
     return(
         <Flex bg='gray.700'  rounded="lg" m="5" align='center' p={3} justifyContent='space-between'>
 
-
+        <VStack>
             <Heading size="lg" color="teal"> {props.title}</Heading>
-
+            <Heading size="md" color="blue.400"> {props.subtitle}</Heading>
+    </VStack>
 <VStack>
 
                     <Box p={6}>
