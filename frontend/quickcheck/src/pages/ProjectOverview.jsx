@@ -15,7 +15,7 @@ const mocks = {
     {
       title: "ING",
       lastEdit: "November 12",
-      role: 'Consultant'
+      role: 'Project Manager'
     },
     {
       title: "Sparkasse Berlin",
@@ -52,7 +52,6 @@ export class ProjectOverview extends Component {
         <List spacing={3} maxW={800}>
           {mocks.projects.map((project) => (
           <Card key={project.title} project={project}></Card>
-
           ))}
         </List>
 
