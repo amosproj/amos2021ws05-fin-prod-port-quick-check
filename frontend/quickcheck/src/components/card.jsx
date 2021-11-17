@@ -14,10 +14,7 @@ function Card(props) {
 
             <Heading size="lg" color="teal"> {props.title}</Heading>
 
-            <Spacer/>
-            <Button
-                type='submit' bg='teal.400' hover={{bg: 'teal.300'}} w='20' style={{alignSelf: 'flex-right'}}
-            >Open</Button>
+<VStack>
 
                     <Box p={6}>
                       <Stack spacing={0} align={'center'} mb={5}>
@@ -42,7 +39,14 @@ function Card(props) {
                         </Stack>
                       </Stack>
                       </Box >
+                      <Spacer/>
+
+                      <Button
+                          type='submit' bg='teal.400' hover={{bg: 'teal.300'}} w='20' style={{alignSelf: 'flex-right'}}
+                      >Open</Button>
+                      </VStack>
                       </Flex>
+
 
         );
     }
