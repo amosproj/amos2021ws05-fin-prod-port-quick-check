@@ -4,11 +4,11 @@ import {
   Stack,
   Text,
   Button,
-  Box,
   Flex,
-  Spacer,
   SimpleGrid,
 } from "@chakra-ui/react";
+
+
 
 function CardLabel(props) {
   return (
@@ -35,7 +35,6 @@ function Card(props) {
       align="center"
       justifyContent="space-between"
       px={3}
-
     >
       <Stack direction='row' justify={"right"} spacing={6}>
         <CardLabel value= {props.project.role} name='Your Role'/>
