@@ -12,7 +12,7 @@ function ProjectOverview() {
     <div>
         <Menubar title="Project Overview"></Menubar>
 
-        <Card title="Project 1" type="Open"></Card>
+        <Card title="Project 1" type="Open" link="./Login"></Card>
         <Card title="Project 2" type="Open"></Card>
         <Card title="Project 3" type="Open"></Card>
         <Card title="Project 4" type="Open"></Card>
