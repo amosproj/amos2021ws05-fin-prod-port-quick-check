@@ -7,6 +7,8 @@ import com.tu.FinancialQuickCheck.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -41,6 +43,23 @@ public class UserService {
         UserDto newUserDto = new UserDto(newUser.email, newUser.role);
 
         return newUserDto;
+    }
+
+    /**
+     * returns a List of all User
+     */
+    public List<UserDto> findAllUser(){
+
+        List<UserDto> userList = new ArrayList<>();
+        Iterable<UserEntity> allUserEntitys = userRepository.findAll();
+
+        for(UserEntity userEntity : allUserEntitys){
+            UserDto userDto = new UserDto(userEntity.email, userEntity.role);
+            //userDto.id = userEntity.id;
+            //userDto.password = userEntity.password;
+            userList.add(userDto);
+        }
+        return userList;
     }
 
     /**
