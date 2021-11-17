@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from 'react';
 
 import Menubar from "../components/Menubar";
 import Card from "../components/card";
@@ -22,8 +22,14 @@ const mock2 = {
   role: 'Consultant'
 };
 
-function ProjectOverview(props) {
-  return (
+
+export class ProjectOverview extends Component {
+
+
+
+
+  render() {
+    return (
     <VStack justifyContent="center" spacing={10}>
       <Menubar title="Project Overview"></Menubar>
         <List spacing={3} maxW={800}>
@@ -33,6 +39,7 @@ function ProjectOverview(props) {
         </List>
     </VStack>
   );
+  }
 }
 
-export default ProjectOverview;
+export default ProjectOverview
