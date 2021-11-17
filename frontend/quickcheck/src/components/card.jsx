@@ -20,6 +20,8 @@ function CardLabel(props) {
   )
 }
 
+
+// Todo responsive: low width -> labels under title
 function Card(props) {
 
   return (
