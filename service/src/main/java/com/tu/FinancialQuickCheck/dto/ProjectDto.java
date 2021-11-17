@@ -9,8 +9,8 @@ import java.util.List;
 
 public class ProjectDto {
 
-    public int id;
-    public String name;
+    public int projectID;
+    public String projectName;
     public int creatorID;
     public Integer[] members;
     public Integer[] productAreas;
@@ -20,13 +20,13 @@ public class ProjectDto {
     public ProjectDto() {}
 
     public ProjectDto(int projectID){
-        this.id = projectID;
+        this.projectID = projectID;
     }
 
     public ProjectDto(int projectID, String projectName, int creatorID, Integer[] members,
                       List<ProductEntity> productEntity ){
-        this.id = projectID;
-        this.name = projectName;
+        this.projectID = projectID;
+        this.projectName = projectName;
         this.creatorID = creatorID;
         this.members = members;
         this.productAreas = convertProductAreaEntities(productEntity);

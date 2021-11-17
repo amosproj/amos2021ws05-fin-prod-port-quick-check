@@ -2,11 +2,11 @@ package com.tu.FinancialQuickCheck.dto;
 
 public class SmallProjectDto {
 
-    public int id;
-    public String name;
+    public int projectID;
+    public String projectName;
 
     public SmallProjectDto(int id, String name){
-        this.id = id;
-        this.name = name;
+        this.projectID = id;
+        this.projectName = name;
     }
 }

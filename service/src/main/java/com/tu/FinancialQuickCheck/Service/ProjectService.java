@@ -44,10 +44,26 @@ public class ProjectService {
     }
 
 
-    public ProjectDto createProject() {
+    public ProjectDto createProject(ProjectDto projectDto) {
+        // create db entry
         ProjectEntity newProject = new ProjectEntity();
+        newProject.creator_id = projectDto.creatorID;
+        newProject.name = projectDto.projectName;
         projectRepository.save(newProject);
-        return new ProjectDto(newProject.id);
+
+        // add product areas to project through DUMMY data in product_entity table
+        for (int productArea : projectDto.productAreas){
+
+            ProductEntity product = new ProductEntity();
+            product.projectid = newProject.id;
+            product.productareaid = productArea;
+            product.name = "DUMMY";
+            productRepository.save(product);
+        }
+
+        // return created projectID
+        projectDto.projectID = newProject.id;
+        return projectDto;
     }
 
 
@@ -77,7 +93,7 @@ public class ProjectService {
             // update project name
             projectRepository.findById(projectID).map(
                     project -> {
-                        project.name = projectDto.name;
+                        project.name = projectDto.projectName;
                         project.creator_id = projectDto.creatorID;
                         return projectRepository.save(project);
                     });

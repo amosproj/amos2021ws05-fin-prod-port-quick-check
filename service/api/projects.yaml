@@ -23,6 +23,13 @@ paths:
           $ref: '#/components/responses/5XXserverError'
     post:
       summary: creates a new project
+      requestBody:
+        description: Project object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/project'
       responses:
         201:
           description: JSON containing project meta data

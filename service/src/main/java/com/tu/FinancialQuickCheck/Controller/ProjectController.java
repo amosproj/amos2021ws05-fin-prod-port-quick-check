@@ -26,10 +26,10 @@ public class ProjectController {
     }
 
 
-    @PostMapping(produces = "application/json")
+    @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public ProjectDto createByName() {
-        return projectService.createProject();
+    public ProjectDto createByName(@RequestBody ProjectDto projectDto) {
+        return projectService.createProject(projectDto);
     }
 
     @GetMapping("/{projectID}")
