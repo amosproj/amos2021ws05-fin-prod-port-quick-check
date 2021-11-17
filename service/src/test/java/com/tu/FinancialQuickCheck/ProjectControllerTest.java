@@ -94,18 +94,6 @@ public class ProjectControllerTest {
 //        System.out.println("Response Status: " + response.getStatusCode());
     }
 
-//    @Test
-//    public void postProjects() throws Exception {
-//        ResponseEntity<String> response = restTemplate.exchange(
-//                host + port + projects,
-//                HttpMethod.POST,
-//                null,
-//                String.class);
-//
-//        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-////        System.out.println("Response Status: " + response.getStatusCode());
-//    }
-
     @Test
     public void notAllowedMethodsProjects() throws Exception {
 
