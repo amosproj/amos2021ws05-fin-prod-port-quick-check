@@ -7,66 +7,43 @@ import {
   Box,
   Flex,
   Spacer,
-  VStack,
+  SimpleGrid,
 } from "@chakra-ui/react";
+
+function CardLabel(props) {
+  return (
+    <Stack spacing={0} align={"center"}>
+      <Text fontWeight={600} fontSize='md'>{props.value}</Text>
+      <Text fontSize={"sm"} color={"gray.500"}>{props.name}
+      </Text>
+    </Stack>
+  )
+}
 
 function Card(props) {
 
   return (
-    <Flex
-      bg="gray.700"
+    <SimpleGrid columns={2} bg='gray.700' w='100%' rounded="lg"
+    align="center" p={6}>
+      <Heading alignSelf='center' size="lg" color="teal.400">{props.project.title}</Heading>
+
+    <Flex 
+      w='100%' 
       rounded="lg"
       align="center"
-      p={3}
       justifyContent="space-between"
+      px={3}
+
     >
-      <VStack>
-        <Heading size="lg" color="teal">
-          {" "}
-          {props.title}
-        </Heading>
-        <Heading size="md" color="blue.400">
-          {" "}
-          {props.subtitle}
-        </Heading>
-      </VStack>
-      <VStack>
-        <Box p={6}>
-          <Stack spacing={0} align={"center"} mb={5}>
-            <Heading fontSize={"2xl"} fontWeight={500} fontFamily={"body"}>
-              {props.productowner}
-            </Heading>
-            <Text color={"gray.500"}>Product Owner</Text>
-          </Stack>
+      <Stack direction='row' justify={"right"} spacing={6}>
+        <CardLabel value= {props.project.role} name='Your Role'/>
+        <CardLabel value= {props.project.lastEdit} name='Last edited'/>
 
-          <Stack direction={"row"} justify={"center"} spacing={6}>
-            <Stack spacing={0} align={"center"}>
-              <Text fontWeight={600}>{props.created}</Text>
-              <Text fontSize={"sm"} color={"gray.500"}>
-                Created
-              </Text>
-            </Stack>
-            <Stack spacing={0} align={"center"}>
-              <Text fontWeight={600}>{props.lastopened}</Text>
-              <Text fontSize={"sm"} color={"gray.500"}>
-                Last Opened
-              </Text>
-            </Stack>
-          </Stack>
-        </Box>
-        <Spacer />
+      </Stack>
+      <Button bg="teal.400" _hover={{ bg: "teal.600" }} w={20} ml={5}>Open</Button>
 
-        <Button
-          onclick={props.link}
-          bg="teal.400"
-          hover={{ bg: "teal.300" }}
-          w="20"
-          style={{ alignSelf: "flex-right" }}
-        >
-          Open
-        </Button>
-      </VStack>
     </Flex>
+    </SimpleGrid>
   );
 }
 
