@@ -37,12 +37,12 @@ public class UserService {
 
         UserEntity newUser = new UserEntity();
         //TODO: we need to make sure that randomUUID produces unique values --> we could move this into the UserEntity
-        newUser.id = UUID.randomUUID();
+//        newUser.id = UUID.randomUUID();
         newUser.email = userDto.email;
 //        newUser.password = userDto.password;
-        newUser.role = userDto.role;
+//        newUser.role = userDto.role;
         userRepository.save(newUser);
-        UserDto newUserDto = new UserDto(newUser.id, newUser.email, newUser.role);
+        UserDto newUserDto = new UserDto(newUser.id, newUser.email);
         return newUserDto;
     }
 
@@ -55,7 +55,7 @@ public class UserService {
         Iterable<UserEntity> allUserEntitys = userRepository.findAll();
 
         for(UserEntity userEntity : allUserEntitys){
-            UserDto userDto = new UserDto(userEntity.id, userEntity.email, userEntity.role);
+            UserDto userDto = new UserDto(userEntity.id, userEntity.email);
             //userDto.id = userEntity.id;
             //userDto.password = userEntity.password;
             userList.add(userDto);
@@ -77,7 +77,7 @@ public class UserService {
 
         for(UserEntity userEntity : allUserEntitys) {
             if(userEntity.id == userID) {
-                UserDto userDto = new UserDto(userEntity.email, userEntity.role);
+                UserDto userDto = new UserDto(userEntity.email);
                 return userDto;
             }
         }
@@ -98,7 +98,6 @@ public class UserService {
             if(userEntity.id == userID) {
                 userEntity.email = userDto.email;
                 userEntity.password = userDto.password;
-                userEntity.role = userDto.role;
                 userRepository.save(userEntity);
                 break;
             }
