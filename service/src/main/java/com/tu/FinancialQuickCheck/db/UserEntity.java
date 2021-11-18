@@ -1,34 +1,23 @@
 package com.tu.FinancialQuickCheck.db;
 
+import com.tu.FinancialQuickCheck.Role;
+import org.hibernate.annotations.GenericGenerator;
 
-
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.UUID;
 
 @Entity // This tells Hibernate to make a table out of this class
 public class UserEntity {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private Integer id;
-    private String name;
+    @Column(name = "id", columnDefinition = "VARCHAR(255)")
+    public UUID id;
 
-    public Integer getId() {
-        return id;
-    }
+    @Column(name = "email")
+    public String email;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    @Column(name = "password")
+    public String password;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    public UserEntity(){};
 
 }

@@ -13,16 +13,20 @@ public class ProjectEntity {
     @Column(name = "name")
     public String name;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "project_id")
+    @Column(name = "creator_id")
+    public int creator_id;
+
+    // TODO: CascadeType mit Max und Alexander besprechen
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "projectid")
     public List<ProductEntity> productEntities;
+
+//    @OneToMany(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "id")
+//    public List<UserEntity> userEntities;
 
     public ProjectEntity(){
     }
 
-    public ProjectEntity(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 
 }

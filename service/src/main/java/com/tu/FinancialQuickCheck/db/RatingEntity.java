@@ -13,8 +13,8 @@ public class RatingEntity {
     @GeneratedValue(strategy= GenerationType.AUTO)
     public int id;
 
-    @Column(name = "product_id")
-    public int product_id;
+    @Column(name = "productid")
+    public int productid;
 
     @Column(name = "criterion")
     public String criterion;
