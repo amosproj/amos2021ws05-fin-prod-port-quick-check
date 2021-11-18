@@ -1,6 +1,8 @@
 package com.tu.FinancialQuickCheck.db;
 
 
+import com.tu.FinancialQuickCheck.Role;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.UUID;
@@ -19,5 +21,8 @@ public class ProjectUserEntity {
 
     @Column(name = "userid")
     public UUID userID;
+
+    @Column(name = "role", columnDefinition = "varchar(255)")
+    public Role role;
 
 }
