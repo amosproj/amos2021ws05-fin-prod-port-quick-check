@@ -1,8 +1,8 @@
 openapi: '3.0.0'
 info:
   version: '0.1'
-  title: "Product API for AMOS5 Financial QuickCheck"
-  description: defines endpoints for resource "products"
+  title: "API for AMOS5 Financial QuickCheck"
+  description: defines endpoints for resource "Product"
 
 paths:
   /products/{productID}:
