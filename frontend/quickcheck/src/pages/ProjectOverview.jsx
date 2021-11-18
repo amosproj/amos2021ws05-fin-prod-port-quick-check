@@ -8,17 +8,14 @@ const mocks = {
   projects: [
     {
       title: 'Volksbank berlin brandenburg',
-      lastEdit: 'November 12',
       role: 'Consultant',
     },
     {
       title: 'ING',
-      lastEdit: 'Today',
       role: 'Project Manager',
     },
     {
       title: 'Sparkasse Berlin',
-      lastEdit: '10.10.2020',
       role: 'Consultant',
     },
   ],
@@ -31,7 +28,6 @@ function ProjectCard(props) {
       buttonLabel="open"
       labels={[
         ['Role', props.project.role],
-        ['Last edited', props.project.lastEdit],
       ]}
     ></Card>
   );
