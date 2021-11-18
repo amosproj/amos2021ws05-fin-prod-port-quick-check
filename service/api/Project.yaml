@@ -131,11 +131,11 @@ components:
     project:
       type: object
       properties:
-        id:
+        projectID:
           type: integer
         creatorID:
           type: integer
-        name:
+        projectName:
           type: string
         members:
           type: array
