@@ -55,7 +55,7 @@ public class UserService {
         Iterable<UserEntity> allUserEntitys = userRepository.findAll();
 
         for(UserEntity userEntity : allUserEntitys){
-            UserDto userDto = new UserDto(userEntity.email, userEntity.role);
+            UserDto userDto = new UserDto(userEntity.id, userEntity.email, userEntity.role);
             //userDto.id = userEntity.id;
             //userDto.password = userEntity.password;
             userList.add(userDto);
