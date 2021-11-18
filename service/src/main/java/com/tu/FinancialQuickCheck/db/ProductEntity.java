@@ -22,6 +22,7 @@ public class ProductEntity {
 
 //    @OneToMany(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "id")
+//    public int parentID;
 //    public List<ProductEntity> productVariations;
 
     @OneToMany(fetch = FetchType.LAZY)
