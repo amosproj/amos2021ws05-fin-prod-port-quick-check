@@ -1,8 +1,8 @@
 openapi: '3.0.0'
 info:
-  description: API for AMOS5 Financial QuickCheck
   version: "0.3"
-  title: "Currently implemented Endpoints"
+  title: API for AMOS5 Financial QuickCheck
+  description: defines endpoints for resource "Project"
 
 paths:
   /projects:

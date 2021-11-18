@@ -16,8 +16,8 @@ public class ProjectEntity {
     @Column(name = "creator_id")
     public int creator_id;
 
-
-    @OneToMany(fetch = FetchType.EAGER)
+    // TODO: CascadeType mit Max und Alexander besprechen
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "projectid")
     public List<ProductEntity> productEntities;
 

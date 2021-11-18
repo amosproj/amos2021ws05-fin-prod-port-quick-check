@@ -1,34 +1,10 @@
 openapi: '3.0.0'
 info:
   version: '0.1'
-  title: "Product API for AMOS5 Financial QuickCheck"
-  description: defines endpoints for resource "products"
+  title: "API for AMOS5 Financial QuickCheck"
+  description: defines endpoints for resource "Product"
 
 paths:
-  /products:
-    post:
-      summary: creates a new product
-      requestBody:
-        description: JSON containing product data
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/productCreation'
-      responses:
-        201:
-          description: JSON containing product data
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/product'
-        401:
-          $ref: '#/components/responses/401unauthorized'
-        403:
-          $ref: '#/components/responses/403forbidden'
-        '5XX':
-          $ref: '#/components/responses/5XXserverError'
-  
-  
   /products/{productID}:
     get:
       summary: retrieve data for one single product
@@ -90,7 +66,7 @@ paths:
         '5XX':
           $ref: '#/components/responses/5XXserverError'
   
-  /products/projects/{projectID}:
+  /projects/{projectID}/products:
     get:
       summary: retrieves all products of given projectID
       parameters:
@@ -112,9 +88,9 @@ paths:
           $ref: '#/components/responses/404notfound'
         '5XX':
           $ref: '#/components/responses/5XXserverError'
+
     
-    
-  /products/projects/{projectID}/productArea/{projectAreaID}:  
+  /projects/{projectID}/productArea/{productAreaID}/products:
     get:
       summary: retrieves all products of given project and project area
       parameters:
@@ -137,8 +113,31 @@ paths:
           $ref: '#/components/responses/404notfound'
         '5XX':
           $ref: '#/components/responses/5XXserverError'
-    
-          
+    post:
+      summary: creates a new product for projectID within productAreaID
+      parameters:
+        - $ref: '#/components/parameters/projectID'
+        - $ref: '#/components/parameters/productAreaID'
+      requestBody:
+        description: JSON containing product data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/product'
+      responses:
+        201:
+          description: JSON containing product data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/product'
+        401:
+          $ref: '#/components/responses/401unauthorized'
+        403:
+          $ref: '#/components/responses/403forbidden'
+        '5XX':
+          $ref: '#/components/responses/5XXserverError'
+
   
 
 
@@ -167,15 +166,6 @@ components:
         type: integer
 
   schemas:
-    productCreation:
-      type: object
-      properties:
-        projectID:
-          type: integer
-          example: 5
-        productAreaID:
-          type: integer
-          example: 1
     product:
       type: object
       properties:

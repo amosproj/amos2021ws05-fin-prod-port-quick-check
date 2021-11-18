@@ -17,7 +17,6 @@ public class ProductAreaController {
     private ProductAreaService productAreaService;
 
 
-    // TODO: custome http responses implementieren (siehe projects.yaml)
     @GetMapping(produces = "application/json")
     public List<ProductAreaDto> findALL() {
         return productAreaService.getAllProductAreas();
