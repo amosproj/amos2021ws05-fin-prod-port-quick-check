@@ -34,15 +34,18 @@ public class UserService {
      * @return UserDto
      */
     public UserDto createUser(UserDto userDto) {
+
         UserEntity newUser = new UserEntity();
-        newUser.id = userDto.id;
+        //TODO: we need to make sure that randomUUID produces unique values --> we could move this into the UserEntity
+        newUser.id = UUID.randomUUID();
         newUser.email = userDto.email;
-        newUser.password = userDto.password;
+//        newUser.password = userDto.password;
         newUser.role = userDto.role;
         userRepository.save(newUser);
-        UserDto newUserDto = new UserDto(newUser.email, newUser.role);
-
-        return newUserDto;
+//        UserDto newUserDto = new UserDto(newUser.id, newUser.email);
+        userDto.id = newUser.id;
+        return userDto;
+//        return newUserDto;
     }
 
     /**

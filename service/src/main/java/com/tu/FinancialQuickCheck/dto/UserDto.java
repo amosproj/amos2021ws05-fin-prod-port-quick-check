@@ -14,11 +14,28 @@ public class UserDto {
 
     public Role role;
 
+    public UserDto(){};
+
+    public UserDto(String email)
+    {
+        this.email = email;
+    }
+
     public UserDto(String email, Role role)
     {
-        // TODO: fix bug in UUID creation --> UUID.fromString needs as input parameter a string verion of a UUID
-        // this.id = UUID.fromString(email);
-        this.id = UUID.randomUUID();
+        this.email= email;
+        this.role = role;
+    }
+
+    public UserDto(UUID userID, String email)
+    {
+        this.id = userID;
+        this.email=email;
+    }
+
+    public UserDto(UUID userID, String email, Role role)
+    {
+        this.id = userID;
         this.email=email;
         this.role = role;
     }
