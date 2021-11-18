@@ -22,11 +22,9 @@ services:
     ports:
       - "8080:8080"
 
-  webserver:
-    image: "nginx"
-    container_name: webserver
-    volumes:
-      - ./UI:/usr/share/nginx/html
+  frontend:
+    build: ./frontend
+    container_name: frontend
     ports:
-      - "8000:80"
+      - "3000:3000"
 
