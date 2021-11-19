@@ -3,12 +3,20 @@ import React, { Component } from 'react';
 import Menubar from '../components/Menubar';
 import Card from '../components/card';
 import Card_simple from '../components/card_simple';
-import MemberCard from '../components/card_member';
-import { VStack, List, Button, Box, Link } from '@chakra-ui/react';
-
+import MemberCard from '../components/MemberCard';
+import { VStack, List, Button, Box} from '@chakra-ui/react';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import App from '../App';
 const mocks = {
   project: {
     type: 'Project',
+    title: 'Volksbank berlin brandenburg',
+    role: 'Consultant',
+    description:
+      'Project with Volksbank.  Project with Volksbank. Project with Volksbank. Project with Volksbank. Project with Volksbank. Project with Volksbank. Project with Volksbank. Project with Volksbank.',
+  },
+  productArea: {
+    type: 'Product Areas',
     title: 'Volksbank berlin brandenburg',
     role: 'Consultant',
     description:
@@ -23,11 +31,21 @@ const mocks = {
       Name: 'Jane Doe',
       role: 'Product Ownder',
     },
+    {
+      Name: 'TU Berlin',
+      role: 'Client',
+    },
+    {
+      Name: 'FU Berlin',
+      role: 'Client',
+    },
   ],
 };
 
 function ProjectCard(props) {
+
   return (
+
     <Card_simple
       title={props.project.title}
       type={props.project.type}
@@ -40,7 +58,7 @@ function Member_Card(props) {
   return <MemberCard Members={props.members}></MemberCard>;
 }
 
-export class ProjectManage extends Component {
+export class ManageProject extends Component {
   constructor(props) {
     super(props);
 
@@ -61,20 +79,23 @@ export class ProjectManage extends Component {
       <div>
         <Menubar mb={5} title="Manage Project"></Menubar>
         <VStack justifyContent="center" spacing={10} mt={5}>
-          <List spacing={3} maxW={800} mx={2}>
+
             <ProjectCard
               project={mocks.project}
               type={mocks.project.type}
               key={mocks.project.title}
               description={mocks.project.description}
             ></ProjectCard>
-          </List>
-          <List spacing={3} maxW={800} mx={2}>
             <Member_Card members={mocks.members}> </Member_Card>
-          </List>
+            <ProjectCard
+              project={mocks.productArea}
+              type={mocks.productArea.type}
+              key={mocks.productArea.title}
+              description={mocks.productArea.description}
+            ></ProjectCard>
 
-          <Link to="../project_manage">
-            <Button size="lg">Add Project</Button>
+          <Link to="/projects">
+            <Button size="lg">Edit</Button>
           </Link>
         </VStack>
       </div>
@@ -82,4 +103,4 @@ export class ProjectManage extends Component {
   }
 }
 
-export default ProjectManage;
+export default ManageProject;

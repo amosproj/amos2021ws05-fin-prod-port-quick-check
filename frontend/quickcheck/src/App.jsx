@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 
 import Login from './pages/Login';
 import ProjectOverview from './pages/ProjectOverview';
-import ProjectManage from './pages/ProjectManage';
+import ManageProject from './pages/ProjectManage';
 function App() {
   return (
     <div>
@@ -11,12 +11,12 @@ function App() {
         <Link to="/">Home </Link>
         <Link to="/projects">Projects </Link>
         <Link to="/login">Login </Link>
-        <Link to="/project_manage">Project Manage </Link>
+        <Link to="/ManageProject">Manage Project </Link>
 
         <Routes>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/projects" element={<ProjectOverview />}></Route>
-          <Route path="/project_manage" element={<ProjectManage />} />
+          <Route path="/ManageProject" element={<ManageProject />}></Route>
         </Routes>
       </Router>
     </div>

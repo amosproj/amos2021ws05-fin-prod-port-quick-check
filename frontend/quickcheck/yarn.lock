@@ -13396,6 +13396,11 @@
   "resolved" "https://registry.npmjs.org/wrappy/-/wrappy-1.0.2.tgz"
   "version" "1.0.2"
 
+"wretch@^1.7.6":
+  "integrity" "sha512-N2sYGNRaianJZJROz31vNoGo7Sd+2ElX9g+qwiOQ8/+3oJVCEOkFxVMSYT/8QQqTrWs5bmMbDyxrOleALhUMCA=="
+  "resolved" "https://registry.npmjs.org/wretch/-/wretch-1.7.6.tgz"
+  "version" "1.7.6"
+
 "write-file-atomic@^3.0.0":
   "integrity" "sha512-AvHcyZ5JnSfq3ioSyjrBkH9yW4m7Ayk8/9My/DD9onKeu/94fwrMocemO2QAJFAlnnDN+ZDS+ZjAR5ua1/PV/Q=="
   "resolved" "https://registry.npmjs.org/write-file-atomic/-/write-file-atomic-3.0.3.tgz"

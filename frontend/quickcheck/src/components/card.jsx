@@ -1,6 +1,6 @@
 import React from 'react';
 import { Heading, Stack, Text, Button, Box, SimpleGrid } from '@chakra-ui/react';
-
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 function CardLabel(props) {
   return (
     <Stack direction="column" p={2} spacing={0}>
@@ -42,9 +42,11 @@ function Card(props) {
 
         <Box align="right">
           {props.buttonLabel ? (
+                  <Link to="/ManageProject">
             <Button bg="teal.400" align="center" _hover={{ bg: 'teal.500' }} w={24}>
               {props.buttonLabel}
             </Button>
+            </Link>
           ) : (
             <div />
           )}
