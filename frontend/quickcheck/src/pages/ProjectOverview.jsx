@@ -21,6 +21,7 @@ const mocks = {
   ],
 };
 
+
 function ProjectCard(props) {
   return (
     <Card
@@ -45,9 +46,10 @@ export class ProjectOverview extends Component {
   componentDidMount() {
     fetch('https://randomuser.me/api/')
       .then((response) => response.json())
-      .then((data) => this.setState(data));
+      .then((data) => console.log(data));
     console.log(this.state.data);
   }
+
 
   render() {
     return (
