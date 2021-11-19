@@ -4,7 +4,7 @@ import Menubar from '../components/Menubar';
 import Card from '../components/card';
 import Card_simple from '../components/card_simple';
 import MemberCard from '../components/MemberCard';
-import { VStack, List, Button, Box} from '@chakra-ui/react';
+import { VStack, List, Button, Box } from '@chakra-ui/react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import App from '../App';
 const mocks = {
@@ -43,9 +43,7 @@ const mocks = {
 };
 
 function ProjectCard(props) {
-
   return (
-
     <Card_simple
       title={props.project.title}
       type={props.project.type}
@@ -79,20 +77,19 @@ export class ManageProject extends Component {
       <div>
         <Menubar mb={5} title="Manage Project"></Menubar>
         <VStack justifyContent="center" spacing={10} mt={5}>
-
-            <ProjectCard
-              project={mocks.project}
-              type={mocks.project.type}
-              key={mocks.project.title}
-              description={mocks.project.description}
-            ></ProjectCard>
-            <Member_Card members={mocks.members}> </Member_Card>
-            <ProjectCard
-              project={mocks.productArea}
-              type={mocks.productArea.type}
-              key={mocks.productArea.title}
-              description={mocks.productArea.description}
-            ></ProjectCard>
+          <ProjectCard
+            project={mocks.project}
+            type={mocks.project.type}
+            key={mocks.project.title}
+            description={mocks.project.description}
+          ></ProjectCard>
+          <Member_Card members={mocks.members}> </Member_Card>
+          <ProjectCard
+            project={mocks.productArea}
+            type={mocks.productArea.type}
+            key={mocks.productArea.title}
+            description={mocks.productArea.description}
+          ></ProjectCard>
 
           <Link to="/projects">
             <Button size="lg">Edit</Button>
