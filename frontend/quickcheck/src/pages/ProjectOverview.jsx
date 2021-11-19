@@ -54,7 +54,7 @@ export class ProjectOverview extends Component {
       <div>
         <Menubar mb={5} title="Project Overview"></Menubar>
         <VStack justifyContent="center" spacing={10} mt={5}>
-          <List spacing={3} maxW={800} mx={2}>
+          <List spacing={3}    maxW={800} mx={2}>
             {mocks.projects.map((project) => (
               <ProjectCard project={project} key={project.title}></ProjectCard>
             ))}
