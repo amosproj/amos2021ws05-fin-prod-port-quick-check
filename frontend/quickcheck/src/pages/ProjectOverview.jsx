@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Menubar from '../components/Menubar';
 import Card from '../components/card';
-import { VStack, List, Button, Box } from '@chakra-ui/react';
+import { VStack, List, Button } from '@chakra-ui/react';
 
 const mocks = {
   projects: [
@@ -31,38 +31,27 @@ function ProjectCard(props) {
   );
 }
 
-export class ProjectOverview extends Component {
-  constructor(props) {
-    super(props);
+export default function ProjectOverview() {
+  const [data, setData] = useState({ projects: [] });
 
-    this.state = {
-      data: null,
-    };
-  }
-
-  componentDidMount() {
+  useEffect(() => {
     fetch('https://randomuser.me/api/')
       .then((response) => response.json())
-      .then((data) => console.log(data));
-    console.log(this.state.data);
-  }
+      .then((data) => setData(data));
+  }, []);
 
-  render() {
-    return (
-      <div>
-        <Menubar mb={5} title="Project Overview"></Menubar>
-        <VStack justifyContent="center" spacing={10} mt={5}>
-          <List spacing={3} maxW={800} mx={2}>
-            {mocks.projects.map((project) => (
-              <ProjectCard project={project} key={project.title}></ProjectCard>
-            ))}
-          </List>
+  return (
+    <div>
+      <Menubar mb={5} title="Project Overview"></Menubar>
+      <VStack justifyContent="center" spacing={10} mt={5}>
+        <List spacing={3} maxW={800} mx={2}>
+          {mocks.projects.map((project) => (
+            <ProjectCard project={project} key={project.title}></ProjectCard>
+          ))}
+        </List>
 
-          <Button size="lg">Add new</Button>
-        </VStack>
-      </div>
-    );
-  }
+        <Button size="lg">Add new</Button>
+      </VStack>
+    </div>
+  );
 }
-
-export default ProjectOverview;
