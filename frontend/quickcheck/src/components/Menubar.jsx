@@ -1,5 +1,5 @@
-import { Heading, Avatar, Flex, Spacer } from "@chakra-ui/react";
-import React from "react";
+import { Heading, Avatar, Flex, Spacer } from '@chakra-ui/react';
+import React from 'react';
 
 function Menubar(props) {
   return (
