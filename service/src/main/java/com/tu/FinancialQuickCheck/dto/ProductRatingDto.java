@@ -11,18 +11,16 @@ public class ProductRatingDto {
     public Score score;
 
     // Infos aus ProductEntity
-    public int productID;
+//    public int productID;
 
     // Infos aus RatingEntity
     public int ratingID;
 
-    public ProductRatingDto(int id, String answer, String comment, Score score, int productID, int ratingID)
+    public ProductRatingDto(String answer, String comment, Score score, int ratingID)
     {
-        this.id = id;
         this.answer = answer;
         this.comment = comment;
         this.score = score;
-        this.productID = productID;
         this.ratingID = ratingID;
     }
 }

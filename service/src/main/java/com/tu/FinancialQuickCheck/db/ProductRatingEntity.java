@@ -22,11 +22,13 @@ public class ProductRatingEntity {
     @Column(name = "comment")
     public String comment;
 
-    @ManyToOne(targetEntity = ProductEntity.class, fetch = FetchType.EAGER)
+    @ManyToOne (targetEntity = ProductEntity.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "id", insertable = false, updatable = false)
-    public int productid;
+    public ProductEntity product;
 
     @ManyToOne(targetEntity = RatingEntity.class, fetch = FetchType.EAGER)
-    @JoinColumn(name = "id", insertable = false, updatable = false)
-    public String ratingid;
+    @JoinColumn(name = "ratingid", insertable = false, updatable = false)
+    public RatingEntity rating;
+
+    public ProductRatingEntity(){};
 }
