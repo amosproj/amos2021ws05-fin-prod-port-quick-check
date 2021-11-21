@@ -7,9 +7,11 @@ import com.tu.FinancialQuickCheck.dto.ProductDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ProductService {
@@ -24,11 +26,25 @@ public class ProductService {
 
 
     public ProductDto createProduct(int projectID,  int productAreaID, ProductDto productDto){
+
         ProductEntity newProduct = new ProductEntity();
         newProduct.projectid = projectID;
+        newProduct.name = productDto.name;
         newProduct.productareaid = productAreaID;
+        newProduct.product_id = productDto.id;
         productRepository.save(newProduct);
-        productDto.id = newProduct.id;
+
+        for (ProductDto productVariation: productDto.productVariations) {
+            ProductEntity entity = new ProductEntity();
+            entity.product_id = productVariation.id;
+            entity.projectid = productVariation.projectID;
+            entity.productareaid = productVariation.productAreaID;
+            entity.name = productVariation.name;
+            entity.parentProduct = newProduct;
+            productRepository.save(entity);
+        }
+
+        //productDto.id = newProduct.product_id;
         return productDto;
     }
 
@@ -40,7 +56,7 @@ public class ProductService {
         if (productEntity.isEmpty()) {
             throw new ResourceNotFound("productID " + productID + " not found");
         }else{
-            return new ProductDto(productEntity.get().id, productEntity.get().name, productEntity.get().projectid,
+            return new ProductDto(productEntity.get().product_id,productEntity.get().name, productEntity.get().projectid,
                 productEntity.get().productareaid);
         }
     }
@@ -77,7 +93,7 @@ public class ProductService {
         Iterable<ProductEntity> productEntities = productRepository.findByProjectid(projectID);
 
         for(ProductEntity tmp : productEntities){
-            productsByProject.add(new ProductDto(tmp.id, tmp.name, tmp.projectid, tmp.productareaid));
+            productsByProject.add(new ProductDto(tmp.product_id,tmp.name, tmp.projectid, tmp.productareaid));
         }
 
         return productsByProject;
@@ -92,7 +108,7 @@ public class ProductService {
                 projectAreaID);
 
         for(ProductEntity tmp : productEntities){
-            productsByProjectAndProductArea.add(new ProductDto(tmp.id, tmp.name, tmp.projectid, tmp.productareaid));
+            productsByProjectAndProductArea.add(new ProductDto(tmp.product_id, tmp.name, tmp.projectid, tmp.productareaid));
         }
 
         return productsByProjectAndProductArea;

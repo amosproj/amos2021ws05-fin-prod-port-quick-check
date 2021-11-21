@@ -20,13 +20,16 @@ public class ProductController {
         return productService.findById(productID);
     }
 
+    @PostMapping()
+    public void updateProduct(@RequestBody ProductDto productDto) {
+        productService.createProduct(productDto.projectID, productDto.productAreaID,productDto);
+    }
 
     @PutMapping("/{productID}")
     public void updateProduct(@RequestBody ProductDto productDto, @PathVariable Integer productID) {
 
         productService.updateById(productDto, productID);
     }
-
 
     @DeleteMapping("/{productID}")
     void deleteByID(@PathVariable int productID) {
