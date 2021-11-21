@@ -27,5 +27,5 @@ public class ProductEntity {
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "productid")
-    public List<RatingEntity> ratingEntities;
+    public List<ProductRatingEntity> productRatingEntities;
 }
