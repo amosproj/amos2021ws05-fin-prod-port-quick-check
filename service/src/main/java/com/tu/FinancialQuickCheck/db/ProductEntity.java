@@ -25,7 +25,7 @@ public class ProductEntity {
 //    public int parentID;
 //    public List<ProductEntity> productVariations;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "productid")
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "productid", insertable = false, updatable = false)
     public List<ProductRatingEntity> productRatingEntities;
 }
