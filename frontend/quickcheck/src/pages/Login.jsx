@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 
 import { Flex, VStack, Heading, Input, Button, FormControl, FormLabel } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
+
 
 function Login() {
   const [email, setEmail] = useState();
@@ -27,11 +29,10 @@ function Login() {
     }
 
     if (error) {
-      alert(`error: ${error}`);
       setPassword('');
     } else {
       const credentials = { email: email, passworld: password };
-      alert('login data\n' + JSON.stringify(credentials));
+      console.log('login data\n' + JSON.stringify(credentials));
     }
   }
 
@@ -76,7 +77,7 @@ function Login() {
             onChange={(event) => setPassword(event.target.value)}
           />
         </FormControl>
-
+    <Link to='/projects'>
         <Button
           type="submit"
           bg="teal.400"
@@ -86,6 +87,7 @@ function Login() {
         >
           Login
         </Button>
+        </Link>
       </VStack>
     </Flex>
   );
