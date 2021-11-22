@@ -12,14 +12,13 @@ const api = wretch()
 
 const mocks = {
   newProject: {
-      creatorID: 0,
-      projectName: 'Mock Project',
-      members: [1, 2],
-      productAreas: [1, 2, 3],
-    },
-  role: 'Mock Consultant'
-}
-
+    creatorID: 0,
+    projectName: 'Mock Project',
+    members: [1, 2],
+    productAreas: [1, 2, 3],
+  },
+  role: 'Mock Consultant',
+};
 
 function ProjectCard(props) {
   return (
@@ -45,16 +44,16 @@ export default function ProjectOverview() {
     getProjects();
   });
 
-
   const createProject = () => {
-    api.url('/projects')
+    api
+      .url('/projects')
       .post(mocks.newProject)
       .res((response) => {
-        console.log("POST response:", response);
+        console.log('POST response:', response);
       });
   };
 
-  console.log(projectsData)
+  console.log(projectsData);
 
   return (
     <div>
@@ -66,7 +65,9 @@ export default function ProjectOverview() {
           ))}
         </List>
 
-        <Button size="lg" onClick={createProject}>Add new</Button>
+        <Button size="lg" onClick={createProject}>
+          Add new
+        </Button>
       </VStack>
     </div>
   );
