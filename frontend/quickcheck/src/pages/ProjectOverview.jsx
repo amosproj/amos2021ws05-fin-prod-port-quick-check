@@ -53,8 +53,6 @@ export default function ProjectOverview() {
       });
   };
 
-  console.log(projectsData);
-
   return (
     <div>
       <Menubar mb={5} title="Project Overview"></Menubar>
