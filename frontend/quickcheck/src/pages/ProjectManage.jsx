@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 
 import Menubar from '../components/Menubar';
-import Card from '../components/card';
 import Card_simple from '../components/card_simple';
 import MemberCard from '../components/MemberCard';
-import { VStack, List, Button, Box } from '@chakra-ui/react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import App from '../App';
+import { VStack, Button } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
+
 const mocks = {
   project: {
     type: 'Project',

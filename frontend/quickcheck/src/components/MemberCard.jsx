@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Button,
   Link,
-  Flex,
   List,
   Table,
   Thead,
@@ -13,11 +12,9 @@ import {
   Tbody,
   Box,
   Center,
-  Heading,
   Text,
   Stack,
 } from '@chakra-ui/react';
-import { IconButton } from '@chakra-ui/react';
 
 function MemberRow(prop) {
   return (
