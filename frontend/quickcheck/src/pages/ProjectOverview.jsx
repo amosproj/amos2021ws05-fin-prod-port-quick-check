@@ -11,75 +11,62 @@ const api = wretch()
   .headers({ 'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept' });
 
 const mocks = {
-  projects: [
-    {
-      title: 'Volksbank berlin brandenburg',
-      role: 'Consultant',
+  newProject: {
+      creatorID: 0,
+      projectName: 'Mock Project',
+      members: [1, 2],
+      productAreas: [1, 2, 3],
     },
-    {
-      title: 'ING',
-      role: 'Project Manager',
-    },
-    {
-      title: 'Sparkasse Berlin',
-      role: 'Consultant',
-    },
-  ],
-};
+  role: 'Mock Consultant'
+}
 
-const newProjectMock = {
-  projectID: 0,
-  creatorID: 0,
-  projectName: 'string',
-  members: [1, 2],
-  productAreas: [1, 2, 3],
-};
 
 function ProjectCard(props) {
   return (
     <Card
-      title={props.project.title}
+      title={props.project.projectName}
       buttonLabel="open"
-      labels={[['Role', props.project.role]]}
+      labels={[['Role', mocks.role]]}
     ></Card>
   );
 }
 
 export default function ProjectOverview() {
-  const [data, setData] = useState({ projects: [] });
+  const [projectsData, setProjectsData] = useState([]);
 
-  // const fetchProjects = () => {
-  //   api
-  //     .url('/projects')
-  //     .get()
-  //     .json((json) => setData(json));
-  // };
+  const getProjects = () => {
+    api
+      .url('/projects')
+      .get()
+      .json((json) => setProjectsData(json));
+  };
 
   useEffect(() => {
-    api.url('/projects').get((json) => console.log(json));
-    // fetchProjects();
-  }, []);
+    getProjects();
+  });
 
-  // const postProject = () => {
-  //   api('/projects')
-  //     .post(newProjectMock)
-  //     .res((res) => {
-  //       console.log(res);
-  //     });
-  //   // fetchProjects();
-  // };
+
+  const createProject = () => {
+    api.url('/projects')
+      .post(mocks.newProject)
+      .res((response) => {
+        console.log("POST response:", response);
+      });
+  };
+
+  console.log(projectsData)
 
   return (
     <div>
       <Menubar mb={5} title="Project Overview"></Menubar>
       <VStack justifyContent="center" spacing={10} mt={5}>
         <List spacing={3} maxW={800} mx={2}>
-          {mocks.projects.map((project) => (
-            <ProjectCard project={project} key={project.title}></ProjectCard>
+          {projectsData.map((project) => (
+            <ProjectCard project={project} key={project.projectID}></ProjectCard>
           ))}
         </List>
 
-        <Button size="lg">Add new</Button>
+        <Button size="lg" onClick={createProject}>Add new</Button>
       </VStack>
     </div>
   );
