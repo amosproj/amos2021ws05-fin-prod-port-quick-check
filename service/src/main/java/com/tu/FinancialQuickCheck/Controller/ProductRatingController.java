@@ -19,13 +19,14 @@ public class ProductRatingController {
     public ProductDto getProductRatings(
             @PathVariable int productID,
             @RequestParam(required = false) RatingArea ratingArea) {
-        if(ratingArea == null){
-            return service.getAllProductRatings(productID);
-        }
-        else {
-            return new ProductDto();
-//            return service.getProductRatingsByRatingarea(productID, ratingArea);
-        }
+
+        return service.getProductRatings(productID, ratingArea);
+    }
+
+    @PostMapping()
+    public void createProductRatings(@RequestBody ProductDto productDto, @PathVariable Integer productID) {
+
+        service.createProductRatings(productDto, productID);
     }
 
 //    @PutMapping()

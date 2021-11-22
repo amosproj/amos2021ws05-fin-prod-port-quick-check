@@ -1,77 +1,82 @@
 package com.tu.FinancialQuickCheck.Service;
 
 import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
-import com.tu.FinancialQuickCheck.Score;
+import com.tu.FinancialQuickCheck.RatingArea;
 import com.tu.FinancialQuickCheck.db.*;
 import com.tu.FinancialQuickCheck.dto.ProductDto;
 import com.tu.FinancialQuickCheck.dto.ProductRatingDto;
-import com.tu.FinancialQuickCheck.dto.RatingDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class ProductRatingService {
 
-    private ProductRatingRepository repository;
-    private ProductRepository productRepository;
+    private final ProductRatingRepository repository;
+    private final ProductRepository productRepository;
+    private final RatingRepository ratingRepository;
 
     @Autowired
-    public ProductRatingService(ProductRatingRepository repository, ProductRepository productRepository) {
+    public ProductRatingService(ProductRatingRepository repository, ProductRepository productRepository,
+                                RatingRepository ratingRepository) {
         this.repository = repository;
         this.productRepository = productRepository;
+        this.ratingRepository = ratingRepository;
     }
 
 
-    public ProductDto getAllProductRatings(int productID){
-        System.out.println("Beginning of getAllProducts...");
+    public ProductDto getProductRatings(int productID, RatingArea ratingArea){
+
         Optional<ProductEntity> productEntity = productRepository.findById(productID);
 
         if (productEntity.isEmpty()) {
             throw new ResourceNotFound("productID " + productID + " not found");
         }else{
 
+            Iterable<ProductRatingEntity> entities = productEntity.get().productRatingEntities;
             List<ProductRatingDto> productRatingDtos = new ArrayList<>() {};
 
-            Iterable<ProductRatingEntity> entities = productEntity.get().productRatingEntities;
+            if(ratingArea != null) {
+                entities = StreamSupport.stream(entities.spliterator(), false)
+                        .filter(product -> product.projectRatingId.getRatingid().ratingarea == ratingArea)
+                        .collect(Collectors.toList());
+            }
 
-            for(ProductRatingEntity tmp : entities){
-                productRatingDtos.add(new ProductRatingDto(tmp.answer, tmp.comment, tmp.score, tmp.rating.id));
+            for (ProductRatingEntity tmp : entities) {
+                productRatingDtos.add(new ProductRatingDto(tmp.answer, tmp.comment, tmp.score,
+                        tmp.projectRatingId.getRatingid().id));
             }
 
             return new ProductDto(productEntity.get().name, productRatingDtos);
         }
     }
 
+    // TODO: request mit gleichen IDs überschreibt vorhandene Daten, wollen wir das zulassen für ein HTTP POST Request?
+    public void createProductRatings(ProductDto productDto, int productID){
+        List<ProductRatingEntity> newProductRatings = new ArrayList<>();
 
-//    // TODO: POST
-//    public ProductDto createProductRatings(int projectID,  int productAreaID, ProductDto productDto){
-//        ProductEntity newProduct = new ProductEntity();
-//        newProduct.projectid = projectID;
-//        newProduct.productareaid = productAreaID;
-//        productRepository.save(newProduct);
-//        productDto.id = newProduct.id;
-//        return productDto;
-//    }
-//
-//
-//    public ProductDto findById(int productID) {
-//
-//        Optional<ProductEntity> productEntity = productRepository.findById(productID);
-//
-//        if (productEntity.isEmpty()) {
-//            throw new ResourceNotFound("productID " + productID + " not found");
-//        }else{
-//            return new ProductDto(productEntity.get().id, productEntity.get().name, productEntity.get().projectid,
-//                productEntity.get().productareaid);
-//        }
-//    }
-//
-//
-//    public void updateById(ProductDto productDto, Integer productID) {
+        for(ProductRatingDto tmp:  productDto.ratings){
+            ProductRatingEntity newEntity = new ProductRatingEntity();
+            newEntity.answer = tmp.answer;
+            newEntity.score = tmp.score;
+            newEntity.comment = tmp.comment;
+            System.out.println("Current Rating ID: " + tmp.ratingID);
+            newEntity.projectRatingId = new ProjectRatingId(
+                    productRepository.getById(productID),
+                    ratingRepository.getById(tmp.ratingID));
+            newProductRatings.add(newEntity);
+        }
+
+        repository.saveAll(newProductRatings);
+    }
+
+
+//    public void updateProductRatings(ProductDto productDto, Integer productID) {
 //
 //        if (!productRepository.existsById(productID)) {
 //            throw new ResourceNotFound("productID " + productID + " not found");
@@ -83,45 +88,4 @@ public class ProductRatingService {
 //                    });
 //        }
 //    }
-//
-//
-//    public void deleteProduct(int productID) {
-//        Optional<ProductEntity> productEntity = productRepository.findById(productID);
-//        if (productEntity.isEmpty()) {
-//            throw new ResourceNotFound("productID " + productID + " not found");
-//        }else{
-//            productRepository.deleteById(productID);
-//        }
-//    }
-//
-//
-//    public List<ProductDto> getProductsByProjectId(int projectID){
-//
-//        List<ProductDto> productsByProject = new ArrayList<>() {
-//        };
-//        Iterable<ProductEntity> productEntities = productRepository.findByProjectid(projectID);
-//
-//        for(ProductEntity tmp : productEntities){
-//            productsByProject.add(new ProductDto(tmp.id, tmp.name, tmp.projectid, tmp.productareaid));
-//        }
-//
-//        return productsByProject;
-//    }
-//
-//
-//    public List<ProductDto> getProductsByProjectIdAndProductAreaId(int projectID, int projectAreaID){
-//
-//        List<ProductDto> productsByProjectAndProductArea = new ArrayList<>() {
-//        };
-//        Iterable<ProductEntity> productEntities = productRepository.findByProjectidAndProductareaid(projectID,
-//                projectAreaID);
-//
-//        for(ProductEntity tmp : productEntities){
-//            productsByProjectAndProductArea.add(new ProductDto(tmp.id, tmp.name, tmp.projectid, tmp.productareaid));
-//        }
-//
-//        return productsByProjectAndProductArea;
-//    }
-
-
 }
