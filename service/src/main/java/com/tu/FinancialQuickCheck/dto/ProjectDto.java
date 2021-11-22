@@ -2,8 +2,10 @@ package com.tu.FinancialQuickCheck.dto;
 
 //import java.util.ArrayList;
 import com.tu.FinancialQuickCheck.db.ProductEntity;
+import org.h2.command.dml.Set;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 
@@ -13,7 +15,7 @@ public class ProjectDto {
     public String projectName;
     public int creatorID;
     public Integer[] members;
-    public Integer[] productAreas;
+    public HashSet<Integer> productAreas;
 //    public List<Product> products;
 
     //necessary for mapping
@@ -53,12 +55,12 @@ public class ProjectDto {
 //        return products;
 //    }
 
-    private Integer[] convertProductAreaEntities(List<ProductEntity> productEntity) {
-        List<Integer> areas = new ArrayList<>();
+    private HashSet<Integer> convertProductAreaEntities(List<ProductEntity> productEntity) {
+        HashSet<Integer> areas = new HashSet<>();
         for (ProductEntity p: productEntity)
         {
             areas.add(p.productareaid);
         }
-        return areas.toArray( new Integer[areas.size()]);
+        return areas;
     }
 }
