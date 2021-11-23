@@ -98,10 +98,7 @@ function Remove(prop) {
         w="100px"
         bg="purple.400"
         p={3}
-      >
-
-
-      </Button>
+      ></Button>
 
       <Modal
         initialFocusRef={initialRef}
@@ -191,8 +188,7 @@ export default function ProjectAreaCard(props) {
           fontSize={'sm'}
           letterSpacing={1.1}
         >
-
-          Product Areas 
+          Product Areas
         </Text>
         <Table variant="simple" size="sm">
           <Thead>

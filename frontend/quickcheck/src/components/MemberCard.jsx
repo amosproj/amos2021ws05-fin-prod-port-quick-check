@@ -77,7 +77,7 @@ function MemberRow(prop) {
       <Td>
         <Box color="white" boxShadow={'2xl'} rounded={'md'} w="200px" bg="blue.500" p={3}>
           <Text color={'gray.100'} fontWeight={800} fontSize={'sm'} letterSpacing={1.1}>
-             <ShowEditable text={prop.name} editable={prop.editable}></ShowEditable>
+            <ShowEditable text={prop.name} editable={prop.editable}></ShowEditable>
           </Text>
         </Box>
       </Td>
@@ -91,8 +91,7 @@ function MemberRow(prop) {
             fontSize={'sm'}
             letterSpacing={1.1}
           >
-          <ShowEditable text={prop.role} editable={prop.editable}></ShowEditable>
-
+            <ShowEditable text={prop.role} editable={prop.editable}></ShowEditable>
           </Text>
         </Box>
       </Td>
@@ -125,9 +124,12 @@ export default function MemberCard(props) {
             </Tr>
           </Thead>
           <Tbody>
-
             {props.Members.map((member) => (
-              <MemberRow name={member.Name} role={member.role} editable={props.editable}></MemberRow>
+              <MemberRow
+                name={member.Name}
+                role={member.role}
+                editable={props.editable}
+              ></MemberRow>
             ))}
           </Tbody>
           <Tfoot></Tfoot>

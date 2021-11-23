@@ -89,7 +89,6 @@ function ProjectCard(props) {
   );
 }
 
-
 function Member_Card(props) {
   return <MemberCard Members={props.members} editable={props.etitable}></MemberCard>;
 }
@@ -98,10 +97,8 @@ function AreaCard(props) {
   return <ProjectAreaCard areas={props.areas}></ProjectAreaCard>;
 }
 
-
 export default function ManageProject() {
   const [editable, setEditable] = useState(false);
-
 
   const EditButtons = () => {
     if (editable) {
@@ -135,14 +132,17 @@ export default function ManageProject() {
           description={mocks.project.description}
           editable={editable}
         ></ProjectCard>
-        <Member_Card members={mocks.members} editable={editable}> </Member_Card>
+        <Member_Card members={mocks.members} editable={editable}>
+          {' '}
+        </Member_Card>
 
-        <AreaCard areas={mocks.productAreas} editable={editable}> </AreaCard>
+        <AreaCard areas={mocks.productAreas} editable={editable}>
+          {' '}
+        </AreaCard>
 
         <EditButtons />
         <ShowEditable text="text" editable={editable}></ShowEditable>
       </VStack>
-
     </div>
   );
 }
