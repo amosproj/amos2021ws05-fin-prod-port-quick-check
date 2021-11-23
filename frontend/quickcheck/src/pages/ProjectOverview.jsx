@@ -17,7 +17,7 @@ import {
   Center,
   Text,
   Stack,
-  Hstack,
+  HStack,
 
 } from '@chakra-ui/react';
 import Menubar from '../components/Menubar';
@@ -46,7 +46,7 @@ function ProjectCard(props) {
     <BaseCard
     barColor="blue.500"
     >
-
+    <HStack spacing={20} align="left">
     <Stack>
       <Text
         color={'green.500'}
@@ -61,17 +61,14 @@ function ProjectCard(props) {
         {props.title}
       </Heading>
       <Text color={'gray.500'}>{props.description}</Text>
-          </Stack>
-      <SimpleGrid
-        columns={{ base: 1, sm: 2 }}
-        rounded="lg"
-        align="right"
-        alignItems="center"
-        px={3}
-      >
+    </Stack>
 
-      
-
+      <Box align="left">
+      <Stack align="left">
+      <Text  fontSize={'sm'} color={'gray.600'}>Role</Text>
+    <Text color={'gray.500'}>{props.role}</Text>
+      </Stack>
+            </Box>
         <Box align="right">
           {props.buttonLabel ? (
             <Link to="/ManageProject">
@@ -84,9 +81,9 @@ function ProjectCard(props) {
           )}
         </Box>
 
-      </SimpleGrid>
 
 
+</HStack>
 </BaseCard>
   );
 }
@@ -107,7 +104,7 @@ export default function ProjectOverview() {
           {mocks.projects.map((project) => (
             <ProjectCard title={project.title}
             buttonLabel="open" type="Project"
-            labels={[['Role', project.role]]}></ProjectCard>
+            role={project.role}></ProjectCard>
           ))}
         </List>
 

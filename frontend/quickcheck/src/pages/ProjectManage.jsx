@@ -10,6 +10,7 @@ import { Center, Heading, Text, Stack, Avatar, useColorModeValue } from '@chakra
 
 import App from '../App';
 import BaseCard from '../components/BaseCard.jsx';
+import ProjectAreaCard from '../components/ProjectAreaCard.jsx';
 const mocks = {
   project: {
     type: 'Project',
@@ -18,13 +19,19 @@ const mocks = {
     description:
       'Project with Volksbank.  Project with Volksbank. Project with Volksbank. Project with Volksbank. Project with Volksbank. Project with Volksbank. Project with Volksbank. Project with Volksbank.',
   },
-  productArea: {
-    type: 'Product Areas',
-    title: 'Volksbank berlin brandenburg',
-    role: 'Consultant',
-    description:
-      'Project with Volksbank.  Project with Volksbank. Project with Volksbank. Project with Volksbank. Project with Volksbank. Project with Volksbank. Project with Volksbank. Project with Volksbank.',
+  productAreas: [{
+      type: 'finances',
+      percent: "75",
   },
+  {
+      type: 'stuff',
+      percent: "90",
+  },
+  {
+      type: 'Money',
+      percent: "1",
+  },
+],
   members: [
     {
       Name: 'Max Musterman',
@@ -73,6 +80,10 @@ function Member_Card(props) {
   return <MemberCard Members={props.members}></MemberCard>;
 }
 
+function AreaCard(props) {
+  return <ProjectAreaCard areas={props.areas}></ProjectAreaCard>;
+}
+
 export class ManageProject extends Component {
   constructor(props) {
     super(props);
@@ -100,13 +111,9 @@ export class ManageProject extends Component {
             title={mocks.project.title}
             description={mocks.project.description}
           ></ProjectCard>
-          <Member_Card barColor='red' members={mocks.members} > </Member_Card>
-          <ProjectCard
-            project={mocks.productArea}
-            type={mocks.productArea.type}
-            key={mocks.productArea.title}
-            description={mocks.productArea.description}
-          ></ProjectCard>
+          <Member_Card  members={mocks.members} > </Member_Card>
+
+          <AreaCard  areas={mocks.productAreas} > </AreaCard>
 
           <Link to="/projects">
             <Button size="lg">Edit</Button>
