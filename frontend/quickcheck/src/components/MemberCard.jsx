@@ -15,6 +15,7 @@ import {
   Stack,
 } from '@chakra-ui/react';
 import { IconButton } from '@chakra-ui/react';
+import BaseCard from './BaseCard.jsx';
 
 function MemberRow(prop) {
   return (
@@ -61,34 +62,35 @@ function MemberRow(prop) {
 
 export default function MemberCard(props) {
   return (
-      <Box maxW={'945px'} w={'full'} boxShadow={'2xl'} rounded={'md'} p={6} overflow={'hidden'}>
-        <Box h={'20px'} bg={'blue.600'} mt={-6} mx={-6} mb={6} pos={'relative'}></Box>
-        <Stack>
-          <Text
-            color={'green.500'}
-            textTransform={'uppercase'}
-            fontWeight={800}
-            fontSize={'sm'}
-            letterSpacing={1.1}
-          >
-            Members
-          </Text>
-            <Table variant="simple" size="sm">
-              <Thead>
-                <Tr>
-                  <Th>Name</Th>
-                  <Th>Role</Th>
-                  <Th>Remove</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                  {props.Members.map((member) => (
-                    <MemberRow name={member.Name} role={member.role}></MemberRow>
-                  ))}
-              </Tbody>
-              <Tfoot></Tfoot>
-            </Table>
-        </Stack>
-      </Box>
-  );
+      <BaseCard barColor="teal.500" >
+      <Stack>
+        <Text
+          color={'green.500'}
+          textTransform={'uppercase'}
+          fontWeight={800}
+          fontSize={'sm'}
+          letterSpacing={1.1}
+        >
+          Members
+        </Text>
+          <Table variant="simple" size="sm">
+            <Thead>
+              <Tr>
+                <Th>Name</Th>
+                <Th>Role</Th>
+                <Th>Remove</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+                {props.Members.map((member) => (
+                  <MemberRow name={member.Name} role={member.role}></MemberRow>
+                ))}
+            </Tbody>
+            <Tfoot></Tfoot>
+          </Table>
+      </Stack>
+    </BaseCard>
+);
+
+
 }

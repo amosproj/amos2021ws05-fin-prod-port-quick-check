@@ -6,7 +6,10 @@ import Card_simple from '../components/card_simple';
 import MemberCard from '../components/MemberCard';
 import { VStack, List, Button, Box } from '@chakra-ui/react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { Center, Heading, Text, Stack, Avatar, useColorModeValue } from '@chakra-ui/react';
+
 import App from '../App';
+import BaseCard from '../components/BaseCard.jsx';
 const mocks = {
   project: {
     type: 'Project',
@@ -44,12 +47,29 @@ const mocks = {
 
 function ProjectCard(props) {
   return (
-    <Card_simple
+    <BaseCard
       title={props.project.title}
       type={props.project.type}
       description={props.description}
       labels={[['Role', props.project.role]]}
-    ></Card_simple>
+    barColor="blue.500"
+    >
+    <Stack>
+      <Text
+        color={'green.500'}
+        textTransform={'uppercase'}
+        fontWeight={800}
+        fontSize={'sm'}
+        letterSpacing={1.1}
+      >
+        {props.type}
+      </Text>
+      <Heading fontSize={'2xl'} fontFamily={'body'}>
+        {props.title}
+      </Heading>
+      <Text color={'gray.500'}>{props.description}</Text>
+    </Stack>
+    </BaseCard>
   );
 }
 function Member_Card(props) {
@@ -83,7 +103,7 @@ export class ManageProject extends Component {
             key={mocks.project.title}
             description={mocks.project.description}
           ></ProjectCard>
-          <Member_Card members={mocks.members}> </Member_Card>
+          <Member_Card barColor='red' members={mocks.members} > </Member_Card>
           <ProjectCard
             project={mocks.productArea}
             type={mocks.productArea.type}
