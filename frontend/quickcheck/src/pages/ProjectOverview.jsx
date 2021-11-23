@@ -69,8 +69,9 @@ export default function ProjectOverview() {
   return (
     <div>
       <Menubar mb={5} title="Project Overview"></Menubar>
-      <VStack justifyContent="center" spacing={10} mt={5}>
-        <List spacing={3} maxW={800} mx={2}>
+
+      <VStack justifyContent="center" spacing={10} my={10}>
+        <List spacing={3} maxW={800} w="100%" mx={2}>
           {projectsData.map((project) => (
             <ProjectCard project={project} key={project.projectID}></ProjectCard>
           ))}
