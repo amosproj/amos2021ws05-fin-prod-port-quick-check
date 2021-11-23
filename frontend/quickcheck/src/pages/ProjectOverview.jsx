@@ -21,7 +21,7 @@ import {
 
 } from '@chakra-ui/react';
 import Menubar from '../components/Menubar';
-import BaseCard from '../components/BaseCard';
+import Card from '../components/card';
 import { VStack, List, Button } from '@chakra-ui/react';
 import { useToast } from '@chakra-ui/react';
 
