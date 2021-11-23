@@ -87,9 +87,7 @@ public class ProductService {
 
     // TODO: fix it not sure what is happening (Max)
     public List<ProductDto> getProductsByProjectId(int projectID){
-
-        List<ProductDto> productsByProject = new ArrayList<>() {
-        };
+        List<ProductDto> productsByProject = new ArrayList<>();
         Iterable<ProductEntity> productEntities = productRepository.findByProjectid(projectID);
 
         for(ProductEntity tmp : productEntities){
