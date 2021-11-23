@@ -30,26 +30,27 @@ public class ProductRatingService {
     }
 
 
-    public ProductDto getProductRatings(int productID, RatingArea ratingArea){
+    public ProductDto getProductRatings(int productID, RatingArea ratingArea) {
 
         Optional<ProductEntity> productEntity = productRepository.findById(productID);
 
         if (productEntity.isEmpty()) {
             throw new ResourceNotFound("productID " + productID + " not found");
-        }else{
+        } else {
 
             Iterable<ProductRatingEntity> entities = productEntity.get().productRatingEntities;
-            List<ProductRatingDto> productRatingDtos = new ArrayList<>() {};
+            List<ProductRatingDto> productRatingDtos = new ArrayList<>() {
+            };
 
-            if(ratingArea != null) {
+            if (ratingArea != null) {
                 entities = StreamSupport.stream(entities.spliterator(), false)
-                        .filter(product -> product.projectRatingId.getRatingid().ratingarea == ratingArea)
+                        .filter(product -> product.productRatingId.getRatingid().ratingarea == ratingArea)
                         .collect(Collectors.toList());
             }
 
             for (ProductRatingEntity tmp : entities) {
                 productRatingDtos.add(new ProductRatingDto(tmp.answer, tmp.comment, tmp.score,
-                        tmp.projectRatingId.getRatingid().id));
+                        tmp.productRatingId.getRatingid().id));
             }
 
             return new ProductDto(productEntity.get().name, productRatingDtos);
@@ -57,35 +58,53 @@ public class ProductRatingService {
     }
 
     // TODO: request mit gleichen IDs überschreibt vorhandene Daten, wollen wir das zulassen für ein HTTP POST Request?
-    public void createProductRatings(ProductDto productDto, int productID){
-        List<ProductRatingEntity> newProductRatings = new ArrayList<>();
+    public void createProductRatings(ProductDto productDto, int productID) {
 
-        for(ProductRatingDto tmp:  productDto.ratings){
-            ProductRatingEntity newEntity = new ProductRatingEntity();
-            newEntity.answer = tmp.answer;
-            newEntity.score = tmp.score;
-            newEntity.comment = tmp.comment;
-            System.out.println("Current Rating ID: " + tmp.ratingID);
-            newEntity.projectRatingId = new ProjectRatingId(
-                    productRepository.getById(productID),
-                    ratingRepository.getById(tmp.ratingID));
-            newProductRatings.add(newEntity);
+        if (!productRepository.existsById(productID)) {
+            throw new ResourceNotFound("productID " + productID + " not found");
+        } else {
+            List<ProductRatingEntity> newProductRatings = new ArrayList<>();
+
+            for (ProductRatingDto tmp : productDto.ratings) {
+                ProductRatingEntity newEntity = new ProductRatingEntity();
+                newEntity.answer = tmp.answer;
+                newEntity.score = tmp.score;
+                newEntity.comment = tmp.comment;
+                newEntity.productRatingId = new ProductRatingId(
+                        productRepository.getById(productID),
+                        ratingRepository.getById(tmp.ratingID));
+                newProductRatings.add(newEntity);
+            }
+
+            repository.saveAll(newProductRatings);
         }
-
-        repository.saveAll(newProductRatings);
     }
 
 
-//    public void updateProductRatings(ProductDto productDto, Integer productID) {
-//
-//        if (!productRepository.existsById(productID)) {
-//            throw new ResourceNotFound("productID " + productID + " not found");
-//        }else{
-//            productRepository.findById(productID).map(
-//                    product -> {
-//                        product.name = productDto.name;
-//                        return productRepository.save(product);
-//                    });
-//        }
-//    }
+    public void updateProductRatings(ProductDto productDto, int productID) {
+
+        if (!productRepository.existsById(productID)) {
+            throw new ResourceNotFound("productID " + productID + " not found");
+        } else {
+
+            for (ProductRatingDto tmp : productDto.ratings) {
+                repository.findById(new ProductRatingId(productRepository.getById(productID),
+                        ratingRepository.getById(tmp.ratingID)))
+                        .map(
+                            productRating -> {
+                                if(tmp.answer != null){
+                                    productRating.answer = tmp.answer;
+                                }
+                                if(tmp.comment != null) {
+                                    productRating.comment = tmp.comment;
+                                }
+                                if(tmp.score != null){
+                                    productRating.score = tmp.score;
+                                }
+                                return repository.save(productRating);
+                            });
+            }
+        }
+    }
+
 }

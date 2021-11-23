@@ -29,19 +29,10 @@ public class ProductRatingController {
         service.createProductRatings(productDto, productID);
     }
 
-//    @PutMapping()
-//    public void updateProductRatings(@RequestBody ProductDto productDto, @PathVariable Integer productID) {
-//
-//        productService.updateById(productDto, productID);
-//    }
-//
-//    @PostMapping()
-//    public void createProductRatings(@RequestBody ProductDto productDto, @PathVariable Integer productID) {
-//
-//        productService.updateById(productDto, productID);
-//    }
+    @PutMapping()
+    public void updateProductRatings(@RequestBody ProductDto productDto, @PathVariable Integer productID) {
 
-
-
+        service.updateProductRatings(productDto, productID);
+    }
 
 }

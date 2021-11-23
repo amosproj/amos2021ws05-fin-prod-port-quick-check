@@ -9,7 +9,7 @@ public class ProductRatingEntity {
     // TODO: überlegen wie Dateien gespeicht werden, und ob hier ein Verweis notwendig ist
 
     @EmbeddedId
-    public ProjectRatingId projectRatingId;
+    public ProductRatingId productRatingId;
 
     @Column(name = "answer")
     public String answer;

@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
-public class ProjectRatingId implements Serializable {
+public class ProductRatingId implements Serializable {
 
     @ManyToOne(targetEntity = ProductEntity.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "productid", updatable = false)
@@ -15,9 +15,9 @@ public class ProjectRatingId implements Serializable {
     @JoinColumn(name = "ratingid", updatable = false)
     private RatingEntity ratingid;
 
-    public ProjectRatingId(){}
+    public ProductRatingId(){}
 
-    public ProjectRatingId(ProductEntity productID, RatingEntity ratingID){
+    public ProductRatingId(ProductEntity productID, RatingEntity ratingID){
         this.productid = productID;
         this.ratingid = ratingID;
     }
@@ -42,7 +42,7 @@ public class ProjectRatingId implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProjectRatingId that = (ProjectRatingId) o;
+        ProductRatingId that = (ProductRatingId) o;
         return productid.equals(that.productid) && ratingid.equals(that.ratingid);
     }
 
