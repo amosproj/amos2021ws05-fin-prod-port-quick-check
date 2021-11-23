@@ -90,7 +90,7 @@ paths:
           $ref: '#/components/responses/5XXserverError'
 
     
-  /projects/{projectID}/productArea/{productAreaID}/products:
+  /projects/{projectID}/productareas/{productAreaID}/products:
     get:
       summary: retrieves all products of given project and project area
       parameters:
