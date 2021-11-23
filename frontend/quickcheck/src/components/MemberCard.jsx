@@ -23,7 +23,7 @@ import {
   ModalHeader,
 } from '@chakra-ui/react';
 import BaseCard from './BaseCard.jsx';
-
+import ShowEditable from '../components/editable.jsx';
 function Remove(prop) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -77,10 +77,7 @@ function MemberRow(prop) {
       <Td>
         <Box color="white" boxShadow={'2xl'} rounded={'md'} w="200px" bg="blue.500" p={3}>
           <Text color={'gray.100'} fontWeight={800} fontSize={'sm'} letterSpacing={1.1}>
-            <Editable defaultValue={prop.name}>
-              <EditablePreview />
-              <EditableInput />
-            </Editable>
+             <ShowEditable text={prop.name} editable={prop.editable}></ShowEditable>
           </Text>
         </Box>
       </Td>
@@ -94,10 +91,8 @@ function MemberRow(prop) {
             fontSize={'sm'}
             letterSpacing={1.1}
           >
-            <Editable defaultValue={prop.role}>
-              <EditablePreview />
-              <EditableInput />
-            </Editable>
+          <ShowEditable text={prop.role} editable={prop.editable}></ShowEditable>
+
           </Text>
         </Box>
       </Td>
@@ -126,12 +121,13 @@ export default function MemberCard(props) {
             <Tr>
               <Th>Name</Th>
               <Th>Role</Th>
-              <Th>Remove</Th>
+              <Th> Remove</Th>
             </Tr>
           </Thead>
           <Tbody>
+
             {props.Members.map((member) => (
-              <MemberRow name={member.Name} role={member.role}></MemberRow>
+              <MemberRow name={member.Name} role={member.role} editable={props.editable}></MemberRow>
             ))}
           </Tbody>
           <Tfoot></Tfoot>

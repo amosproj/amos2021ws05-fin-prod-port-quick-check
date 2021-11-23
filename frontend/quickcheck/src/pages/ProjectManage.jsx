@@ -15,7 +15,7 @@ import Menubar from '../components/Menubar';
 import MemberCard from '../components/MemberCard';
 import BaseCard from '../components/BaseCard.jsx';
 import ProjectAreaCard from '../components/ProjectAreaCard.jsx';
-
+import ShowEditable from '../components/editable.jsx';
 const mocks = {
   project: {
     type: 'Project',
@@ -89,16 +89,19 @@ function ProjectCard(props) {
   );
 }
 
+
 function Member_Card(props) {
-  return <MemberCard Members={props.members}></MemberCard>;
+  return <MemberCard Members={props.members} editable={props.etitable}></MemberCard>;
 }
 
 function AreaCard(props) {
   return <ProjectAreaCard areas={props.areas}></ProjectAreaCard>;
 }
 
+
 export default function ManageProject() {
   const [editable, setEditable] = useState(false);
+
 
   const EditButtons = () => {
     if (editable) {
@@ -124,19 +127,22 @@ export default function ManageProject() {
   return (
     <div>
       <Menubar mb={5} title="Manage Project"></Menubar>
-      <VStack justifyContent="center" spacing={10} mt={5}>
+      <VStack justifyContent="center" spacing={0} mt={0}>
         <ProjectCard
           project={mocks.project}
           type={mocks.project.type}
           title={mocks.project.title}
           description={mocks.project.description}
+          editable={editable}
         ></ProjectCard>
-        <Member_Card members={mocks.members}> </Member_Card>
+        <Member_Card members={mocks.members} editable={editable}> </Member_Card>
 
-        <AreaCard areas={mocks.productAreas}> </AreaCard>
+        <AreaCard areas={mocks.productAreas} editable={editable}> </AreaCard>
 
         <EditButtons />
+        <ShowEditable text="text" editable={editable}></ShowEditable>
       </VStack>
+
     </div>
   );
 }

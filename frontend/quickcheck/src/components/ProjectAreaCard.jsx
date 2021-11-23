@@ -99,7 +99,8 @@ function Remove(prop) {
         bg="purple.400"
         p={3}
       >
-        Add
+
+
       </Button>
 
       <Modal
@@ -190,7 +191,8 @@ export default function ProjectAreaCard(props) {
           fontSize={'sm'}
           letterSpacing={1.1}
         >
-          Product Areas
+
+          Product Areas 
         </Text>
         <Table variant="simple" size="sm">
           <Thead>
