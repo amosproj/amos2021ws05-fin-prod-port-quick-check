@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Component } from 'react';
 
 import {
-    SimpleGrid,
-    Heading,
-    CardLabel,
+  SimpleGrid,
+  Heading,
+  CardLabel,
   Link,
   Table,
   Thead,
@@ -18,7 +18,6 @@ import {
   Text,
   Stack,
   HStack,
-
 } from '@chakra-ui/react';
 import Menubar from '../components/Menubar';
 import Card from '../components/card';

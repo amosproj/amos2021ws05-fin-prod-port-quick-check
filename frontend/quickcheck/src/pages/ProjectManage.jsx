@@ -20,19 +20,20 @@ const mocks = {
     description:
       'Project with Volksbank.  Project with Volksbank. Project with Volksbank. Project with Volksbank. Project with Volksbank. Project with Volksbank. Project with Volksbank. Project with Volksbank.',
   },
-  productAreas: [{
+  productAreas: [
+    {
       type: 'finances',
-      percent: "75",
-  },
-  {
+      percent: '75',
+    },
+    {
       type: 'stuff',
-      percent: "90",
-  },
-  {
+      percent: '90',
+    },
+    {
       type: 'Money',
-      percent: "1",
-  },
-],
+      percent: '1',
+    },
+  ],
   members: [
     {
       Name: 'Max Musterman',
@@ -53,35 +54,33 @@ const mocks = {
   ],
 };
 
-
 function ProjectCard(props) {
   return (
-    <BaseCard
-
-    barColor="blue.500"
-    >
-    <Stack>
-      <Text
-        color={'green.500'}
-        textTransform={'uppercase'}
-        fontWeight={800}
-        fontSize={'sm'}
-        letterSpacing={1.1}
-      >
-        {props.type}
-      </Text>
-      <Heading fontSize={'2xl'} fontFamily={'body'}>
-      <Editable defaultValue={props.title}>
-      <EditablePreview />
-      <EditableInput />
-      </Editable>
-
-      </Heading>
-      <Text color={'gray.500'}>  <Editable defaultValue={props.description}>
-        <EditablePreview />
-        <EditableInput />
-        </Editable></Text>
-    </Stack>
+    <BaseCard barColor="blue.500">
+      <Stack>
+        <Text
+          color={'green.500'}
+          textTransform={'uppercase'}
+          fontWeight={800}
+          fontSize={'sm'}
+          letterSpacing={1.1}
+        >
+          {props.type}
+        </Text>
+        <Heading fontSize={'2xl'} fontFamily={'body'}>
+          <Editable defaultValue={props.title}>
+            <EditablePreview />
+            <EditableInput />
+          </Editable>
+        </Heading>
+        <Text color={'gray.500'}>
+          {' '}
+          <Editable defaultValue={props.description}>
+            <EditablePreview />
+            <EditableInput />
+          </Editable>
+        </Text>
+      </Stack>
     </BaseCard>
   );
 }
