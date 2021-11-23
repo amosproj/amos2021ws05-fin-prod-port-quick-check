@@ -28,7 +28,7 @@ public class ProjectController {
         return projectService.getAllProjects();
     }
 
-
+    //TODO: fix
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public ProjectDto createByName(@RequestBody ProjectDto projectDto) {
@@ -48,12 +48,12 @@ public class ProjectController {
     }
 
 
-    @DeleteMapping("/{projectID}")
-    void deleteByID(@PathVariable int projectID) {
-
-        projectService.deleteProject(projectID);
-
-    }
+//    @DeleteMapping("/{projectID}")
+//    void deleteByID(@PathVariable int projectID) {
+//
+//        projectService.deleteProject(projectID);
+//
+//    }
 
 
     @GetMapping("/{projectID}/products")

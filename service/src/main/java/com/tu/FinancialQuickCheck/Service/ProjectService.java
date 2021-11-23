@@ -52,6 +52,7 @@ public class ProjectService {
         projectRepository.save(newProject);
 
         // add product areas to project through DUMMY data in product_entity table
+        // TODO: fix it (not sure whats going on)
         for (int productArea : projectDto.productAreas){
 
             ProductEntity product = new ProductEntity();
@@ -91,6 +92,7 @@ public class ProjectService {
         }else{
 
             // update project name
+            // TODO: attribute sollen gleichen bleiben, wenn sie in request nicht vorkommen
             projectRepository.findById(projectID).map(
                     project -> {
                         project.name = projectDto.projectName;
@@ -98,18 +100,19 @@ public class ProjectService {
                         return projectRepository.save(project);
                     });
 
+            // TODO: fix this (not sure what is happening?)
             // add none existing product areas
-            for (int productArea : projectDto.productAreas){
-
-                if(!productRepository.existsByProjectidAndProductareaid(projectID, productArea)){
-                    ProductEntity product = new ProductEntity();
-                    product.projectid = projectID;
-                    product.productareaid = productArea;
-                    product.name = "DUMMY";
-                    productRepository.save(product);
-
-                }
-            }
+//            for (int productArea : projectDto.productAreas){
+//
+//                if(!productRepository.existsByProjectidAndProductareaid(projectID, productArea)){
+//                    ProductEntity product = new ProductEntity();
+//                    product.projectid = projectID;
+//                    product.productareaid = productArea;
+//                    product.name = "DUMMY";
+//                    productRepository.save(product);
+//
+//                }
+//            }
         }
     }
 
