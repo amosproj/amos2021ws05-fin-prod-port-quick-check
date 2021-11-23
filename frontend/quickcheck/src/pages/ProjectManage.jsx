@@ -48,10 +48,7 @@ const mocks = {
 function ProjectCard(props) {
   return (
     <BaseCard
-      title={props.project.title}
-      type={props.project.type}
-      description={props.description}
-      labels={[['Role', props.project.role]]}
+
     barColor="blue.500"
     >
     <Stack>
@@ -100,7 +97,7 @@ export class ManageProject extends Component {
           <ProjectCard
             project={mocks.project}
             type={mocks.project.type}
-            key={mocks.project.title}
+            title={mocks.project.title}
             description={mocks.project.description}
           ></ProjectCard>
           <Member_Card barColor='red' members={mocks.members} > </Member_Card>
