@@ -79,21 +79,6 @@ paths:
           $ref: '#/components/responses/404notfound'
         '5XX':
           $ref: '#/components/responses/5XXserverError'
-    delete:
-      summary: deletes project with given projectID
-      parameters:
-      - $ref: '#/components/parameters/projectID'
-      responses:
-        200:
-          description: project deleted successfully
-        401:
-          $ref: '#/components/responses/401unauthorized'
-        403:
-          $ref: '#/components/responses/403forbidden'
-        404:
-          $ref: '#/components/responses/404notfound'
-        '5XX':
-          $ref: '#/components/responses/5XXserverError'
 
   /productareas:
     get:
