@@ -85,7 +85,6 @@ public class ProductService {
         }
     }
 
-    // TODO: fix it not sure what is happening (Max)
     public List<ProductDto> getProductsByProjectId(int projectID){
         List<ProductDto> productsByProject = new ArrayList<>();
         Iterable<ProductEntity> productEntities = productRepository.findByProjectid(projectID);
@@ -97,7 +96,6 @@ public class ProductService {
         return productsByProject;
     }
 
-    // TODO: fix it not sure what is happening (Max)
     public List<ProductDto> getProductsByProjectIdAndProductAreaId(int projectID, int projectAreaID){
 
         List<ProductDto> productsByProjectAndProductArea = new ArrayList<>() {
