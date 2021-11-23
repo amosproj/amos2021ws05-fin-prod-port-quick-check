@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
-import wretch from 'wretch';
-
 import Menubar from '../components/Menubar';
 import Card from '../components/card';
 import { VStack, List, Button } from '@chakra-ui/react';
 
-const api = wretch()
-  .url('http://localhost:8080')
-  .headers({ 'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept' });
+import { api } from '../utils/apiClient';
 
 const mocks = {
   newProject: {
