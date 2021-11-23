@@ -1,31 +1,16 @@
-import { React, useState, Component } from 'react';
+import { React, useState } from 'react';
 import {
-  getSubmitButtonProps,
-  getCancelButtonProps,
-  getEditButtonProps,
   Editable,
   EditableInput,
-  EditablePreview,
-  Flex,
-  IconButton,
-  ButtonGroup,
-  CheckIcon,
-  CloseIcon,
-  EditIcon,
-  useEditableControls,
+  EditablePreview, Heading, Text, Stack, HStack, VStack, Button
 } from '@chakra-ui/react';
 
 import Menubar from '../components/Menubar';
-import Card from '../components/card';
-import Card_simple from '../components/card_simple';
 import MemberCard from '../components/MemberCard';
-import { VStack, List, Button, Box } from '@chakra-ui/react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import { Center, Heading, Text, Stack, Avatar, useColorModeValue, HStack } from '@chakra-ui/react';
-
-import App from '../App';
 import BaseCard from '../components/BaseCard.jsx';
 import ProjectAreaCard from '../components/ProjectAreaCard.jsx';
+
+
 const mocks = {
   project: {
     type: 'Project',

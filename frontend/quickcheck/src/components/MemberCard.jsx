@@ -1,21 +1,6 @@
 import React from 'react';
 import {
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalBody,
-  FormControl,
-  FormLabel,
-  Input,
-  ModalFoote,
-  ModalFooter,
-  ModalCloseButton,
-  ModalHeader,
-} from '@chakra-ui/react';
-import {
   Button,
-  Link,
   Table,
   Thead,
   Th,
@@ -24,21 +9,16 @@ import {
   Tfoot,
   Tbody,
   Box,
-  Center,
   Text,
-  Stack,
-} from '@chakra-ui/react';
-import { IconButton } from '@chakra-ui/react';
-import {
-  Editable,
+  Stack,  Editable,
   EditableInput,
-  EditablePreview,
-  Flex,
-  ButtonGroup,
-  CheckIcon,
-  CloseIcon,
-  EditIcon,
-  useEditableControls,
+  EditablePreview,   useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalFooter,
+  ModalCloseButton,
+  ModalHeader,
 } from '@chakra-ui/react';
 import BaseCard from './BaseCard.jsx';
 

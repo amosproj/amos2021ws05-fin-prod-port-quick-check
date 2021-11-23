@@ -1,19 +1,16 @@
 import React from 'react';
 import {
-  EditableControls,
-  Editable,
-  EditableInput,
-  EditablePreview,
-  Flex,
-  IconButton,
-  ButtonGroup,
-  CheckIcon,
-  CloseIcon,
-  EditIcon,
-  useEditableControls,
-} from '@chakra-ui/react';
-
-import {
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalBody,
+  FormControl,
+  FormLabel,
+  Input,
+  ModalFooter,
+  ModalCloseButton,
+  ModalHeader,
   Button,
   Link,
   Table,
@@ -27,21 +24,11 @@ import {
   Center,
   Text,
   Stack,
-} from '@chakra-ui/react';
-import { CircularProgress, CircularProgressLabel } from '@chakra-ui/react';
-import {
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalBody,
-  FormControl,
-  FormLabel,
-  Input,
-  ModalFoote,
-  ModalFooter,
-  ModalCloseButton,
-  ModalHeader,
+  CircularProgress,
+  CircularProgressLabel,
+  Editable,
+  EditableInput,
+  EditablePreview,
 } from '@chakra-ui/react';
 import BaseCard from './BaseCard.jsx';
 

@@ -1,20 +1,8 @@
 import React from 'react';
 import {
-  Button,
-  Link,
-  Table,
-  Thead,
-  Th,
-  Tr,
-  Td,
-  Tfoot,
-  Tbody,
   Box,
   Center,
-  Text,
-  Stack,
 } from '@chakra-ui/react';
-import { IconButton } from '@chakra-ui/react';
 
 export default function BaseCard(props) {
   return (

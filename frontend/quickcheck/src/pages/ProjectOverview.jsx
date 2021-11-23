@@ -1,24 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Component } from 'react';
 
-import {
-  SimpleGrid,
-  Heading,
-  CardLabel,
-  Link,
-  Table,
-  Thead,
-  Th,
-  Tr,
-  Td,
-  Tfoot,
-  Tbody,
-  Box,
-  Center,
-  Text,
-  Stack,
-  HStack,
-} from '@chakra-ui/react';
+
 import Menubar from '../components/Menubar';
 import Card from '../components/card';
 import { VStack, List, Button } from '@chakra-ui/react';

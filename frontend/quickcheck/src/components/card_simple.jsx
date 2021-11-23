@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Center, Heading, Text, Stack, Avatar, useColorModeValue } from '@chakra-ui/react';
+import { Box, Center, Heading, Text, Stack } from '@chakra-ui/react';
 
 export default function Card_simple(prop) {
   return (
