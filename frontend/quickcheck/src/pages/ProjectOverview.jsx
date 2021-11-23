@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-
 import Menubar from '../components/Menubar';
 import Card from '../components/card';
 import { VStack, List, Button } from '@chakra-ui/react';

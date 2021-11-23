@@ -2,14 +2,19 @@ import { React, useState } from 'react';
 import {
   Editable,
   EditableInput,
-  EditablePreview, Heading, Text, Stack, HStack, VStack, Button
+  EditablePreview,
+  Heading,
+  Text,
+  Stack,
+  HStack,
+  VStack,
+  Button,
 } from '@chakra-ui/react';
 
 import Menubar from '../components/Menubar';
 import MemberCard from '../components/MemberCard';
 import BaseCard from '../components/BaseCard.jsx';
 import ProjectAreaCard from '../components/ProjectAreaCard.jsx';
-
 
 const mocks = {
   project: {
