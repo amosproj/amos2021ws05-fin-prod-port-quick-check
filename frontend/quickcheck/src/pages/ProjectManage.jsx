@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {getSubmitButtonProps, getCancelButtonProps, getEditButtonProps, Editable, EditableInput, EditablePreview , Flex, IconButton, ButtonGroup, CheckIcon, CloseIcon, EditIcon, useEditableControls} from "@chakra-ui/react"
 
 import Menubar from '../components/Menubar';
 import Card from '../components/card';
@@ -52,6 +53,7 @@ const mocks = {
   ],
 };
 
+
 function ProjectCard(props) {
   return (
     <BaseCard
@@ -69,9 +71,16 @@ function ProjectCard(props) {
         {props.type}
       </Text>
       <Heading fontSize={'2xl'} fontFamily={'body'}>
-        {props.title}
+      <Editable defaultValue={props.title}>
+      <EditablePreview />
+      <EditableInput />
+      </Editable>
+
       </Heading>
-      <Text color={'gray.500'}>{props.description}</Text>
+      <Text color={'gray.500'}>  <Editable defaultValue={props.description}>
+        <EditablePreview />
+        <EditableInput />
+        </Editable></Text>
     </Stack>
     </BaseCard>
   );
@@ -118,6 +127,9 @@ export class ManageProject extends Component {
           <Link to="/projects">
             <Button size="lg">Edit</Button>
           </Link>
+
+
+  }
         </VStack>
       </div>
     );

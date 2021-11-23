@@ -1,4 +1,6 @@
 import React from 'react';
+import { EditableControls ,Editable, EditableInput, EditablePreview , Flex, IconButton, ButtonGroup, CheckIcon, CloseIcon, EditIcon, useEditableControls} from "@chakra-ui/react"
+
 import {
   Button,
   Link,
@@ -14,9 +16,109 @@ import {
   Text,
   Stack,
 } from '@chakra-ui/react';
-import { Progress } from "@chakra-ui/react"
-import { IconButton } from '@chakra-ui/react';
+import { CircularProgress, CircularProgressLabel } from "@chakra-ui/react"
+import {useDisclosure, Modal, ModalOverlay, ModalContent, ModalBody, FormControl, FormLabel, Input, ModalFoote, ModalFooter, ModalCloseButton, ModalHeader}  from "@chakra-ui/react"
 import BaseCard from './BaseCard.jsx';
+
+function AddArea() {
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
+  const initialRef = React.useRef()
+  const finalRef = React.useRef()
+
+  return (
+    <>
+    <Button onClick={onOpen}
+      size="lg"
+      color="green.900"
+      boxShadow={'2xl'}
+      rounded={'md'}
+      w="100px"
+      bg="purple.400"
+      p={3}
+    >
+      Add</Button>
+
+      <Modal
+        initialFocusRef={initialRef}
+        finalFocusRef={finalRef}
+        isOpen={isOpen}
+        onClose={onClose}
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Create Product Area</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={6}>
+            <FormControl>
+              <FormLabel>Name</FormLabel>
+              <Input ref={initialRef} placeholder="Product Area name" />
+            </FormControl>
+
+
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3}>
+              Save
+            </Button>
+            <Button onClick={onClose}>Cancel</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
+  )
+}
+function Remove(prop) {
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
+  const initialRef = React.useRef()
+  const finalRef = React.useRef()
+
+  return (
+    <>
+    <Button onClick={onOpen}
+      size="lg"
+      color="green.900"
+      boxShadow={'2xl'}
+      rounded={'md'}
+      w="100px"
+      bg="purple.400"
+      p={3}
+    >
+      Add</Button>
+
+      <Modal
+        initialFocusRef={initialRef}
+        finalFocusRef={finalRef}
+        isOpen={isOpen}
+        onClose={onClose}
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Create Product Area</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={6}>
+            <FormControl>
+              <FormLabel>Name</FormLabel>
+              <Input ref={initialRef} placeholder="Product Area name" />
+            </FormControl>
+
+
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3}>
+              Save
+            </Button>
+            <Button onClick={onClose}>Cancel</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
+  )
+}
+
 
 function ProjectArea(prop) {
   return (
@@ -24,13 +126,18 @@ function ProjectArea(prop) {
           <Td>
             <Box color="white" boxShadow={'2xl'} rounded={'md'} w="200px"  bg="green.500" p={3}>
               <Text color={'gray.100'} fontWeight={800} fontSize={'sm'} letterSpacing={1.1}>
-                {prop.name}
+
+              <Editable defaultValue={prop.name} isPreviewFocusable={false}>
+              <EditablePreview />
+              <EditableInput />
+
+              </Editable>
               </Text>
             </Box>
           </Td>
 
           <Td>
-            <Box color="white" boxShadow={'2xl'} rounded={'md'} w="200px"  bg="blue.500" p={3}>
+            <Box color="white" boxShadow={'2xl'} rounded={'md'} w="20px"   p={3}>
               <Text
                 color={'gray.100'}
                 textTransform={'uppercase'}
@@ -38,7 +145,9 @@ function ProjectArea(prop) {
                 fontSize={'sm'}
                 letterSpacing={1.1}
               >
-            <Progress  colorScheme="pink" value={prop.percent} />
+              <CircularProgress value={prop.percent} color="pink.400">
+              <CircularProgressLabel>{prop.percent}%</CircularProgressLabel>
+              </CircularProgress>
               </Text>
             </Box>
           </Td>
@@ -87,9 +196,20 @@ export default function ProjectAreaCard(props) {
                 {props.areas.map((area) => (
                   <ProjectArea name={area.type} role={area.role} percent={area.percent}></ProjectArea>
                 ))}
+
             </Tbody>
             <Tfoot></Tfoot>
-          </Table>
+             </Table>
+            <Center>
+            <Link to="../projects">
+
+
+            </Link>
+        <AddArea>
+        </AddArea>
+            </Center>
+
+
       </Stack>
     </BaseCard>
 );
