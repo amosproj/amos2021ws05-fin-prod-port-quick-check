@@ -42,9 +42,9 @@ function Card(props) {
 
         <Box align="right">
           {props.buttonLabel ? (
-              <Button bg="teal.400" align="center" _hover={{ bg: 'teal.500' }} w={24}>
-                {props.buttonLabel}
-              </Button>
+            <Button bg="teal.400" align="center" _hover={{ bg: 'teal.500' }} w={24}>
+              {props.buttonLabel}
+            </Button>
           ) : (
             <div />
           )}
