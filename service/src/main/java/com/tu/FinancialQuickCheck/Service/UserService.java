@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+import java.util.Optional;
 
 
 /**
@@ -20,7 +20,7 @@ import java.util.UUID;
 @Service
 public class UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public UserService(UserRepository userRepository) {
@@ -36,14 +36,11 @@ public class UserService {
     public UserDto createUser(UserDto userDto) {
 
         UserEntity newUser = new UserEntity();
-        //TODO: we need to make sure that randomUUID produces unique values --> we could move this into the UserEntity
-//        newUser.id = UUID.randomUUID();
+
         newUser.email = userDto.email;
-//        newUser.password = userDto.password;
-//        newUser.role = userDto.role;
+        newUser.password = userDto.password;
         userRepository.save(newUser);
-        UserDto newUserDto = new UserDto(newUser.id, newUser.email);
-        return newUserDto;
+        return new UserDto(newUser.id, newUser.email);
     }
 
     /**
@@ -56,8 +53,7 @@ public class UserService {
 
         for(UserEntity userEntity : allUserEntitys){
             UserDto userDto = new UserDto(userEntity.id, userEntity.email);
-            //userDto.id = userEntity.id;
-            //userDto.password = userEntity.password;
+            userDto.password = userEntity.password;
             userList.add(userDto);
         }
         return userList;
@@ -66,57 +62,67 @@ public class UserService {
     /**
      * Search for User by given ID
      * ID is UUID generated out of user-email
-     * TODO: find faster way to accsess Users other than itterate over all of them
+     * TODO: find faster way to access Users other than iterate over all of them
      *
-     * @param  userID
+     * @param  email
      * @return userDto
      */
-    public UserDto findById(UUID userID) {
+    public UserDto findByEmail(String email) {
 
         Iterable<UserEntity> allUserEntitys = userRepository.findAll();
 
         for(UserEntity userEntity : allUserEntitys) {
-            if(userEntity.id == userID) {
+            if(userEntity.email.equals(email)) {
                 UserDto userDto = new UserDto(userEntity.email);
+                userDto.id = userEntity.id;
                 return userDto;
             }
         }
-        throw new ResourceNotFound("User ID " + userID + " not found");
+        throw new ResourceNotFound("User Email " + email + " not found");
     }
 
     /**
      * search for ID in repository and updates if found
      *
      * @param userDto
-     * @param userID
+     * @param email
      */
-    public void updateById(UserDto userDto, UUID userID) {
+    public void updateByEmail(UserDto userDto, String email) {
 
         Iterable<UserEntity> allUserEntitys = userRepository.findAll();
 
         for(UserEntity userEntity : allUserEntitys) {
-            if(userEntity.id == userID) {
-                userEntity.email = userDto.email;
-                userEntity.password = userDto.password;
+            if(userEntity.email.equals(email)) {
+                if (userDto.id != null){ userEntity.id = userDto.id;}
+                if (userDto.password != null){ userEntity.password = userDto.password;}
                 userRepository.save(userEntity);
-                break;
+                return;
             }
-            throw new ResourceNotFound(" UserID " + userID + " not found");
         }
+        throw new ResourceNotFound(" User Email |" + email + "| not found");
     }
 
-    public void deleteUser(UUID userID) {
+    /**
+     * Deletes User
+     *
+     * @param email
+     */
+
+    public void deleteUser(String email) {
 
         Iterable<UserEntity> allUserEntitys = userRepository.findAll();
 
         for(UserEntity userEntity : allUserEntitys) {
-            if(userEntity.id == userID) {
-                userRepository.delete(userEntity);
-                break;
+            if(userEntity.email.equals(email)) {
+                Optional<UserEntity> tmpEnt = userRepository.findById(userEntity.id);
+                if(tmpEnt.isEmpty()){
+                    throw new ResourceNotFound("User email |" + email + "| not found");
+                }else {
+                    userRepository.deleteById(tmpEnt.get().id);
+                }
+                return;
             }
-            throw new ResourceNotFound("User ID " + userID + " not found");
         }
-
     }
 
 }
