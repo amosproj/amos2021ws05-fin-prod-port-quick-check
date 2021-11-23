@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { React, useState, Component } from 'react';
 import {getSubmitButtonProps, getCancelButtonProps, getEditButtonProps, Editable, EditableInput, EditablePreview , Flex, IconButton, ButtonGroup, CheckIcon, CloseIcon, EditIcon, useEditableControls} from "@chakra-ui/react"
 
 import Menubar from '../components/Menubar';
@@ -7,7 +7,7 @@ import Card_simple from '../components/card_simple';
 import MemberCard from '../components/MemberCard';
 import { VStack, List, Button, Box } from '@chakra-ui/react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import { Center, Heading, Text, Stack, Avatar, useColorModeValue } from '@chakra-ui/react';
+import { Center, Heading, Text, Stack, Avatar, useColorModeValue, HStack } from '@chakra-ui/react';
 
 import App from '../App';
 import BaseCard from '../components/BaseCard.jsx';
@@ -85,6 +85,8 @@ function ProjectCard(props) {
     </BaseCard>
   );
 }
+
+
 function Member_Card(props) {
   return <MemberCard Members={props.members}></MemberCard>;
 }
@@ -93,47 +95,45 @@ function AreaCard(props) {
   return <ProjectAreaCard areas={props.areas}></ProjectAreaCard>;
 }
 
-export class ManageProject extends Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      data: null,
-    };
+
+export default function ManageProject() {
+
+  const [editable, setEditable] = useState(false)
+
+  const EditButtons = () => {
+    if (editable) {
+      return (
+        <HStack>
+          <Button size="md" onClick={ () => setEditable(false)}>Cancel</Button>
+          <Button size="md" onClick={ () => setEditable(false)}>Confirm</Button>
+        </HStack>
+
+      )
+    } else {
+      return (<Button size="md" onClick={ () => setEditable(true)}>Edit</Button>)
+    }
   }
 
-  componentDidMount() {
-    fetch('https://randomuser.me/api/')
-      .then((response) => response.json())
-      .then((data) => this.setState(data));
-    console.log(this.state.data);
-  }
-
-  render() {
-    return (
-      <div>
-        <Menubar mb={5} title="Manage Project"></Menubar>
-        <VStack justifyContent="center" spacing={10} mt={5}>
-          <ProjectCard
-            project={mocks.project}
-            type={mocks.project.type}
-            title={mocks.project.title}
-            description={mocks.project.description}
-          ></ProjectCard>
-          <Member_Card  members={mocks.members} > </Member_Card>
-
-          <AreaCard  areas={mocks.productAreas} > </AreaCard>
-
-          <Link to="/projects">
-            <Button size="lg">Edit</Button>
-          </Link>
 
 
-  }
-        </VStack>
-      </div>
-    );
-  }
+  return (
+    <div>
+    <Menubar mb={5} title="Manage Project"></Menubar>
+    <VStack justifyContent="center" spacing={10} mt={5}>
+      <ProjectCard
+        project={mocks.project}
+        type={mocks.project.type}
+        title={mocks.project.title}
+        description={mocks.project.description}
+      ></ProjectCard>
+      <Member_Card  members={mocks.members} > </Member_Card>
+
+      <AreaCard  areas={mocks.productAreas} > </AreaCard>
+
+      <EditButtons/>
+
+    </VStack>
+  </div>
+  )
 }
-
-export default ManageProject;
