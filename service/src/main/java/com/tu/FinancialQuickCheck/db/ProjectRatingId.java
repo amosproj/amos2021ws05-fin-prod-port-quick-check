@@ -7,11 +7,6 @@ import java.util.Objects;
 @Embeddable
 public class ProjectRatingId implements Serializable {
 
-//    @Column(name = "productid")
-//    private int productId;
-//    @Column(name = "ratingid")
-//    private int ratingId;
-
     @ManyToOne(targetEntity = ProductEntity.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "productid", updatable = false)
     private ProductEntity productid;
