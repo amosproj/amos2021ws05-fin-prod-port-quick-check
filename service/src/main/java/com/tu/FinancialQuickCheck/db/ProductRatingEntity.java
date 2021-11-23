@@ -6,11 +6,7 @@ import javax.persistence.*;
 
 @Entity
 public class ProductRatingEntity {
-    // TODO: primary key aus productid & questionid erstellen, sonst können für das gleiche produkt mehrfach antworten für ein rating angelegt werden
     // TODO: überlegen wie Dateien gespeicht werden, und ob hier ein Verweis notwendig ist
-//    @Id
-//    @GeneratedValue(strategy= GenerationType.AUTO)
-//    public int id;
 
     @EmbeddedId
     public ProjectRatingId projectRatingId;
@@ -25,13 +21,5 @@ public class ProductRatingEntity {
     @Column(name = "comment")
     public String comment;
 
-//    @ManyToOne (targetEntity = ProductEntity.class, fetch = FetchType.LAZY)
-//    @JoinColumn(name = "productid", updatable = false)
-//    public ProductEntity product;
-
-//    @ManyToOne(targetEntity = RatingEntity.class, fetch = FetchType.EAGER)
-//    @JoinColumn(name = "id", updatable = false)
-//    public RatingEntity rating;
-
-    public ProductRatingEntity(){};
+    public ProductRatingEntity(){}
 }
