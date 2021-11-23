@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Menubar from '../components/Menubar';
 import Card from '../components/card';
 import { VStack, List, Button } from '@chakra-ui/react';
+import { useToast } from '@chakra-ui/react';
 
 import { api } from '../utils/apiClient';
 
@@ -28,7 +29,21 @@ function ProjectCard(props) {
 
 export default function ProjectOverview() {
   const [projectsData, setProjectsData] = useState([]);
+  const toast = useToast();
 
+  // one way of showing an error notification to the user
+  const errorNotification = (err) => {
+    console.error('internal error:', err.message);
+    toast({
+      title: 'Error occured!',
+      description: 'check dev console',
+      status: 'error',
+      duration: 3000,
+      isClosable: true,
+    });
+  };
+
+  // get all projects from the API
   const getProjects = () => {
     api
       .url('/projects')
@@ -36,17 +51,19 @@ export default function ProjectOverview() {
       .json((json) => setProjectsData(json));
   };
 
+  // runs when rendering
   useEffect(() => {
     getProjects();
   });
 
+  // FOR DEV ONLY: create new mock project when pressing 'add new' button
   const createProject = () => {
     api
       .url('/projects')
       .post(mocks.newProject)
-      .res((response) => {
-        console.log('POST response:', response);
-      });
+      .internalError((err) => errorNotification(err))
+      .res()
+      .catch(console.error);
   };
 
   return (
