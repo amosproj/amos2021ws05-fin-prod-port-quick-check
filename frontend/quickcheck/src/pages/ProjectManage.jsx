@@ -1,5 +1,19 @@
 import { React, useState, Component } from 'react';
-import {getSubmitButtonProps, getCancelButtonProps, getEditButtonProps, Editable, EditableInput, EditablePreview , Flex, IconButton, ButtonGroup, CheckIcon, CloseIcon, EditIcon, useEditableControls} from "@chakra-ui/react"
+import {
+  getSubmitButtonProps,
+  getCancelButtonProps,
+  getEditButtonProps,
+  Editable,
+  EditableInput,
+  EditablePreview,
+  Flex,
+  IconButton,
+  ButtonGroup,
+  CheckIcon,
+  CloseIcon,
+  EditIcon,
+  useEditableControls,
+} from '@chakra-ui/react';
 
 import Menubar from '../components/Menubar';
 import Card from '../components/card';
@@ -85,7 +99,6 @@ function ProjectCard(props) {
   );
 }
 
-
 function Member_Card(props) {
   return <MemberCard Members={props.members}></MemberCard>;
 }
@@ -94,45 +107,46 @@ function AreaCard(props) {
   return <ProjectAreaCard areas={props.areas}></ProjectAreaCard>;
 }
 
-
-
 export default function ManageProject() {
-
-  const [editable, setEditable] = useState(false)
+  const [editable, setEditable] = useState(false);
 
   const EditButtons = () => {
     if (editable) {
       return (
         <HStack>
-          <Button size="md" onClick={ () => setEditable(false)}>Cancel</Button>
-          <Button size="md" onClick={ () => setEditable(false)}>Confirm</Button>
+          <Button size="md" onClick={() => setEditable(false)}>
+            Cancel
+          </Button>
+          <Button size="md" onClick={() => setEditable(false)}>
+            Confirm
+          </Button>
         </HStack>
-
-      )
+      );
     } else {
-      return (<Button size="md" onClick={ () => setEditable(true)}>Edit</Button>)
+      return (
+        <Button size="md" onClick={() => setEditable(true)}>
+          Edit
+        </Button>
+      );
     }
-  }
-
-
+  };
 
   return (
     <div>
-    <Menubar mb={5} title="Manage Project"></Menubar>
-    <VStack justifyContent="center" spacing={10} mt={5}>
-      <ProjectCard
-        project={mocks.project}
-        type={mocks.project.type}
-        title={mocks.project.title}
-        description={mocks.project.description}
-      ></ProjectCard>
-      <Member_Card  members={mocks.members} > </Member_Card>
+      <Menubar mb={5} title="Manage Project"></Menubar>
+      <VStack justifyContent="center" spacing={10} mt={5}>
+        <ProjectCard
+          project={mocks.project}
+          type={mocks.project.type}
+          title={mocks.project.title}
+          description={mocks.project.description}
+        ></ProjectCard>
+        <Member_Card members={mocks.members}> </Member_Card>
 
-      <AreaCard  areas={mocks.productAreas} > </AreaCard>
+        <AreaCard areas={mocks.productAreas}> </AreaCard>
 
-      <EditButtons/>
-
-    </VStack>
-  </div>
-  )
+        <EditButtons />
+      </VStack>
+    </div>
+  );
 }
