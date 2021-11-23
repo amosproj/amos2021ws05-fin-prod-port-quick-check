@@ -5,8 +5,8 @@ package com.tu.FinancialQuickCheck.dto;
 //import com.tu.FinancialQuickCheck.db.ProductEntity;
 //import com.tu.FinancialQuickCheck.db.RatingEntity;
 
-//import java.util.ArrayList;
-//import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ public class ProductDto {
 //
 //    public Score complexityRating;
 //
-//    public List<Product> productVariations;
+    public List<ProductDto> productVariations;
 //
 //    public List<ProductRatingDto> economicRatingCriterions;
 //
@@ -34,8 +34,7 @@ public class ProductDto {
 
     public ProductDto(){}
 
-    public ProductDto(int id, String name, int productAreaID){
-        this.id = id;
+    public ProductDto(String name, int productAreaID){
         this.name = name;
         this.productAreaID = productAreaID;
     }
@@ -51,6 +50,7 @@ public class ProductDto {
         this.name = name;
         this.projectID = projectID;
         this.productAreaID = productAreaID;
+        this.productVariations = new ArrayList<>();
     }
 
     public ProductDto(String name, List<ProductRatingDto> productRatingDtos){
