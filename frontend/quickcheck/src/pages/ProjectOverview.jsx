@@ -1,74 +1,86 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Menubar from '../components/Menubar';
 import Card from '../components/card';
-import { VStack, List, Button, Box } from '@chakra-ui/react';
+import { VStack, List, Button } from '@chakra-ui/react';
+import { useToast } from '@chakra-ui/react';
+
+import { api } from '../utils/apiClient';
 
 const mocks = {
-  projects: [
-    {
-      title: 'Volksbank berlin brandenburg',
-      lastEdit: 'November 12',
-      role: 'Consultant',
-    },
-    {
-      title: 'ING',
-      lastEdit: 'Today',
-      role: 'Project Manager',
-    },
-    {
-      title: 'Sparkasse Berlin',
-      lastEdit: '10.10.2020',
-      role: 'Consultant',
-    },
-  ],
+  newProject: {
+    creatorID: 0,
+    projectName: 'Mock Project',
+    members: [1, 2],
+    productAreas: [1, 2, 3],
+  },
+  role: 'Mock Consultant',
 };
 
 function ProjectCard(props) {
   return (
     <Card
-      title={props.project.title}
+      title={props.project.projectName}
       buttonLabel="open"
-      labels={[
-        ['Role', props.project.role],
-        ['Last edited', props.project.lastEdit],
-      ]}
+      labels={[['Role', mocks.role]]}
     ></Card>
   );
 }
 
-export class ProjectOverview extends Component {
-  constructor(props) {
-    super(props);
+export default function ProjectOverview() {
+  const [projectsData, setProjectsData] = useState([]);
+  const toast = useToast();
 
-    this.state = {
-      data: null,
-    };
-  }
+  // one way of showing an error notification to the user
+  const errorNotification = (err) => {
+    console.error('internal error:', err.message);
+    toast({
+      title: 'Error occured!',
+      description: 'check dev console',
+      status: 'error',
+      duration: 3000,
+      isClosable: true,
+    });
+  };
 
-  componentDidMount() {
-    fetch('https://randomuser.me/api/')
-      .then((response) => response.json())
-      .then((data) => this.setState(data));
-    console.log(this.state.data);
-  }
+  // get all projects from the API
+  const getProjects = () => {
+    api
+      .url('/projects')
+      .get()
+      .json((json) => setProjectsData(json));
+  };
 
-  render() {
-    return (
-      <div>
-        <Menubar mb={5} title="Project Overview"></Menubar>
-        <VStack justifyContent="center" spacing={10} mt={5}>
-          <List spacing={3} maxW={800} mx={2}>
-            {mocks.projects.map((project) => (
-              <ProjectCard project={project} key={project.title}></ProjectCard>
-            ))}
-          </List>
+  // runs when rendering
+  useEffect(() => {
+    getProjects();
+  });
 
-          <Button size="lg">Add new</Button>
-        </VStack>
-      </div>
-    );
-  }
+  // FOR DEV ONLY: create new mock project when pressing 'add new' button
+  const createProject = () => {
+    api
+      .url('/projects')
+      .post(mocks.newProject)
+      .internalError((err) => errorNotification(err))
+      .res()
+      .catch(console.error);
+  };
+
+  return (
+    <div>
+      <Menubar mb={5} title="Project Overview"></Menubar>
+
+      <VStack justifyContent="center" spacing={10} my={10}>
+        <List spacing={3} maxW={800} w="100%" mx={2}>
+          {projectsData.map((project) => (
+            <ProjectCard project={project} key={project.projectID}></ProjectCard>
+          ))}
+        </List>
+
+        <Button size="lg" onClick={createProject}>
+          Add new
+        </Button>
+      </VStack>
+    </div>
+  );
 }
-
-export default ProjectOverview;

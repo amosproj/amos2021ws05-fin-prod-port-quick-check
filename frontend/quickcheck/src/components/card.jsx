@@ -1,6 +1,6 @@
 import React from 'react';
 import { Heading, Stack, Text, Button, Box, SimpleGrid } from '@chakra-ui/react';
-
+import { Link } from 'react-router-dom';
 function CardLabel(props) {
   return (
     <Stack direction="column" p={2} spacing={0}>
@@ -30,7 +30,7 @@ function Card(props) {
       </Heading>
 
       <SimpleGrid
-        columns={{ base: 1, sm: 3 }}
+        columns={{ base: 1, sm: 2 }}
         rounded="lg"
         align="center"
         alignItems="center"
@@ -40,7 +40,7 @@ function Card(props) {
           <CardLabel name={label[0]} value={label[1]} key={label} />
         ))}
 
-        <Box align="center">
+        <Box align="right">
           {props.buttonLabel ? (
             <Button bg="teal.400" align="center" _hover={{ bg: 'teal.500' }} w={24}>
               {props.buttonLabel}
