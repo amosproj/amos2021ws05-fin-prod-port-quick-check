@@ -1,6 +1,8 @@
 import React from 'react';
 import { Heading, Stack, Text, Button, Box, SimpleGrid } from '@chakra-ui/react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+
+
 function CardLabel(props) {
   return (
     <Stack direction="column" p={2} spacing={0}>
