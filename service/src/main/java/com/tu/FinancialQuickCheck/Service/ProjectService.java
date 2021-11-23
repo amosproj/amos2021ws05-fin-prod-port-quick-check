@@ -29,7 +29,7 @@ public class ProjectService {
         this.productRepository = productRepository;
     }
 
-    // only return projectId, projectName
+
     public List<SmallProjectDto> getAllProjects(){
 
         List<SmallProjectDto> smallProjectDtos = new ArrayList<>() {
@@ -56,7 +56,7 @@ public class ProjectService {
         for (int productArea : projectDto.productAreas){
 
             ProductEntity product = new ProductEntity();
-            product.projectid = newProject.id;
+            product.projectid = newProject;
             product.productareaid = productArea;
             product.name = "DUMMY";
             productRepository.save(product);
@@ -85,7 +85,7 @@ public class ProjectService {
 
 
     // TODO: hier fehlt noch das update von den members
-    public void updateById(ProjectDto projectDto, Integer projectID) {
+    public void updateById(ProjectDto projectDto, int projectID) {
 
         if (!projectRepository.existsById(projectID)) {
             throw new ResourceNotFound("projectID " + projectID + " not found");
@@ -102,28 +102,28 @@ public class ProjectService {
 
             // TODO: fix this (not sure what is happening?)
             // add none existing product areas
-//            for (int productArea : projectDto.productAreas){
-//
-//                if(!productRepository.existsByProjectidAndProductareaid(projectID, productArea)){
-//                    ProductEntity product = new ProductEntity();
-//                    product.projectid = projectID;
-//                    product.productareaid = productArea;
-//                    product.name = "DUMMY";
-//                    productRepository.save(product);
-//
-//                }
-//            }
+            for (int productArea : projectDto.productAreas){
+
+                if(!productRepository.existsByProjectidAndProductareaid(projectRepository.findById(projectID).get(), productArea)){
+                    ProductEntity product = new ProductEntity();
+                    product.projectid = projectRepository.findById(projectID).get();
+                    product.productareaid = productArea;
+                    product.name = "DUMMY";
+                    productRepository.save(product);
+
+                }
+            }
         }
     }
 
-
-    public void deleteProject(int projectID) {
-        Optional<ProjectEntity> projectEntity = projectRepository.findById(projectID);
-        if (projectEntity.isEmpty()) {
-            throw new ResourceNotFound("projectID " + projectID + " not found");
-        }else{
-            projectRepository.deleteById(projectID);
-        }
-    }
+// TODO: auskommentiert lassen bisher keine Anforderung dafür vorhanden
+//    public void deleteProject(int projectID) {
+//        Optional<ProjectEntity> projectEntity = projectRepository.findById(projectID);
+//        if (projectEntity.isEmpty()) {
+//            throw new ResourceNotFound("projectID " + projectID + " not found");
+//        }else{
+//            projectRepository.deleteById(projectID);
+//        }
+//    }
 
 }

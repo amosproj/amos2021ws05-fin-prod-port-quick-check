@@ -11,13 +11,15 @@ import java.util.UUID;
 public class ProductEntity {
 
     @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
     public int product_id;
 
     @Column(name = "name")
     public String name;
 
-    @Column(name = "projectid")
-    public int projectid;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "projectid", updatable = false)
+    public ProjectEntity projectid;
 
     @Column(name = "productareaid")
     public int productareaid;
@@ -26,7 +28,7 @@ public class ProductEntity {
     public ProductEntity parentProduct;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy="parentProduct")
-    public List<ProductEntity> subProducts = new ArrayList<ProductEntity>();
+    public List<ProductEntity> subProducts = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "productid", insertable = false, updatable = false)

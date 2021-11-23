@@ -29,7 +29,7 @@ public class ProjectController {
         return projectService.getAllProjects();
     }
 
-    //TODO: fix
+
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public ProjectDto createByName(@RequestBody ProjectDto projectDto) {
@@ -42,13 +42,13 @@ public class ProjectController {
     }
 
     // TODO: Should we return the updated ProjectedDTO?
-    @PutMapping(value = "/{projectID}", consumes = "application/json")
-    public void updateById(@RequestBody ProjectDto projectDto, @PathVariable Integer projectID) {
+    @PutMapping("/{projectID}")
+    public void updateById(@RequestBody ProjectDto projectDto, @PathVariable int projectID) {
 
         projectService.updateById(projectDto, projectID);
     }
 
-
+// TODO: auskommentiert lassen bisher keine Anforderung für diese Funktionalität
 //    @DeleteMapping("/{projectID}")
 //    void deleteByID(@PathVariable int projectID) {
 //
@@ -73,7 +73,7 @@ public class ProjectController {
             consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public ProductDto createProduct(@PathVariable int projectID, @PathVariable int productAreaID, @RequestBody ProductDto productDto) {
-        return productService.createProduct(projectID, productAreaID,productDto);
+        return productService.createProduct(projectID, productAreaID, productDto);
     }
 
 }
