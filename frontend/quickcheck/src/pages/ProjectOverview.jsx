@@ -25,8 +25,12 @@ function ProjectCard(props) {
       </Heading>
       <Spacer />
       <VStack p={2} spacing={0}>
-        <Text fontWeight='bolder' fontSize="md">{mocks.role}</Text>
-        <Text fontSize='sm' color="gray.400">Role</Text>
+        <Text fontWeight="bolder" fontSize="md">
+          {mocks.role}
+        </Text>
+        <Text fontSize="sm" color="gray.400">
+          Role
+        </Text>
       </VStack>
       <Spacer />
       <Button bg="teal.500" align="center" _hover={{ bg: 'teal.400' }} w={24}>
@@ -77,7 +81,7 @@ export default function ProjectOverview() {
 
   return (
     <Page title="Project Overview">
-      <List spacing={3} maxW='900px' mx={2}>
+      <List spacing={3} maxW="900px" mx={2}>
         {projectsData.map((project) => (
           <ProjectCard project={project} key={project.projectID}></ProjectCard>
         ))}
