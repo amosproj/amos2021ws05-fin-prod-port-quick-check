@@ -12,13 +12,15 @@ import java.util.List;
 
 public class ProductDto {
 
-    public int id;
+    public int  productID;
 
-    public String name;
+    public String productName;
 
     public int productAreaID;
 
     public int projectID;
+
+    public int parentID;
 
     public List<ProductRatingDto> ratings;
 
@@ -35,26 +37,34 @@ public class ProductDto {
     public ProductDto(){}
 
     public ProductDto(String name, int productAreaID){
-        this.name = name;
+        this.productName = name;
         this.productAreaID = productAreaID;
     }
 
     public ProductDto(int id, int projectID, int productAreaID){
-        this.id = id;
+        this. productID = id;
         this.projectID = projectID;
         this.productAreaID = productAreaID;
     }
 
     public ProductDto(int id, String name, int projectID, int productAreaID){
-        this.id = id;
-        this.name = name;
+        this.productID = id;
+        this.productName = name;
         this.projectID = projectID;
         this.productAreaID = productAreaID;
         this.productVariations = new ArrayList<>();
     }
 
+    public ProductDto(int id, String name, int projectID, int productAreaID, int parentID){
+        this.productID = id;
+        this.productName = name;
+        this.projectID = projectID;
+        this.productAreaID = productAreaID;
+        this.parentID = parentID;
+    }
+
     public ProductDto(String name, List<ProductRatingDto> productRatingDtos){
-        this.name = name;
+        this.productName = name;
         this.ratings = productRatingDtos;
     }
 

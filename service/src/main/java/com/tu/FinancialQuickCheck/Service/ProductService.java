@@ -32,23 +32,26 @@ public class ProductService {
     public ProductDto createProduct(int projectID, int productAreaID, ProductDto productDto){
     // TODO: erstellte IDs müssen ans Frontend kommuniziert werden
         ProductEntity newProduct = new ProductEntity();
+        newProduct.name = productDto.productName;
         newProduct.projectid = projectRepository.findById(projectID).get();
-        newProduct.name = productDto.name;
         newProduct.productareaid = productAreaID;
-//        newProduct.product_id = productDto.id;
         productRepository.save(newProduct);
 
-        for (ProductDto productVariation: productDto.productVariations) {
-            ProductEntity entity = new ProductEntity();
-            entity.product_id = productVariation.id;
-            entity.projectid = projectRepository.findById(projectID).get();
-            entity.productareaid = productAreaID;
-            entity.name = productVariation.name;
-            entity.parentProduct = productRepository.getById(newProduct.product_id);
-            productRepository.save(entity);
+        if(productDto.productVariations != null){
+            for (ProductDto productVariation: productDto.productVariations) {
+                ProductEntity entity = new ProductEntity();
+                entity.name = productVariation.productName;
+                entity.projectid = projectRepository.findById(projectID).get();
+                entity.productareaid = productAreaID;
+                entity.parentProduct = productRepository.getById(newProduct.product_id);
+                productRepository.save(entity);
+            }
         }
 
-//        productDto.id = newProduct.product_id;
+
+        productDto.projectID = newProduct.product_id;
+        productDto.productAreaID = newProduct.productareaid;
+        productDto.projectID = newProduct.projectid.id;
         return productDto;
     }
 
@@ -73,7 +76,7 @@ public class ProductService {
         }else{
             productRepository.findById(productID).map(
                     product -> {
-                        product.name = productDto.name;
+                        product.name = productDto.productName;
                         return productRepository.save(product);
                     });
         }
@@ -115,8 +118,15 @@ public class ProductService {
                 projectAreaID);
 
         for(ProductEntity tmp : productEntities){
-            productsByProjectAndProductArea.add(new ProductDto(tmp.product_id, tmp.name,
-                    projectRepository.findById(projectID).get().id, tmp.productareaid));
+            if(!tmp.name.equals("DUMMY")) {
+                productsByProjectAndProductArea.add(
+                        new ProductDto(
+                            tmp.product_id,
+                            tmp.name,
+                            tmp.projectid.id,
+                            tmp.productareaid,
+                            tmp.parentProduct.product_id));
+            }
         }
 
         return productsByProjectAndProductArea;

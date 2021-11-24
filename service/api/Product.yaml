@@ -123,7 +123,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/product'
+              $ref: '#/components/schemas/createProduct'
       responses:
         201:
           description: JSON containing product data
@@ -166,6 +166,28 @@ components:
         type: integer
 
   schemas:
+    createProduct:
+      type: object
+      properties:
+        productID:
+          type: integer
+          required: false
+          example: 111
+        productName:
+          type: string
+          required: true
+          example: "Optionen"
+        productVariations:
+          type: array
+          items:
+            $ref: '#/components/schemas/productVariation'
+    productVariation:
+      type: object
+      properties:
+        productName:
+          type: string
+          required: true
+          example: "Optionen"
     product:
       type: object
       properties:
@@ -175,13 +197,17 @@ components:
         productName:
           type: string
           example: "Optionen"
-        projectID:
+        parentID:
           type: integer
           example: 5
         productAreaID:
           type: integer
+          example: 2
+        projectID:
+          type: integer
           example: 1
-    
+
+
 
   responses:
     5XXserverError:
