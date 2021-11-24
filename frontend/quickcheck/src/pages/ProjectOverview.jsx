@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-import Menubar from '../components/Menubar';
-import Card from '../components/card';
-import { VStack, List, Button } from '@chakra-ui/react';
+import Card from '../components/Card';
+import Page from '../components/Page';
+import { List, Button, Heading, VStack, Text, Spacer } from '@chakra-ui/react';
 import { useToast } from '@chakra-ui/react';
 
 import { api } from '../utils/apiClient';
@@ -19,11 +19,24 @@ const mocks = {
 
 function ProjectCard(props) {
   return (
-    <Card
-      title={props.project.projectName}
-      buttonLabel="open"
-      labels={[['Role', mocks.role]]}
-    ></Card>
+    <Card>
+      <Heading size="lg" color="teal.400" align="center" py={{ base: 4, md: 0 }} w="50%">
+        {props.project.projectName}
+      </Heading>
+      <Spacer />
+      <VStack p={2} spacing={0}>
+        <Text fontWeight="bolder" fontSize="md">
+          {mocks.role}
+        </Text>
+        <Text fontSize="sm" color="gray.400">
+          Role
+        </Text>
+      </VStack>
+      <Spacer />
+      <Button bg="teal.500" align="center" _hover={{ bg: 'teal.400' }} w={24}>
+        open
+      </Button>
+    </Card>
   );
 }
 export default function ProjectOverview() {
@@ -66,19 +79,15 @@ export default function ProjectOverview() {
   };
 
   return (
-    <div>
-      <Menubar mb={5} title="Project Overview"></Menubar>
-      <VStack justifyContent="center" spacing={10} my={10}>
-        <List spacing={3} maxW={800} w="100%" mx={2}>
-          {projectsData.map((project) => (
-            <ProjectCard project={project} key={project.projectID}></ProjectCard>
-          ))}
-        </List>
-
-        <Button size="lg" onClick={createProject}>
-          Add new
-        </Button>
-      </VStack>
-    </div>
+    <Page title="Project Overview">
+      <List spacing={3} maxW="900px" mx={2}>
+        {projectsData.map((project) => (
+          <ProjectCard project={project} key={project.projectID}></ProjectCard>
+        ))}
+      </List>
+      <Button size="lg" onClick={createProject}>
+        Add new
+      </Button>
+    </Page>
   );
 }
