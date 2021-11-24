@@ -4,6 +4,7 @@ import com.tu.FinancialQuickCheck.Service.ProductService;
 import com.tu.FinancialQuickCheck.Service.ProjectService;
 import com.tu.FinancialQuickCheck.dto.ProductDto;
 import com.tu.FinancialQuickCheck.dto.ProjectDto;
+import com.tu.FinancialQuickCheck.dto.ProjectUserDto;
 import com.tu.FinancialQuickCheck.dto.SmallProjectDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -63,13 +64,14 @@ public class ProjectController {
     }
 
 
-    @GetMapping("{projectID}/productArea/{projectAreaID}/products")
+    @GetMapping("{projectID}/productareas/{projectAreaID}/products")
     public List<ProductDto> findProductsByProductAndProjectArea(@PathVariable int projectID,
                                                                 @PathVariable int projectAreaID) {
         return productService.getProductsByProjectIdAndProductAreaId(projectID, projectAreaID);
     }
 
-    @PostMapping(value = "/{projectID}/productArea/{productAreaID}/products",
+
+    @PostMapping(value = "/{projectID}/productareas/{productAreaID}/products",
             consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public ProductDto createProduct(@PathVariable int projectID, @PathVariable int productAreaID, @RequestBody ProductDto productDto) {
