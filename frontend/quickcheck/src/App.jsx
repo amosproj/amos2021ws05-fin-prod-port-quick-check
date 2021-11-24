@@ -9,9 +9,9 @@ function App() {
   return (
     <div>
       <Router>
-        <Link to="/projects">Projects </Link>
-        <Link to="/login">Login </Link>
-        <Link to="/ManageProject">Manage Project </Link>
+        <Link to="/login"> [Login] </Link>
+        <Link to="/projects"> [Projects] </Link>
+        <Link to="/ManageProject"> [Manage Project] </Link>
 
         <Routes>
           {/* TODO: use proper redirect (see https://gist.github.com/mjackson/b5748add2795ce7448a366ae8f8ae3bb) */}
