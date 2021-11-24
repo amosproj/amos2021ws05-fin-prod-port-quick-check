@@ -19,7 +19,7 @@ function Menubar({ title }) {
 export default function Page(props) {
   return (
     <Flex w="full" direction="column" align="center">
-      <Menubar title="Project Overview" />
+      <Menubar title={props.title} />
       <VStack
         maxW="1000px"
         w="90%"
