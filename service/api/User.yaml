@@ -6,6 +6,23 @@ info:
 
 paths:
   /users:
+    get:
+      summary: retrieve list of all users
+      responses:
+        200:
+          description: JSON containing list of all users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/user'
+        401:
+          $ref: '#/components/responses/401unauthorized'
+        403:
+          $ref: '#/components/responses/403forbidden'
+        '5XX':
+          $ref: '#/components/responses/5XXserverError'
     post:
       summary: creates a new user
       requestBody:
@@ -13,7 +30,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Users'
+              $ref: '#/components/schemas/createUser'
       responses:
         201:
           $ref: '#/components/schemas/User'
@@ -23,26 +40,9 @@ paths:
           $ref: '#/components/responses/403forbidden'
         '5XX':
           $ref: '#/components/responses/5XXserverError'
-    get:
-      summary: retrieve list of all users
-      responses:
-        200:
-          description: JSON containing list of all users
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/user'
-        401:
-          $ref: '#/components/responses/401unauthorized'
-        403:
-          $ref: '#/components/responses/403forbidden'
-        404:
-          $ref: '#/components/responses/404notfound'
-        '5XX':
-          $ref: '#/components/responses/5XXserverError'
   /users/email/{email}:
     get:
-      summary: retrieve list of all users
+      summary: retrieve user data based on email
       parameters:
         - $ref: '#/components/parameters/userEmail'
       responses:
@@ -81,13 +81,62 @@ paths:
           $ref: '#/components/responses/404notfound'
         '5XX':
           $ref: '#/components/responses/5XXserverError'
-    delete:
-      summary: deletes user with given email adress
+
+  /projects/{projectID}/users:
+    get:
+      summary: retrieve list of all users for projectID
       parameters:
-        - $ref: '#/components/parameters/userEmail'
+        - $ref: '#/components/parameters/projectID'
       responses:
         200:
-          description: user deleted successfully
+          description: JSON containing list of all users for projectID
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/userProject'
+        401:
+          $ref: '#/components/responses/401unauthorized'
+        403:
+          $ref: '#/components/responses/403forbidden'
+        404:
+          $ref: '#/components/responses/404notfound'
+        '5XX':
+          $ref: '#/components/responses/5XXserverError'
+
+
+  /projects/{projectID}/users/{userID}:
+    post:
+      summary: assigns user to projectID
+      requestBody:
+        description: JSON containing user data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createUserProject'
+      responses:
+        201:
+          description: "userID successfully assigned to projectID"
+        401:
+          $ref: '#/components/responses/401unauthorized'
+        403:
+          $ref: '#/components/responses/403forbidden'
+        404:
+          $ref: '#/components/responses/404notfound'
+        '5XX':
+          $ref: '#/components/responses/5XXserverError'
+    put:
+      summary: updates user info for projectID
+      requestBody:
+        description: JSON containing user data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userProject'
+      responses:
+        200:
+          $ref: '#/components/schemas/userProject'
         401:
           $ref: '#/components/responses/401unauthorized'
         403:
@@ -106,22 +155,70 @@ components:
       description: unique email adress
       schema:
         type: string
+    projectID:
+      name: projectID
+      in: path
+      required: true
+      description: unique identifier for project entity
+      schema:
+        type: string
 
   schemas:
-    User:
+    user:
       type: object
       properties:
         userEmail:
           type: string
-        password:
+        userName:
           type: string
-          format: password
+        userID:
+          type: string
+          format: uuid
+
+    userProject:
+      type: object
+      properties:
+        projectID:
+          type: integer
+        userEmail:
+          type: string
+          required: true
+        userName:
+          type: string
+          required: true
         userID:
           type: string
           format: uuid
         role:
           type: string
-          enum: [CLIENT, PROJECT_MANAGER, ADMIN]
+          required: true
+          enum: [ CLIENT, PROJECT_MANAGER, ADMIN ]
+
+    createUser:
+      type: object
+      properties:
+        userEmail:
+          type: string
+          required: true
+        userName:
+          type: string
+          required: true
+        password:
+          type: string
+          required: true
+        role:
+          type: string
+          required: true
+          enum: [ CLIENT, PROJECT_MANAGER, ADMIN ]
+
+    createUserProject:
+      type: object
+      properties:
+        role:
+          type: string
+          required: true
+          enum: [ CLIENT, PROJECT_MANAGER, ADMIN ]
+
 
 
   responses:

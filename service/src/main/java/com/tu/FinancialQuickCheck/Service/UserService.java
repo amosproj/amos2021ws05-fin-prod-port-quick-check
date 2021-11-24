@@ -1,9 +1,8 @@
 package com.tu.FinancialQuickCheck.Service;
 
 import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
-import com.tu.FinancialQuickCheck.db.ProjectEntity;
-import com.tu.FinancialQuickCheck.db.UserEntity;
-import com.tu.FinancialQuickCheck.db.UserRepository;
+import com.tu.FinancialQuickCheck.db.*;
+import com.tu.FinancialQuickCheck.dto.ProjectUserDto;
 import com.tu.FinancialQuickCheck.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,10 +22,16 @@ import java.util.UUID;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final ProjectRepository projectRepository;
+    private final ProjectUserRepository projectUserRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository,
+                       ProjectRepository projectRepository,
+                       ProjectUserRepository projectUserRepository) {
         this.userRepository = userRepository;
+        this.projectRepository = projectRepository;
+        this.projectUserRepository = projectUserRepository;
     }
 
     /**
@@ -67,8 +72,8 @@ public class UserService {
     }
 
     /**
-     * Search for User by given ID
-     * ID is UUID generated out of user-email
+     * Search for User by given email
+     *
      * TODO: find faster way to access Users other than iterate over all of them
      *
      * @param email
@@ -184,5 +189,71 @@ public class UserService {
             userRepository.deleteById(userID);
         }
 
+    }
+
+
+    public List<ProjectUserDto> getProjectUsersByProjectId(int projectID){
+
+        Optional<ProjectEntity> entity = projectRepository.findById(projectID);
+
+        if (entity.isEmpty()) {
+            throw new ResourceNotFound("projectID " + projectID + " not found");
+        } else {
+
+            Iterable<ProjectUserEntity> entities = entity.get().projectUserEntities;
+
+            List<ProjectUserDto> projectUserDtos = new ArrayList<>() {
+            };
+
+            for (ProjectUserEntity tmp : entities) {
+                projectUserDtos.add(new ProjectUserDto(
+                        UUID.fromString(tmp.projectUserId.getUserid().id),
+                        tmp.role,
+                        tmp.projectUserId.getUserid().email,
+                        tmp.projectUserId.getProjectid().id,
+                        tmp.projectUserId.getUserid().username
+                ));
+            }
+
+            return projectUserDtos;
+        }
+    }
+
+
+    public void createProjectUser(int projectID, String userID, ProjectUserDto projectUserDto){
+
+        ProjectUserEntity entity = new ProjectUserEntity();
+
+        if(!userRepository.existsById(userID) || !projectRepository.existsById(projectID)){
+            throw new ResourceNotFound("User or project does not exist.");
+        }else{
+            entity.projectUserId = new ProjectUserId(
+                    projectRepository.findById(projectID).get(),
+                    userRepository.findById(userID).get()
+                    );
+            entity.role = projectUserDto.role;
+
+            projectUserRepository.save(entity);
+        }
+    }
+
+
+    public void updateProjectUser(int projectID, UUID userID, ProjectUserDto projectUserDto){
+
+        if(!projectUserRepository.existsById(new ProjectUserId(projectRepository.findById(projectID).get(),
+                userRepository.findById(userID.toString()).get()))){
+            throw new ResourceNotFound("User is not assigned to project.");
+        }else{
+            projectUserRepository.findById(new ProjectUserId(projectRepository.findById(projectID).get(),
+                    userRepository.findById(userID.toString()).get()))
+                    .map(
+                        projectUser -> {
+                            if(projectUserDto.role != null){
+                                projectUser.role = projectUserDto.role;
+                            }
+
+                            return projectUserRepository.save(projectUser);
+                        });
+        }
     }
 }
