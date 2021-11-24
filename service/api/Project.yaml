@@ -109,26 +109,31 @@ components:
     smallProject:
       type: object
       properties:
-        id:
+        projectID:
           type: integer
-        name:
+        projectName:
           type: string
     project:
       type: object
       properties:
         projectID:
           type: integer
+          required: false
         creatorID:
           type: integer
+          required: true
         projectName:
           type: string
+          required: true
         members:
           type: array
-          example: [ 1, 2 ]
+          required: false
+          example: ["2375e026-d348-4fb6-b42b-891a76758d5d","0fef539d-69be-4013-9380-6a12c3534c67"]
           items:
-            type: integer
+            type: string
         productAreas:
           type: array
+          required: true
           example: [ 1, 2 ,3]
           items:
             type: integer
