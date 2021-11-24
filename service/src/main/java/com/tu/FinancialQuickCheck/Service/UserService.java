@@ -41,10 +41,11 @@ public class UserService {
 
         UserEntity newUser = new UserEntity();
         newUser.id = UUID.randomUUID().toString();
+        newUser.username = userDto.username;
         newUser.email = userDto.email;
         newUser.password = userDto.password;
         userRepository.save(newUser);
-        return new UserDto(UUID.fromString(newUser.id), newUser.email);
+        return new UserDto(UUID.fromString(newUser.id), newUser.email, newUser.username);
     }
 
     /**
@@ -57,7 +58,7 @@ public class UserService {
         Iterable<UserEntity> allUserEntitys = userRepository.findAll();
 
         for (UserEntity userEntity : allUserEntitys) {
-            UserDto userDto = new UserDto(UUID.fromString(userEntity.id), userEntity.email);
+            UserDto userDto = new UserDto(UUID.fromString(userEntity.id), userEntity.email, userEntity.username);
 
             userDto.password = userEntity.password;
             userList.add(userDto);
@@ -89,7 +90,6 @@ public class UserService {
 
     /**
      * search for ID in repository and updates if found
-     * TODO: warum sollte man die ID updaten können?
      * TODO: email sollte anpassbar sein
      *
      * @param userDto
@@ -101,9 +101,16 @@ public class UserService {
 
         for (UserEntity userEntity : allUserEntitys) {
             if (userEntity.email.equals(email)) {
-//                if (userDto.id != null){ userEntity.id = userDto.id;}
+                if (userDto.email != null) {
+                    userEntity.email = userDto.email;
+                }
+
                 if (userDto.password != null) {
                     userEntity.password = userDto.password;
+                }
+
+                if (userDto.username != null) {
+                    userEntity.username = userDto.username;
                 }
                 userRepository.save(userEntity);
                 return;
@@ -131,6 +138,10 @@ public class UserService {
 
                         if (userDto.password != null) {
                             user.password = userDto.password;
+                        }
+
+                        if (userDto.username != null) {
+                            user.username = userDto.username;
                         }
 
                         return userRepository.save(user);
