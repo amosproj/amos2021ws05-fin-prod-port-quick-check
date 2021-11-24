@@ -6,6 +6,7 @@ import { List, Button, Heading, VStack, Text, Spacer } from '@chakra-ui/react';
 import { useToast } from '@chakra-ui/react';
 
 import { api } from '../utils/apiClient';
+import { Link } from 'react-router-dom';
 
 const mocks = {
   newProject: {
@@ -16,6 +17,8 @@ const mocks = {
   },
   role: 'Mock Consultant',
 };
+
+
 
 function ProjectCard(props) {
   return (
@@ -33,9 +36,11 @@ function ProjectCard(props) {
         </Text>
       </VStack>
       <Spacer />
+      <Link to={"" + props.project.projectID}>
       <Button bg="teal.500" align="center" _hover={{ bg: 'teal.400' }} w={24}>
         open
       </Button>
+      </Link>
     </Card>
   );
 }
@@ -79,7 +84,7 @@ export default function ProjectOverview() {
   };
 
   return (
-    <Page title="Project Overview">
+    <Page title="Your Projects">
       <List spacing={3} maxW="900px" mx={2}>
         {projectsData.map((project) => (
           <ProjectCard project={project} key={project.projectID}></ProjectCard>
