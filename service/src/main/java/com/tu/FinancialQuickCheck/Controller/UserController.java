@@ -42,9 +42,19 @@ public class UserController {
         userService.updateByEmail(userDto, email);
     }
 
+    @PutMapping("/{userID}")
+    public void updateUserByUserID(@RequestBody UserDto userDto, @PathVariable String userID){
+        userService.updateByUserID(userDto, userID);
+    }
+
     @DeleteMapping("email/{email}")
     void deleteByEmail(@PathVariable String email){
         userService.deleteUser(email);
+    }
+
+    @DeleteMapping("/{userID}")
+    void deleteByUserId(@PathVariable String userID){
+        userService.deleteUserById(userID);
     }
 
 }

@@ -10,7 +10,7 @@ import java.util.UUID;
 // CRUD refers Create, Read, Update, Delete
 
 @Repository
-public interface UserRepository extends CrudRepository<UserEntity, UUID> {
+public interface UserRepository extends CrudRepository<UserEntity, String> {
 
 
 }

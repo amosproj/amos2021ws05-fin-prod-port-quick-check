@@ -10,8 +10,8 @@ import java.util.UUID;
 public class UserEntity {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    public UUID id;
+//    @GeneratedValue(strategy= GenerationType.AUTO)
+    public String id;
 
     @Column(name = "email")
     public String email;
