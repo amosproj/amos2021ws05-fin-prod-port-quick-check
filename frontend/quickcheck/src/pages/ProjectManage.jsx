@@ -122,24 +122,24 @@ export default function ManageProject() {
   };
 
   return (
-      <Page title="Manage Project" >
-        <ProjectCard
-          project={mocks.project}
-          type={mocks.project.type}
-          title={mocks.project.title}
-          description={mocks.project.description}
-          editable={editable}
-        ></ProjectCard>
-        <Member_Card members={mocks.members} editable={editable}>
-          {' '}
-        </Member_Card>
+    <Page title="Manage Project">
+      <ProjectCard
+        project={mocks.project}
+        type={mocks.project.type}
+        title={mocks.project.title}
+        description={mocks.project.description}
+        editable={editable}
+      ></ProjectCard>
+      <Member_Card members={mocks.members} editable={editable}>
+        {' '}
+      </Member_Card>
 
-        <AreaCard areas={mocks.productAreas} editable={editable}>
-          {' '}
-        </AreaCard>
+      <AreaCard areas={mocks.productAreas} editable={editable}>
+        {' '}
+      </AreaCard>
 
-        <EditButtons />
-        <ShowEditable text="text" editable={editable}></ShowEditable>
-      </Page>
+      <EditButtons />
+      <ShowEditable text="text" editable={editable}></ShowEditable>
+    </Page>
   );
 }
