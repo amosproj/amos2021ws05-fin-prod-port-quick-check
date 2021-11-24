@@ -11,11 +11,11 @@ import {
   Button,
 } from '@chakra-ui/react';
 
-import Menubar from '../components/Menubar';
 import MemberCard from '../components/MemberCard';
 import BaseCard from '../components/BaseCard.jsx';
 import ProjectAreaCard from '../components/ProjectAreaCard.jsx';
 import ShowEditable from '../components/editable.jsx';
+import Page from '../components/Page';
 const mocks = {
   project: {
     type: 'Project',
@@ -122,9 +122,7 @@ export default function ManageProject() {
   };
 
   return (
-    <div>
-      <Menubar mb={5} title="Manage Project"></Menubar>
-      <VStack justifyContent="center" spacing={0} mt={0}>
+      <Page title="Manage Project" >
         <ProjectCard
           project={mocks.project}
           type={mocks.project.type}
@@ -142,7 +140,6 @@ export default function ManageProject() {
 
         <EditButtons />
         <ShowEditable text="text" editable={editable}></ShowEditable>
-      </VStack>
-    </div>
+      </Page>
   );
 }
