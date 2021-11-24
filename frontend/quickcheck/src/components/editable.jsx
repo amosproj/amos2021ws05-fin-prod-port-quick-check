@@ -1,10 +1,4 @@
-
-import {
-  Editable,
-  EditableInput,
-  EditablePreview,
-  Text,
-} from '@chakra-ui/react';
+import { Editable, EditableInput, EditablePreview, Text } from '@chakra-ui/react';
 
 export default function ShowEditable(prop) {
   if (prop.editable) {
