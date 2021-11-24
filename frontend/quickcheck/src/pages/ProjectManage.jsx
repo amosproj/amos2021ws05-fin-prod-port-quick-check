@@ -7,7 +7,6 @@ import {
   Text,
   Stack,
   HStack,
-  VStack,
   Button,
 } from '@chakra-ui/react';
 

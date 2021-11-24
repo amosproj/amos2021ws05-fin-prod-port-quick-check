@@ -1,22 +1,9 @@
-import {
-  Flex,
-  IconButton,
-  ButtonGroup,
-  CheckIcon,
-  CloseIcon,
-  EditIcon,
-  useEditableControls,
-} from '@chakra-ui/react';
+
 import {
   Editable,
   EditableInput,
   EditablePreview,
-  Heading,
   Text,
-  Stack,
-  HStack,
-  VStack,
-  Button,
 } from '@chakra-ui/react';
 
 export default function ShowEditable(prop) {
