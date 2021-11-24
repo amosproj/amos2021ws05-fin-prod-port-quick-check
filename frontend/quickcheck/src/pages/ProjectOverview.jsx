@@ -18,8 +18,6 @@ const mocks = {
   role: 'Mock Consultant',
 };
 
-
-
 function ProjectCard(props) {
   return (
     <Card>
@@ -36,10 +34,10 @@ function ProjectCard(props) {
         </Text>
       </VStack>
       <Spacer />
-      <Link to={"" + props.project.projectID}>
-      <Button bg="teal.500" align="center" _hover={{ bg: 'teal.400' }} w={24}>
-        open
-      </Button>
+      <Link to={'' + props.project.projectID}>
+        <Button bg="teal.500" align="center" _hover={{ bg: 'teal.400' }} w={24}>
+          open
+        </Button>
       </Link>
     </Card>
   );
