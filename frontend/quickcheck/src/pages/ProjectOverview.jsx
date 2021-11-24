@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import Card from '../components/Card';
 import Page from '../components/Page';
-import { List, Button, Heading, Stack, Text, Spacer } from '@chakra-ui/react';
+import { List, Button, Heading, VStack, Text, Spacer } from '@chakra-ui/react';
 import { useToast } from '@chakra-ui/react';
 
 import { api } from '../utils/apiClient';
@@ -24,16 +24,12 @@ function ProjectCard(props) {
         {props.project.projectName}
       </Heading>
       <Spacer />
-      <Stack direction="column" p={2} spacing={0}>
-        <Text fontWeight='bolder' fontSize="md">
-          {mocks.role}
-        </Text>
-        <Text fontSize={'sm'} color="gray.500">
-          Role
-        </Text>
-      </Stack>
+      <VStack p={2} spacing={0}>
+        <Text fontWeight='bolder' fontSize="md">{mocks.role}</Text>
+        <Text fontSize='sm' color="gray.400">Role</Text>
+      </VStack>
       <Spacer />
-      <Button bg="teal.400" align="center" _hover={{ bg: 'teal.500' }} w={24}>
+      <Button bg="teal.500" align="center" _hover={{ bg: 'teal.400' }} w={24}>
         open
       </Button>
     </Card>

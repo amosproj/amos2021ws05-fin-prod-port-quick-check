@@ -13,7 +13,7 @@ export default function Card(props) {
       rounded="md"
       boxShadow="md"
       overflow="hidden"
-      _hover={{ boxShadow: 'lg' }}
+      _hover={{ boxShadow: '2xl' }}
     >
       <Box h={2} bg={props.barColor} mt={-3} mx={-3} mb={props.barColor ? 3 : 0} pos={'relative'} />
       <Wrap
