@@ -2,11 +2,13 @@ package com.tu.FinancialQuickCheck.dto;
 
 //import java.util.ArrayList;
 import com.tu.FinancialQuickCheck.db.ProductEntity;
+import com.tu.FinancialQuickCheck.db.ProjectUserEntity;
 import org.h2.command.dml.Set;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
 
 
 public class ProjectDto {
@@ -14,7 +16,7 @@ public class ProjectDto {
     public int projectID;
     public String projectName;
     public int creatorID;
-    public Integer[] members;
+    public HashSet<UUID> members;
     public HashSet<Integer> productAreas;
 //    public List<Product> products;
 
@@ -25,12 +27,12 @@ public class ProjectDto {
         this.projectID = projectID;
     }
 
-    public ProjectDto(int projectID, String projectName, int creatorID, Integer[] members,
-                      List<ProductEntity> productEntity ){
+    public ProjectDto(int projectID, String projectName, int creatorID,
+                      List<ProductEntity> productEntity, List<ProjectUserEntity> projectUserEntities){
         this.projectID = projectID;
         this.projectName = projectName;
         this.creatorID = creatorID;
-        this.members = members;
+        this.members = convertProjectUserEntities(projectUserEntities);
         this.productAreas = convertProductAreaEntities(productEntity);
     }
 
@@ -62,5 +64,15 @@ public class ProjectDto {
             areas.add(p.productareaid);
         }
         return areas;
+    }
+
+    private HashSet<UUID> convertProjectUserEntities(List<ProjectUserEntity> projectUserEntities) {
+        HashSet<UUID> members = new HashSet<>();
+
+        for (ProjectUserEntity member: projectUserEntities)
+        {
+            members.add(UUID.fromString(member.projectUserId.getUserid().id));
+        }
+        return members;
     }
 }

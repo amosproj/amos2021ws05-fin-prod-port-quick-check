@@ -52,7 +52,6 @@ public class ProjectService {
         projectRepository.save(newProject);
 
         // add product areas to project through DUMMY data in product_entity table
-        // TODO: fix it (not sure whats going on)
         for (int productArea : projectDto.productAreas){
 
             ProductEntity product = new ProductEntity();
@@ -68,7 +67,6 @@ public class ProjectService {
     }
 
 
-    // TODO: hier fehlen noch die members
     public ProjectDto findById(int projectID) {
 
         Optional<ProjectEntity> projectEntity = projectRepository.findById(projectID);
@@ -76,15 +74,14 @@ public class ProjectService {
         if (projectEntity.isEmpty()) {
             throw new ResourceNotFound("projectID " + projectID + " not found");
         }else{
-            Integer[] members = {99};
             return new ProjectDto(projectEntity.get().id, projectEntity.get().name,
-                    projectEntity.get().creator_id, members, projectEntity.get().productEntities);
+                    projectEntity.get().creator_id, projectEntity.get().productEntities,
+                    projectEntity.get().projectUserEntities);
         }
 
     }
 
 
-    // TODO: hier fehlt noch das update von den members
     public void updateById(ProjectDto projectDto, int projectID) {
 
         if (!projectRepository.existsById(projectID)) {
@@ -92,25 +89,24 @@ public class ProjectService {
         }else{
 
             // update project name
-            // TODO: attribute sollen gleichen bleiben, wenn sie in request nicht vorkommen
             projectRepository.findById(projectID).map(
                     project -> {
-                        project.name = projectDto.projectName;
-                        project.creator_id = projectDto.creatorID;
+                        if(projectDto.projectName != null){project.name = projectDto.projectName;}
+
                         return projectRepository.save(project);
                     });
 
-            // TODO: fix this (not sure what is happening?)
+
             // add none existing product areas
             for (int productArea : projectDto.productAreas){
 
-                if(!productRepository.existsByProjectidAndProductareaid(projectRepository.findById(projectID).get(), productArea)){
+                if(!productRepository.existsByProjectidAndProductareaid(projectRepository.findById(projectID).get(),
+                        productArea)){
                     ProductEntity product = new ProductEntity();
                     product.projectid = projectRepository.findById(projectID).get();
                     product.productareaid = productArea;
                     product.name = "DUMMY";
                     productRepository.save(product);
-
                 }
             }
         }
