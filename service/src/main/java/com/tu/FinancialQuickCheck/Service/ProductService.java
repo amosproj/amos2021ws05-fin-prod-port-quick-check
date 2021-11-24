@@ -95,13 +95,13 @@ public class ProductService {
 
     public List<ProductDto> getProductsByProjectId(int projectID){
         List<ProductDto> productsByProject = new ArrayList<>();
-        Iterable<ProductEntity> productEntities = productRepository.findByProjectid(
-                projectRepository.findById(projectID).get());
+        Iterable<ProductEntity> productEntities = productRepository.findByProjectid(projectRepository.findById(projectID).get());
+
 
         for(ProductEntity tmp : productEntities){
             if(!tmp.name.equals("DUMMY")){
-                productsByProject.add(new ProductDto(tmp.product_id,tmp.name,
-                        projectRepository.findById(projectID).get().id, tmp.productareaid));
+                ProductDto addProduct = new ProductDto(tmp.product_id, tmp.name, tmp.projectid.id, tmp.productareaid);
+                productsByProject.add(addProduct);
             }
         }
 
@@ -124,8 +124,8 @@ public class ProductService {
                             tmp.product_id,
                             tmp.name,
                             tmp.projectid.id,
-                            tmp.productareaid,
-                            tmp.parentProduct.product_id));
+                            tmp.productareaid
+                            ));
             }
         }
 

@@ -197,9 +197,6 @@ components:
         productName:
           type: string
           example: "Optionen"
-        parentID:
-          type: integer
-          example: 5
         productAreaID:
           type: integer
           example: 2

@@ -20,7 +20,6 @@ public class ProductDto {
 
     public int projectID;
 
-    public int parentID;
 
     public List<ProductRatingDto> ratings;
 
@@ -55,13 +54,6 @@ public class ProductDto {
         this.productVariations = new ArrayList<>();
     }
 
-    public ProductDto(int id, String name, int projectID, int productAreaID, int parentID){
-        this.productID = id;
-        this.productName = name;
-        this.projectID = projectID;
-        this.productAreaID = productAreaID;
-        this.parentID = parentID;
-    }
 
     public ProductDto(String name, List<ProductRatingDto> productRatingDtos){
         this.productName = name;
