@@ -4,6 +4,7 @@ import com.tu.FinancialQuickCheck.Service.ProductService;
 import com.tu.FinancialQuickCheck.Service.ProjectService;
 import com.tu.FinancialQuickCheck.dto.ProductDto;
 import com.tu.FinancialQuickCheck.dto.ProjectDto;
+import com.tu.FinancialQuickCheck.dto.ProjectUserDto;
 import com.tu.FinancialQuickCheck.dto.SmallProjectDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ public class ProjectController {
 
     @Autowired
     private ProjectService projectService;
+    @Autowired
     private ProductService productService;
 
 
@@ -41,19 +43,19 @@ public class ProjectController {
     }
 
     // TODO: Should we return the updated ProjectedDTO?
-    @PutMapping(value = "/{projectID}", consumes = "application/json")
-    public void updateById(@RequestBody ProjectDto projectDto, @PathVariable Integer projectID) {
+    @PutMapping("/{projectID}")
+    public void updateById(@RequestBody ProjectDto projectDto, @PathVariable int projectID) {
 
         projectService.updateById(projectDto, projectID);
     }
 
-
-    @DeleteMapping("/{projectID}")
-    void deleteByID(@PathVariable int projectID) {
-
-        projectService.deleteProject(projectID);
-
-    }
+// TODO: auskommentiert lassen bisher keine Anforderung für diese Funktionalität
+//    @DeleteMapping("/{projectID}")
+//    void deleteByID(@PathVariable int projectID) {
+//
+//        projectService.deleteProject(projectID);
+//
+//    }
 
 
     @GetMapping("/{projectID}/products")
@@ -62,17 +64,18 @@ public class ProjectController {
     }
 
 
-    @GetMapping("{projectID}/productArea/{projectAreaID}/products")
+    @GetMapping("{projectID}/productareas/{projectAreaID}/products")
     public List<ProductDto> findProductsByProductAndProjectArea(@PathVariable int projectID,
                                                                 @PathVariable int projectAreaID) {
         return productService.getProductsByProjectIdAndProductAreaId(projectID, projectAreaID);
     }
 
-    @PostMapping(value = "/{projectID}/productArea/{productAreaID}/products",
+
+    @PostMapping(value = "/{projectID}/productareas/{productAreaID}/products",
             consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public ProductDto createProduct(@PathVariable int projectID, @PathVariable int productAreaID, @RequestBody ProductDto productDto) {
-        return productService.createProduct(projectID, productAreaID,productDto);
+        return productService.createProduct(projectID, productAreaID, productDto);
     }
 
 }

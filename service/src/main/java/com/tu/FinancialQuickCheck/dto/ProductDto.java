@@ -5,48 +5,59 @@ package com.tu.FinancialQuickCheck.dto;
 //import com.tu.FinancialQuickCheck.db.ProductEntity;
 //import com.tu.FinancialQuickCheck.db.RatingEntity;
 
-//import java.util.ArrayList;
-//import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
+
+import java.util.List;
 
 public class ProductDto {
 
-    public int id;
+    public int  productID;
 
-    public String name;
+    public String productName;
 
     public int productAreaID;
 
     public int projectID;
 
+
+    public List<ProductRatingDto> ratings;
+
 //    public Score economicRating;
 //
 //    public Score complexityRating;
 //
-//    public List<Product> productVariations;
+    public List<ProductDto> productVariations;
 //
-//    public List<Rating> economicRatingCriterions;
+//    public List<ProductRatingDto> economicRatingCriterions;
 //
 //    public List<Rating> complexityRatingCriterions;
 
     public ProductDto(){}
 
-    public ProductDto(int id, String name, int productAreaID){
-        this.id = id;
-        this.name = name;
+    public ProductDto(String name, int productAreaID){
+        this.productName = name;
         this.productAreaID = productAreaID;
     }
 
     public ProductDto(int id, int projectID, int productAreaID){
-        this.id = id;
+        this. productID = id;
         this.projectID = projectID;
         this.productAreaID = productAreaID;
     }
 
     public ProductDto(int id, String name, int projectID, int productAreaID){
-        this.id = id;
-        this.name = name;
+        this.productID = id;
+        this.productName = name;
         this.projectID = projectID;
         this.productAreaID = productAreaID;
+        this.productVariations = new ArrayList<>();
+    }
+
+
+    public ProductDto(String name, List<ProductRatingDto> productRatingDtos){
+        this.productName = name;
+        this.ratings = productRatingDtos;
     }
 
 //    public Product(int id, String name, List<ProductEntity> productEntities, List<RatingEntity> ratingEntities)

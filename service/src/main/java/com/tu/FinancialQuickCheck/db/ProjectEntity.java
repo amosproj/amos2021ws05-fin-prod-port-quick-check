@@ -21,9 +21,9 @@ public class ProjectEntity {
     @JoinColumn(name = "projectid")
     public List<ProductEntity> productEntities;
 
-//    @OneToMany(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "id")
-//    public List<UserEntity> userEntities;
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "projectid")
+    public List<ProjectUserEntity> projectUserEntities;
 
     public ProjectEntity(){
     }

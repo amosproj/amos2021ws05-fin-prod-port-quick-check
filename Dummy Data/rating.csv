@@ -1,0 +1,21 @@
+id,criteria,category,ratingarea
+1,Frequenz,,0
+2,Produktabschlüsse,,0
+3,Durchschnittliche Losgröße,,0
+4,Kredivolumen,,0
+5,Marge,,0
+6,Sachaufwand,Aufwandsschätzung,0
+7,Personalaufwand,Aufwandsschätzung,0
+8,IT-Aufwand,Aufwandsschätzung,0
+9,Wie viele unterschiedliche Produktschlüssel existieren für das Produkt Dispokredit?,Kundenstruktur,1
+10,Welche Kunden (Einzelkunden/Gemeinschaftskunden) nehmen diese Produktvariante in Anspruch?,Kundenstruktur,1
+11,Frage für Kreditrating,Kreditrating,1
+12,Frage für Kreditrating,Kreditrating,1
+13,Frage für Zahlungsbedingungen,Zahlungsbedingungen,1
+14,Frage für Zahlungsbedingungen,Zahlungsbedingungen,1
+15,Frage für Sicherheiten,Sicherheiten,1
+16,Frage für Sicherheiten,Sicherheiten,1
+17,Frage für Regulatorik,Regulatorik,1
+18,Frage für Regulatorik,Regulatorik,1
+19,Frage für Dokumentation,Dokumentation,1
+20,Frage für Dokumentation,Dokumentation,1

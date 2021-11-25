@@ -6,13 +6,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.*;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class ProductAreaControllerTest {
+public class RatingControllerTest {
 
     @LocalServerPort
     private int port;
@@ -21,12 +23,12 @@ public class ProductAreaControllerTest {
     private TestRestTemplate restTemplate;
 
     private String host = "http://localhost:";
-    private String productAreas = "/productareas";
+    private String ratings = "/ratings";
 
     @Test
-    public void getProductAreas() throws Exception {
+    public void getAllRatings() throws Exception {
         ResponseEntity<String> response = restTemplate.exchange(
-                host + port + productAreas,
+                host + port + ratings,
                 HttpMethod.GET,
                 null,
                 String.class);
@@ -35,13 +37,29 @@ public class ProductAreaControllerTest {
 //        System.out.println("Response Status: " + response.getStatusCode());
     }
 
+    public void getRatingsByRatingArea() throws Exception {
+
+        String[] ratingAreas = {"?ratingArea=COMPLEXITY", "?ratingArea=ECONOMIC"};
+
+        for(String ratingArea: ratingAreas){
+            ResponseEntity<String> response = restTemplate.exchange(
+                    host + port + ratings + ratingArea,
+                    HttpMethod.GET,
+                    null,
+                    String.class);
+
+            assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+//        System.out.println("Response Status: " + response.getStatusCode());
+        }
+    }
+
     @Test
     public void notAllowedMethodsProductAreas() throws Exception {
 
         HttpMethod[] notAllowed = new HttpMethod[]{HttpMethod.POST,HttpMethod.PUT, HttpMethod.DELETE};
         for (HttpMethod httpMethod : notAllowed) {
             ResponseEntity<String> response = restTemplate.exchange(
-                    host + port + productAreas,
+                    host + port + ratings,
                     httpMethod,
                     null,
                     String.class);

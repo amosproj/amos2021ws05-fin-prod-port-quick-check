@@ -8,13 +8,15 @@ public class UserDto {
 
     public UUID id;
 
+    public String username;
+
     public String email;
 
     public String password;
 
     public Role role;
 
-    public UserDto(){};
+    public UserDto(){}
 
     public UserDto(String email)
     {
@@ -27,10 +29,11 @@ public class UserDto {
         this.role = role;
     }
 
-    public UserDto(UUID userID, String email)
+    public UserDto(UUID userID, String email, String username)
     {
         this.id = userID;
-        this.email=email;
+        this.email = email;
+        this.username = username;
     }
 
     public UserDto(UUID userID, String email, Role role)

@@ -29,7 +29,7 @@ public class ProjectService {
         this.productRepository = productRepository;
     }
 
-    // only return projectId, projectName
+
     public List<SmallProjectDto> getAllProjects(){
 
         List<SmallProjectDto> smallProjectDtos = new ArrayList<>() {
@@ -55,7 +55,7 @@ public class ProjectService {
         for (int productArea : projectDto.productAreas){
 
             ProductEntity product = new ProductEntity();
-            product.projectid = newProject.id;
+            product.projectid = newProject;
             product.productareaid = productArea;
             product.name = "DUMMY";
             productRepository.save(product);
@@ -67,7 +67,6 @@ public class ProjectService {
     }
 
 
-    // TODO: hier fehlen noch die members
     public ProjectDto findById(int projectID) {
 
         Optional<ProjectEntity> projectEntity = projectRepository.findById(projectID);
@@ -75,16 +74,15 @@ public class ProjectService {
         if (projectEntity.isEmpty()) {
             throw new ResourceNotFound("projectID " + projectID + " not found");
         }else{
-            Integer[] members = {99};
             return new ProjectDto(projectEntity.get().id, projectEntity.get().name,
-                    projectEntity.get().creator_id, members, projectEntity.get().productEntities);
+                    projectEntity.get().creator_id, projectEntity.get().productEntities,
+                    projectEntity.get().projectUserEntities);
         }
 
     }
 
 
-    // TODO: hier fehlt noch das update von den members
-    public void updateById(ProjectDto projectDto, Integer projectID) {
+    public void updateById(ProjectDto projectDto, int projectID) {
 
         if (!projectRepository.existsById(projectID)) {
             throw new ResourceNotFound("projectID " + projectID + " not found");
@@ -93,34 +91,35 @@ public class ProjectService {
             // update project name
             projectRepository.findById(projectID).map(
                     project -> {
-                        project.name = projectDto.projectName;
-                        project.creator_id = projectDto.creatorID;
+                        if(projectDto.projectName != null){project.name = projectDto.projectName;}
+
                         return projectRepository.save(project);
                     });
+
 
             // add none existing product areas
             for (int productArea : projectDto.productAreas){
 
-                if(!productRepository.existsByProjectidAndProductareaid(projectID, productArea)){
+                if(!productRepository.existsByProjectidAndProductareaid(projectRepository.findById(projectID).get(),
+                        productArea)){
                     ProductEntity product = new ProductEntity();
-                    product.projectid = projectID;
+                    product.projectid = projectRepository.findById(projectID).get();
                     product.productareaid = productArea;
                     product.name = "DUMMY";
                     productRepository.save(product);
-
                 }
             }
         }
     }
 
-
-    public void deleteProject(int projectID) {
-        Optional<ProjectEntity> projectEntity = projectRepository.findById(projectID);
-        if (projectEntity.isEmpty()) {
-            throw new ResourceNotFound("projectID " + projectID + " not found");
-        }else{
-            projectRepository.deleteById(projectID);
-        }
-    }
+// TODO: auskommentiert lassen bisher keine Anforderung dafür vorhanden
+//    public void deleteProject(int projectID) {
+//        Optional<ProjectEntity> projectEntity = projectRepository.findById(projectID);
+//        if (projectEntity.isEmpty()) {
+//            throw new ResourceNotFound("projectID " + projectID + " not found");
+//        }else{
+//            projectRepository.deleteById(projectID);
+//        }
+//    }
 
 }
