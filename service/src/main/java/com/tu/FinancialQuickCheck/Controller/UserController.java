@@ -32,19 +32,29 @@ public class UserController {
         return userService.createUser(userDto);
     }
 
-    @GetMapping("/{email}")
-    public UserDto findById(@PathVariable String email){
-        return userService.findById(UUID.fromString(email));
+    @GetMapping("email/{email}")
+    public UserDto findByEmail(@PathVariable String email){
+        return userService.findByEmail(email);
     }
 
-    @PutMapping("/{email}")
-    public void updateUserById(@RequestBody UserDto userDto, @PathVariable String email){
-        userService.updateById(userDto, UUID.fromString(email));
+    @PutMapping("email/{email}")
+    public void updateUserByEmail(@RequestBody UserDto userDto, @PathVariable String email){
+        userService.updateByEmail(userDto, email);
     }
 
-    @DeleteMapping("/{email}")
-    void deleteById(@PathVariable String email){
-        userService.deleteUser(UUID.fromString(email));
+    @PutMapping("/{userID}")
+    public void updateUserByUserID(@RequestBody UserDto userDto, @PathVariable String userID){
+        userService.updateByUserID(userDto, userID);
+    }
+
+    @DeleteMapping("email/{email}")
+    void deleteByEmail(@PathVariable String email){
+        userService.deleteUser(email);
+    }
+
+    @DeleteMapping("/{userID}")
+    void deleteByUserId(@PathVariable String userID){
+        userService.deleteUserById(userID);
     }
 
 }
