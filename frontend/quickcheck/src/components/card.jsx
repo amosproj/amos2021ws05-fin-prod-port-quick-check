@@ -1,5 +1,12 @@
-import React from 'react';
-import { Heading, Stack, Text, Button, Box, SimpleGrid } from '@chakra-ui/react';
+import React from "react";
+import {
+  Heading,
+  Stack,
+  Text,
+  Button,
+  Box,
+  SimpleGrid,
+} from "@chakra-ui/react";
 
 function CardLabel(props) {
   return (
@@ -7,7 +14,7 @@ function CardLabel(props) {
       <Text fontWeight={600} fontSize="md">
         {props.value}
       </Text>
-      <Text fontSize={'sm'} color="gray.500" justify="right">
+      <Text fontSize={"sm"} color="gray.500" justify="right">
         {props.name}
       </Text>
     </Stack>
@@ -25,7 +32,12 @@ function Card(props) {
       alignItems="center"
       minW="12em"
     >
-      <Heading size="lg" color="teal.400" align="center" py={{ base: 4, md: 0 }}>
+      <Heading
+        size="lg"
+        color="teal.400"
+        align="center"
+        py={{ base: 4, md: 0 }}
+      >
         {props.title}
       </Heading>
 
@@ -42,7 +54,12 @@ function Card(props) {
 
         <Box align="center">
           {props.buttonLabel ? (
-            <Button bg="teal.400" align="center" _hover={{ bg: 'teal.500' }} w={24}>
+            <Button
+              bg="teal.400"
+              align="center"
+              _hover={{ bg: "teal.500" }}
+              w={24}
+            >
               {props.buttonLabel}
             </Button>
           ) : (

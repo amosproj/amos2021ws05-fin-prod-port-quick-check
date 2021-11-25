@@ -1,25 +1,25 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import Menubar from '../components/Menubar';
-import Card from '../components/card';
-import { VStack, List, Button, Box } from '@chakra-ui/react';
+import Menubar from "../components/Menubar";
+import Card from "../components/card";
+import { VStack, List, Button, Box } from "@chakra-ui/react";
 
 const mocks = {
   projects: [
     {
-      title: 'Volksbank berlin brandenburg',
-      lastEdit: 'November 12',
-      role: 'Consultant',
+      title: "Volksbank berlin brandenburg",
+      lastEdit: "November 12",
+      role: "Consultant",
     },
     {
-      title: 'ING',
-      lastEdit: 'Today',
-      role: 'Project Manager',
+      title: "ING",
+      lastEdit: "Today",
+      role: "Project Manager",
     },
     {
-      title: 'Sparkasse Berlin',
-      lastEdit: '10.10.2020',
-      role: 'Consultant',
+      title: "Sparkasse Berlin",
+      lastEdit: "10.10.2020",
+      role: "Consultant",
     },
   ],
 };
@@ -30,8 +30,8 @@ function ProjectCard(props) {
       title={props.project.title}
       buttonLabel="open"
       labels={[
-        ['Role', props.project.role],
-        ['Last edited', props.project.lastEdit],
+        ["Role", props.project.role],
+        ["Last edited", props.project.lastEdit],
       ]}
     ></Card>
   );
@@ -47,7 +47,7 @@ export class ProjectOverview extends Component {
   }
 
   componentDidMount() {
-    fetch('https://randomuser.me/api/')
+    fetch("https://randomuser.me/api/")
       .then((response) => response.json())
       .then((data) => this.setState(data));
     console.log(this.state.data);
