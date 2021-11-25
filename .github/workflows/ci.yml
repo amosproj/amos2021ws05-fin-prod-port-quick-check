@@ -1,0 +1,27 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  prettier:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        ref: ${{ github.head_ref }}
+        # Make sure the value of GITHUB_TOKEN will not be persisted in repo's config
+        persist-credentials: false
+
+    - name: Prettify code
+      uses: creyD/prettier_action@v4.0
+      with:
+        dry: False
+        prettier_options: --write **/*.{js,jsx}
+        # only_changed: true
