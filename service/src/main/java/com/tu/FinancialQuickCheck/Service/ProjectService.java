@@ -21,13 +21,17 @@ public class ProjectService {
     private ProjectRepository projectRepository;
     private ProductRepository productRepository;
 
-//    @Autowired
+
     public ProjectService(ProjectRepository projectRepository, ProductRepository productRepository) {
         this.projectRepository = projectRepository;
         this.productRepository = productRepository;
     }
 
-
+    /**
+     * lookup of all ProjectEntities in DB
+     *
+     * @return List<SmallProjectDto> only provides projectID and projectName
+     */
     public List<SmallProjectDto> getAllProjects(){
 
         List<SmallProjectDto> smallProjectDtos = new ArrayList<>() {
@@ -43,10 +47,10 @@ public class ProjectService {
 
 
     /**
-     * adds a new ProjectEntity to DB and returns a ProjectDto including created projectID
+     * adds a new ProjectEntity to DB
      * required information: see Project.yaml
      * TODO: creator_id muss noch in members mit aufgenommen werden --> output und tests entsprechend anpassen
-     * @return ProjectDto projectDto
+     * @return ProjectDto projectDto including created projectID
      */
     public ProjectDto createProject(ProjectDto projectDto) {
         if(projectDto.projectName != null && projectDto.productAreas != null && projectDto.creatorID != null){
@@ -74,8 +78,13 @@ public class ProjectService {
         }
     }
 
-
-    public ProjectDto findById(int projectID) {
+    /**
+     * lookup of ProjectEntity in DB based on projectID
+     *
+     * @param projectID unique identifier for ProjectEntity
+     * @return ProjectDto
+     */
+    public ProjectDto getProjectById(int projectID) {
 
         Optional<ProjectEntity> projectEntity = projectRepository.findById(projectID);
 
