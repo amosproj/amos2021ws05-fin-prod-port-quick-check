@@ -15,7 +15,7 @@ public class ProjectDto {
 
     public int projectID;
     public String projectName;
-    public int creatorID;
+    public UUID creatorID;
     public HashSet<UUID> members;
     public HashSet<Integer> productAreas;
 //    public List<Product> products;
@@ -27,7 +27,7 @@ public class ProjectDto {
         this.projectID = projectID;
     }
 
-    public ProjectDto(int projectID, String projectName, int creatorID,
+    public ProjectDto(int projectID, String projectName, UUID creatorID,
                       List<ProductEntity> productEntity, List<ProjectUserEntity> projectUserEntities){
         this.projectID = projectID;
         this.projectName = projectName;

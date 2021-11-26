@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ProjectService {
@@ -47,7 +48,7 @@ public class ProjectService {
     public ProjectDto createProject(ProjectDto projectDto) {
         // create db entry
         ProjectEntity newProject = new ProjectEntity();
-        newProject.creator_id = projectDto.creatorID;
+        newProject.creator_id = projectDto.creatorID.toString();
         newProject.name = projectDto.projectName;
         projectRepository.save(newProject);
 
@@ -75,7 +76,7 @@ public class ProjectService {
             throw new ResourceNotFound("projectID " + projectID + " not found");
         }else{
             return new ProjectDto(projectEntity.get().id, projectEntity.get().name,
-                    projectEntity.get().creator_id, projectEntity.get().productEntities,
+                    UUID.fromString(projectEntity.get().creator_id), projectEntity.get().productEntities,
                     projectEntity.get().projectUserEntities);
         }
 
