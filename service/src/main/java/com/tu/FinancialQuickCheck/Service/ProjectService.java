@@ -17,7 +17,6 @@ import java.util.UUID;
 @Service
 public class ProjectService {
 
-
     private ProjectRepository projectRepository;
     private ProductRepository productRepository;
 
@@ -26,6 +25,7 @@ public class ProjectService {
         this.projectRepository = projectRepository;
         this.productRepository = productRepository;
     }
+
 
     /**
      * lookup of all ProjectEntities in DB
@@ -78,6 +78,7 @@ public class ProjectService {
         }
     }
 
+
     /**
      * lookup of ProjectEntity in DB based on projectID
      *
@@ -99,7 +100,14 @@ public class ProjectService {
     }
 
 
-    public void updateById(ProjectDto projectDto, int projectID) {
+    /**
+     * updates an existing ProjectEntity in DB
+     * attributes that can be updated: projectName, productAreas
+     * attributes that can not be updated: members, creator_id, projectID
+     * @param projectID unique identifier for ProjectEntity
+     * @param projectDto contains data that needs to changed
+     */
+    public void updateProject(ProjectDto projectDto, int projectID) {
 
         if (!projectRepository.existsById(projectID)) {
             throw new ResourceNotFound("projectID " + projectID + " not found");
