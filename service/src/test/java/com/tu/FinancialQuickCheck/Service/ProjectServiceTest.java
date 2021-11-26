@@ -28,6 +28,8 @@ public class ProjectServiceTest {
     ProjectRepository projectRepository;
     @Mock
     ProductRepository productRepository;
+    @Mock
+    ProductAreaRepository productAreaRepository;
 
     private ProjectService service;
 
@@ -36,13 +38,17 @@ public class ProjectServiceTest {
     private String projectName1;
     private UUID creator_id;
     private HashSet<Integer> productAreas;
+    private HashSet<Integer> productAreasDoNotExist;
     private HashSet<UUID> members;
+
+    private ProjectEntity entity;
+    private int projectID;
 
     @BeforeEach
     public void init() {
         log.info("@BeforeEach - setup for Tests in ProjectServiceTest.class");
         // init ProjectService
-        service = new ProjectService(projectRepository, productRepository);
+        service = new ProjectService(projectRepository, productRepository, productAreaRepository);
         // init empty test object
         emptyProject = new ProjectDto();
         // init necessary information for test objects
@@ -50,9 +56,37 @@ public class ProjectServiceTest {
         projectName = "DKB";
         projectName1 = "Sparkasse";
         productAreas = new HashSet<>(Arrays.asList(1,2,3));
+        productAreasDoNotExist = new HashSet<>(Arrays.asList(7));
         members = new HashSet<>(Arrays.asList(
                 UUID.fromString("2375e026-d348-4fb6-b42b-891a76758d5d"),
                 UUID.fromString("0fef539d-69be-4013-9380-6a12c3534c67")));
+
+        // init ProjectEntity
+        entity = new ProjectEntity();
+        List<ProductEntity> productEntities = new ArrayList<>();
+        for(int i = 1; i <= 3; i++){
+            ProductEntity product = new ProductEntity();
+            product.name = "DUMMY";
+            product.productareaid = i;
+            productEntities.add(product);
+        }
+
+        List<ProjectUserEntity> projectUserEntities = new ArrayList<>();
+        for(int i = 0; i < 1; i++){
+            ProjectEntity p = new ProjectEntity();
+            UserEntity u = new UserEntity();
+            u.id = creator_id.toString();
+            ProjectUserEntity tmp = new ProjectUserEntity();
+            tmp.projectUserId = new ProjectUserId(p, u);
+            tmp.role = PROJECT_MANAGER;
+            projectUserEntities.add(tmp);
+        }
+
+        projectID = entity.id;
+        entity.name = projectName;
+        entity.creator_id = creator_id.toString();
+        entity.productEntities = productEntities;
+        entity.projectUserEntities = projectUserEntities;
     }
     
     
@@ -90,11 +124,8 @@ public class ProjectServiceTest {
         projects.add(project1);
         projects.add(project2);
 
-        Iterable<ProjectEntity> projectEntities = projects;
-
-
         // Step 2: provide knowledge
-        when(projectRepository.findAll()).thenReturn(projectEntities);
+        when(projectRepository.findAll()).thenReturn(projects);
 
         // Step 3: execute getProjectById()
         List<SmallProjectDto> projectsOut = service.getAllProjects();
@@ -274,16 +305,11 @@ public class ProjectServiceTest {
      *                      --> throw Exception BadRequest
      * testUpdateProject3: input contains more than required information
      *                      --> ProjectEntity attributes are updated accordingly and additional information is ignored
-     * testUpdateProject3: projectID does not exists
+     * testUpdateProject4: projectID does not exists
+     *                     --> throw Exception ResourceNotFound
+     * testUpdateProject5: productArea does not exist
      *                     --> throw Exception ResourceNotFound
      */
-//    @Test
-//    public void testUpdateProject1() {
-//        //testcase 1: attributes are updated correctly (changes only on provided attributes)
-//        //testcase 2: attributes that are not supposed to be updated, keep the same value
-//        //testcase 3: missing projectID
-//    }
-
 
     @Test
     public void testUpdateProject4() {
@@ -291,6 +317,29 @@ public class ProjectServiceTest {
                 -> service.updateProject(new ProjectDto(),1));
 
         String expectedMessage = "projectID 1 not found";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+
+    }
+
+    @Test
+    public void testUpdateProject5() {
+        // Step 1: init test object
+        ProjectDto project = new ProjectDto();
+        project.projectName = projectName;
+        project.productAreas = productAreasDoNotExist;
+
+        //Step 2: provide knowledge
+        when(projectRepository.existsById(1)).thenReturn(true);
+        when(projectRepository.findById(1)).thenReturn(Optional.of(entity));
+        when(productAreaRepository.existsById(7)).thenReturn(false);
+
+        //Step 3: execute updateProject()
+        Exception exception = assertThrows(ResourceNotFound.class, ()
+                -> service.updateProject(project,1));
+
+        String expectedMessage = "productArea 7 does not exist";
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
