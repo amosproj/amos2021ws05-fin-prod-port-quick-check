@@ -1,10 +1,8 @@
 package com.tu.FinancialQuickCheck.Service;
 
+import com.tu.FinancialQuickCheck.Exceptions.BadRequest;
 import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
-import com.tu.FinancialQuickCheck.db.ProductRepository;
-import com.tu.FinancialQuickCheck.db.ProjectEntity;
-import com.tu.FinancialQuickCheck.db.ProductEntity;
-import com.tu.FinancialQuickCheck.db.ProjectRepository;
+import com.tu.FinancialQuickCheck.db.*;
 import com.tu.FinancialQuickCheck.dto.ProjectDto;
 import com.tu.FinancialQuickCheck.dto.SmallProjectDto;
 import org.springframework.stereotype.Service;
@@ -19,11 +17,14 @@ public class ProjectService {
 
     private ProjectRepository projectRepository;
     private ProductRepository productRepository;
+    private ProductAreaRepository productAreaRepository;
 
 
-    public ProjectService(ProjectRepository projectRepository, ProductRepository productRepository) {
+    public ProjectService(ProjectRepository projectRepository, ProductRepository productRepository,
+                          ProductAreaRepository productAreaRepository) {
         this.projectRepository = projectRepository;
         this.productRepository = productRepository;
+        this.productAreaRepository = productAreaRepository;
     }
 
 
@@ -111,29 +112,33 @@ public class ProjectService {
 
         if (!projectRepository.existsById(projectID)) {
             throw new ResourceNotFound("projectID " + projectID + " not found");
+        } else if(projectDto.projectName == null && projectDto.productAreas == null) {
+            throw new BadRequest("Nothing to update.");
         }else{
 
+            ProjectEntity entity = projectRepository.findById(projectID).get();
+
             // update project name
-            projectRepository.findById(projectID).map(
-                    project -> {
-                        if(projectDto.projectName != null){project.name = projectDto.projectName;}
-
-                        return projectRepository.save(project);
-                    });
-
+            if(projectDto.projectName != null){entity.name = projectDto.projectName;}
 
             // add none existing product areas
-            for (int productArea : projectDto.productAreas){
-
-                if(!productRepository.existsByProjectidAndProductareaid(projectRepository.findById(projectID).get(),
-                        productArea)){
-                    ProductEntity product = new ProductEntity();
-                    product.projectid = projectRepository.findById(projectID).get();
-                    product.productareaid = productArea;
-                    product.name = "DUMMY";
-                    productRepository.save(product);
+            if(projectDto.productAreas != null){
+                for (int productArea : projectDto.productAreas){
+                    if(productAreaRepository.existsById(productArea)){
+                        if(!productRepository.existsByProjectidAndProductareaid(entity, productArea)){
+                            ProductEntity product = new ProductEntity();
+                            product.projectid = entity;
+                            product.productareaid = productArea;
+                            product.name = "DUMMY";
+                            entity.productEntities.add(product);
+                        }
+                    }else{
+                        throw new ResourceNotFound("productArea " + productArea + " does not exist");
+                    }
                 }
             }
+
+            projectRepository.save(entity);
         }
     }
 

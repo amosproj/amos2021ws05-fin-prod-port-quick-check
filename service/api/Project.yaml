@@ -75,6 +75,8 @@ paths:
       responses:
         200:
           description: project updated successfully
+        400:
+          $ref: '#/components/responses/400badrequest'
         401:
           $ref: '#/components/responses/401unauthorized'
         404:
