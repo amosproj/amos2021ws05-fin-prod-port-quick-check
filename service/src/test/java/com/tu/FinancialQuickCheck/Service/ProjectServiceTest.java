@@ -2,6 +2,7 @@ package com.tu.FinancialQuickCheck.Service;
 
 import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.db.*;
+import com.tu.FinancialQuickCheck.dto.SmallProjectDto;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -10,8 +11,8 @@ import com.tu.FinancialQuickCheck.dto.ProjectDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
-
 import static com.tu.FinancialQuickCheck.Role.PROJECT_MANAGER;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -32,6 +33,7 @@ public class ProjectServiceTest {
 
     private ProjectDto emptyProject;
     private String projectName;
+    private String projectName1;
     private UUID creator_id;
     private HashSet<Integer> productAreas;
     private HashSet<UUID> members;
@@ -46,24 +48,66 @@ public class ProjectServiceTest {
         // init necessary information for test objects
         creator_id = UUID.fromString("2375e026-d348-4fb6-b42b-891a76758d5d");
         projectName = "DKB";
+        projectName1 = "Sparkasse";
         productAreas = new HashSet<>(Arrays.asList(1,2,3));
         members = new HashSet<>(Arrays.asList(
                 UUID.fromString("2375e026-d348-4fb6-b42b-891a76758d5d"),
                 UUID.fromString("0fef539d-69be-4013-9380-6a12c3534c67")));
     }
     
-
+    
     /**
-     * retrieves all project entities
-     * TODO: test output against api definition
-     * List<SmallProjectDto>
+     * tests for getAllProjects()
+     *
+     * testGetAllProjects1: no projects exist --> return empty List<SmallProjectDto> 
+     * testGetAllProjects2: projects exist --> return List<SmallProjectDto>
      */
-//    @Test
-//    @Disabled("Not implemented yet")
-//    public void testGetAllProjects() {
-//        // testcase 1: data retrieved correctly
-//        // testcase 2: data not retrieved correctly
-//    }
+    @Test
+    public void testGetAllProjects1() {
+        // Step 1: init test object         
+        Iterable<ProjectEntity> projectEntities = Collections.EMPTY_LIST;
+        
+        // Step 2: provide knowledge
+        when(projectRepository.findAll()).thenReturn(projectEntities);
+
+        // Step 3: execute getProjectById()
+        List<SmallProjectDto> projectsOut = service.getAllProjects();
+        List<SmallProjectDto> expected = new ArrayList<>();
+
+        assertEquals(expected, projectsOut);
+    }
+
+
+    @Test
+    public void testGetAllProjects2() {
+        // Step 1: init test object
+        ProjectEntity project1 = new ProjectEntity();
+        project1.name = projectName;
+        ProjectEntity project2 = new ProjectEntity();
+        project2.name = projectName1;
+
+        List<ProjectEntity> projects = new ArrayList<>();
+        projects.add(project1);
+        projects.add(project2);
+
+        Iterable<ProjectEntity> projectEntities = projects;
+
+
+        // Step 2: provide knowledge
+        when(projectRepository.findAll()).thenReturn(projectEntities);
+
+        // Step 3: execute getProjectById()
+        List<SmallProjectDto> projectsOut = service.getAllProjects();
+
+        projectsOut.forEach(
+                project -> assertAll("get Projects",
+                        () -> assertNotNull(project.projectName),
+                        () -> assertNotNull(project.projectID)
+                    )
+                );
+
+        assertThat(projectsOut.size()).isGreaterThanOrEqualTo(2);
+    }
 
 
     /**
@@ -72,7 +116,7 @@ public class ProjectServiceTest {
      * testCreateProject1: input contains required information
      *                      --> project is created correctly and projectID returned
      * testCreateProject2: input missing required information
-     *                      --> output = null
+     *                      --> output == null
      * testCreateProject3: input contains more than required information
      *                      --> project is created correctly, projectID returned and additional information is ignored
      */
@@ -100,6 +144,7 @@ public class ProjectServiceTest {
         }
     }
 
+
     @Test
     public void testCreateProject2() {
         // Step 1: init test object
@@ -119,8 +164,10 @@ public class ProjectServiceTest {
         assertNull(service.createProject(project1));
         assertNull(service.createProject(project2));
         assertNull(service.createProject(project3));
+        assertNull(service.createProject(emptyProject));
 
     }
+
 
     @Test
     public void testCreateProject3() {
@@ -202,9 +249,8 @@ public class ProjectServiceTest {
                 () -> assertEquals(new HashSet<>(Collections.singletonList(creator_id)) , projectOut.members),
                 () -> assertEquals(projectID, projectOut.projectID)
         );
-
-
     }
+
 
     @Test
     public void testFindById2() {
@@ -220,19 +266,36 @@ public class ProjectServiceTest {
 
 
     /**
-     * updates one project entity
-     * TODO: test output against api definition
-     * parameter: ProjectDto projectDto
-     * parameter: int projectID
-     * return: ProjectDto
+     * tests for updateProject()
+     *
+     * testUpdateProject1: input contains required information
+     *                      --> ProjectEntity attributes are updated accordingly
+     * testUpdateProject2: input missing required information
+     *                      --> throw Exception BadRequest
+     * testUpdateProject3: input contains more than required information
+     *                      --> ProjectEntity attributes are updated accordingly and additional information is ignored
+     * testUpdateProject3: projectID does not exists
+     *                     --> throw Exception ResourceNotFound
      */
 //    @Test
-//    @Disabled("Not implemented yet")
-//    public void testUpdateById() {
+//    public void testUpdateProject1() {
 //        //testcase 1: attributes are updated correctly (changes only on provided attributes)
 //        //testcase 2: attributes that are not supposed to be updated, keep the same value
 //        //testcase 3: missing projectID
 //    }
+
+
+    @Test
+    public void testUpdateProject4() {
+        Exception exception = assertThrows(ResourceNotFound.class, ()
+                -> service.updateProject(new ProjectDto(),1));
+
+        String expectedMessage = "projectID 1 not found";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+
+    }
 
 
 
