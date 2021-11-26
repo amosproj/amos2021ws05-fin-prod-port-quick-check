@@ -27,6 +27,12 @@ public class ProjectDto {
         this.projectID = projectID;
     }
 
+    public ProjectDto(UUID creator_id, String projectName, HashSet<Integer> productAreas){
+        this.creatorID = creator_id;
+        this.projectName = projectName;
+        this.productAreas = productAreas;
+    }
+
     public ProjectDto(int projectID, String projectName, UUID creatorID,
                       List<ProductEntity> productEntity, List<ProjectUserEntity> projectUserEntities){
         this.projectID = projectID;
