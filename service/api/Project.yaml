@@ -37,6 +37,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/project'
+        400:
+          $ref: '#/components/responses/400badrequest'
         401:
           $ref: '#/components/responses/401unauthorized'
         '5XX':
@@ -120,7 +122,9 @@ components:
           type: integer
           required: false
         creatorID:
-          type: integer
+          type: string
+          description: UUID of user who creates project
+          example: "2375e026-d348-4fb6-b42b-891a76758d5d"
           required: true
         projectName:
           type: string
@@ -166,6 +170,12 @@ components:
             type: string
     401unauthorized:
       description: User not authenticated
+      content:
+        application/json:
+          schema:
+            type: string
+    400badrequest:
+      description: request is missing required information
       content:
         application/json:
           schema:
