@@ -1,10 +1,8 @@
 package com.tu.FinancialQuickCheck.Service;
 
-import com.tu.FinancialQuickCheck.db.ProductRepository;
-import com.tu.FinancialQuickCheck.db.ProjectRepository;
+import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
+import com.tu.FinancialQuickCheck.db.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import com.tu.FinancialQuickCheck.dto.ProjectDto;
@@ -13,8 +11,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
 
-
+import static com.tu.FinancialQuickCheck.Role.PROJECT_MANAGER;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -35,6 +34,7 @@ public class ProjectServiceTest {
     private String projectName;
     private UUID creator_id;
     private HashSet<Integer> productAreas;
+    private HashSet<UUID> members;
 
     @BeforeEach
     public void init() {
@@ -47,6 +47,9 @@ public class ProjectServiceTest {
         creator_id = UUID.fromString("2375e026-d348-4fb6-b42b-891a76758d5d");
         projectName = "DKB";
         productAreas = new HashSet<>(Arrays.asList(1,2,3));
+        members = new HashSet<>(Arrays.asList(
+                UUID.fromString("2375e026-d348-4fb6-b42b-891a76758d5d"),
+                UUID.fromString("0fef539d-69be-4013-9380-6a12c3534c67")));
     }
     
 
@@ -128,9 +131,7 @@ public class ProjectServiceTest {
             projectIn.projectName = projectName;
             projectIn.productAreas = productAreas;
             projectIn.projectID = 1;
-            projectIn.members = new HashSet<>(Arrays.asList(
-                    UUID.fromString("2375e026-d348-4fb6-b42b-891a76758d5d"),
-                    UUID.fromString("0fef539d-69be-4013-9380-6a12c3534c67")));
+            projectIn.members = members;
 
             // Step 2: execute createProject()
             log.info("@Test createProject()- test object : " + projectIn.projectName);
@@ -149,20 +150,72 @@ public class ProjectServiceTest {
     }
 
 
-
     /**
-     * retrieves one project entity
-     * TODO: test output against api definition
-     * parameter: projectID
-     * return: ProjectDto
+     * tests for findById()
+     *
+     * testFindById1: projectID exists
+     *                  --> return projectDto for projectID
+     * testFindById2: projectID does not exists
+     *                  --> throw Exception ResourceNotFound
      */
-//    @Test
-//    @Disabled("Not implemented yet")
-//    public void testFindById() {
-//        //testcase 1: projectID is missing
-//        //testcase 2: projectID does not exist
-//        //testcase 3: data retrieved correctly
-//    }
+    @Test
+    public void testFindById1() {
+        // Step 1: init test object
+        List<ProductEntity> productEntities = new ArrayList<>();
+        for(int i = 1; i <= 3; i++){
+            ProductEntity product = new ProductEntity();
+            product.name = "DUMMY";
+            product.productareaid = i;
+            productEntities.add(product);
+        }
+
+        List<ProjectUserEntity> projectUserEntities = new ArrayList<>();
+        for(int i = 0; i < 1; i++){
+            ProjectEntity p = new ProjectEntity();
+            UserEntity u = new UserEntity();
+            u.id = creator_id.toString();
+            ProjectUserEntity tmp = new ProjectUserEntity();
+            tmp.projectUserId = new ProjectUserId(p, u);
+            tmp.role = PROJECT_MANAGER;
+            projectUserEntities.add(tmp);
+        }
+
+        int projectID;
+        ProjectEntity project = new ProjectEntity();
+        projectID = project.id;
+        project.name = projectName;
+        project.creator_id = creator_id.toString();
+        project.productEntities = productEntities;
+        project.projectUserEntities = projectUserEntities;
+
+
+        // Step 2: provide knowledge
+        when(projectRepository.findById(projectID)).thenReturn(Optional.of(project));
+
+        // Step 3: execute getProjectById()
+        ProjectDto projectOut = service.getProjectById(projectID);
+
+        assertAll("createProject",
+                () -> assertEquals(projectName, projectOut.projectName),
+                () -> assertEquals(creator_id, projectOut.creatorID),
+                () -> assertEquals(productAreas, projectOut.productAreas),
+                () -> assertEquals(new HashSet<>(Collections.singletonList(creator_id)) , projectOut.members),
+                () -> assertEquals(projectID, projectOut.projectID)
+        );
+
+
+    }
+
+    @Test
+    public void testFindById2() {
+        Exception exception = assertThrows(ResourceNotFound.class, () -> service.getProjectById(1));
+
+        String expectedMessage = "projectID 1 not found";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+
+    }
 
 
 
