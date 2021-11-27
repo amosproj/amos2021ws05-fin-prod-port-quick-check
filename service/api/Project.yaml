@@ -94,6 +94,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/productArea'
+        404:
+          $ref: '#/components/responses/404notfound'
       
 
 

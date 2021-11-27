@@ -4,7 +4,6 @@ import com.tu.FinancialQuickCheck.db.ProductAreaEntity;
 import com.tu.FinancialQuickCheck.db.ProductAreaRepository;
 import com.tu.FinancialQuickCheck.dto.ProductAreaDto;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,7 +14,6 @@ public class ProductAreaService {
 
     private ProductAreaRepository repository;
 
-    @Autowired
     public ProductAreaService(ProductAreaRepository productAreaRepository) {
         this.repository = productAreaRepository;
     }
@@ -33,14 +31,20 @@ public class ProductAreaService {
         return productAreaDtos;
     }
 
-    public void createProductArea(ProductAreaDto productArea) {
+    // TODO: check einbauen, ob Kombination aus Name und Category bereits besteht (wie geht man mit Rechtschreibfehlern um?)
+    public ProductAreaDto createProductArea(ProductAreaDto productArea) {
 
-        ProductAreaEntity newEntity = new ProductAreaEntity();
-        newEntity.category = productArea.category;
-        newEntity.name = productArea.name;
+        if(productArea.name != null && productArea.category != null ){
+            ProductAreaEntity newEntity = new ProductAreaEntity();
+            newEntity.category = productArea.category;
+            newEntity.name = productArea.name;
 
-        repository.save(newEntity);
+            repository.save(newEntity);
 
+            return new ProductAreaDto(newEntity.id, newEntity.name, newEntity.category);
+        }else{
+            return null;
+        }
     }
 
 }
