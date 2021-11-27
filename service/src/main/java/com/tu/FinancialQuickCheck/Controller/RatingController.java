@@ -1,9 +1,9 @@
 package com.tu.FinancialQuickCheck.Controller;
 
+import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.RatingArea;
 import com.tu.FinancialQuickCheck.Service.RatingService;
 import com.tu.FinancialQuickCheck.dto.RatingDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,16 +12,21 @@ import java.util.List;
 @RequestMapping("ratings")
 public class RatingController {
 
-    @Autowired
-    private RatingService ratingService;
+    private RatingService service;
 
+    public RatingController(RatingService ratingService){
+        this.service = ratingService;
+    }
 
     @GetMapping(produces = "application/json")
     public List<RatingDto> getRatings(@RequestParam(required = false) RatingArea ratingArea) {
-        if(ratingArea == null){
-            return ratingService.getAllRatings();
-        }else {
-            return ratingService.getRatingsByRatingArea(ratingArea);
+
+        List<RatingDto> r = (ratingArea == null) ? service.getAllRatings() : service.getRatingsByRatingArea(ratingArea);
+
+        if(r.isEmpty()){
+            throw new ResourceNotFound("No Ratings found.");
+        }else{
+            return r;
         }
     }
 }
