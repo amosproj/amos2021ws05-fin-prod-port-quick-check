@@ -41,7 +41,7 @@ public class ProductAreaServiceTest {
 
     @BeforeEach
     public void init() {
-        log.info("@BeforeEach - setup for Tests in ProjectServiceTest.class");
+        log.info("@BeforeEach - setup for Tests in ProductAreaServiceTest.class");
 
         service = new ProductAreaService(productAreaRepository);
 
