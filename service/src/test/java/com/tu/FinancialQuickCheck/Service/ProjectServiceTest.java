@@ -1,5 +1,6 @@
 package com.tu.FinancialQuickCheck.Service;
 
+import com.tu.FinancialQuickCheck.Exceptions.BadRequest;
 import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.db.*;
 import com.tu.FinancialQuickCheck.dto.SmallProjectDto;
@@ -38,6 +39,7 @@ public class ProjectServiceTest {
     private String projectName1;
     private UUID creator_id;
     private HashSet<Integer> productAreas;
+    private HashSet<Integer> newProductAreas;
     private HashSet<Integer> productAreasDoNotExist;
     private HashSet<UUID> members;
 
@@ -56,6 +58,7 @@ public class ProjectServiceTest {
         projectName = "DKB";
         projectName1 = "Sparkasse";
         productAreas = new HashSet<>(Arrays.asList(1,2,3));
+        newProductAreas = new HashSet<>(Arrays.asList(4,5));
         productAreasDoNotExist = new HashSet<>(Arrays.asList(7));
         members = new HashSet<>(Arrays.asList(
                 UUID.fromString("2375e026-d348-4fb6-b42b-891a76758d5d"),
@@ -221,6 +224,7 @@ public class ProjectServiceTest {
                     () -> assertEquals(projectName, projectOut.projectName),
                     () -> assertEquals(creator_id, projectOut.creatorID),
                     () -> assertEquals(productAreas, projectOut.productAreas),
+                    () -> assertNotEquals(projectIn.projectID, projectOut.projectID),
                     () -> assertNull(projectOut.members),
                     () -> assertNotNull(projectOut)
             );
@@ -239,36 +243,10 @@ public class ProjectServiceTest {
     @Test
     public void testFindById1() {
         // Step 1: init test object
-        List<ProductEntity> productEntities = new ArrayList<>();
-        for(int i = 1; i <= 3; i++){
-            ProductEntity product = new ProductEntity();
-            product.name = "DUMMY";
-            product.productareaid = i;
-            productEntities.add(product);
-        }
-
-        List<ProjectUserEntity> projectUserEntities = new ArrayList<>();
-        for(int i = 0; i < 1; i++){
-            ProjectEntity p = new ProjectEntity();
-            UserEntity u = new UserEntity();
-            u.id = creator_id.toString();
-            ProjectUserEntity tmp = new ProjectUserEntity();
-            tmp.projectUserId = new ProjectUserId(p, u);
-            tmp.role = PROJECT_MANAGER;
-            projectUserEntities.add(tmp);
-        }
-
-        int projectID;
-        ProjectEntity project = new ProjectEntity();
-        projectID = project.id;
-        project.name = projectName;
-        project.creator_id = creator_id.toString();
-        project.productEntities = productEntities;
-        project.projectUserEntities = projectUserEntities;
-
+        // refer to @BeforeEach
 
         // Step 2: provide knowledge
-        when(projectRepository.findById(projectID)).thenReturn(Optional.of(project));
+        when(projectRepository.findById(projectID)).thenReturn(Optional.of(entity));
 
         // Step 3: execute getProjectById()
         ProjectDto projectOut = service.getProjectById(projectID);
@@ -312,6 +290,102 @@ public class ProjectServiceTest {
      */
 
     @Test
+    public void testUpdateProject1(){
+        // Step 0: init test object
+        ProjectDto project1 = new ProjectDto();
+        project1.projectName = projectName1;
+
+        ProjectDto project2 = new ProjectDto();
+        project2.productAreas = newProductAreas;
+
+        ProjectDto project3 = new ProjectDto();
+        project3.projectName = projectName1;
+        project3.productAreas = newProductAreas;
+
+        // Step 1: provide knowledge
+        when(projectRepository.existsById(entity.id)).thenReturn(true);
+        when(projectRepository.findById(entity.id)).thenReturn(Optional.of(entity));
+        when(productAreaRepository.existsById(4)).thenReturn(true);
+        when(productAreaRepository.existsById(5)).thenReturn(true);
+
+        // Step 2: execute updateProject()
+        ProjectDto projectOut1 = service.updateProject(project1, entity.id);
+        ProjectDto projectOut2 = service.updateProject(project2, entity.id);
+        ProjectDto projectOut3 = service.updateProject(project3, entity.id);
+
+        // Step 3: assert result
+        assertAll("updateProject",
+                () -> assertEquals(project1.projectName, projectOut1.projectName),
+                () -> assertNotNull(projectOut1.productAreas),
+                () -> project2.productAreas.forEach(
+                        productArea -> assertTrue(projectOut2.productAreas.contains(productArea))),
+                () -> assertNotNull(projectOut2.projectName),
+                () -> assertEquals(project3.projectName, projectOut3.projectName),
+                () -> project3.productAreas.forEach(
+                        productArea -> assertTrue(projectOut3.productAreas.contains(productArea)))
+        );
+
+
+    }
+
+
+    @Test
+    public void testUpdateProject2() {
+        // Step 0: init test object
+        // see @BeforeEach
+
+        // Step 1: provide knowledge
+        when(projectRepository.existsById(entity.id)).thenReturn(true);
+
+        // Step 2: Execute updateProject()
+        Exception exception = assertThrows(BadRequest.class, () -> service.updateProject(emptyProject, entity.id));
+
+        // Step 3: assert exception
+        String expectedMessage = "Nothing to update.";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+
+    @Test
+    public void testUpdateProject3() {
+        for(int i = 0; i <= 10; i++){
+            // Step 1: init test object
+            ProjectDto projectIn = new ProjectDto();
+            // can be updated
+            projectIn.projectName = projectName1;
+            projectIn.productAreas = newProductAreas;
+            // cannot be updated
+            projectIn.creatorID = UUID.fromString("0fef539d-69be-4013-9380-6a12c3534c67");
+            projectIn.projectID = 1000;
+            projectIn.members = members;
+
+            // Step 2: provide knowledge
+            when(projectRepository.existsById(entity.id)).thenReturn(true);
+            when(projectRepository.findById(entity.id)).thenReturn(Optional.of(entity));
+            when(productAreaRepository.existsById(4)).thenReturn(true);
+            when(productAreaRepository.existsById(5)).thenReturn(true);
+
+
+            // Step 3: execute createProject()
+            ProjectDto projectOut = service.updateProject(projectIn, entity.id);
+
+
+            // Step 4: assert result
+            assertAll("updateProject",
+                    () -> assertEquals(projectIn.projectName, projectOut.projectName),
+                    () -> projectIn.productAreas.forEach(
+                            productArea -> assertTrue(projectOut.productAreas.contains(productArea))),
+                    () -> assertNotEquals(projectIn.creatorID, projectOut.creatorID),
+                    () -> assertNotEquals(projectIn.projectID, projectOut.projectID),
+                    () -> assertNotEquals(projectIn.members, projectOut.members)
+            );
+        }
+    }
+
+
+    @Test
     public void testUpdateProject4() {
         Exception exception = assertThrows(ResourceNotFound.class, ()
                 -> service.updateProject(new ProjectDto(),1));
@@ -345,7 +419,5 @@ public class ProjectServiceTest {
         assertTrue(actualMessage.contains(expectedMessage));
 
     }
-
-
 
 }
