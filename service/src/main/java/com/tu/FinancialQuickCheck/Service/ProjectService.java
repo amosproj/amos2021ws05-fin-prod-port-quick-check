@@ -108,7 +108,7 @@ public class ProjectService {
      * @param projectID unique identifier for ProjectEntity
      * @param projectDto contains data that needs to changed
      */
-    public void updateProject(ProjectDto projectDto, int projectID) {
+    public ProjectDto updateProject(ProjectDto projectDto, int projectID) {
 
         if (!projectRepository.existsById(projectID)) {
             throw new ResourceNotFound("projectID " + projectID + " not found");
@@ -139,6 +139,9 @@ public class ProjectService {
             }
 
             projectRepository.save(entity);
+
+            return new ProjectDto(entity.id, entity.name, UUID.fromString(entity.creator_id),
+                    entity.productEntities, entity.projectUserEntities);
         }
     }
 
