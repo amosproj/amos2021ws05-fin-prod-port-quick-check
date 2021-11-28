@@ -19,7 +19,7 @@ import {
   ModalCloseButton,
   ModalHeader,
 } from '@chakra-ui/react';
-import BaseCard from './BaseCard.jsx';
+import Card from './Card.jsx';
 import ShowEditable from '../components/editable.jsx';
 function Remove(prop) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -101,7 +101,7 @@ function MemberRow(prop) {
 
 export default function MemberCard(props) {
   return (
-    <BaseCard barColor="teal.500">
+    <Card barColor="teal.500">
       <Stack>
         <Text
           color={'green.500'}
@@ -132,6 +132,6 @@ export default function MemberCard(props) {
           <Tfoot></Tfoot>
         </Table>
       </Stack>
-    </BaseCard>
+    </Card>
   );
 }

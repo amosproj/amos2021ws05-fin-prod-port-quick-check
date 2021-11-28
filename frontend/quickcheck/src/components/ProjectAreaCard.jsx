@@ -30,7 +30,7 @@ import {
   EditableInput,
   EditablePreview,
 } from '@chakra-ui/react';
-import BaseCard from './BaseCard.jsx';
+import Card from './Card.jsx';
 
 function AddArea() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -179,7 +179,7 @@ function ProjectArea(prop) {
 
 export default function ProjectAreaCard(props) {
   return (
-    <BaseCard barColor="teal.500">
+    <Card barColor="teal.500">
       <Stack>
         <Text
           color={'green.500'}
@@ -210,6 +210,6 @@ export default function ProjectAreaCard(props) {
           <AddArea></AddArea>
         </Center>
       </Stack>
-    </BaseCard>
+    </Card>
   );
 }

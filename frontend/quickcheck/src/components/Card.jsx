@@ -4,9 +4,10 @@ import { Box, Wrap } from '@chakra-ui/react';
 export default function Card(props) {
   return (
     <Box
-      w="full"
+      w={props.w || 'full'}
       minW="12em"
-      bg="gray.700"
+      maxW={props.maxW}
+      bg={props.bg || 'gray.700'}
       p={3}
       mb={6}
       align="center"

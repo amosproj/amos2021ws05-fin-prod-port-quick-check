@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 
 import MemberCard from '../components/MemberCard';
-import BaseCard from '../components/BaseCard.jsx';
+import Card from '../components/Card.jsx';
 import ProjectAreaCard from '../components/ProjectAreaCard.jsx';
 import ShowEditable from '../components/editable.jsx';
 import Page from '../components/Page';
@@ -59,7 +59,7 @@ const mocks = {
 
 function ProjectCard(props) {
   return (
-    <BaseCard barColor="blue.500">
+    <Card barColor="blue.500">
       <Stack>
         <Text
           color={'green.500'}
@@ -84,7 +84,7 @@ function ProjectCard(props) {
           </Editable>
         </Text>
       </Stack>
-    </BaseCard>
+    </Card>
   );
 }
 
