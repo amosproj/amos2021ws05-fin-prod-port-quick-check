@@ -5,7 +5,6 @@ import com.tu.FinancialQuickCheck.RatingArea;
 import com.tu.FinancialQuickCheck.db.*;
 import com.tu.FinancialQuickCheck.dto.ProductDto;
 import com.tu.FinancialQuickCheck.dto.ProductRatingDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,7 +20,6 @@ public class ProductRatingService {
     private final ProductRepository productRepository;
     private final RatingRepository ratingRepository;
 
-    @Autowired
     public ProductRatingService(ProductRatingRepository repository, ProductRepository productRepository,
                                 RatingRepository ratingRepository) {
         this.repository = repository;
@@ -39,8 +37,6 @@ public class ProductRatingService {
         } else {
 
             Iterable<ProductRatingEntity> entities = productEntity.get().productRatingEntities;
-            List<ProductRatingDto> productRatingDtos = new ArrayList<>() {
-            };
 
             if (ratingArea != null) {
                 entities = StreamSupport.stream(entities.spliterator(), false)
@@ -48,17 +44,16 @@ public class ProductRatingService {
                         .collect(Collectors.toList());
             }
 
-            for (ProductRatingEntity tmp : entities) {
-                productRatingDtos.add(new ProductRatingDto(tmp.answer, tmp.comment, tmp.score,
-                        tmp.productRatingId.getRatingid().id));
-            }
+            List<ProductRatingEntity> tmp = StreamSupport
+                    .stream(entities.spliterator(), false)
+                    .collect(Collectors.toList());
 
-            return new ProductDto(productEntity.get().name, productRatingDtos);
+            return new ProductDto(productEntity.get().name , tmp);
         }
     }
 
     // TODO: request mit gleichen IDs überschreibt vorhandene Daten, wollen wir das zulassen für ein HTTP POST Request?
-    public void createProductRatings(ProductDto productDto, int productID) {
+    public ProductDto createProductRatings(ProductDto productDto, int productID) {
 
         if (!productRepository.existsById(productID)) {
             throw new ResourceNotFound("productID " + productID + " not found");
@@ -66,17 +61,33 @@ public class ProductRatingService {
             List<ProductRatingEntity> newProductRatings = new ArrayList<>();
 
             for (ProductRatingDto tmp : productDto.ratings) {
-                ProductRatingEntity newEntity = new ProductRatingEntity();
-                newEntity.answer = tmp.answer;
-                newEntity.score = tmp.score;
-                newEntity.comment = tmp.comment;
-                newEntity.productRatingId = new ProductRatingId(
-                        productRepository.getById(productID),
-                        ratingRepository.getById(tmp.ratingID));
-                newProductRatings.add(newEntity);
+                if(ratingRepository.existsById(tmp.ratingID)){
+                    ProductRatingEntity newEntity = new ProductRatingEntity();
+                    assignAttributes(tmp, newEntity);
+                    newEntity.productRatingId = new ProductRatingId(
+                            productRepository.getById(productID),
+                            ratingRepository.getById(tmp.ratingID));
+                    newProductRatings.add(newEntity);
+                }else{
+                    throw new ResourceNotFound("ratingID " + tmp.ratingID + " not found");
+                }
             }
 
             repository.saveAll(newProductRatings);
+            return new ProductDto(productDto.productName, newProductRatings);
+        }
+    }
+
+
+    private void assignAttributes(ProductRatingDto tmp, ProductRatingEntity newEntity) {
+        if(tmp.answer != null){
+            newEntity.answer = tmp.answer;
+        }
+        if(tmp.comment != null) {
+            newEntity.comment = tmp.comment;
+        }
+        if(tmp.score != null){
+            newEntity.score = tmp.score;
         }
     }
 
@@ -92,15 +103,7 @@ public class ProductRatingService {
                         ratingRepository.getById(tmp.ratingID)))
                         .map(
                             productRating -> {
-                                if(tmp.answer != null){
-                                    productRating.answer = tmp.answer;
-                                }
-                                if(tmp.comment != null) {
-                                    productRating.comment = tmp.comment;
-                                }
-                                if(tmp.score != null){
-                                    productRating.score = tmp.score;
-                                }
+                                assignAttributes(tmp, productRating);
                                 return repository.save(productRating);
                             });
             }

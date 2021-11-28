@@ -5,16 +5,14 @@ import com.tu.FinancialQuickCheck.Score;
 
 public class ProductRatingDto {
 
-    public int id;
+    public int productID;
+    public int ratingID;
+
     public String answer;
     public String comment;
     public Score score;
 
-    // Infos aus ProductEntity
-//    public int productID;
-
-    // Infos aus RatingEntity
-    public int ratingID;
+    public ProductRatingDto(){}
 
     public ProductRatingDto(String answer, String comment, Score score, int ratingID)
     {
