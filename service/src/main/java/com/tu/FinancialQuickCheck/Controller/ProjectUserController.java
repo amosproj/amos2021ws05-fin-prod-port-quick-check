@@ -1,6 +1,6 @@
 package com.tu.FinancialQuickCheck.Controller;
 
-import com.tu.FinancialQuickCheck.Service.UserService;
+import com.tu.FinancialQuickCheck.Service.ProjectUserService;
 import com.tu.FinancialQuickCheck.dto.ProjectUserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ import java.util.UUID;
 public class ProjectUserController {
 
     @Autowired
-    private UserService service;
+    private ProjectUserService service;
 
     @GetMapping(produces = "application/json")
     public List<ProjectUserDto> findProjectUsersByProjectId(@PathVariable int projectID) {
