@@ -18,11 +18,11 @@ const mocks = {
   role: 'Mock Consultant',
 };
 
-function ProjectCard(props) {
+function ProjectCard({ project }) {
   return (
     <Card>
       <Heading size="lg" color="teal.400" align="center" py={{ base: 4, md: 0 }} w="50%">
-        {props.project.projectName}
+        {project.projectName}
       </Heading>
       <Spacer />
       <VStack p={2} spacing={0}>
@@ -34,7 +34,7 @@ function ProjectCard(props) {
         </Text>
       </VStack>
       <Spacer />
-      <Link to={'' + props.project.projectID}>
+      <Link to={'' + project.projectID}>
         <Button bg="teal.500" align="center" _hover={{ bg: 'teal.400' }} w={24}>
           open
         </Button>
