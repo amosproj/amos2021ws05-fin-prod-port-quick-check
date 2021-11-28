@@ -121,7 +121,7 @@ export default function MemberCard(props) {
             </Tr>
           </Thead>
           <Tbody>
-            {props.Members.map((member) => (
+            {props.members.map((member) => (
               <MemberRow
                 name={member.Name}
                 role={member.role}

@@ -88,13 +88,6 @@ function ProjectCard(props) {
   );
 }
 
-function Member_Card(props) {
-  return <MemberCard Members={props.members} editable={props.etitable}></MemberCard>;
-}
-
-function AreaCard(props) {
-  return <ProjectAreaCard areas={props.areas}></ProjectAreaCard>;
-}
 
 export default function ManageProject() {
   const [editable, setEditable] = useState(false);
@@ -128,15 +121,9 @@ export default function ManageProject() {
         title={mocks.project.title}
         description={mocks.project.description}
         editable={editable}
-      ></ProjectCard>
-      <Member_Card members={mocks.members} editable={editable}>
-        {' '}
-      </Member_Card>
-
-      <AreaCard areas={mocks.productAreas} editable={editable}>
-        {' '}
-      </AreaCard>
-
+      />
+      <MemberCard members={mocks.members} editable={editable} />
+      <ProjectAreaCard areas={mocks.productAreas} editable={editable} />
       <EditButtons />
       <ShowEditable text="text" editable={editable}></ShowEditable>
     </Page>
