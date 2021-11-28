@@ -27,7 +27,7 @@ public class ProjectController {
         this.service = projectService;
     }
 
-
+    // TODO: should we return a Reource not found if no projects exist?
     @GetMapping(produces = "application/json")
     public List<SmallProjectDto> findALL() {
         return service.getAllProjects();
