@@ -25,68 +25,55 @@ const prod1mock = {
   area: 'Loan',
 };
 
-const project1 = {
-  project: {
-    projectName: "TestFName1",
-    projectID: 0,
-  }
+const product1 = {
+  productName: "Product1",
+  productID: 1,
+  projectID: 1,
+  productAreaID: "Loan"
 }
 
-const project2 = {
-  project: {
-    projectName: "TestName2",
-    projectID: 1,
-  }
+const product2 = {
+  productName: "Product2",
+  productID: 2,
+  projectID: 1,
+  productAreaID: "Loan"
 }
-const projectsData = {}
-/* const projectsData = {
-  project1: {
-    projectName: "Name1",
-    projectID: 0
-  },
-  project2:{
-    projectName: "Name2",
-    projectID: 1
-  }
-} */
 
 
 
 
 
 function ProjectCard(props) {
-  
+
   return (
     <Card>
-      <Heading size="lg" color="teal.400" align="center" py={{ base: 4, md: 0 }} w="50%">
-        {props.project.projectName}
-      </Heading>
-      <Spacer />
-      <HStack p={2} spacing={0}>
+
+      <HStack p={2} spacing={5}>
+        <Heading size="lg" color="teal.400" align="center" py={{ base: 4, md: 0 }} w="50%">
+          {props.product.productName}
+        </Heading>
+        
         <Text fontWeight="bolder" fontSize="md">
-          {prod1mock.area}
+          <p>Product Area {props.product.productAreaID} </p>
         </Text>
-        <Text fontSize="sm" color="gray.400">
-          Product
-        </Text>
+        
+        <Button bg="teal.500" align="center" _hover={{ bg: 'teal.400' }} w={24}>
+          Edit
+        </Button>
       </HStack>
-      <Spacer />
-      <Button bg="teal.500" align="center" _hover={{ bg: 'teal.400' }} w={24}>
-        Edit
-      </Button>
     </Card>
   );
 }
 
-function TextF(props){
-return(
-  <p>{props.project}</p> 
-  //<p>{proj}</p> 
-)
-}
+/* function TextF(props) {
+  return (
+    <p>{props.product}</p>
+    //<p>{proj}</p> 
+  )
+}*/
 
 export default function ProductOverview() {
-  const [projectsData, setProjectsData] = useState([project1])
+  const [projectsData, setProjectsData] = useState([product1, product2])
 
   let [value, setValue] = React.useState("")
 
@@ -97,23 +84,15 @@ export default function ProductOverview() {
   return (
     <div>
       <Page title="Product Overview">
-      <List spacing={3} maxW="900px" mx={2}>
-      {projectsData.map((project) => (
-          //<ProjectCard project={project} key={project.projectID}></ProjectCard>
-          <TextF project={project.project.projectName}/>
-          
-        ))}
-      </List>
-      <Box> {projectsData.project}</Box>
+        <List spacing={3} maxW="900px" mx={2}>
+          {projectsData.map((product) => (
+            <ProjectCard product={product} key={product.projectID}></ProjectCard>
+            //<TextF product={product.productName}/>
+
+          ))}
+        </List>
+        <Box> {projectsData.product}</Box>
       </Page>
     </div>
   )
 }
-/* 
-const project1 = {
-  project: {
-    projectName: "TestFName1",
-    projectID: 0,
-  }
-}
-*/
