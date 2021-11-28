@@ -2,36 +2,24 @@ package com.tu.FinancialQuickCheck.dto;
 
 //import com.tu.FinancialQuickCheck.RatingArea;
 //import com.tu.FinancialQuickCheck.Score;
-//import com.tu.FinancialQuickCheck.db.ProductEntity;
-//import com.tu.FinancialQuickCheck.db.RatingEntity;
 
+import com.tu.FinancialQuickCheck.db.ProductRatingEntity;
 import java.util.ArrayList;
-import java.util.List;
-
 import java.util.List;
 
 public class ProductDto {
 
     public int  productID;
-
     public String productName;
-
     public int productAreaID;
-
     public int projectID;
-
-
     public List<ProductRatingDto> ratings;
+    public List<ProductDto> productVariations;
 
 //    public Score economicRating;
 //
 //    public Score complexityRating;
 //
-    public List<ProductDto> productVariations;
-//
-//    public List<ProductRatingDto> economicRatingCriterions;
-//
-//    public List<Rating> complexityRatingCriterions;
 
     public ProductDto(){}
 
@@ -54,10 +42,10 @@ public class ProductDto {
         this.productVariations = new ArrayList<>();
     }
 
-
-    public ProductDto(String name, List<ProductRatingDto> productRatingDtos){
+    public ProductDto(String name, List<ProductRatingEntity> productRatingEntities)
+    {
         this.productName = name;
-        this.ratings = productRatingDtos;
+        this.ratings = convertProductRatingEntities(productRatingEntities);
     }
 
 //    public Product(int id, String name, List<ProductEntity> productEntities, List<RatingEntity> ratingEntities)
@@ -80,26 +68,6 @@ public class ProductDto {
 //        complexityRating = computeRating(complexityRatingCriterions);
 //    }
 
-
-//    public Product(int id, String name, List<RatingEntity> ratingEntities)
-//    {
-//        this.id = id;
-//        this.name = name;
-//        this.productVariations = new ArrayList<>();
-//        this.economicRatingCriterions = new ArrayList<>();
-//        this.complexityRatingCriterions = new ArrayList<>();
-//
-//        for (RatingEntity r: ratingEntities) {
-//            if (r.area == RatingArea.ECONOMIC)
-//                economicRatingCriterions.add(new Rating(r.id, r.criterion, r.score,r.criterionValue,r.comment));
-//            else
-//                complexityRatingCriterions.add(new Rating(r.id, r.criterion, r.score,r.criterionValue,r.comment));
-//        }
-//
-//        economicRating = computeRating(economicRatingCriterions);
-//        complexityRating = computeRating(complexityRatingCriterions);
-//    }
-
 //    private Score computeRating(List<Rating> values)
 //    {
 //        int sum = 0;
@@ -108,4 +76,20 @@ public class ProductDto {
 //        }
 //        return Score.valueOf(sum/values.size());
 //    }
+
+
+    private List<ProductRatingDto> convertProductRatingEntities(List<ProductRatingEntity> productRatingEntities) {
+        List<ProductRatingDto> tmp = new ArrayList<>();
+
+        for(ProductRatingEntity entity : productRatingEntities){
+            ProductRatingDto p = new ProductRatingDto();
+            p.ratingID = entity.productRatingId.getRatingid().id;
+            p.score = entity.score;
+            p.answer = entity.answer;
+            p.comment = entity.comment;
+            tmp.add(p);
+        }
+
+        return tmp;
+    }
 }
