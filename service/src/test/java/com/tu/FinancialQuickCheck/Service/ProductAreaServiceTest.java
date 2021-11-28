@@ -21,7 +21,7 @@ public class ProductAreaServiceTest {
     static Logger log = Logger.getLogger(ProductAreaServiceTest.class.getName());
 
     @Mock
-    ProductAreaRepository productAreaRepository;
+    ProductAreaRepository repository;
 
     private ProductAreaService service;
 
@@ -43,7 +43,7 @@ public class ProductAreaServiceTest {
     public void init() {
         log.info("@BeforeEach - setup for Tests in ProductAreaServiceTest.class");
 
-        service = new ProductAreaService(productAreaRepository);
+        service = new ProductAreaService(repository);
 
         name1 = "Kredit";
         name2 = "Payment";
@@ -83,10 +83,10 @@ public class ProductAreaServiceTest {
     @Test
     public void testGetAllProductAreas1() {
         // Step 1: init test object         
-        Iterable<ProductAreaEntity> productAreaEntities = Collections.EMPTY_LIST;
+        List productAreaEntities = Collections.EMPTY_LIST;
         
         // Step 2: provide knowledge
-        when(productAreaRepository.findAll()).thenReturn(productAreaEntities);
+        when(repository.findAll()).thenReturn(productAreaEntities);
 
         // Step 3: execute getAllProductAreas()
         List<ProductAreaDto> projectsOut = service.getAllProductAreas();
@@ -98,7 +98,7 @@ public class ProductAreaServiceTest {
     @Test
     public void testGetAllProjects2() {
         // Step 2: provide knowledge
-        when(productAreaRepository.findAll()).thenReturn(productAreas);
+        when(repository.findAll()).thenReturn(productAreas);
 
         // Step 3: execute getAllProductAreas()
         List<ProductAreaDto> productAreasOut = service.getAllProductAreas();
