@@ -1,0 +1,10 @@
+PUT localhost:8080/projects/1
+Content-Type: application/json
+
+{
+  "projectName": ""
+}
+
+<> 2021-11-26T202837.400.json
+<> 2021-11-26T201932.404.json
+<> 2021-11-26T195002.404.json

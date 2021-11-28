@@ -1,0 +1,6 @@
+PUT localhost:8080/projects/5/users/74c31a72-7c9e-4095-a1d6-ec208b57ff1a
+Content-Type: application/json
+
+{
+  "role": "CLIENT"
+}

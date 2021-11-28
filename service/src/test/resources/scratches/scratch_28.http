@@ -1,0 +1,41 @@
+PUT localhost:8080/products/1/ratings
+Content-Type: application/json
+
+{
+  "productName": "Spareinlagen",
+  "ratings": [
+    {
+      "ratingID": 1,
+      "answer": "changed answer 1",
+      "score": "HOCH"
+    },
+    {
+      "ratingID": 2,
+      "answer": "changed answer 2",
+      "comment": "changed comment 2",
+      "score": "GERING"
+    },
+    {
+      "ratingID": 3,
+      "comment": "changed comment 3"
+    },
+    {
+      "ratingID": 4,
+      "answer": "changed answer 4"
+    },
+    {
+      "ratingID": 5,
+      "score": "MITTEL"
+    },
+    {
+      "ratingID": 6,
+      "comment": "changed comment 6",
+      "score": "MITTEL"
+    },
+    {
+      "ratingID": 7,
+      "answer": "changed answer 7",
+      "comment": "changed comment 7"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+POST localhost:8080/projects
+Content-Type: application/json
+
+{
+  "projectName": "Bank 1",
+  "creator_id": 99,
+  "productAreas": [ 1, 2, 3 ]
+}

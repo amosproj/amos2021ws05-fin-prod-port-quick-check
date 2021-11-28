@@ -1,0 +1,8 @@
+PUT localhost:8080/products
+Content-Type: application/json
+
+{
+  "name": "Swaps",
+  "productAreaID": "1",
+  "projectID": "7"
+}
