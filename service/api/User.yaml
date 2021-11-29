@@ -33,7 +33,7 @@ paths:
               $ref: '#/components/schemas/createUser'
       responses:
         201:
-          $ref: '#/components/schemas/User'
+          $ref: '#/components/schemas/user'
         401:
           $ref: '#/components/responses/401unauthorized'
         403:
@@ -104,7 +104,6 @@ paths:
           $ref: '#/components/responses/404notfound'
         '5XX':
           $ref: '#/components/responses/5XXserverError'
-
 
   /projects/{projectID}/users/{userID}:
     post:
@@ -177,46 +176,50 @@ components:
 
     userProject:
       type: object
+      required:
+        - userEmail
+        - userName
+        - role
       properties:
         projectID:
           type: integer
         userEmail:
           type: string
-          required: true
+
         userName:
           type: string
-          required: true
         userID:
           type: string
           format: uuid
         role:
           type: string
-          required: true
           enum: [ CLIENT, PROJECT_MANAGER, ADMIN ]
 
     createUser:
       type: object
+      required:
+        - userEmail
+        - userName
+        - password
+        - role
       properties:
         userEmail:
           type: string
-          required: true
         userName:
           type: string
-          required: true
         password:
           type: string
-          required: true
         role:
           type: string
-          required: true
           enum: [ CLIENT, PROJECT_MANAGER, ADMIN ]
 
     createUserProject:
       type: object
+      required:
+        - role
       properties:
         role:
           type: string
-          required: true
           enum: [ CLIENT, PROJECT_MANAGER, ADMIN ]
 
 
