@@ -95,7 +95,7 @@ export default function ManageProject(prop) {
 
   const getProject = (id) => {
     api
-      .url('/projects/'+{id})
+      .url('/projects/'+id)
       .get()
       .json((json) => setProjectData(json));
   };

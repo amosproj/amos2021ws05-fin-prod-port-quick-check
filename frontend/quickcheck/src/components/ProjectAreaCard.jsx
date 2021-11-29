@@ -33,7 +33,7 @@ import {
 import Card from './Card.jsx';
 import { DeleteIcon, AddIcon, CheckIcon } from '@chakra-ui/icons';
 import ShowEditable from '../components/editable.jsx';
-function AddArea(prop) {
+export function AddArea(prop) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const initialRef = React.useRef();
@@ -63,12 +63,12 @@ function AddArea(prop) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Create Product Area</ModalHeader>
+          <ModalHeader>{prop.question}</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
             <FormControl>
               <FormLabel>Name</FormLabel>
-              <Input ref={initialRef} placeholder="Product Area name" />
+              <Input ref={initialRef} placeholder={prop.default}/>
             </FormControl>
           </ModalBody>
 
@@ -211,7 +211,7 @@ export default function ProjectAreaCard(prop) {
         </Table>
         <Center>
           <Link to="../projects"></Link>
-          <AddArea editable={prop.editable}></AddArea>
+          <AddArea editable={prop.editable} question="Create Product Area" default="Product Area Name" ></AddArea>
         </Center>
       </Stack>
     </Card>

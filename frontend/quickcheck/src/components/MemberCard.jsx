@@ -5,6 +5,7 @@ import {
   Thead,
   Th,
   Tr,
+  Center,
   Td,
   Tfoot,
   Tbody,
@@ -17,11 +18,78 @@ import {
   ModalContent,
   ModalFooter,
   ModalCloseButton,
+  FormControl,
+  FormLabel,
+  Input,
+  ModalBody,
   ModalHeader,
 } from '@chakra-ui/react';
 import Card from './Card.jsx';
 import ShowEditable from '../components/editable.jsx';
 import { DeleteIcon, AddIcon, CheckIcon } from '@chakra-ui/icons';
+import { AddArea } from './ProjectAreaCard';
+
+function AddMember(prop) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const initialRef = React.useRef();
+  const finalRef = React.useRef();
+  if (prop.editable){
+  return (
+
+    <>
+      <Button
+        onClick={onOpen}
+        size="lg"
+        color="green.900"
+        boxShadow={'2xl'}
+        rounded={'md'}
+        w="100px"
+        bg="purple.400"
+        p={3}
+      >
+      <AddIcon/>
+      </Button>
+
+      <Modal
+        initialFocusRef={initialRef}
+        finalFocusRef={finalRef}
+        isOpen={isOpen}
+        onClose={onClose}
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>{prop.question}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={6}>
+            <FormControl>
+              <FormLabel>Name</FormLabel>
+              <Input ref={initialRef} placeholder={prop.default}/>
+            </FormControl>
+          </ModalBody>
+          <ModalBody pb={6}>
+            <FormControl>
+              <FormLabel>Role</FormLabel>
+              <Input ref={initialRef} placeholder="Member Role"/>
+            </FormControl>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3}>
+              Save
+            </Button>
+            <Button onClick={onClose}>Cancel</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
+  );
+  }
+  else{
+      return (<></>)
+  }
+  }
+
 function Remove(prop) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -100,7 +168,6 @@ function MemberRow(prop) {
 }
 function EditRemoveButton(prop) {
   if (prop.editable) {
-
     return (
         <Td>
           <Remove name={prop.name} role={prop.role}></Remove>
@@ -164,6 +231,9 @@ export default function MemberCard(props) {
           </Tbody>
           <Tfoot></Tfoot>
         </Table>
+            <Center>
+           <AddMember editable={props.editable} question="Add Member" default="Member Name" ></AddMember>
+             </Center>
       </Stack>
     </Card>
   );

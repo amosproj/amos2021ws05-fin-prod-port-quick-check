@@ -80,7 +80,6 @@ const mocks = {
   ],
 };
 
-
 function ProjectCard(prop) {
   return (
     <Card barColor="blue.500">
@@ -106,8 +105,6 @@ function ProjectCard(prop) {
   );
 }
 
-
-
 export default function Project(prop) {
   const [projectData, setprojectData] = useState({
     projectID: 0,
@@ -129,8 +126,6 @@ const { id } = useParams();
   useEffect(() => {
     getProject();
   }, []);
-
-
 
   const setHeader = (name) => {
     setprojectData({
@@ -164,8 +159,6 @@ const { id } = useParams();
 
   return (
       <Page title="Manage Project">
-
-
         <ProjectCard
           project={mocks.project}
           type="Project"
@@ -176,9 +169,6 @@ const { id } = useParams();
         <MemberCard members={projectData.members} editable={editable} />
         <ProjectAreaCard areas={projectData.productAreas} editable={editable} />
         <EditButtons />
-
-        <Text> {JSON.stringify(id)}</Text>
-
       </Page>
   );
 }
