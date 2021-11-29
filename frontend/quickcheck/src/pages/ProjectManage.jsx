@@ -127,11 +127,7 @@ export default function ManageProject(prop) {
   return (
     <Page title="Manage Project">
     <Text>{prop.id}</Text>
-    <List spacing={3} maxW="900px" mx={2}>
-      {projectData.map((project) => (
-            <Text> hi {project}</Text>
-      ))}
-    </List>
+
       <ProjectCard
         project={mocks.project}
         type={mocks.project.type}

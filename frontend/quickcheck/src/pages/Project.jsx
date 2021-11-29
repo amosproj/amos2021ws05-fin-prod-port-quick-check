@@ -48,10 +48,10 @@ export default function Project(prop) {
     members: [],
     productAreas: [],
   });
-  const [membersData, setmembersData] = useState(
-    []);
+
   const [editable, setEditable] = useState(false);
 const { id } = useParams();
+var membersData=[];
   const getProject = () => {
 
     api
@@ -64,6 +64,24 @@ const { id } = useParams();
   useEffect(() => {
     getProject();
   }, []);
+
+
+  var mockMembers=[
+      "efasoeghsoigh",
+      "segvoeuroun",
+  ]
+
+ const getMembers = () =>{
+
+     mockMembers.forEach(function(element, index, list) {
+         membersData[index] = {'Name': element, "role": "Mock Role"};
+    console.log(membersData);
+    return (membersData);
+     });
+      }
+      useEffect(() => {
+        getMembers();
+      });
 
 
 
@@ -106,7 +124,11 @@ const { id } = useParams();
           description={projectData.description}
           editable={editable}
         />
-        <MemberCard members={projectData.members} editable={editable} />
+
+        <p>
+        Array {JSON.stringify(getMembers())}
+        </p>
+        <MemberCard members= {[{Name:"hallo", role:"Mock"}, {Name:"hallo", role:"Mock"}]} editable={editable} />
         <ProjectAreaCard areas={projectData.productAreas} editable={editable} />
         <EditButtons />
       </Page>

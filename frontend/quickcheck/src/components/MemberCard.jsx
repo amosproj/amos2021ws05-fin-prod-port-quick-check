@@ -174,7 +174,7 @@ function EditRemoveMemberButton(prop) {
     );
   } else {
     return (
-    <div></div>
+    <></>
 );
   }
 }
@@ -222,6 +222,7 @@ export default function MemberCard(props) {
           <Tbody>
             {props.members.map((member) => (
               <MemberRow
+                key={member.id}
                 name={member.Name}
                 role={member.role}
                 editable={props.editable}
