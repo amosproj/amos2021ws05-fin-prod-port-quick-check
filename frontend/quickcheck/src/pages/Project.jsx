@@ -49,7 +49,7 @@ export default function Project(prop) {
     productAreas: [],
   });
 
-  const [editable, setEditable] = useState([false]);
+  const [editable, setEditable] = useState(false);
 const { id } = useParams();
 const [membersData, setMembersData] = useState([
     {Name: "",
