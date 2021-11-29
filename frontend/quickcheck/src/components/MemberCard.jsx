@@ -5,6 +5,7 @@ import {
   Thead,
   Th,
   Tr,
+  Select,
   Center,
   Td,
   Tfoot,
@@ -67,10 +68,12 @@ function AddMember(prop) {
             </FormControl>
           </ModalBody>
           <ModalBody pb={6}>
-            <FormControl>
-              <FormLabel>Role</FormLabel>
-              <Input ref={initialRef} placeholder="Member Role"/>
-            </FormControl>
+          <Select placeholder="Select role">
+<option value="Admin">Admin</option>
+<option value="Client">Client</option>
+<option value="Product Owner">Product Owner</option>
+<option value="Product Manager">Product Owner</option>
+</Select>
           </ModalBody>
 
           <ModalFooter>
