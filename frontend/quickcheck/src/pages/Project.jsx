@@ -1,32 +1,12 @@
 import {
   Heading,
-  Table,
-  Thead,
-  Tr,
-  Td,
-  Th,
-  Tbody,
-  Tfoot,
   Button,
   Text,
-  VStack,
-  Box,
   HStack,
-  Editable,
-  EditableInput,
-  useEditableControls,
-  EditablePreview,
-  IconButton,
-  ButtonGroup,
-  Flex,
-  Input,
+  Stack,
 } from '@chakra-ui/react';
 import MemberCard from '../components/MemberCard';
 import { React, useState , useEffect} from 'react';
-import {
-  List,
-  Stack,
-} from '@chakra-ui/react';
 
 import ProjectAreaCard from '../components/ProjectAreaCard';
 import ShowEditable from '../components/editable.jsx';
@@ -35,7 +15,6 @@ import Page from '../components/Page';
 import { useParams } from 'react-router-dom';
 import { api } from '../utils/apiClient';
 import Card from '../components/Card';
-import { CloseIcon, EditIcon, CheckIcon } from '@chakra-ui/icons';
 
 
 const mocks = {

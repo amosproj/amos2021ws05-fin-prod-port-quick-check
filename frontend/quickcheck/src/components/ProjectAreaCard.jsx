@@ -26,12 +26,9 @@ import {
   Stack,
   CircularProgress,
   CircularProgressLabel,
-  Editable,
-  EditableInput,
-  EditablePreview,
 } from '@chakra-ui/react';
 import Card from './Card.jsx';
-import { DeleteIcon, AddIcon, CheckIcon } from '@chakra-ui/icons';
+import { AddIcon } from '@chakra-ui/icons';
 import ShowEditable from '../components/editable.jsx';
 export function AddArea(prop) {
   const { isOpen, onOpen, onClose } = useDisclosure();

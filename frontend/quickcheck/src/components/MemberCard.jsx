@@ -26,8 +26,7 @@ import {
 } from '@chakra-ui/react';
 import Card from './Card.jsx';
 import ShowEditable from '../components/editable.jsx';
-import { DeleteIcon, AddIcon, CheckIcon } from '@chakra-ui/icons';
-import { AddArea } from './ProjectAreaCard';
+import { DeleteIcon, AddIcon } from '@chakra-ui/icons';
 
 function AddMember(prop) {
   const { isOpen, onOpen, onClose } = useDisclosure();

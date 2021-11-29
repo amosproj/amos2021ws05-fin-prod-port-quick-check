@@ -1,8 +1,5 @@
 import { React, useState , useEffect} from 'react';
 import {
-  Editable,
-  EditableInput,
-  EditablePreview,
   Heading,
   Text,
   List,
@@ -17,7 +14,8 @@ import Card from '../components/Card.jsx';
 import ProjectAreaCard from '../components/ProjectAreaCard.jsx';
 import ShowEditable from '../components/editable.jsx';
 import Page from '../components/Page';
-import { DeleteIcon, AddIcon, CheckIcon } from '@chakra-ui/icons';
+
+
 const mocks = {
   project: {
     type: 'Project',
