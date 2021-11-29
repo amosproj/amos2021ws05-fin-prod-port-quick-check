@@ -13,24 +13,34 @@ import java.util.List;
 @Service
 public class ProductAreaService {
 
-    private ProductAreaRepository productAreaRepository;
+    private ProductAreaRepository repository;
 
     @Autowired
     public ProductAreaService(ProductAreaRepository productAreaRepository) {
-        this.productAreaRepository = productAreaRepository;
+        this.repository = productAreaRepository;
     }
 
     public List<ProductAreaDto> getAllProductAreas() {
 
         List<ProductAreaDto> productAreaDtos = new ArrayList<>() {
         };
-        Iterable<ProductAreaEntity> productAreaEntities = productAreaRepository.findAll();
+        Iterable<ProductAreaEntity> productAreaEntities = repository.findAll();
 
         for(ProductAreaEntity tmp : productAreaEntities){
             productAreaDtos.add(new ProductAreaDto(tmp.id, tmp.name, tmp.category));
         }
 
         return productAreaDtos;
+    }
+
+    public void createProductArea(ProductAreaDto productArea) {
+
+        ProductAreaEntity newEntity = new ProductAreaEntity();
+        newEntity.category = productArea.category;
+        newEntity.name = productArea.name;
+
+        repository.save(newEntity);
+
     }
 
 }

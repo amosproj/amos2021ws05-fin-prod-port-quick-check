@@ -20,13 +20,11 @@ public class ProductController {
         return productService.findById(productID);
     }
 
-
     @PutMapping("/{productID}")
     public void updateProduct(@RequestBody ProductDto productDto, @PathVariable Integer productID) {
 
         productService.updateById(productDto, productID);
     }
-
 
     @DeleteMapping("/{productID}")
     void deleteByID(@PathVariable int productID) {
