@@ -79,6 +79,7 @@ public class UserService {
         for (UserEntity userEntity : allUserEntitys) {
             if (userEntity.email.equals(email)) {
                 UserDto userDto = new UserDto(userEntity.email);
+                userDto.username = userEntity.username;
                 userDto.id = UUID.fromString(userEntity.id);
                 return userDto;
             }
