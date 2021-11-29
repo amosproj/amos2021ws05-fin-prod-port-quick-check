@@ -23,13 +23,6 @@ function App() {
           <Route path="manageProject" element={<ManageProject />} />
           <Route path="projects" element={<ProjectOverview />}></Route>
           <Route path="projects/:id" element={<Project />}></Route>
-
-
-          {/* TODO use nested routes */}
-          {/* <Route path="project/"  element={<ProjectOverview/>}>
-            <Route path=':id' element={<Project/>}  />
-
-          </Route> */}
         </Routes>
       </Router>
     </div>
