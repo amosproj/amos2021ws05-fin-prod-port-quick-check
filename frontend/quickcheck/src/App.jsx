@@ -5,6 +5,8 @@ import Login from './pages/Login';
 import ProjectOverview from './pages/ProjectOverview';
 import ManageProject from './pages/ProjectManage';
 
+import Project from './pages/Project'
+
 
 function App() {
   return (
@@ -20,6 +22,7 @@ function App() {
           <Route path="login" element={<Login />} />
           <Route path="manageProject" element={<ManageProject />} />
           <Route path="projects" element={<ProjectOverview />}></Route>
+          <Route path="projects/:id" element={<Project />}></Route>
 
 
           {/* TODO use nested routes */}

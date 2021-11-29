@@ -19,7 +19,7 @@ export default function Card(props) {
       <Box h={2} bg={props.barColor} mt={-3} mx={-3} mb={props.barColor ? 3 : 0} pos={'relative'} />
       <Wrap
         wrap="wrap"
-        direction={{ base: 'column', sm: 'row' }}
+        direction={ props.direction || 'row' }
         spacing={{ base: 2, md: 4 }}
         px={4}
         py={2}
