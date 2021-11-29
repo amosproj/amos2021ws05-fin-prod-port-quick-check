@@ -21,6 +21,7 @@ import {
 } from '@chakra-ui/react';
 import Card from './Card.jsx';
 import ShowEditable from '../components/editable.jsx';
+import { DeleteIcon, AddIcon, CheckIcon } from '@chakra-ui/icons';
 function Remove(prop) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -39,7 +40,7 @@ function Remove(prop) {
         bg="red.400"
         p={3}
       >
-        REMOVE
+        <DeleteIcon/>
       </Button>
 
       <Modal

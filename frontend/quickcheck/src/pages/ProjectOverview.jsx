@@ -82,7 +82,7 @@ export default function ProjectOverview() {
   };
 
   return (
-    <Page title="Your Projects">
+    <Page title="Your Projects" >
       <List spacing={3} maxW="900px" mx={2}>
         {projectsData.map((project) => (
           <ProjectCard project={project} key={project.projectID}></ProjectCard>

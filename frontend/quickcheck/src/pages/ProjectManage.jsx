@@ -1,20 +1,23 @@
-import { React, useState } from 'react';
+import { React, useState , useEffect} from 'react';
 import {
   Editable,
   EditableInput,
   EditablePreview,
   Heading,
   Text,
+  List,
   Stack,
   HStack,
   Button,
 } from '@chakra-ui/react';
 
+import { api } from '../utils/apiClient';
 import MemberCard from '../components/MemberCard';
 import Card from '../components/Card.jsx';
 import ProjectAreaCard from '../components/ProjectAreaCard.jsx';
 import ShowEditable from '../components/editable.jsx';
 import Page from '../components/Page';
+import { DeleteIcon, AddIcon, CheckIcon } from '@chakra-ui/icons';
 const mocks = {
   project: {
     type: 'Project',
@@ -57,6 +60,9 @@ const mocks = {
   ],
 };
 
+
+
+
 function ProjectCard(props) {
   return (
     <Card barColor="blue.500">
@@ -83,8 +89,21 @@ function ProjectCard(props) {
 }
 
 
-export default function ManageProject() {
-  const [editable, setEditable] = useState(false);
+export default function ManageProject(prop) {
+    const [projectData, setProjectData] = useState([]);
+    const [editable, setEditable] = useState(false);
+
+  const getProject = (id) => {
+    api
+      .url('/projects/'+{id})
+      .get()
+      .json((json) => setProjectData(json));
+  };
+
+  // runs when rendering
+  useEffect(() => {
+    getProject();
+  });
 
   const EditButtons = () => {
     if (editable) {
@@ -109,6 +128,12 @@ export default function ManageProject() {
 
   return (
     <Page title="Manage Project">
+    <Text>{prop.id}</Text>
+    <List spacing={3} maxW="900px" mx={2}>
+      {projectData.map((project) => (
+            <Text> hi {project}</Text>
+      ))}
+    </List>
       <ProjectCard
         project={mocks.project}
         type={mocks.project.type}

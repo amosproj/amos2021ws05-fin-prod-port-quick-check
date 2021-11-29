@@ -31,6 +31,7 @@ import {
   EditablePreview,
 } from '@chakra-ui/react';
 import Card from './Card.jsx';
+import { DeleteIcon, AddIcon, CheckIcon } from '@chakra-ui/icons';
 import ShowEditable from '../components/editable.jsx';
 function AddArea(prop) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -51,7 +52,7 @@ function AddArea(prop) {
         bg="purple.400"
         p={3}
       >
-        Add
+      <AddIcon/>
       </Button>
 
       <Modal
@@ -182,7 +183,7 @@ function ProjectArea(prop) {
 
 export default function ProjectAreaCard(prop) {
   return (
-    <Card barColor="teal.500">
+    <Card barColor="blue.500">
       <Stack>
         <Text
           color={'green.500'}
