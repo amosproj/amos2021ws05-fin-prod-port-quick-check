@@ -31,14 +31,15 @@ import {
   EditablePreview,
 } from '@chakra-ui/react';
 import Card from './Card.jsx';
-
-function AddArea() {
+import ShowEditable from '../components/editable.jsx';
+function AddArea(prop) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const initialRef = React.useRef();
   const finalRef = React.useRef();
-
+  if (prop.editable){
   return (
+
     <>
       <Button
         onClick={onOpen}
@@ -79,7 +80,12 @@ function AddArea() {
         </ModalContent>
       </Modal>
     </>
+
   );
+  }
+  else{
+      return(<></>);
+  }
 }
 function Remove(prop) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -135,10 +141,7 @@ function ProjectArea(prop) {
       <Td>
         <Box color="white" boxShadow={'2xl'} rounded={'md'} w="200px" bg="green.500" p={3}>
           <Text color={'gray.100'} fontWeight={800} fontSize={'sm'} letterSpacing={1.1}>
-            <Editable defaultValue={prop.name} isPreviewFocusable={false}>
-              <EditablePreview />
-              <EditableInput />
-            </Editable>
+          <ShowEditable text={prop.name} editable={prop.editable}></ShowEditable>
           </Text>
         </Box>
       </Td>
@@ -177,7 +180,7 @@ function ProjectArea(prop) {
   );
 }
 
-export default function ProjectAreaCard(props) {
+export default function ProjectAreaCard(prop) {
   return (
     <Card barColor="teal.500">
       <Stack>
@@ -199,15 +202,15 @@ export default function ProjectAreaCard(props) {
             </Tr>
           </Thead>
           <Tbody>
-            {props.areas.map((area) => (
-              <ProjectArea name={area.type} role={area.role} percent={area.percent}></ProjectArea>
+            {prop.areas.map((area) => (
+              <ProjectArea name={area.type} role={area.role} percent={area.percent} editable={prop.editable}></ProjectArea>
             ))}
           </Tbody>
           <Tfoot></Tfoot>
         </Table>
         <Center>
           <Link to="../projects"></Link>
-          <AddArea></AddArea>
+          <AddArea editable={prop.editable}></AddArea>
         </Center>
       </Stack>
     </Card>

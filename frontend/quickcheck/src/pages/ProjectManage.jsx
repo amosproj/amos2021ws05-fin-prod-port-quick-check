@@ -71,17 +71,11 @@ function ProjectCard(props) {
           {props.type}
         </Text>
         <Heading fontSize={'2xl'} fontFamily={'body'}>
-          <Editable defaultValue={props.title}>
-            <EditablePreview />
-            <EditableInput />
-          </Editable>
+         <ShowEditable text={props.title} editable={props.editable}></ShowEditable>
         </Heading>
         <Text color={'gray.500'}>
           {' '}
-          <Editable defaultValue={props.description}>
-            <EditablePreview />
-            <EditableInput />
-          </Editable>
+          <ShowEditable text={props.description} editable={props.editable}></ShowEditable>
         </Text>
       </Stack>
     </Card>
@@ -125,7 +119,7 @@ export default function ManageProject() {
       <MemberCard members={mocks.members} editable={editable} />
       <ProjectAreaCard areas={mocks.productAreas} editable={editable} />
       <EditButtons />
-      <ShowEditable text="text" editable={editable}></ShowEditable>
+
     </Page>
   );
 }

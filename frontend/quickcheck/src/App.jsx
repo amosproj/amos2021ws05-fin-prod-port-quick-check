@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Routes, Link, Navigate } from 'react-ro
 import Login from './pages/Login';
 import ProjectOverview from './pages/ProjectOverview';
 import ManageProject from './pages/ProjectManage';
-import Project from './pages/Project';
+
 
 function App() {
   return (
@@ -20,7 +20,7 @@ function App() {
           <Route path="login" element={<Login />} />
           <Route path="manageProject" element={<ManageProject />} />
           <Route path="projects" element={<ProjectOverview />}></Route>
-          <Route path="projects/:projectID" element={<Project />} />
+
 
           {/* TODO use nested routes */}
           {/* <Route path="project/"  element={<ProjectOverview/>}>

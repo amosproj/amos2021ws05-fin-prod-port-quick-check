@@ -75,6 +75,7 @@ function MemberRow(prop) {
         <Box color="white" boxShadow={'2xl'} rounded={'md'} w="200px" bg="blue.500" p={3}>
           <Text color={'gray.100'} fontWeight={800} fontSize={'sm'} letterSpacing={1.1}>
             <ShowEditable text={prop.name} editable={prop.editable}></ShowEditable>
+
           </Text>
         </Box>
       </Td>
@@ -92,11 +93,48 @@ function MemberRow(prop) {
           </Text>
         </Box>
       </Td>
-      <Td>
-        <Remove name={prop.name} role={prop.role}></Remove>
-      </Td>
+      <EditRemoveButton editable={prop.editable}  name={prop.name} role={prop.role}></EditRemoveButton>
     </Tr>
   );
+}
+function EditRemoveButton(prop) {
+  if (prop.editable) {
+
+    return (
+        <Td>
+          <Remove name={prop.name} role={prop.role}></Remove>
+        </Td>
+    );
+  } else {
+    return (
+    <div></div>
+);
+  }
+}
+
+function EditTableHeader(prop) {
+  if (prop.editable) {
+
+    return (
+        <Thead>
+          <Tr>
+            <Th>Name</Th>
+            <Th>Role</Th>
+            <Th> Remove  </Th>
+
+          </Tr>
+        </Thead>
+    );
+  } else {
+    return (
+
+    <Thead>
+      <Tr>
+        <Th>Name</Th>
+        <Th>Role</Th>
+      </Tr>
+    </Thead>);
+  }
 }
 
 export default function MemberCard(props) {
@@ -113,13 +151,7 @@ export default function MemberCard(props) {
           Members
         </Text>
         <Table variant="simple" size="sm">
-          <Thead>
-            <Tr>
-              <Th>Name</Th>
-              <Th>Role</Th>
-              <Th> Remove</Th>
-            </Tr>
-          </Thead>
+        <EditTableHeader editable={props.editable}></EditTableHeader>
           <Tbody>
             {props.members.map((member) => (
               <MemberRow
