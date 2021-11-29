@@ -120,7 +120,7 @@ const { id } = useParams();
   const getProject = () => {
 
     api
-      .url('/projects/'+{id})
+      .url('/projects/' + id)
       .get()
       .json((json) => setprojectData(json))
       .catch(console.error);
@@ -168,7 +168,7 @@ const { id } = useParams();
 
         <ProjectCard
           project={mocks.project}
-          type="Project"+ {JSON.stringify({id})}
+          type="Project"
           title={projectData.projectName}
           description={projectData.description}
           editable={editable}
@@ -176,6 +176,8 @@ const { id } = useParams();
         <MemberCard members={projectData.members} editable={editable} />
         <ProjectAreaCard areas={projectData.productAreas} editable={editable} />
         <EditButtons />
+
+        <Text> {JSON.stringify(id)}</Text>
 
       </Page>
   );
