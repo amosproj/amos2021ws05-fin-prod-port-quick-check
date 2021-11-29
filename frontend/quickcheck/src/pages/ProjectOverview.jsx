@@ -11,9 +11,12 @@ import { Link } from 'react-router-dom';
 const mocks = {
   newProject: {
     creatorID: 0,
-    projectName: 'Mock Project',
-    members: [1, 2],
-    productAreas: [1, 2, 3],
+    projectName: "Mock Project",
+    members: [
+      "2375e026-d348-4fb6-b42b-891a76758d5d",
+      "0fef539d-69be-4013-9380-6a12c3534c67"
+    ],
+    productAreas: [ 1, 2, 3 ]
   },
   role: 'Mock Consultant',
 };
@@ -42,6 +45,7 @@ function ProjectCard({ project }) {
     </Card>
   );
 }
+
 export default function ProjectOverview() {
   const [projectsData, setProjectsData] = useState([]);
   const toast = useToast();
@@ -82,7 +86,7 @@ export default function ProjectOverview() {
   };
 
   return (
-    <Page title="Your Projects" >
+    <Page title="Your Projects">
       <List spacing={3} maxW="900px" mx={2}>
         {projectsData.map((project) => (
           <ProjectCard project={project} key={project.projectID}></ProjectCard>
