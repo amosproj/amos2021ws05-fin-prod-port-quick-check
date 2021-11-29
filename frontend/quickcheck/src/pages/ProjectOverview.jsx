@@ -16,7 +16,7 @@ const mocks = {
       "2375e026-d348-4fb6-b42b-891a76758d5d",
       "0fef539d-69be-4013-9380-6a12c3534c67"
     ],
-    productAreas: [ 1, 2, 3 ]
+    productAreas: []
   },
   role: 'Mock Consultant',
 };
