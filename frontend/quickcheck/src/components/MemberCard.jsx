@@ -89,7 +89,7 @@ function AddMember(prop) {
   }
   }
 
-function Remove(prop) {
+function RemoveMember(prop) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const initialRef = React.useRef();
@@ -119,7 +119,7 @@ function Remove(prop) {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
-            Are you sure you want to remove the {prop.role}, {prop.name}, from the project?
+            Are you sure you want to RemoveMember the {prop.role}, {prop.name}, from the project?
           </ModalHeader>
           <ModalCloseButton />
           <ModalFooter>
@@ -161,15 +161,15 @@ function MemberRow(prop) {
           </Text>
         </Box>
       </Td>
-      <EditRemoveButton editable={prop.editable}  name={prop.name} role={prop.role}></EditRemoveButton>
+      <EditRemoveMemberButton editable={prop.editable}  name={prop.name} role={prop.role}></EditRemoveMemberButton>
     </Tr>
   );
 }
-function EditRemoveButton(prop) {
+function EditRemoveMemberButton(prop) {
   if (prop.editable) {
     return (
         <Td>
-          <Remove name={prop.name} role={prop.role}></Remove>
+          <RemoveMember name={prop.name} role={prop.role}></RemoveMember>
         </Td>
     );
   } else {
@@ -187,7 +187,7 @@ function EditTableHeader(prop) {
           <Tr>
             <Th>Name</Th>
             <Th>Role</Th>
-            <Th> Remove  </Th>
+            <Th> RemoveMember  </Th>
 
           </Tr>
         </Thead>

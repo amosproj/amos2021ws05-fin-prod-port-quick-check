@@ -16,49 +16,6 @@ import { useParams } from 'react-router-dom';
 import { api } from '../utils/apiClient';
 import Card from '../components/Card';
 
-
-const mocks = {
-  project: {
-    type: 'Project',
-    title: 'Volksbank berlin brandenburg',
-    role: 'Consultant',
-    description:
-      'Project with Volksbank.  Project with Volksbank. Project with Volksbank. Project with Volksbank. Project with Volksbank. Project with Volksbank. Project with Volksbank. Project with Volksbank.',
-  },
-  productAreas: [
-    {
-      type: 'finances',
-      percent: '75',
-    },
-    {
-      type: 'stuff',
-      percent: '90',
-    },
-    {
-      type: 'Money',
-      percent: '1',
-    },
-  ],
-  members: [
-    {
-      Name: 'Max Musterman',
-      role: 'Consultant',
-    },
-    {
-      Name: 'Jane Doe',
-      role: 'Product Ownder',
-    },
-    {
-      Name: 'TU Berlin',
-      role: 'Client',
-    },
-    {
-      Name: 'FU Berlin',
-      role: 'Client',
-    },
-  ],
-};
-
 function ProjectCard(prop) {
   return (
     <Card barColor="blue.500">
@@ -91,6 +48,8 @@ export default function Project(prop) {
     members: [],
     productAreas: [],
   });
+  const [membersData, setmembersData] = useState(
+    []);
   const [editable, setEditable] = useState(false);
 const { id } = useParams();
   const getProject = () => {
@@ -105,6 +64,8 @@ const { id } = useParams();
   useEffect(() => {
     getProject();
   }, []);
+
+
 
   const setHeader = (name) => {
     setprojectData({
@@ -139,7 +100,7 @@ const { id } = useParams();
   return (
       <Page title="Manage Project">
         <ProjectCard
-          project={mocks.project}
+          project={projectData.project}
           type="Project"
           title={projectData.projectName}
           description={projectData.description}
