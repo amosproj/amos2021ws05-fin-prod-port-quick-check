@@ -129,10 +129,6 @@ const [membersData, setMembersData] = useState([
           description={projectData.description}
           editable={editable}
         />
-
-        <p>
-
-        </p>
         <MemberCard members= {membersData} editable={editable} />
         <ProjectAreaCard areas={projectData.productAreas} editable={editable} />
         <EditButtons />

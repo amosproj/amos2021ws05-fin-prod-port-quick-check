@@ -41,11 +41,11 @@ export function AddArea(prop) {
     <>
       <Button
         onClick={onOpen}
-        size="lg"
+        size="md"
         color="green.900"
         boxShadow={'2xl'}
         rounded={'md'}
-        w="100px"
+        w="50px"
         bg="purple.400"
         p={3}
       >
@@ -93,15 +93,16 @@ function Remove(prop) {
 
   return (
     <>
-      <Button
-        onClick={onOpen}
-        size="lg"
-        color="green.900"
-        boxShadow={'2xl'}
-        rounded={'md'}
-        w="100px"
-        bg="purple.400"
-        p={3}
+    <Button
+      onClick={onOpen}
+      size="md"
+      color="green.900"
+      boxShadow={'2xl'}
+      rounded={'md'}
+      w="50px"
+      bg="purple.400"
+      p={3}
+    >
       ></Button>
 
       <Modal

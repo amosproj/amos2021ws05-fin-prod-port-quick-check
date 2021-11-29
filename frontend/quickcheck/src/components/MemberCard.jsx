@@ -39,11 +39,11 @@ function AddMember(prop) {
     <>
       <Button
         onClick={onOpen}
-        size="lg"
+        size="md"
         color="green.900"
         boxShadow={'2xl'}
         rounded={'md'}
-        w="100px"
+        w="50px"
         bg="purple.400"
         p={3}
       >
@@ -97,16 +97,16 @@ function RemoveMember(prop) {
 
   return (
     <>
-      <Button
-        onClick={onOpen}
-        size="lg"
-        color="red.900"
-        boxShadow={'2xl'}
-        rounded={'md'}
-        w="100px"
-        bg="red.400"
-        p={3}
-      >
+    <Button
+      onClick={onOpen}
+      size="lg"
+      color="red.900"
+      boxShadow={'2xl'}
+      rounded={'md'}
+      w="50px"
+      bg="red.400"
+      p={3}
+    >
         <DeleteIcon/>
       </Button>
 
@@ -187,7 +187,7 @@ function EditTableHeader(prop) {
           <Tr>
             <Th>Name</Th>
             <Th>Role</Th>
-            <Th> RemoveMember  </Th>
+            <Th> Remove Member  </Th>
 
           </Tr>
         </Thead>
