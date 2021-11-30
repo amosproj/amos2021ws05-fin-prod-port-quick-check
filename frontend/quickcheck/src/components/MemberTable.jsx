@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Button,
-  Select,
   HStack,
   Text,
   useDisclosure,
@@ -40,25 +39,21 @@ function AddButton(props) {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Add new Member</ModalHeader>
+          <ModalHeader color="teal.300">Add new Member</ModalHeader>
           <ModalCloseButton />
-          <ModalBody pb={6}>
+          <ModalBody px={10}>
             <FormControl>
               <FormLabel pl={3}>Email</FormLabel>
-              <Input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
+              <Input mb={6} placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
             </FormControl>
-          </ModalBody>
-          <ModalBody pb={6}>
-            <Select onChange={(e) => setRole(e.target.value)}>
-              <option selected value="Client">
-                Client
-              </option>
-              <option value="Project Manager">Project Manager</option>
-              <option value="Project Owner">Project Owner</option>
-            </Select>
+            <Selection
+              options={Object.values(roles)}
+              selected={roles.consultant}
+              onChange={(e) => setRole(e.target.value)}
+            />
           </ModalBody>
 
-          <ModalFooter>
+          <ModalFooter py={5} px={10}>
             <Button
               colorScheme="blue"
               mr={3}
@@ -128,8 +123,6 @@ function MemberHead({ editable, addButton }) {
 }
 
 function MemberRow({ editable, member, onChangeRole, removeButton }) {
-  const rolesArray = Object.values(roles);
-
   return (
     <HStack px={4} rounded="md" align="center" spacing={5}>
       <Text w="50%" bg="blue.700" rounded="md" p={2} px={3} align="left">
@@ -138,7 +131,7 @@ function MemberRow({ editable, member, onChangeRole, removeButton }) {
       {editable ? (
         <Selection
           selected={member.role}
-          options={rolesArray}
+          options={Object.values(roles)}
           onChange={onChangeRole}
           minW={36}
           w={48}
