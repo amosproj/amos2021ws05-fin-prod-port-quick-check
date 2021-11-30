@@ -1,5 +1,5 @@
 import { Heading, Button, Text, HStack, Stack } from '@chakra-ui/react';
-import MemberCard from '../components/MemberCard';
+import MemberTable from '../components/MemberCard';
 import { React, useState, useEffect } from 'react';
 
 import ProjectAreaCard from '../components/ProjectAreaCard';
@@ -90,7 +90,12 @@ export default function Project(prop) {
         </Heading>
       </Card>
 
-      <MemberCard editable={editable} members={projectData.members} handleChange={setMembers} />
+      <Card barColor="teal.500" direction="column">
+        <Heading size="md" align="center" pb={3}>
+          Members
+        </Heading>
+        <MemberTable editable={editable} members={projectData.members} handleChange={setMembers} />
+      </Card>
 
       <Button onClick={(e) => console.log(projectData.members)}>console log</Button>
 

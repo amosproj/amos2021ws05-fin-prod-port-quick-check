@@ -1,22 +1,10 @@
 import React from 'react';
 import {
   Button,
-  Table,
-  Thead,
-  Th,
-  Tr,
   Select,
-  Center,
-  Wrap,
-  Td,
-  Tfoot,HStack,
-  Tbody,
-  Box,
-  Spacer,
+  HStack,
   Text,
-  Stack,
   useDisclosure,
-  Flex,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -34,61 +22,60 @@ import {
   PopoverContent,
   PopoverHeader,
   PopoverBody,
-  PopoverFooter,
+  List,
 } from '@chakra-ui/react';
-import Card, { MinimalCard } from './Card.jsx';
-import ShowEditable, { ContentSwitch } from '../components/editable.jsx';
+import Card from './Card.jsx';
 import { DeleteIcon, AddIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
+import { roles } from '../utils/const';
+import { Selection } from './Inputs.jsx';
 
-function AddButton({ editable, onAddMember }) {
+function AddButton(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [email, setEmail] = useState('');
   const [role, setRole] = useState('Client');
-  if (editable) {
-    return (
-      <>
-        <IconButton icon={<AddIcon />} bg="purple.400" p={1} w={16} onClick={onOpen} />
+  return (
+    <>
+      <IconButton icon={<AddIcon />} colorScheme="green" size="lg" {...props} onClick={onOpen} />
 
-        <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Add new Member</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody pb={6}>
-              <FormControl>
-                <FormLabel pl={3}>Email</FormLabel>
-                <Input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-              </FormControl>
-            </ModalBody>
-            <ModalBody pb={6}>
-              <Select onChange={(e) => setRole(e.target.value)}>
-                <option value="Client">Client</option>
-                <option value="Project Manager">Project Manager</option>
-                <option value="Project Owner">Project Owner</option>
-              </Select>
-            </ModalBody>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Add new Member</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={6}>
+            <FormControl>
+              <FormLabel pl={3}>Email</FormLabel>
+              <Input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
+            </FormControl>
+          </ModalBody>
+          <ModalBody pb={6}>
+            <Select onChange={(e) => setRole(e.target.value)}>
+              <option selected value="Client">
+                Client
+              </option>
+              <option value="Project Manager">Project Manager</option>
+              <option value="Project Owner">Project Owner</option>
+            </Select>
+          </ModalBody>
 
-            <ModalFooter>
-              <Button
-                colorScheme="blue"
-                mr={3}
-                onClick={(e) => {
-                  onAddMember({ email: email, role: role });
-                  onClose();
-                }}
-              >
-                Save
-              </Button>
-              <Button onClick={onClose}>Cancel</Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-      </>
-    );
-  } else {
-    return <></>;
-  }
+          <ModalFooter>
+            <Button
+              colorScheme="blue"
+              mr={3}
+              onClick={(e) => {
+                props.onAddMember({ email: email, role: role });
+                onClose();
+              }}
+            >
+              Save
+            </Button>
+            <Button onClick={onClose}>Cancel</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
+  );
 }
 
 function RemoveButton({ onRemove }) {
@@ -102,15 +89,12 @@ function RemoveButton({ onRemove }) {
           size="md"
           color="red.900"
           bg="red.400"
-          p={3}
+          w={16}
         />
       </PopoverTrigger>
       <PopoverContent>
-        <PopoverHeader fontWeight="semibold">Confirm Removal</PopoverHeader>
+        <PopoverHeader fontWeight="semibold">Confirm removing this User</PopoverHeader>
         <PopoverBody>
-          <Text>Really remove this User?</Text>
-        </PopoverBody>
-        <PopoverFooter>
           <Button
             colorScheme="red"
             mx={1}
@@ -124,47 +108,55 @@ function RemoveButton({ onRemove }) {
           <Button mx={1} onClick={onClose}>
             Cancel
           </Button>
-        </PopoverFooter>
+        </PopoverBody>
       </PopoverContent>
     </Popover>
   );
 }
 
-function MemberRow({ editable, member, onRemove, onChangeRole }) {
+function MemberHead({ editable, addButton }) {
   return (
-    <Wrap p={0} px={4} rounded="md" _hover={{ shadow: 'md' }} align="center" spacing={5} w='80%'>
-      <Text w="50%" bg="blue.700" rounded="md" p={2} px={3} h="full" align="left">
-        {member.email}
-      </Text>
-
-      {editable ? (
-        // <Text w="40%" align="left">
-        //   {member.role}
-        // </Text>
-
-        <Select
-          placeholder={member.role}  align="center"
-          w="30%"
-          bg="blue.700"
-          onChange={(e) => onChangeRole(e.target.value)}
-        >
-          <option value="Client">Client</option>
-          <option value="Project Manager">Project Manager</option>
-          <option value="Project Owner">Project Owner</option>
-        </Select>
-      ) : (
-        <Text w="30%" rounded="md" bg="blue.700" p={2} px={3} h="full" align="left">
-          {member.role}
-        </Text>
-      )}
-      {editable ? <RemoveButton onRemove={onRemove} /> : <div />}
-    </Wrap>
+    <HStack px={4} rounded="md" align="center" spacing={5}>
+      <Heading size="md" w="50%" bg="gray.600" p={3} rounded="md">
+        Email
+      </Heading>
+      <Heading size="md" minW={36} w={48} bg="gray.600" p={3} rounded="md">
+        Role
+      </Heading>
+      {editable ? addButton : <div />}
+    </HStack>
   );
 }
 
+function MemberRow({ editable, member, onChangeRole, removeButton }) {
+  const rolesArray = Object.values(roles);
+
+  return (
+    <HStack px={4} rounded="md" align="center" spacing={5}>
+      <Text w="50%" bg="blue.700" rounded="md" p={2} px={3} align="left">
+        {member.email}
+      </Text>
+      {editable ? (
+        <Selection
+          selected={member.role}
+          options={rolesArray}
+          onChange={onChangeRole}
+          minW={36}
+          w={48}
+          bg="blue.700"
+        />
+      ) : (
+        <Text minW={36} w={48} rounded="md" bg="blue.700" p={2} px={3} h="full" align="left">
+          {member.role}
+        </Text>
+      )}
+      {editable ? removeButton : <div />}
+    </HStack>
+  );
+}
 
 // Assumption: ProjectMembers is a list of object: {id, role}
-export default function MemberCard({ editable, members, handleChange }) {
+export default function MemberTable({ editable, members, handleChange }) {
   const handleRemoveMember = (member) => () => {
     const newMembers = members.filter((m) => {
       return m.email !== member.email;
@@ -187,33 +179,22 @@ export default function MemberCard({ editable, members, handleChange }) {
   };
 
   return (
-    <Card barColor="teal.500"  direction='column'>
-        <Flex justifyContent="center">
-          <Heading size="lg" mx={16}>
-            Members
-          </Heading>
-          <AddButton editable={editable} onAddMember={handleAddMember}></AddButton>
-        </Flex>
-        
-        <HStack w='80%'>
-          <Card>
-            <Text w='50%' align='center'>Email</Text>
-            <Text>Role</Text>
-          </Card>
 
-        </HStack>
+      <List spacing={4} direction="column" minW="80%" align="center" pb={5}>
+        <MemberHead
+          editable={editable}
+          addButton={<AddButton w={16} onAddMember={handleAddMember}></AddButton>}
+        />
+
         {members.map((member) => (
           <MemberRow
             key={member.email}
             member={member}
             editable={editable}
-            onRemove={handleRemoveMember(member)}
             onChangeRole={handleRoleChange(member)}
+            removeButton={<RemoveButton onRemove={handleRemoveMember(member)} />}
           ></MemberRow>
         ))}
-        
-      <Button>hey</Button>
-    </Card>
+      </List>
   );
 }
-
