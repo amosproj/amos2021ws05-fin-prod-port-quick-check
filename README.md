@@ -69,7 +69,7 @@ Welcome to the Financial Portfolio Quick Check repository. This repository conta
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License.
+Distributed under the MIT License. For further information please see the <a href="./LICENSE">LICENSE</a> file in the root directory. 
 
 ----------------------------------------------------------------------- 
 
