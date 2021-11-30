@@ -50,7 +50,7 @@ export default function Project(prop) {
   useEffect(() => {
     // fetchProject();
     setprojectData(mockProject);
-  }, []); // call again when project data changed
+  }, []);
 
   const EditButtons = () => {
     if (editable) {
@@ -90,7 +90,7 @@ export default function Project(prop) {
         </Heading>
       </Card>
 
-      <MemberCard editable={editable} members={projectData.members} memberUpdater={setMembers} />
+      <MemberCard editable={editable} members={projectData.members} handleChange={setMembers} />
 
       <Button onClick={(e) => console.log(projectData.members)}>console log</Button>
 

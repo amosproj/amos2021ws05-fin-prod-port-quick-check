@@ -8,7 +8,7 @@ export default function Card(props) {
       minW="12em"
       maxW={props.maxW}
       bg={props.bg || 'gray.700'}
-      p={3}
+      p={props.p || 3}
       mb={6}
       align="center"
       rounded="md"
