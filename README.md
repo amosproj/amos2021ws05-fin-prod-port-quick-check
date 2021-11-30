@@ -41,7 +41,8 @@ The core feature of the software is a calculation of benchmarks regarding comple
  ```
 --- 
 <!-- USAGE EXAMPLES -->
-## Usage
+## Usage/ Properties??
+TODO was soll hier hin? Properties (functional/nonfunctional?)
 ### Basics
 ### Configuration
 
