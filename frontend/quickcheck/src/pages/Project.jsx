@@ -10,39 +10,13 @@ import { useParams } from 'react-router-dom';
 import { api } from '../utils/apiClient';
 import Card from '../components/Card';
 
-function ProjectCard(prop) {
-  return (
-    <Card barColor="blue.500">
-      <Stack>
-        <Text
-          color={'green.500'}
-          textTransform={'uppercase'}
-          fontWeight={800}
-          fontSize={'sm'}
-          letterSpacing={1.1}
-        >
-          {prop.type}
-        </Text>
-        <Heading fontSize={'2xl'} fontFamily={'body'}>
-          <ShowEditable text={prop.title} editable={prop.editable}></ShowEditable>
-        </Heading>
-        <Text color={'gray.500'}>
-          {' '}
-          <ShowEditable text={prop.description} editable={prop.editable}></ShowEditable>
-        </Text>
-      </Stack>
-    </Card>
-  );
-}
-
 const mockProject = {
   projectID: 1,
   creatorID: '2375e026-d348-4fb6-b42b-891a76758d5d',
   projectName: 'Amos Bank',
-  // members: ['2375e026-d348-4fb6-b42b-891a76758d5d', '0fef539d-69be-4013-9380-6a12c3534c67'],
   members: [
     { email: 'consultant@amos.de', role: 'Consultant' },
-    { email: 'manager@amos.de', role: 'Project Managers' },
+    { email: 'manager@amos.de', role: 'Project Owner' },
   ],
   productAreas: [1, 2, 3],
 };
@@ -56,7 +30,7 @@ export default function Project(prop) {
     productAreas: [],
   });
 
-  const updateMembers = (newMembers) => {
+  const setMembers = (newMembers) => {
     // extra func because member card only knows the members
     setprojectData({
       ...projectData,
@@ -64,19 +38,18 @@ export default function Project(prop) {
     });
   };
 
-  // const { id } = useParams();
+  const { id } = useParams();
   const fetchProject = () => {
-    // api
-    //   .url('/projects/' + id)
-    //   .get()
-    //   .json((json) => setprojectData(json))
-    //   .catch(console.error);
-    setprojectData(mockProject);
-    console.log(projectData);
+    api
+      .url('/projects/' + id)
+      .get()
+      .json((json) => setprojectData(json))
+      .catch(console.error);
   };
 
   useEffect(() => {
-    fetchProject();
+    // fetchProject();
+    setprojectData(mockProject);
   }, []); // call again when project data changed
 
   const EditButtons = () => {
@@ -102,16 +75,24 @@ export default function Project(prop) {
 
   return (
     <Page title="Manage Project">
-      <ProjectCard
-        project={projectData.project}
-        type="Project"
-        title={projectData.projectName}
-        description={projectData.description}
-        editable={editable}
-      />
-      <MemberCard editable={editable} members={projectData.members} memberUpdater={updateMembers} />
+      <Card barColor="blue.500">
+        <Text
+          color="green.500"
+          textTransform="uppercase"
+          fontWeight={800}
+          fontSize="sm"
+          letterSpacing={1.1}
+        >
+          Project:
+        </Text>
+        <Heading size="lg" fontFamily="body">
+          <ShowEditable text={projectData.projectName} editable={editable}></ShowEditable>
+        </Heading>
+      </Card>
 
-      <Button onClick={(e) => console.log(projectData.members)}>log</Button>
+      <MemberCard editable={editable} members={projectData.members} memberUpdater={setMembers} />
+
+      <Button onClick={(e) => console.log(projectData.members)}>console log</Button>
 
       <ProjectAreaCard areas={projectData.productAreas} editable={editable} />
       <EditButtons />

@@ -7,13 +7,16 @@ import {
   Tr,
   Select,
   Center,
+  Wrap,
   Td,
   Tfoot,
   Tbody,
   Box,
+  Spacer,
   Text,
   Stack,
   useDisclosure,
+  Flex,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -27,26 +30,25 @@ import {
   IconButton,
   Popover,
   PopoverTrigger,
+  Heading,
   PopoverContent,
   PopoverHeader,
   PopoverBody,
   PopoverFooter,
 } from '@chakra-ui/react';
-import Card from './Card.jsx';
-import ShowEditable from '../components/editable.jsx';
+import Card, { MinimalCard } from './Card.jsx';
+import ShowEditable, { ContentSwitch } from '../components/editable.jsx';
 import { DeleteIcon, AddIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
 
 function AddButton({ editable, addMemberFunc }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
   const [email, setEmail] = useState('');
   const [role, setRole] = useState('Client');
-
   if (editable) {
     return (
       <>
-        <IconButton icon={<AddIcon />} bg="purple.400" p={3} onClick={onOpen} />
+        <IconButton icon={<AddIcon />} bg="purple.400" p={1} w={16} onClick={onOpen} />
 
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
@@ -97,7 +99,7 @@ function RemoveButton({ removeFunc }) {
         <IconButton
           icon={<DeleteIcon />}
           onClick={onOpen}
-          size="md"
+          size="sm"
           color="red.900"
           bg="red.400"
           p={3}
@@ -125,6 +127,27 @@ function RemoveButton({ removeFunc }) {
         </PopoverFooter>
       </PopoverContent>
     </Popover>
+  );
+}
+
+function MemberRow2({ editable, member, removeFunc, updateRole }) {
+  return (
+    <Wrap p={1} px={4} rounded="md" _hover={{ bg: 'gray.600' }} align="center" spacing={2}>
+      <Text w="40%" bg="blue.700" rounded="md" p={1} px={3} h="full" align="left">
+        {member.email}
+      </Text>
+
+      {editable ? (
+        <Text w="40%" align="left">
+          {member.role}
+        </Text>
+      ) : (
+        <Text w="40%" align="left">
+          {member.role}
+        </Text>
+      )}
+      {editable ? <RemoveButton removeFunc={() => removeFunc(member)} /> : <div />}
+    </Wrap>
   );
 }
 
@@ -179,9 +202,12 @@ export default function MemberCard({ editable, members, memberUpdater }) {
   return (
     <Card barColor="teal.500">
       <Stack>
-        <Text color="green.500" textransform="uppercase" fontSize="md">
-          Members
-        </Text>
+        <Flex justifyContent="center">
+          <Heading size="lg" mx={16}>
+            Members
+          </Heading>
+          <AddButton editable={editable} addMemberFunc={addMember}></AddButton>
+        </Flex>
         <Table variant="simple" size="sm">
           <Thead>
             <Tr>
@@ -203,10 +229,17 @@ export default function MemberCard({ editable, members, memberUpdater }) {
           </Tbody>
           <Tfoot></Tfoot>
         </Table>
-
-        <Center>
-          <AddButton editable={editable} addMemberFunc={addMember}></AddButton>
-        </Center>
+        `
+        {members.map((member) => (
+          <MemberRow2
+            key={member.email}
+            member={member}
+            editable={editable}
+            removeFunc={removeMember}
+            updateRole={updateRole}
+          ></MemberRow2>
+        ))}
+        `
       </Stack>
     </Card>
   );
