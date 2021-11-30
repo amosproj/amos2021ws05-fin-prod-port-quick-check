@@ -24,219 +24,189 @@ import {
   Input,
   ModalBody,
   ModalHeader,
+  IconButton,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverFooter,
 } from '@chakra-ui/react';
 import Card from './Card.jsx';
 import ShowEditable from '../components/editable.jsx';
 import { DeleteIcon, AddIcon } from '@chakra-ui/icons';
+import { useState } from 'react';
 
-function AddMember(prop) {
+function AddButton({ editable, addMemberFunc }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const initialRef = React.useRef();
-  const finalRef = React.useRef();
-  if (prop.editable){
+  const [email, setEmail] = useState('');
+  const [role, setRole] = useState('Client');
+
+  if (editable) {
+    return (
+      <>
+        <IconButton icon={<AddIcon />} bg="purple.400" p={3} onClick={onOpen} />
+
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Add new Member</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody pb={6}>
+              <FormControl>
+                <FormLabel pl={3}>Email</FormLabel>
+                <Input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
+              </FormControl>
+            </ModalBody>
+            <ModalBody pb={6}>
+              <Select onChange={(e) => setRole(e.target.value)}>
+                <option value="Client">Client</option>
+                <option value="Project Manager">Project Manager</option>
+                <option value="Project Owner">Project Owner</option>
+              </Select>
+            </ModalBody>
+
+            <ModalFooter>
+              <Button
+                colorScheme="blue"
+                mr={3}
+                onClick={(e) => {
+                  addMemberFunc({ email: email, role: role });
+                  onClose();
+                }}
+              >
+                Save
+              </Button>
+              <Button onClick={onClose}>Cancel</Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </>
+    );
+  } else {
+    return <></>;
+  }
+}
+
+function RemoveButton({ removeFunc }) {
+  const { onOpen, onClose, isOpen } = useDisclosure();
   return (
-
-    <>
-      <Button
-        onClick={onOpen}
-        size="md"
-        color="green.900"
-        boxShadow={'2xl'}
-        rounded={'md'}
-        w="50px"
-        bg="purple.400"
-        p={3}
-      >
-      <AddIcon/>
-      </Button>
-
-      <Modal
-        initialFocusRef={initialRef}
-        finalFocusRef={finalRef}
-        isOpen={isOpen}
-        onClose={onClose}
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>{prop.question}</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody pb={6}>
-            <FormControl>
-              <FormLabel>Name</FormLabel>
-              <Input ref={initialRef} placeholder={prop.default}/>
-            </FormControl>
-          </ModalBody>
-          <ModalBody pb={6}>
-          <Select placeholder="Select role">
-<option value="Admin">Admin</option>
-<option value="Client">Client</option>
-<option value="Product Owner">Product Owner</option>
-<option value="Product Manager">Product Owner</option>
-</Select>
-          </ModalBody>
-
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3}>
-              Save
-            </Button>
-            <Button onClick={onClose}>Cancel</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </>
-  );
-  }
-  else{
-      return (<></>)
-  }
-  }
-
-function RemoveMember(prop) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const initialRef = React.useRef();
-  const finalRef = React.useRef();
-
-  return (
-    <>
-    <Button
-      onClick={onOpen}
-      size="lg"
-      color="red.900"
-      boxShadow={'2xl'}
-      rounded={'md'}
-      w="50px"
-      bg="red.400"
-      p={3}
-    >
-        <DeleteIcon/>
-      </Button>
-
-      <Modal
-        initialFocusRef={initialRef}
-        finalFocusRef={finalRef}
-        isOpen={isOpen}
-        onClose={onClose}
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>
-            Are you sure you want to RemoveMember the {prop.role}, {prop.name}, from the project?
-          </ModalHeader>
-          <ModalCloseButton />
-          <ModalFooter>
-            <Button colorScheme="red" mr={3}>
-              Yes
-            </Button>
-            <Button colorScheme="green" onClick={onClose}>
-              Cancel
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </>
+    <Popover isOpen={isOpen} onOpen={onOpen} onClose={onClose} isLazy={true} w="wrap">
+      <PopoverTrigger>
+        <IconButton
+          icon={<DeleteIcon />}
+          onClick={onOpen}
+          size="md"
+          color="red.900"
+          bg="red.400"
+          p={3}
+        />
+      </PopoverTrigger>
+      <PopoverContent>
+        <PopoverHeader fontWeight="semibold">Confirm Removal</PopoverHeader>
+        <PopoverBody>
+          <Text>Really remove this User?</Text>
+        </PopoverBody>
+        <PopoverFooter>
+          <Button
+            colorScheme="red"
+            mx={1}
+            onClick={(e) => {
+              removeFunc();
+              onClose();
+            }}
+          >
+            Remove
+          </Button>
+          <Button mx={1} onClick={onClose}>
+            Cancel
+          </Button>
+        </PopoverFooter>
+      </PopoverContent>
+    </Popover>
   );
 }
 
-function MemberRow(prop) {
+function MemberRow({ editable, member, removeFunc, updateRole }) {
   return (
     <Tr>
       <Td>
-        <Box color="white" boxShadow={'2xl'} rounded={'md'} w="200px" bg="blue.500" p={3}>
-          <Text color={'gray.100'} fontWeight={800} fontSize={'sm'} letterSpacing={1.1}>
-            <ShowEditable text={prop.name} editable={prop.editable}></ShowEditable>
-
+        <Box rounded={'md'} w="200px" bg="blue.500" p={2}>
+          <Text color={'gray.100'} fontWeight={500} fontSize="md">
+            <ShowEditable text={member.email} editable={editable}></ShowEditable>
           </Text>
         </Box>
       </Td>
 
       <Td>
-        <Box color="white" boxShadow={'2xl'} rounded={'md'} w="200px" bg="green.500" p={3}>
-          <Text
-            color={'gray.100'}
-            textTransform={'uppercase'}
-            fontWeight={700}
-            fontSize={'sm'}
-            letterSpacing={1.1}
-          >
-            <ShowEditable text={prop.role} editable={prop.editable}></ShowEditable>
+        <Box rounded={'md'} w="200px" bg="blue.500" p={2}>
+          <Text color={'gray.100'} fontWeight={500} fontSize="md">
+            <ShowEditable text={member.role} editable={editable}></ShowEditable>
           </Text>
         </Box>
       </Td>
-      <EditRemoveMemberButton editable={prop.editable}  name={prop.name} role={prop.role}></EditRemoveMemberButton>
+
+      {editable ? <RemoveButton removeFunc={() => removeFunc(member)} /> : <div />}
+      <Button onClick={(e) => updateRole(member, 'Project Manager')}>as manager</Button>
     </Tr>
   );
 }
-function EditRemoveMemberButton(prop) {
-  if (prop.editable) {
-    return (
-        <Td>
-          <RemoveMember name={prop.name} role={prop.role}></RemoveMember>
-        </Td>
-    );
-  } else {
-    return (
-    <></>
-);
-  }
-}
 
-function EditTableHeader(prop) {
-  if (prop.editable) {
+// Assumption: ProjectMembers is a list of object: {id, role}
+export default function MemberCard({ editable, members, memberUpdater }) {
+  const removeMember = (member) => {
+    const newMembers = members.filter((m) => {
+      return m.email !== member.email;
+    });
+    memberUpdater(newMembers);
+  };
 
-    return (
-        <Thead>
-          <Tr>
-            <Th>Name</Th>
-            <Th>Role</Th>
-            <Th> Remove Member  </Th>
+  const addMember = (newMember) => {
+    memberUpdater([...members, newMember]);
+  };
 
-          </Tr>
-        </Thead>
-    );
-  } else {
-    return (
+  const updateRole = (member, newRole) => {
+    // the state is updated, however it is somehow not rendered
 
-    <Thead>
-      <Tr>
-        <Th>Name</Th>
-        <Th>Role</Th>
-      </Tr>
-    </Thead>);
-  }
-}
+    let index = members.findIndex((m) => m.email === member.email);
 
-export default function MemberCard(props) {
+    console.log('index', index);
+    members[index] = { ...member, role: newRole };
+    memberUpdater(members);
+  };
+
   return (
     <Card barColor="teal.500">
       <Stack>
-        <Text
-          color={'green.500'}
-          textTransform={'uppercase'}
-          fontWeight={800}
-          fontSize={'sm'}
-          letterSpacing={1.1}
-        >
+        <Text color="green.500" textransform="uppercase" fontSize="md">
           Members
         </Text>
         <Table variant="simple" size="sm">
-        <EditTableHeader editable={props.editable}></EditTableHeader>
+          <Thead>
+            <Tr>
+              <Th w="45%">Email</Th>
+              <Th w="45%">Role</Th>
+              <Th w="10%" isNumeric></Th>
+            </Tr>
+          </Thead>
           <Tbody>
-            {props.members.map((member) => (
+            {members.map((member) => (
               <MemberRow
-                key={member.id}
-                name={member.Name}
-                role={member.role}
-                editable={props.editable}
+                key={member.email}
+                member={member}
+                editable={editable}
+                removeFunc={removeMember}
+                updateRole={updateRole}
               ></MemberRow>
             ))}
           </Tbody>
           <Tfoot></Tfoot>
         </Table>
-            <Center>
-           <AddMember editable={props.editable} question="Add Member" default="Member Name" ></AddMember>
-             </Center>
+
+        <Center>
+          <AddButton editable={editable} addMemberFunc={addMember}></AddButton>
+        </Center>
       </Stack>
     </Card>
   );

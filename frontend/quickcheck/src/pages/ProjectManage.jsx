@@ -1,12 +1,5 @@
-import { React, useState , useEffect} from 'react';
-import {
-  Heading,
-  Text,
-  List,
-  Stack,
-  HStack,
-  Button,
-} from '@chakra-ui/react';
+import { React, useState, useEffect } from 'react';
+import { Heading, Text, List, Stack, HStack, Button } from '@chakra-ui/react';
 
 import { api } from '../utils/apiClient';
 import MemberCard from '../components/MemberCard';
@@ -14,7 +7,6 @@ import Card from '../components/Card.jsx';
 import ProjectAreaCard from '../components/ProjectAreaCard.jsx';
 import ShowEditable from '../components/editable.jsx';
 import Page from '../components/Page';
-
 
 const mocks = {
   project: {
@@ -58,42 +50,34 @@ const mocks = {
   ],
 };
 
-
-
-
 function ProjectCard(props) {
   return (
     <Card barColor="blue.500">
       <Stack>
         <Text
-          color={'green.500'}
-          textTransform={'uppercase'}
+          color="green.500"
+          textTransform="uppercase"
           fontWeight={800}
-          fontSize={'sm'}
+          fontSize="sm"
           letterSpacing={1.1}
         >
           {props.type}
         </Text>
-        <Heading fontSize={'2xl'} fontFamily={'body'}>
-         <ShowEditable text={props.title} editable={props.editable}></ShowEditable>
+        <Heading fontSize="2xl" fontFamily="body">
+          <ShowEditable text={props.title} editable={props.editable}></ShowEditable>
         </Heading>
-        <Text color={'gray.500'}>
-          {' '}
-          <ShowEditable text={props.description} editable={props.editable}></ShowEditable>
-        </Text>
       </Stack>
     </Card>
   );
 }
 
-
 export default function ManageProject(prop) {
-    const [projectData, setProjectData] = useState([]);
-    const [editable, setEditable] = useState(false);
+  const [projectData, setProjectData] = useState([]);
+  const [editable, setEditable] = useState(false);
 
   const getProject = (id) => {
     api
-      .url('/projects/'+id)
+      .url('/projects/' + id)
       .get()
       .json((json) => setProjectData(json));
   };
@@ -126,19 +110,29 @@ export default function ManageProject(prop) {
 
   return (
     <Page title="Manage Project">
-    <Text>{prop.id}</Text>
+      <Text>{prop.id}</Text>
+      <Card barColor="blue.500">
+        <Stack>
+          <Text
+            color="green.500"
+            textTransform="uppercase"
+            fontWeight={800}
+            fontSize="sm"
+            letterSpacing={1.1}
+          >
+            {mocks.project.type}
+          </Text>
+          <Heading fontSize="2xl" fontFamily="body">
+            <ShowEditable text={mocks.project.title} editable={editable}></ShowEditable>
+          </Heading>
+        </Stack>
+      </Card>
 
-      <ProjectCard
-        project={mocks.project}
-        type={mocks.project.type}
-        title={mocks.project.title}
-        description={mocks.project.description}
-        editable={editable}
-      />
-      <MemberCard members={mocks.members} editable={editable} />
-      <ProjectAreaCard areas={mocks.productAreas} editable={editable} />
+      <MemberCard members={mocks.project.members} editable={editable} />
+
+      <ProjectAreaCard areas={mocks.project.productAreas} editable={editable} />
+
       <EditButtons />
-
     </Page>
   );
 }

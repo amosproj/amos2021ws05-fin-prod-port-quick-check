@@ -30,6 +30,8 @@ import {
 import Card from './Card.jsx';
 import { AddIcon } from '@chakra-ui/icons';
 import ShowEditable from '../components/editable.jsx';
+
+
 export function AddArea(prop) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -78,13 +80,14 @@ export function AddArea(prop) {
         </ModalContent>
       </Modal>
     </>
-
   );
   }
   else{
       return(<></>);
   }
 }
+
+
 function Remove(prop) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -102,8 +105,7 @@ function Remove(prop) {
       w="50px"
       bg="purple.400"
       p={3}
-    >
-      ></Button>
+    ></Button>
 
       <Modal
         initialFocusRef={initialRef}
@@ -133,6 +135,7 @@ function Remove(prop) {
     </>
   );
 }
+
 
 function ProjectArea(prop) {
   return (
@@ -170,14 +173,13 @@ function ProjectArea(prop) {
             w="100px"
             bg="green.400"
             p={3}
-          >
-            Open
-          </Button>
+          >Open</Button>
         </Link>
       </Td>
     </Tr>
   );
 }
+
 
 export default function ProjectAreaCard(prop) {
   return (
