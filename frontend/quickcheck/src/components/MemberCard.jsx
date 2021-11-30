@@ -9,7 +9,7 @@ import {
   Center,
   Wrap,
   Td,
-  Tfoot,
+  Tfoot,HStack,
   Tbody,
   Box,
   Spacer,
@@ -99,7 +99,7 @@ function RemoveButton({ onRemove }) {
         <IconButton
           icon={<DeleteIcon />}
           onClick={onOpen}
-          size="sm"
+          size="md"
           color="red.900"
           bg="red.400"
           p={3}
@@ -130,10 +130,10 @@ function RemoveButton({ onRemove }) {
   );
 }
 
-function MemberRow2({ editable, member, onRemove, onChangeRole }) {
+function MemberRow({ editable, member, onRemove, onChangeRole }) {
   return (
-    <Wrap p={0} px={4} rounded="md" _hover={{ bg: 'gray.600' }} align="center" spacing={6}>
-      <Text w="40%" bg="blue.700" rounded="md" p={2} px={3} h="full" align="left">
+    <Wrap p={0} px={4} rounded="md" _hover={{ shadow: 'md' }} align="center" spacing={5} w='80%'>
+      <Text w="50%" bg="blue.700" rounded="md" p={2} px={3} h="full" align="left">
         {member.email}
       </Text>
 
@@ -153,7 +153,7 @@ function MemberRow2({ editable, member, onRemove, onChangeRole }) {
           <option value="Project Owner">Project Owner</option>
         </Select>
       ) : (
-        <Text w="30%" rounded="md" bg="blue.700" p={2} px={3} h="full" align="center">
+        <Text w="30%" rounded="md" bg="blue.700" p={2} px={3} h="full" align="left">
           {member.role}
         </Text>
       )}
@@ -162,30 +162,6 @@ function MemberRow2({ editable, member, onRemove, onChangeRole }) {
   );
 }
 
-function MemberRow({ editable, member, removeFunc, onChangeRole }) {
-  return (
-    <Tr>
-      <Td>
-        <Box rounded={'md'} w="200px" bg="blue.500" p={2}>
-          <Text color={'gray.100'} fontWeight={500} fontSize="md">
-            <ShowEditable text={member.email} editable={editable}></ShowEditable>
-          </Text>
-        </Box>
-      </Td>
-
-      <Td>
-        <Box rounded={'md'} w="200px" bg="blue.500" p={2}>
-          <Text color={'gray.100'} fontWeight={500} fontSize="md">
-            <ShowEditable text={member.role} editable={editable}></ShowEditable>
-          </Text>
-        </Box>
-      </Td>
-
-      {editable ? <RemoveButton removeFunc={() => removeFunc(member)} /> : <div />}
-      <Button onClick={(e) => onChangeRole('Project Manager')}>as manager</Button>
-    </Tr>
-  );
-}
 
 // Assumption: ProjectMembers is a list of object: {id, role}
 export default function MemberCard({ editable, members, handleChange }) {
@@ -211,47 +187,33 @@ export default function MemberCard({ editable, members, handleChange }) {
   };
 
   return (
-    <Card barColor="teal.500">
-      <Stack>
+    <Card barColor="teal.500"  direction='column'>
         <Flex justifyContent="center">
           <Heading size="lg" mx={16}>
             Members
           </Heading>
           <AddButton editable={editable} onAddMember={handleAddMember}></AddButton>
         </Flex>
-        <Table variant="simple" size="sm">
-          <Thead>
-            <Tr>
-              <Th w="45%">Email</Th>
-              <Th w="45%">Role</Th>
-              <Th w="10%" isNumeric></Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {members.map((member) => (
-              <MemberRow
-                key={member.email}
-                member={member}
-                editable={editable}
-                onRemove={handleRemoveMember(member)}
-                onChange={handleRoleChange(member)}
-              ></MemberRow>
-            ))}
-          </Tbody>
-          <Tfoot></Tfoot>
-        </Table>
         
+        <HStack w='80%'>
+          <Card>
+            <Text w='50%' align='center'>Email</Text>
+            <Text>Role</Text>
+          </Card>
+
+        </HStack>
         {members.map((member) => (
-          <MemberRow2
+          <MemberRow
             key={member.email}
             member={member}
             editable={editable}
             onRemove={handleRemoveMember(member)}
             onChangeRole={handleRoleChange(member)}
-          ></MemberRow2>
+          ></MemberRow>
         ))}
         
-      </Stack>
+      <Button>hey</Button>
     </Card>
   );
 }
+
