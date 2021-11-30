@@ -31,15 +31,66 @@ import Card from './Card.jsx';
 import { AddIcon } from '@chakra-ui/icons';
 import ShowEditable from '../components/editable.jsx';
 
-
 export function AddArea(prop) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const initialRef = React.useRef();
   const finalRef = React.useRef();
-  if (prop.editable){
-  return (
+  if (prop.editable) {
+    return (
+      <>
+        <Button
+          onClick={onOpen}
+          size="md"
+          color="green.900"
+          boxShadow={'2xl'}
+          rounded={'md'}
+          w="50px"
+          bg="purple.400"
+          p={3}
+        >
+          <AddIcon />
+        </Button>
 
+        <Modal
+          initialFocusRef={initialRef}
+          finalFocusRef={finalRef}
+          isOpen={isOpen}
+          onClose={onClose}
+        >
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>{prop.question}</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody pb={6}>
+              <FormControl>
+                <FormLabel>Name</FormLabel>
+                <Input ref={initialRef} placeholder={prop.default} />
+              </FormControl>
+            </ModalBody>
+
+            <ModalFooter>
+              <Button colorScheme="blue" mr={3}>
+                Save
+              </Button>
+              <Button onClick={onClose}>Cancel</Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </>
+    );
+  } else {
+    return <></>;
+  }
+}
+
+function Remove(prop) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const initialRef = React.useRef();
+  const finalRef = React.useRef();
+
+  return (
     <>
       <Button
         onClick={onOpen}
@@ -50,62 +101,7 @@ export function AddArea(prop) {
         w="50px"
         bg="purple.400"
         p={3}
-      >
-      <AddIcon/>
-      </Button>
-
-      <Modal
-        initialFocusRef={initialRef}
-        finalFocusRef={finalRef}
-        isOpen={isOpen}
-        onClose={onClose}
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>{prop.question}</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody pb={6}>
-            <FormControl>
-              <FormLabel>Name</FormLabel>
-              <Input ref={initialRef} placeholder={prop.default}/>
-            </FormControl>
-          </ModalBody>
-
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3}>
-              Save
-            </Button>
-            <Button onClick={onClose}>Cancel</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </>
-  );
-  }
-  else{
-      return(<></>);
-  }
-}
-
-
-function Remove(prop) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const initialRef = React.useRef();
-  const finalRef = React.useRef();
-
-  return (
-    <>
-    <Button
-      onClick={onOpen}
-      size="md"
-      color="green.900"
-      boxShadow={'2xl'}
-      rounded={'md'}
-      w="50px"
-      bg="purple.400"
-      p={3}
-    ></Button>
+      ></Button>
 
       <Modal
         initialFocusRef={initialRef}
@@ -136,14 +132,13 @@ function Remove(prop) {
   );
 }
 
-
 function ProjectArea(prop) {
   return (
     <Tr>
       <Td>
         <Box color="white" boxShadow={'2xl'} rounded={'md'} w="200px" bg="green.500" p={3}>
           <Text color={'gray.100'} fontWeight={800} fontSize={'sm'} letterSpacing={1.1}>
-          <ShowEditable text={prop.name} editable={prop.editable}></ShowEditable>
+            <ShowEditable text={prop.name} editable={prop.editable}></ShowEditable>
           </Text>
         </Box>
       </Td>
@@ -173,34 +168,46 @@ function ProjectArea(prop) {
             w="100px"
             bg="green.400"
             p={3}
-          >Open</Button>
+          >
+            Open
+          </Button>
         </Link>
       </Td>
     </Tr>
   );
 }
 
-
 export default function ProjectAreaList(prop) {
   return (
-
-        <Table variant="simple" size="sm">
-          <Thead>
-            <Tr>
-              <Th>Name</Th>
-              <Th>Progress</Th>
-              <Th>        <Center>
-          <Link to="../projects"></Link>
-          <AddArea editable={prop.editable} question="Create Product Area" default="Product Area Name" ></AddArea>
-        </Center></Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {prop.areas.map((area) => (
-              <ProjectArea name={area.type} role={area.role} percent={area.percent} editable={prop.editable}></ProjectArea>
-            ))}
-          </Tbody>
-          <Tfoot></Tfoot>
-        </Table>
+    <Table variant="simple" size="sm">
+      <Thead>
+        <Tr>
+          <Th>Name</Th>
+          <Th>Progress</Th>
+          <Th>
+            {' '}
+            <Center>
+              <Link to="../projects"></Link>
+              <AddArea
+                editable={prop.editable}
+                question="Create Product Area"
+                default="Product Area Name"
+              ></AddArea>
+            </Center>
+          </Th>
+        </Tr>
+      </Thead>
+      <Tbody>
+        {prop.areas.map((area) => (
+          <ProjectArea
+            name={area.type}
+            role={area.role}
+            percent={area.percent}
+            editable={prop.editable}
+          ></ProjectArea>
+        ))}
+      </Tbody>
+      <Tfoot></Tfoot>
+    </Table>
   );
 }

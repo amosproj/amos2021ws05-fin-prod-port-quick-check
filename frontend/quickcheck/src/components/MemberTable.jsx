@@ -171,22 +171,21 @@ export default function MemberTable({ editable, members, handleChange }) {
   };
 
   return (
+    <List spacing={4} direction="column" minW="80%" align="center" pb={5}>
+      <MemberHead
+        editable={editable}
+        addButton={<AddButton w={16} onAddMember={handleAddMember}></AddButton>}
+      />
 
-      <List spacing={4} direction="column" minW="80%" align="center" pb={5}>
-        <MemberHead
+      {members.map((member) => (
+        <MemberRow
+          key={member.email}
+          member={member}
           editable={editable}
-          addButton={<AddButton w={16} onAddMember={handleAddMember}></AddButton>}
-        />
-
-        {members.map((member) => (
-          <MemberRow
-            key={member.email}
-            member={member}
-            editable={editable}
-            onChangeRole={handleRoleChange(member)}
-            removeButton={<RemoveButton onRemove={handleRemoveMember(member)} />}
-          ></MemberRow>
-        ))}
-      </List>
+          onChangeRole={handleRoleChange(member)}
+          removeButton={<RemoveButton onRemove={handleRemoveMember(member)} />}
+        ></MemberRow>
+      ))}
+    </List>
   );
 }

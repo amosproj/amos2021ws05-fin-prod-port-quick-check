@@ -99,8 +99,8 @@ export default function Project(prop) {
 
       <Button onClick={(e) => console.log(projectData.members)}>console log</Button>
 
-    <Card barColor="blue.500" direction='column'>
-    <Text
+      <Card barColor="blue.500" direction="column">
+        <Text
           color={'green.500'}
           textTransform={'uppercase'}
           fontWeight={800}
@@ -109,11 +109,10 @@ export default function Project(prop) {
         >
           Product Areas
         </Text>
-      <Stack>
-
-      <ProjectAreaList areas={projectData.productAreas} editable={editable} />
-      </Stack>
-    </Card>
+        <Stack>
+          <ProjectAreaList areas={projectData.productAreas} editable={editable} />
+        </Stack>
+      </Card>
 
       <EditButtons />
     </Page>
