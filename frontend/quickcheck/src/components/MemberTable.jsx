@@ -24,7 +24,6 @@ import {
   PopoverBody,
   List,
 } from '@chakra-ui/react';
-import Card from './Card.jsx';
 import { DeleteIcon, AddIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
 import { roles } from '../utils/const';

@@ -1,5 +1,5 @@
 import { Heading, Button, Text, HStack, Stack } from '@chakra-ui/react';
-import MemberTable from '../components/MemberCard';
+import MemberTable from '../components/MemberTable';
 import { React, useState, useEffect } from 'react';
 
 import ProjectAreaCard from '../components/ProjectAreaCard';
