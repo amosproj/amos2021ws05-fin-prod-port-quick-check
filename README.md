@@ -8,6 +8,10 @@
   
 Welcome to the Financial Portfolio Quick Check repository. This repository contains the source code and the documentation of the Quick Check project. The student team is to develop a software which is helping consultants by evaluating financial products in terms of complexity and by other economical factors. This project is created in cooperation with the [BearingPoint GmbH](https://www.bearingpoint.com/en/).
 
+## Mission
+Our project mission is to provide a web application which allows structured data entry for financial products, comparison and evaluation among products and product variants as well as with source documents annotated visualization.
+The core feature of the software is a calculation of benchmarks regarding complexity combined with annotated result charts. To meet the objectives mentioned above, we will maintain a helpful and friendly team atmosphere. 
+
 
 
 <!-- TABLE OF CONTENTS -->
