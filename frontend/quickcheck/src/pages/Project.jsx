@@ -2,7 +2,7 @@ import { Heading, Button, Text, HStack, Stack } from '@chakra-ui/react';
 import MemberTable from '../components/MemberTable';
 import { React, useState, useEffect } from 'react';
 
-import ProjectAreaCard from '../components/ProjectAreaCard';
+import ProjectAreaList from '../components/ProjectAreaCard';
 import ShowEditable from '../components/editable.jsx';
 
 import Page from '../components/Page';
@@ -99,7 +99,22 @@ export default function Project(prop) {
 
       <Button onClick={(e) => console.log(projectData.members)}>console log</Button>
 
-      <ProjectAreaCard areas={projectData.productAreas} editable={editable} />
+    <Card barColor="blue.500" direction='column'>
+    <Text
+          color={'green.500'}
+          textTransform={'uppercase'}
+          fontWeight={800}
+          fontSize={'sm'}
+          letterSpacing={1.1}
+        >
+          Product Areas
+        </Text>
+      <Stack>
+
+      <ProjectAreaList areas={projectData.productAreas} editable={editable} />
+      </Stack>
+    </Card>
+
       <EditButtons />
     </Page>
   );

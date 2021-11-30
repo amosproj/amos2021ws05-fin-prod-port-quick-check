@@ -181,25 +181,18 @@ function ProjectArea(prop) {
 }
 
 
-export default function ProjectAreaCard(prop) {
+export default function ProjectAreaList(prop) {
   return (
-    <Card barColor="blue.500">
-      <Stack>
-        <Text
-          color={'green.500'}
-          textTransform={'uppercase'}
-          fontWeight={800}
-          fontSize={'sm'}
-          letterSpacing={1.1}
-        >
-          Product Areas
-        </Text>
+
         <Table variant="simple" size="sm">
           <Thead>
             <Tr>
               <Th>Name</Th>
               <Th>Progress</Th>
-              <Th>Files</Th>
+              <Th>        <Center>
+          <Link to="../projects"></Link>
+          <AddArea editable={prop.editable} question="Create Product Area" default="Product Area Name" ></AddArea>
+        </Center></Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -209,11 +202,5 @@ export default function ProjectAreaCard(prop) {
           </Tbody>
           <Tfoot></Tfoot>
         </Table>
-        <Center>
-          <Link to="../projects"></Link>
-          <AddArea editable={prop.editable} question="Create Product Area" default="Product Area Name" ></AddArea>
-        </Center>
-      </Stack>
-    </Card>
   );
 }
