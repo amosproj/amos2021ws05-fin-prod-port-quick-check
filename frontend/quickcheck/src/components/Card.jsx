@@ -5,7 +5,7 @@ export default function Card(props) {
   return (
     <Box
       w="full"
-      minW="12em"
+      minW="15em"
       bg="gray.700"
       p={3}
       mb={6}

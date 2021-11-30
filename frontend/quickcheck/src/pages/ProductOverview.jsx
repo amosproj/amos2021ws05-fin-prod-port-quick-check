@@ -19,8 +19,8 @@ const prod1mock = {
   newProject: {
     creatorID: 0,
     projectName: 'Karl-Heinz Günther',
-    members: [1, 2],
-    productAreas: [1, 2, 3],
+    members: [],
+    productAreas: [],
   },
   area: 'Loan',
 };
@@ -29,17 +29,15 @@ const product1 = {
   productName: "Product1",
   productID: 1,
   projectID: 1,
-  productAreaID: "Loan"
+  productAreaID: 2
 }
 
 const product2 = {
   productName: "Product2",
   productID: 2,
   projectID: 1,
-  productAreaID: "Loan"
+  productAreaID: 2
 }
-
-
 
 
 
@@ -47,16 +45,15 @@ function ProjectCard(props) {
 
   return (
     <Card>
-
-      <HStack p={2} spacing={5}>
-        <Heading size="lg" color="teal.400" align="center" py={{ base: 4, md: 0 }} w="50%">
+      <HStack p={2} spacing={5} >
+        <Heading size="lg" color="white" align="center" py={{ base: 4, md: 0 }} w="50%">
           {props.product.productName}
         </Heading>
-        
+
         <Text fontWeight="bolder" fontSize="md">
           <p>Product Area {props.product.productAreaID} </p>
         </Text>
-        
+
         <Button bg="teal.500" align="center" _hover={{ bg: 'teal.400' }} w={24}>
           Edit
         </Button>
@@ -84,14 +81,17 @@ export default function ProductOverview() {
   return (
     <div>
       <Page title="Product Overview">
-        <List spacing={3} maxW="900px" mx={2}>
-          {projectsData.map((product) => (
-            <ProjectCard product={product} key={product.projectID}></ProjectCard>
-            //<TextF product={product.productName}/>
+        <Card barColor="cyan">
+          <List spacing={3} maxW="900px" mx={2}>
+            {projectsData.map((product) => (
+              <ProjectCard product={product} key={product.projectID}></ProjectCard>
+              //<TextF product={product.productName}/>
 
-          ))}
-        </List>
-        <Box> {projectsData.product}</Box>
+            ))}
+            <Button> Edit </Button>
+          </List>
+          
+        </Card>
       </Page>
     </div>
   )
