@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 
 /**
@@ -37,7 +38,8 @@ public class UserService {
      */
     public UserDto createUser(UserDto userDto) {
 
-        if(userDto.username != null && userDto.email != null && userDto.password != null){
+        if(userDto.username != null && userDto.email != null && userDto.password != null
+                && validateEmail(userDto.email)){
             UserEntity newUser = new UserEntity();
             newUser.id = UUID.randomUUID().toString();
             newUser.username = userDto.username;
@@ -187,5 +189,14 @@ public class UserService {
             repository.deleteById(userID);
         }
 
+    }
+
+
+    private boolean validateEmail(String emailAddress){
+        // regexPattern from RFC 5322 for Email Validation
+        String regexPattern = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
+        return Pattern.compile(regexPattern)
+                .matcher(emailAddress)
+                .matches();
     }
 }
