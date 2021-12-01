@@ -30,7 +30,6 @@ public class UserService {
 
     /**
      * returns a List of all User
-     * TODO: wollen wir hier wirklich das pw mit zurück geben?
      */
     public List<UserDto> findAllUser() {
 
@@ -39,7 +38,6 @@ public class UserService {
 
         for (UserEntity userEntity : allUserEntitys) {
             UserDto userDto = new UserDto(UUID.fromString(userEntity.id), userEntity.email, userEntity.username);
-            userDto.password = userEntity.password;
             userList.add(userDto);
         }
         return userList;
@@ -92,6 +90,7 @@ public class UserService {
             return null;
         }
     }
+
 
     /**
      * search for ID in repository and updates if found
@@ -153,63 +152,6 @@ public class UserService {
         return Pattern.compile(regexPattern)
                 .matcher(emailAddress)
                 .matches();
-    }
-
-
-
-    //TODO: Discuss with Alex multiple implementations
-    /**
-     * search for ID in repository and updates if found
-     *
-     * @param userDto
-     * @param email
-     */
-    public void updateByEmail(UserDto userDto, String email) {
-
-        Iterable<UserEntity> allUserEntitys = repository.findAll();
-
-        for (UserEntity userEntity : allUserEntitys) {
-            if (userEntity.email.equals(email)) {
-                if (userDto.email != null) {
-                    userEntity.email = userDto.email;
-                }
-
-                if (userDto.password != null) {
-                    userEntity.password = userDto.password;
-                }
-
-                if (userDto.username != null) {
-                    userEntity.username = userDto.username;
-                }
-                repository.save(userEntity);
-                return;
-            }
-        }
-        throw new ResourceNotFound(" User Email |" + email + "| not found");
-
-    }
-
-    /**
-     * Deletes User
-     * TODO: discuss implementation
-     *
-     * @param email
-     */
-    public void deleteUser(String email) {
-
-        Iterable<UserEntity> allUserEntitys = repository.findAll();
-
-        for (UserEntity userEntity : allUserEntitys) {
-            if (userEntity.email.equals(email)) {
-                Optional<UserEntity> tmpEnt = repository.findById(userEntity.id);
-                if (tmpEnt.isEmpty()) {
-                    throw new ResourceNotFound("User email |" + email + "| not found");
-                } else {
-                    repository.deleteById(tmpEnt.get().id);
-                }
-                return;
-            }
-        }
     }
 
 }

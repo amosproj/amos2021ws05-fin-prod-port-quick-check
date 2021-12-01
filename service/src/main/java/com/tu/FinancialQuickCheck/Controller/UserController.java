@@ -50,10 +50,6 @@ public class UserController {
         return service.findByEmail(email);
     }
 
-//    @PutMapping("email/{email}")
-//    public void updateUserByEmail(@RequestBody UserDto userDto, @PathVariable String email){
-//        service.updateByEmail(userDto, email);
-//    }
 
     @PutMapping("/{userID}")
     public void updateUserByUserID(@RequestBody UserDto userDto, @PathVariable String userID){
@@ -63,10 +59,6 @@ public class UserController {
         }
     }
 
-//    @DeleteMapping("email/{email}")
-//    void deleteByEmail(@PathVariable String email){
-//        service.deleteUser(email);
-//    }
 
     @DeleteMapping("/{userID}")
     void deleteByUserId(@PathVariable String userID){
