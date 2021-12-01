@@ -32,6 +32,7 @@ function AddButton(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [email, setEmail] = useState('');
   const [role, setRole] = useState('Client');
+  const header = 'Add new Member'
   return (
     <>
       <IconButton icon={<AddIcon />} colorScheme="green" size="lg" {...props} onClick={onOpen} />
@@ -39,7 +40,7 @@ function AddButton(props) {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader color="teal.300">Add new Member</ModalHeader>
+          <ModalHeader color="teal.300">{header}</ModalHeader>
           <ModalCloseButton />
           <ModalBody px={10}>
             <FormControl>
@@ -150,9 +151,7 @@ function MemberRow({ editable, member, onChangeRole, removeButton }) {
 // Assumption: ProjectMembers is a list of object: {id, role}
 export default function MemberTable({ editable, members, handleChange }) {
   const handleRemoveMember = (member) => () => {
-    const newMembers = members.filter((m) => {
-      return m.email !== member.email;
-    });
+    const newMembers = members.filter(m => (m.email !== member.email))
     handleChange(newMembers);
   };
 
@@ -160,12 +159,8 @@ export default function MemberTable({ editable, members, handleChange }) {
     handleChange([...members, newMember]);
   };
 
-  const handleRoleChange = (member) => (newRole) => {
-    // This is a curried function in JS
-    // the state is updated, however it is somehow not rendered
-    let index = members.findIndex((m) => m.email === member.email);
-
-    console.log('index', index);
+  const handleRoleChange = (member) => (newRole) => {   // This is a curried function in JS
+    let index = members.map(m => m.email).indexOf(member.email);
     members[index] = { ...member, role: newRole };
     handleChange(members);
   };
