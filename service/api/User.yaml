@@ -157,6 +157,14 @@ components:
       description: unique email adress
       schema:
         type: string
+    userID:
+      name: userID
+      in: path
+      required: true
+      description: UUID as string
+      schema:
+        type: string
+        format: uuid
     projectID:
       name: projectID
       in: path
@@ -208,10 +216,6 @@ components:
         password:
           type: string
           required: true
-        role:
-          type: string
-          required: true
-          enum: [ CLIENT, PROJECT_MANAGER, ADMIN ]
 
     createUserProject:
       type: object
