@@ -1,5 +1,6 @@
 package com.tu.FinancialQuickCheck.Service;
 
+import com.tu.FinancialQuickCheck.Exceptions.BadRequest;
 import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.db.*;
 import com.tu.FinancialQuickCheck.dto.UserDto;
@@ -125,16 +126,15 @@ public class UserService {
 
     }
 
-    public void updateByUserID(UserDto userDto, String userID) {
-
-        UUID u = UUID.fromString(userID);
+    public UserDto updateByUserID(UserDto userDto, String userID) {
 
         Optional<UserEntity> entity = repository.findById(userID);
 
-        if (!repository.existsById(userID)) {
+        if (entity.isEmpty()) {
             throw new ResourceNotFound("userID " + userID + " not found");
+        } else if (userDto.email == null && userDto.username == null && userDto.password == null){
+            return null;
         } else {
-
             entity.map(
                     user -> {
                         if (userDto.email != null) {
@@ -151,6 +151,8 @@ public class UserService {
 
                         return repository.save(user);
                     });
+
+            return new UserDto(UUID.fromString(entity.get().id), entity.get().email, entity.get().username);
 
         }
     }
