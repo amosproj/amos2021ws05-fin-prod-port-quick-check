@@ -32,7 +32,7 @@ function AddButton(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [email, setEmail] = useState('');
   const [role, setRole] = useState('Client');
-  const header = 'Add new Member'
+  const header = 'Add new Member';
   return (
     <>
       <IconButton icon={<AddIcon />} colorScheme="green" size="lg" {...props} onClick={onOpen} />
@@ -109,7 +109,7 @@ function RemoveButton({ onRemove }) {
   );
 }
 
-function MemberHead({ editable, addButton }) {
+function MemberHead({ editMode, addButton }) {
   return (
     <HStack px={4} rounded="md" align="center" spacing={3} mb={5}>
       <Heading size="md" w="50%" bg="gray.600" p={2} pb={5} rounded="md">
@@ -118,18 +118,18 @@ function MemberHead({ editable, addButton }) {
       <Heading size="md" minW={36} w={48} bg="gray.600" p={2} pb={5} rounded="md">
         Role
       </Heading>
-      {editable ? addButton : <div />}
+      {editMode ? addButton : <div />}
     </HStack>
   );
 }
 
-function MemberRow({ editable, member, onChangeRole, removeButton }) {
+function MemberRow({ editMode, member, onChangeRole, removeButton }) {
   return (
     <HStack px={4} rounded="md" align="center" spacing={3}>
       <Text w="50%" bg="blue.700" rounded="md" p={2} px={3} align="left">
         {member.email}
       </Text>
-      {editable ? (
+      {editMode ? (
         <Selection
           selected={member.role}
           options={Object.values(roles)}
@@ -143,15 +143,15 @@ function MemberRow({ editable, member, onChangeRole, removeButton }) {
           {member.role}
         </Text>
       )}
-      {editable ? removeButton : <div />}
+      {editMode ? removeButton : <div />}
     </HStack>
   );
 }
 
 // Assumption: ProjectMembers is a list of object: {id, role}
-export default function MemberTable({ editable, members, handleChange }) {
+export default function MemberTable({ editMode, members, handleChange }) {
   const handleRemoveMember = (member) => () => {
-    const newMembers = members.filter(m => (m.email !== member.email))
+    const newMembers = members.filter((m) => m.email !== member.email);
     handleChange(newMembers);
   };
 
@@ -159,8 +159,9 @@ export default function MemberTable({ editable, members, handleChange }) {
     handleChange([...members, newMember]);
   };
 
-  const handleRoleChange = (member) => (newRole) => {   // This is a curried function in JS
-    let index = members.map(m => m.email).indexOf(member.email);
+  const handleRoleChange = (member) => (newRole) => {
+    // This is a curried function in JS
+    let index = members.map((m) => m.email).indexOf(member.email);
     members[index] = { ...member, role: newRole };
     handleChange(members);
   };
@@ -168,14 +169,14 @@ export default function MemberTable({ editable, members, handleChange }) {
   return (
     <List spacing={2} direction="column" minW="80%" align="center" pb={5}>
       <MemberHead
-        editable={editable}
+        editMode={editMode}
         addButton={<AddButton w={16} onAddMember={handleAddMember}></AddButton>}
       />
       {members.map((member) => (
         <MemberRow
           key={member.email}
           member={member}
-          editable={editable}
+          editMode={editMode}
           onChangeRole={handleRoleChange(member)}
           removeButton={<RemoveButton onRemove={handleRemoveMember(member)} />}
         ></MemberRow>

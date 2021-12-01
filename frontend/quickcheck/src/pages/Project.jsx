@@ -30,7 +30,7 @@ function CardHeader({ text }) {
 }
 
 export default function Project(prop) {
-  const [editable, setEditable] = useState(true);
+  const [editMode, setEditMode] = useState(false);
   const [projectData, setprojectData] = useState({
     projectID: 0,
     projectName: '',
@@ -70,20 +70,20 @@ export default function Project(prop) {
   }, []);
 
   const EditButtons = () => {
-    if (editable) {
+    if (editMode) {
       return (
         <HStack>
-          <Button size="md" onClick={() => setEditable(false)}>
+          <Button size="md" onClick={() => setEditMode(false)}>
             Cancel
           </Button>
-          <Button size="md" onClick={() => setEditable(false)}>
+          <Button size="md" onClick={() => setEditMode(false)}>
             Confirm
           </Button>
         </HStack>
       );
     } else {
       return (
-        <Button size="md" onClick={() => setEditable(true)}>
+        <Button size="md" onClick={() => setEditMode(true)}>
           Edit
         </Button>
       );
@@ -96,23 +96,21 @@ export default function Project(prop) {
         <CardHeader text="PROJECT:" />
 
         <Heading size="lg" fontFamily="body">
-          <ShowEditable text={projectData.projectName} editable={editable}></ShowEditable>
+          <ShowEditable text={projectData.projectName} editable={editMode}></ShowEditable>
         </Heading>
       </Card>
 
       <Card barColor="teal.500" direction="column">
         <CardHeader text="MEMBERS" />
-        <MemberTable editable={editable} members={projectData.members} handleChange={setMembers} />
+        <MemberTable editMode={editMode} members={projectData.members} handleChange={setMembers} />
       </Card>
-
-      <Button onClick={(e) => console.log(projectData.members)}>console log</Button>
 
       <Card barColor="teal.500" direction="column">
         <CardHeader text="PRODUCT AREAS" />
         <ProductAreaList
           areaIDs={projectData.productAreas}
           handleChange={setProductAreas}
-          editable={editable}
+          editMode={editMode}
         />
       </Card>
 

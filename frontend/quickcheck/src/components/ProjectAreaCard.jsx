@@ -168,7 +168,7 @@ const fetchAllAreas = () => {
   return Object.values(areaMock);
 };
 
-export default function ProductAreaList({ editable, areaIDs, handleChange }) {
+export default function ProductAreaList({ editMode, areaIDs, handleChange }) {
   const fetchArea = (areaID) => {
     return areaMock[areaID];
   };
@@ -188,12 +188,12 @@ export default function ProductAreaList({ editable, areaIDs, handleChange }) {
         {areaIDs.map((id) => (
           <ProductArea
             productArea={fetchArea(id)}
-            removeButton={editable ? <RemoveButton onRemove={handleRemoveArea(id)} /> : <div />}
+            removeButton={editMode ? <RemoveButton onRemove={handleRemoveArea(id)} /> : <div />}
           />
         ))}
       </List>
 
-      {editable ? <AddButton onAdd={handleAddArea}></AddButton> : <div />}
+      {editMode ? <AddButton onAdd={handleAddArea}></AddButton> : <div />}
     </>
   );
 }
