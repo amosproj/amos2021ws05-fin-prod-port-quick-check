@@ -5,8 +5,8 @@ function Menubar({ title }) {
   return (
     <Flex bg="gray.700" w="full" h={20} justifyContent="center">
       <Flex align="center" basis={1000} px={5}>
-        <div />
-        <Heading size="xl" w="full" align="center">
+        <Spacer />
+        <Heading size="xl"  align="center">
           {title}
         </Heading>
         <Spacer />
