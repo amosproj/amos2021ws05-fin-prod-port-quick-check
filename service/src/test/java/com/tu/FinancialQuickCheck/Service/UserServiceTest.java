@@ -101,7 +101,6 @@ public class UserServiceTest {
      *
      * testCreateUser1: input contains necessary information -> return UserDto with created userID
      * testCreateUser2: input is missing information -> throw BadRequest Exception
-     * testCreateUser3: input attributes comply with requirements -> return UserDto with created userID
      * testCreateUser3: input attributes do not comply with requirements -> throw BadRequest Exception
      */
     @Test
@@ -160,42 +159,12 @@ public class UserServiceTest {
     }
 
     @Test
-    @Disabled
     public void testCreateUser3a() {
         // TODO: define requirements for input attribute pw, e.g. pw length
-        // Step 1: init test object
+        // Test: attribute password
 
-
-        // Step 2: provide knowledge
-
-
-        // Step 3: execute getAllRatings()
-
-    }
-
-    @Test
-    @Disabled
-    public void testCreateUser3b() {
-        // Step 1: init test object
-
-
-        // Step 2: provide knowledge
-
-
-        // Step 3: execute getAllRatings()
-
-    }
-
-    @Test
-    @Disabled
-    public void testCreateUser4() {
-        // Step 1: init test object
-
-
-        // Step 2: provide knowledge
-
-
-        // Step 3: execute getAllRatings()
+        // Test: attribute email
+        assertNull(service.createUser(dto3));
 
     }
 
