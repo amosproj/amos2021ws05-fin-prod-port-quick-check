@@ -26,7 +26,7 @@ public class ProjectServiceTest {
     static Logger log = Logger.getLogger(ProjectServiceTest.class.getName());
 
     @Mock
-    ProjectRepository projectRepository;
+    ProjectRepository repository;
     @Mock
     ProductRepository productRepository;
     @Mock
@@ -50,7 +50,7 @@ public class ProjectServiceTest {
     public void init() {
         log.info("@BeforeEach - setup for Tests in ProjectServiceTest.class");
         // init ProjectService
-        service = new ProjectService(projectRepository, productRepository, productAreaRepository);
+        service = new ProjectService(repository, productRepository, productAreaRepository);
         // init empty test object
         emptyProject = new ProjectDto();
         // init necessary information for test objects
@@ -105,7 +105,7 @@ public class ProjectServiceTest {
         Iterable<ProjectEntity> projectEntities = Collections.EMPTY_LIST;
         
         // Step 2: provide knowledge
-        when(projectRepository.findAll()).thenReturn(projectEntities);
+        when(repository.findAll()).thenReturn(projectEntities);
 
         // Step 3: execute getProjectById()
         List<SmallProjectDto> projectsOut = service.getAllProjects();
@@ -128,7 +128,7 @@ public class ProjectServiceTest {
         projects.add(project2);
 
         // Step 2: provide knowledge
-        when(projectRepository.findAll()).thenReturn(projects);
+        when(repository.findAll()).thenReturn(projects);
 
         // Step 3: execute getProjectById()
         List<SmallProjectDto> projectsOut = service.getAllProjects();
@@ -140,7 +140,7 @@ public class ProjectServiceTest {
                     )
                 );
 
-        assertThat(projectsOut.size()).isGreaterThanOrEqualTo(2);
+        assertThat(projectsOut.size()).isEqualTo(2);
     }
 
 
@@ -246,7 +246,7 @@ public class ProjectServiceTest {
         // refer to @BeforeEach
 
         // Step 2: provide knowledge
-        when(projectRepository.findById(projectID)).thenReturn(Optional.of(entity));
+        when(repository.findById(projectID)).thenReturn(Optional.of(entity));
 
         // Step 3: execute getProjectById()
         ProjectDto projectOut = service.getProjectById(projectID);
@@ -303,8 +303,8 @@ public class ProjectServiceTest {
         project3.productAreas = newProductAreas;
 
         // Step 1: provide knowledge
-        when(projectRepository.existsById(entity.id)).thenReturn(true);
-        when(projectRepository.findById(entity.id)).thenReturn(Optional.of(entity));
+        when(repository.existsById(entity.id)).thenReturn(true);
+        when(repository.findById(entity.id)).thenReturn(Optional.of(entity));
         when(productAreaRepository.existsById(4)).thenReturn(true);
         when(productAreaRepository.existsById(5)).thenReturn(true);
 
@@ -335,7 +335,7 @@ public class ProjectServiceTest {
         // see @BeforeEach
 
         // Step 1: provide knowledge
-        when(projectRepository.existsById(entity.id)).thenReturn(true);
+        when(repository.existsById(entity.id)).thenReturn(true);
 
         // Step 2: Execute updateProject()
         Exception exception = assertThrows(BadRequest.class, () -> service.updateProject(emptyProject, entity.id));
@@ -362,8 +362,8 @@ public class ProjectServiceTest {
             projectIn.members = members;
 
             // Step 2: provide knowledge
-            when(projectRepository.existsById(entity.id)).thenReturn(true);
-            when(projectRepository.findById(entity.id)).thenReturn(Optional.of(entity));
+            when(repository.existsById(entity.id)).thenReturn(true);
+            when(repository.findById(entity.id)).thenReturn(Optional.of(entity));
             when(productAreaRepository.existsById(4)).thenReturn(true);
             when(productAreaRepository.existsById(5)).thenReturn(true);
 
@@ -405,8 +405,8 @@ public class ProjectServiceTest {
         project.productAreas = productAreasDoNotExist;
 
         //Step 2: provide knowledge
-        when(projectRepository.existsById(1)).thenReturn(true);
-        when(projectRepository.findById(1)).thenReturn(Optional.of(entity));
+        when(repository.existsById(1)).thenReturn(true);
+        when(repository.findById(1)).thenReturn(Optional.of(entity));
         when(productAreaRepository.existsById(7)).thenReturn(false);
 
         //Step 3: execute updateProject()
