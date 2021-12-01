@@ -24,9 +24,49 @@ public class UserService {
 
     private final UserRepository repository;
 
-    @Autowired
     public UserService(UserRepository userRepository) {
         this.repository = userRepository;
+    }
+
+    /**
+     * returns a List of all User
+     * TODO: wollen wir hier wirklich das pw mit zurück geben?
+     */
+    public List<UserDto> findAllUser() {
+
+        List<UserDto> userList = new ArrayList<>();
+        Iterable<UserEntity> allUserEntitys = repository.findAll();
+
+        for (UserEntity userEntity : allUserEntitys) {
+            UserDto userDto = new UserDto(UUID.fromString(userEntity.id), userEntity.email, userEntity.username);
+            userDto.password = userEntity.password;
+            userList.add(userDto);
+        }
+        return userList;
+    }
+
+
+    /**
+     * Search for User by given email
+     *
+     * TODO: find faster way to access Users other than iterate over all of them
+     *
+     * @param email
+     * @return userDto
+     */
+    public UserDto findByEmail(String email) {
+
+        Iterable<UserEntity> allUserEntitys = repository.findAll();
+
+        for (UserEntity userEntity : allUserEntitys) {
+            if (userEntity.email.equals(email)) {
+                UserDto userDto = new UserDto(userEntity.email);
+                userDto.username = userEntity.username;
+                userDto.id = UUID.fromString(userEntity.id);
+                return userDto;
+            }
+        }
+        throw new ResourceNotFound("User Email " + email + " not found");
     }
 
     /**
@@ -54,49 +94,72 @@ public class UserService {
     }
 
     /**
-     * returns a List of all User
-     * TODO: wollen wir hier wirklich das pw mit zurück geben?
+     * search for ID in repository and updates if found
+     *
+     * @param userDto
+     * @param userID
      */
-    public List<UserDto> findAllUser() {
+    public UserDto updateByUserID(UserDto userDto, String userID) {
 
-        List<UserDto> userList = new ArrayList<>();
-        Iterable<UserEntity> allUserEntitys = repository.findAll();
+        Optional<UserEntity> entity = repository.findById(userID);
 
-        for (UserEntity userEntity : allUserEntitys) {
-            UserDto userDto = new UserDto(UUID.fromString(userEntity.id), userEntity.email, userEntity.username);
+        if (entity.isEmpty()) {
+            throw new ResourceNotFound("userID " + userID + " not found");
+        } else if ((userDto.email == null && userDto.username == null
+                && userDto.password == null) || (userDto.email != null && !validateEmail(userDto.email))){
+            return null;
+        } else {
+            entity.map(
+                    user -> {
+                        if (userDto.email != null) {
+                            user.email = userDto.email;
+                        }
 
-            userDto.password = userEntity.password;
-            userList.add(userDto);
+                        if (userDto.password != null) {
+                            user.password = userDto.password;
+                        }
+
+                        if (userDto.username != null) {
+                            user.username = userDto.username;
+                        }
+
+                        return repository.save(user);
+                    });
+
+            return new UserDto(UUID.fromString(entity.get().id), entity.get().email, entity.get().username);
+
         }
-        return userList;
     }
 
     /**
-     * Search for User by given email
+     * Deletes User
      *
-     * TODO: find faster way to access Users other than iterate over all of them
-     *
-     * @param email
-     * @return userDto
+     * @param userID
      */
-    public UserDto findByEmail(String email) {
+    public void deleteUserById(String userID) {
+        Optional<UserEntity> entity = repository.findById(userID);
 
-        Iterable<UserEntity> allUserEntitys = repository.findAll();
-
-        for (UserEntity userEntity : allUserEntitys) {
-            if (userEntity.email.equals(email)) {
-                UserDto userDto = new UserDto(userEntity.email);
-                userDto.username = userEntity.username;
-                userDto.id = UUID.fromString(userEntity.id);
-                return userDto;
-            }
+        if (entity.isEmpty()) {
+            throw new ResourceNotFound("userID " + userID + " not found");
+        } else {
+            repository.deleteById(userID);
         }
-        throw new ResourceNotFound("User Email " + email + " not found");
     }
 
+
+    public boolean validateEmail(String emailAddress){
+        // regexPattern from RFC 5322 for Email Validation
+        String regexPattern = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
+        return Pattern.compile(regexPattern)
+                .matcher(emailAddress)
+                .matches();
+    }
+
+
+
+    //TODO: Discuss with Alex multiple implementations
     /**
      * search for ID in repository and updates if found
-     * TODO: email sollte anpassbar sein
      *
      * @param userDto
      * @param email
@@ -126,44 +189,12 @@ public class UserService {
 
     }
 
-    public UserDto updateByUserID(UserDto userDto, String userID) {
-
-        Optional<UserEntity> entity = repository.findById(userID);
-
-        if (entity.isEmpty()) {
-            throw new ResourceNotFound("userID " + userID + " not found");
-        } else if (userDto.email == null && userDto.username == null && userDto.password == null){
-            return null;
-        } else {
-            entity.map(
-                    user -> {
-                        if (userDto.email != null) {
-                            user.email = userDto.email;
-                        }
-
-                        if (userDto.password != null) {
-                            user.password = userDto.password;
-                        }
-
-                        if (userDto.username != null) {
-                            user.username = userDto.username;
-                        }
-
-                        return repository.save(user);
-                    });
-
-            return new UserDto(UUID.fromString(entity.get().id), entity.get().email, entity.get().username);
-
-        }
-    }
-
     /**
      * Deletes User
      * TODO: discuss implementation
      *
      * @param email
      */
-
     public void deleteUser(String email) {
 
         Iterable<UserEntity> allUserEntitys = repository.findAll();
@@ -181,24 +212,4 @@ public class UserService {
         }
     }
 
-
-    public void deleteUserById(String userID) {
-        Optional<UserEntity> entity = repository.findById(userID);
-
-        if (entity.isEmpty()) {
-            throw new ResourceNotFound("userID " + userID + " not found");
-        } else {
-            repository.deleteById(userID);
-        }
-
-    }
-
-
-    private boolean validateEmail(String emailAddress){
-        // regexPattern from RFC 5322 for Email Validation
-        String regexPattern = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
-        return Pattern.compile(regexPattern)
-                .matcher(emailAddress)
-                .matches();
-    }
 }
