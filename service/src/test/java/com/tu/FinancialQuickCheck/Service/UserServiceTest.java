@@ -1,5 +1,6 @@
 package com.tu.FinancialQuickCheck.Service;
 
+import com.tu.FinancialQuickCheck.Exceptions.BadRequest;
 import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.db.UserEntity;
 import com.tu.FinancialQuickCheck.db.UserRepository;
@@ -11,12 +12,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Logger;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -38,7 +37,8 @@ public class UserServiceTest {
     private String keineEmail;
     private String pw1;
     private String pw2;
-    private UUID userID;
+    private UUID userID1;
+    private UUID userID2;
 
     private UserDto dto1;
     private UserDto dto2;
@@ -66,7 +66,8 @@ public class UserServiceTest {
         pw1 = "advnkjbgdvj";
         pw2 = "nvkjavdfihvs";
 
-        userID = UUID.fromString("5710db7c-e875-4e63-9e03-7f6ad85cc429");
+        userID1 = UUID.fromString("5710db7c-e875-4e63-9e03-7f6ad85cc429");
+        userID2 = UUID.fromString("4710db7c-e875-4e63-9e03-7f6ad85cc428");
 
         dto1 = new UserDto();
         dto1.username = username1;
@@ -86,12 +87,13 @@ public class UserServiceTest {
         emptyDto = new UserDto();
 
         entity1 = new UserEntity();
-        entity1.id = userID.toString();
+        entity1.id = userID1.toString();
         entity1.username = username1;
-        entity1.password = pw1;
+//        entity1.password = pw1;
         entity1.email = email1;
 
         entity2 = new UserEntity();
+        entity2.id = userID2.toString();
         entity2.username = username2;
         entity2.password = pw2;
         entity2.email = email2;
@@ -99,6 +101,100 @@ public class UserServiceTest {
         entities = new ArrayList<>();
         entities.add(entity1);
         entities.add(entity2);
+    }
+
+    /**
+     * tests for getAllUsers()
+     *
+     * testGetAllUsers1: no users exist --> return empty List<UserDto>
+     * testGetAllUsers2: users exist --> return List<UserDto>
+     */
+    @Test
+    public void testGetAllUsers1_noUsersExist() {
+        // Step 1: init test object
+        Iterable<UserEntity> userEntities = Collections.EMPTY_LIST;
+
+        // Step 2: provide knowledge
+        when(repository.findAll()).thenReturn(userEntities);
+
+        // Step 3: execute getProjectById()
+        List<UserDto> out = service.getAllUsers();
+        List<UserDto> expected = new ArrayList<>();
+
+        assertEquals(expected, out);
+    }
+
+    @Test
+    public void testGetAllUsers2_UsersExist() {
+        // Step 1: provide knowledge
+        when(repository.findAll()).thenReturn(entities);
+
+        // Step 2: execute getAllUsers()
+        List<UserDto> out = service.getAllUsers();
+
+        out.forEach(
+                user -> assertAll("get Users",
+                        () -> assertNotNull(user.username),
+                        () -> assertNotNull(user.email),
+                        () -> assertNotNull(user.id),
+                        () -> assertNull(user.password)
+                )
+        );
+
+        assertThat(out.size()).isEqualTo(2);
+    }
+
+
+    /**
+     * tests for findByEmail()
+     *
+     * testFindByEmail1: incorrect input --> throw BadRequest Exception
+     * testFindByEmail2: email does not exist --> throw ResourceNotFound Exception
+     * testFindByEmail3: input correct --> return UserDto
+     */
+    @Test
+    public void testFindByEmail1_incorrectInput() {
+        // Step 1: execute findByEmail()
+        Exception exception = assertThrows(BadRequest.class, ()
+                -> service.findByEmail(keineEmail));
+
+        String expectedMessage = "Incorrect Input";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    public void testFindByEmail2_emailNotFound() {
+        // Step 1: provide knowledge
+        when(repository.findByEmail(email1)).thenReturn(Optional.empty());
+
+        // Step 2: execute updateByUserID()
+        Exception exception = assertThrows(ResourceNotFound.class, ()
+                -> service.findByEmail(email1));
+
+        String expectedMessage = "User Email " + email1 + " not found";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    public void testFindByEmail3_emailFound() {
+
+        // Step 1: provide knowledge
+        when(repository.findByEmail(email1)).thenReturn(Optional.of(entity1));
+
+        // Step 2: execute updateByUserID()
+        UserDto out = service.findByEmail(email1);
+
+        assertAll("get User",
+                () -> assertEquals(dto1.username, out.username),
+                () -> assertEquals(dto1.email, out.email),
+                () -> assertNotNull(out.id),
+                () -> assertNull(out.password),
+                () -> assertNull(out.role));
+
     }
 
 
@@ -218,13 +314,13 @@ public class UserServiceTest {
     @Test
     public void testUpdateUser1_userIdNotFound() {
         // Step 1: provide knowledge
-        when(repository.findById(userID.toString())).thenReturn(Optional.empty());
+        when(repository.findById(userID1.toString())).thenReturn(Optional.empty());
 
         // Step 2: execute updateByUserID()
         Exception exception = assertThrows(ResourceNotFound.class, ()
                 -> service.updateByUserID(dto1,UUID.fromString("5710db7c-e875-4e63-9e03-7f6ad85cc429")));
 
-        String expectedMessage = "userID " + userID + " not found";
+        String expectedMessage = "userID " + userID1 + " not found";
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
@@ -233,10 +329,10 @@ public class UserServiceTest {
     @Test
     public void testUpdateUser2_NothingToUpdate() {
         // Step 1: provide knowledge
-        when(repository.findById(userID.toString())).thenReturn(Optional.of(entity1));
+        when(repository.findById(userID1.toString())).thenReturn(Optional.of(entity1));
 
         // Step 2 and 3: execute updateByUserID() and assert result
-        assertNull(service.updateByUserID(emptyDto, userID));
+        assertNull(service.updateByUserID(emptyDto, userID1));
 
 
     }
@@ -244,20 +340,20 @@ public class UserServiceTest {
     @Test
     public void testUpdateUser3_invalidEmail() {
         // Step 1: provide knowledge
-        when(repository.findById(userID.toString())).thenReturn(Optional.of(entity1));
+        when(repository.findById(userID1.toString())).thenReturn(Optional.of(entity1));
 
         // Step 2 and 3: execute updateByUserID() and assert result
-        assertNull(service.updateByUserID(dto3, userID));
+        assertNull(service.updateByUserID(dto3, userID1));
 
     }
 
     @Test
     public void testUpdateUser4_fullValidUpdate() {
         // Step 2: provide knowledge
-        when(repository.findById(userID.toString())).thenReturn(Optional.of(entity1));
+        when(repository.findById(userID1.toString())).thenReturn(Optional.of(entity1));
 
         // Step 2 and 3: execute updateByUserID() and assert result
-        UserDto out = service.updateByUserID(dto2, userID);
+        UserDto out = service.updateByUserID(dto2, userID1);
 
         assertAll("update User",
                 () -> assertNull(out.password),
@@ -273,10 +369,10 @@ public class UserServiceTest {
         dto2.password = null;
 
         // Step 2: provide knowledge
-        when(repository.findById(userID.toString())).thenReturn(Optional.of(entity1));
+        when(repository.findById(userID1.toString())).thenReturn(Optional.of(entity1));
 
         // Step 3: execute updateByUserID() and assert result
-        UserDto out = service.updateByUserID(dto2, userID);
+        UserDto out = service.updateByUserID(dto2, userID1);
 
         assertAll("update User",
                 () -> assertNull(out.password),
@@ -292,10 +388,10 @@ public class UserServiceTest {
         dto2.password = null;
 
         // Step 2: provide knowledge
-        when(repository.findById(userID.toString())).thenReturn(Optional.of(entity1));
+        when(repository.findById(userID1.toString())).thenReturn(Optional.of(entity1));
 
         // Step 3: execute updateByUserID() and assert result
-        UserDto out = service.updateByUserID(dto2, userID);
+        UserDto out = service.updateByUserID(dto2, userID1);
 
         assertAll("update User",
                 () -> assertNull(out.password),
@@ -311,10 +407,10 @@ public class UserServiceTest {
         dto2.username = null;
 
         // Step 2: provide knowledge
-        when(repository.findById(userID.toString())).thenReturn(Optional.of(entity1));
+        when(repository.findById(userID1.toString())).thenReturn(Optional.of(entity1));
 
         // Step 3: execute updateByUserID() and assert result
-        UserDto out = service.updateByUserID(dto2, userID);
+        UserDto out = service.updateByUserID(dto2, userID1);
 
         assertAll("update User",
                 () -> assertNull(out.password),
@@ -329,10 +425,10 @@ public class UserServiceTest {
         dto2.password = null;
 
         // Step 2: provide knowledge
-        when(repository.findById(userID.toString())).thenReturn(Optional.of(entity1));
+        when(repository.findById(userID1.toString())).thenReturn(Optional.of(entity1));
 
         // Step 3: execute updateByUserID() and assert result
-        UserDto out = service.updateByUserID(dto2, userID);
+        UserDto out = service.updateByUserID(dto2, userID1);
 
         assertAll("update User",
                 () -> assertNull(out.password),
@@ -347,10 +443,10 @@ public class UserServiceTest {
         dto2.email = null;
 
         // Step 2: provide knowledge
-        when(repository.findById(userID.toString())).thenReturn(Optional.of(entity1));
+        when(repository.findById(userID1.toString())).thenReturn(Optional.of(entity1));
 
         // Step 3: execute updateByUserID() and assert result
-        UserDto out = service.updateByUserID(dto2, userID);
+        UserDto out = service.updateByUserID(dto2, userID1);
 
         assertAll("update User",
                 () -> assertNull(out.password),
@@ -365,10 +461,10 @@ public class UserServiceTest {
         dto2.username = null;
 
         // Step 2: provide knowledge
-        when(repository.findById(userID.toString())).thenReturn(Optional.of(entity1));
+        when(repository.findById(userID1.toString())).thenReturn(Optional.of(entity1));
 
         // Step 3: execute updateByUserID() and assert result
-        UserDto out = service.updateByUserID(dto2, userID);
+        UserDto out = service.updateByUserID(dto2, userID1);
 
         assertAll("update User",
                 () -> assertNull(out.password),
@@ -381,22 +477,34 @@ public class UserServiceTest {
      * tests for deleteUserById()
      *
      * testDeleteUserById1: userId does not exist -> throw ResourceNotFound Exception
-     * testDeleteUserById2: userId exists ->
+     * testDeleteUserById2: userId exists -> void
      */
 
     @Test
     public void testDeleteUserById1_userIdNotFound()
     {
         // Step 1: provide knowledge
-        when(repository.existsById(userID.toString())).thenReturn(false);
+        when(repository.existsById(userID1.toString())).thenReturn(false);
 
         // Step 2: execute updateByUserID()
         Exception exception = assertThrows(ResourceNotFound.class, ()
                 -> service.deleteUserById(UUID.fromString("5710db7c-e875-4e63-9e03-7f6ad85cc429")));
 
-        String expectedMessage = "userID " + userID + " not found";
+        String expectedMessage = "userID " + userID1 + " not found";
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    public void testDeleteUserById2_userIdExists()
+    {
+        // Step 1: provide knowledge
+        when(repository.existsById(userID1.toString())).thenReturn(true);
+
+        // Step 2: execute updateByUserID()
+        service.deleteUserById(UUID.fromString("5710db7c-e875-4e63-9e03-7f6ad85cc429"));
+
+
     }
 }
