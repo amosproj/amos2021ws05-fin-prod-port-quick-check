@@ -26,7 +26,7 @@ public class UserController {
 
     @GetMapping(produces = "application/json")
     public List<UserDto> findAllUser(){
-        List<UserDto> tmp = service.findAllUser();
+        List<UserDto> tmp = service.getAllUsers();
         if(tmp.isEmpty()){
             throw new ResourceNotFound("No users exist.");
         }else{

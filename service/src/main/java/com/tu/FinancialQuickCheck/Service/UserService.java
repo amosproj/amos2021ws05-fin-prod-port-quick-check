@@ -4,7 +4,6 @@ import com.tu.FinancialQuickCheck.Exceptions.BadRequest;
 import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.db.*;
 import com.tu.FinancialQuickCheck.dto.UserDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,9 +28,9 @@ public class UserService {
     }
 
     /**
-     * returns a List of all User
+     * returns a List of all Users without passwords
      */
-    public List<UserDto> findAllUser() {
+    public List<UserDto> getAllUsers() {
 
         List<UserDto> userList = new ArrayList<>();
         Iterable<UserEntity> allUserEntitys = repository.findAll();
@@ -47,25 +46,26 @@ public class UserService {
     /**
      * Search for User by given email
      *
-     * TODO: find faster way to access Users other than iterate over all of them
-     *
      * @param email
      * @return userDto
      */
     public UserDto findByEmail(String email) {
 
-        Iterable<UserEntity> allUserEntitys = repository.findAll();
+        if(validateEmail(email)){
+            Optional<UserEntity> entity = repository.findByEmail(email);
 
-        for (UserEntity userEntity : allUserEntitys) {
-            if (userEntity.email.equals(email)) {
-                UserDto userDto = new UserDto(userEntity.email);
-                userDto.username = userEntity.username;
-                userDto.id = UUID.fromString(userEntity.id);
-                return userDto;
+            if(entity.isPresent()){
+                return new UserDto(UUID.fromString(entity.get().id), entity.get().email, entity.get().username);
+
+            }else{
+                throw new ResourceNotFound("User Email " + email + " not found");
             }
+
+        }else{
+            throw new BadRequest("Incorrect Input");
         }
-        throw new ResourceNotFound("User Email " + email + " not found");
     }
+
 
     /**
      * create new User and saves in (user)repository
@@ -129,6 +129,7 @@ public class UserService {
 
         }
     }
+
 
     /**
      * Deletes User
