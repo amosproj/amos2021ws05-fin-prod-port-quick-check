@@ -8,6 +8,7 @@ import com.tu.FinancialQuickCheck.db.*;
 import com.tu.FinancialQuickCheck.dto.ProductDto;
 import com.tu.FinancialQuickCheck.dto.ProductRatingDto;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -36,11 +37,12 @@ public class ProductRatingServiceTest {
 
     private ProjectEntity projectEntity;
     private ProductEntity entity;
+    private ProductRatingEntity productRatingEntity;
     private List<RatingEntity> ratingEntities;
 
     private ProductDto createDto;
     private ProductDto createEmptyDto;
-
+    private ProductDto updateDto;
 
     @BeforeEach
     public void init() {
@@ -93,6 +95,18 @@ public class ProductRatingServiceTest {
             ProductRatingDto tmp = new ProductRatingDto();
             tmp.ratingID = i;
             createEmptyDto.ratings.add(tmp);
+        }
+
+        updateDto = new ProductDto();
+        updateDto.productName = name;
+        updateDto.ratings = new ArrayList<>();
+        for(int i = 1; i < 4; i++){
+            ProductRatingDto tmp = new ProductRatingDto();
+            tmp.ratingID = i;
+            tmp.answer = "answer" + i;
+            tmp.score = Score.HOCH;
+            tmp.comment = "comment" + i;
+            updateDto.ratings.add(tmp);
         }
     }
 
@@ -346,6 +360,137 @@ public class ProductRatingServiceTest {
         // Step 2: Execute updateProject()
         Exception exception = assertThrows(ResourceNotFound.class,
                 () -> service.createProductRatings(createDto, productID));
+
+        // Step 3: assert exception
+        String expectedMessage = "ratingID " + 3 + " not found";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+
+    /**
+     * tests for updateProductRatings()
+     *
+     * testUpdateProductRatings1: input contains required information (projectId, ratingID and NO data)
+     *                            --> ???? TODO: sollen die vorhanden Daten mit nichts überschrieben werden
+     * testUpdateProductRatings2: input contains required information (projectId, ratingID and data)
+     *                            --> update existing data with provided data
+     * testUpdateProductRatings3: input projectID does not exist
+     *                            --> throw ResourceNotFound Exception
+     * testUpdateProductRatings4: input ratingID does not exist
+     *                            --> throw ResourceNotFound Exception
+     * testUpdateProductRatings5: input contains more than required information
+     *                            --> return ProductDto with exisitng ratings and ignore addtional information
+     */
+    @Test
+    @Disabled
+    public void testUpdateProductRatings1() {
+        // Step 0: init test object
+        int productID = 1;
+
+        // Step 1: provide knowledge
+        when(productRepository.existsById(productID)).thenReturn(true);
+        when(ratingRepository.existsById(1)).thenReturn(true);
+        when(ratingRepository.existsById(2)).thenReturn(true);
+        when(ratingRepository.existsById(3)).thenReturn(true);
+        when(ratingRepository.existsById(4)).thenReturn(true);
+        when(ratingRepository.existsById(5)).thenReturn(true);
+        when(ratingRepository.existsById(6)).thenReturn(true);
+        when(ratingRepository.existsById(7)).thenReturn(true);
+        when(ratingRepository.existsById(8)).thenReturn(true);
+        when(ratingRepository.existsById(9)).thenReturn(true);
+        when(ratingRepository.existsById(10)).thenReturn(true);
+        when(ratingRepository.getById(1)).thenReturn(ratingEntities.get(0));
+        when(ratingRepository.getById(2)).thenReturn(ratingEntities.get(1));
+        when(ratingRepository.getById(3)).thenReturn(ratingEntities.get(2));
+        when(ratingRepository.getById(4)).thenReturn(ratingEntities.get(3));
+        when(ratingRepository.getById(5)).thenReturn(ratingEntities.get(4));
+        when(ratingRepository.getById(6)).thenReturn(ratingEntities.get(5));
+        when(ratingRepository.getById(7)).thenReturn(ratingEntities.get(6));
+        when(ratingRepository.getById(8)).thenReturn(ratingEntities.get(7));
+        when(ratingRepository.getById(9)).thenReturn(ratingEntities.get(8));
+        when(ratingRepository.getById(10)).thenReturn(ratingEntities.get(9));
+
+        // Step 2: Execute updateProject()
+        ProductDto out = service.createProductRatings(createEmptyDto, productID);
+
+        // Step 3: assert exception
+        assertEquals(createDto.productName , out.productName);
+        out.ratings.forEach(rating ->
+                        assertAll(
+//                        () -> assertNotNull(rating.ratingID),
+                                () -> assertNull(rating.answer),
+                                () -> assertNull(rating.comment),
+                                () -> assertNull(rating.score)
+                        )
+        );
+    }
+
+    @Test
+    public void testUpdateProductRatings2() {
+        // Step 0: init test object
+        int productID = 1;
+
+        // Step 1: provide knowledge
+        when(productRepository.existsById(productID)).thenReturn(true);
+        when(productRepository.getById(productID)).thenReturn(entity);
+        when(ratingRepository.getById(entity.productRatingEntities.get(0).productRatingId.getRatingid().id)).thenReturn(ratingEntities.get(0));
+        when(ratingRepository.getById(entity.productRatingEntities.get(1).productRatingId.getRatingid().id)).thenReturn(ratingEntities.get(1));
+        when(ratingRepository.getById(entity.productRatingEntities.get(2).productRatingId.getRatingid().id)).thenReturn(ratingEntities.get(2));
+        when(repository.findById(entity.productRatingEntities.get(0).productRatingId))
+                .thenReturn(Optional.of(entity.productRatingEntities.get(0)));
+        when(repository.findById(entity.productRatingEntities.get(1).productRatingId))
+                .thenReturn(Optional.of(entity.productRatingEntities.get(1)));
+        when(repository.findById(entity.productRatingEntities.get(2).productRatingId))
+                .thenReturn(Optional.of(entity.productRatingEntities.get(2)));
+
+        // Step 2: Execute updateProject()
+        service.updateProductRatings(updateDto, productID);
+
+
+    }
+
+    @Test
+    public void testUpdateProductRatings3_projectIdNotFound() {
+        // Step 0: init test object
+        int productID = 1;
+
+        // Step 1: provide knowledge
+        when(productRepository.existsById(productID)).thenReturn(false);
+
+        // Step 2: Execute updateProject()
+        Exception exception = assertThrows(ResourceNotFound.class,
+                () -> service.updateProductRatings(createDto, productID));
+
+        // Step 3: assert exception
+        String expectedMessage = "productID " + productID + " not found";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    public void testUpdateProductRatings4_ratingIdNotFound() {
+        // Step 0: init test object
+        int productID = 1;
+
+        // Step 1: provide knowledge
+        when(productRepository.existsById(productID)).thenReturn(true);
+        when(productRepository.getById(productID)).thenReturn(entity);
+        when(ratingRepository.getById(entity.productRatingEntities.get(0).productRatingId.getRatingid().id)).thenReturn(ratingEntities.get(0));
+        when(ratingRepository.getById(entity.productRatingEntities.get(1).productRatingId.getRatingid().id)).thenReturn(ratingEntities.get(1));
+        when(ratingRepository.getById(entity.productRatingEntities.get(2).productRatingId.getRatingid().id)).thenReturn(ratingEntities.get(2));
+        when(repository.findById(entity.productRatingEntities.get(0).productRatingId))
+                .thenReturn(Optional.of(entity.productRatingEntities.get(0)));
+        when(repository.findById(entity.productRatingEntities.get(1).productRatingId))
+                .thenReturn(Optional.of(entity.productRatingEntities.get(1)));
+        when(repository.findById(entity.productRatingEntities.get(2).productRatingId))
+                .thenReturn(Optional.empty());
+
+        // Step 2: Execute updateProject()
+        Exception exception = assertThrows(ResourceNotFound.class,
+                () -> service.updateProductRatings(createDto, productID));
 
         // Step 3: assert exception
         String expectedMessage = "ratingID " + 3 + " not found";
