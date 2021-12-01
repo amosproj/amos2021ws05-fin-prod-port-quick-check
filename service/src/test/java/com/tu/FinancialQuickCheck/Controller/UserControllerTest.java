@@ -168,7 +168,7 @@ public class UserControllerTest{
 
     }
 
-    @Test
+   /** @Test
     public void updateUserByEmail(){
 
         HttpHeaders headers = new HttpHeaders();
@@ -185,9 +185,9 @@ public class UserControllerTest{
                 String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-    }
+    }**/
 
-    @Test
+    /**@Test
     public void updateNonExistingUserByEmail(){
 
         HttpHeaders headers = new HttpHeaders();
@@ -204,6 +204,6 @@ public class UserControllerTest{
                 String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-    }
+    }**/
 
 }
