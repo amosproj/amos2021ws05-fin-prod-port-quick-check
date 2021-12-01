@@ -6,22 +6,26 @@ import { List, Button, Heading, VStack, Text, Spacer } from '@chakra-ui/react';
 import { useToast } from '@chakra-ui/react';
 
 import { api } from '../utils/apiClient';
+import { Link } from 'react-router-dom';
 
 const mocks = {
   newProject: {
     creatorID: 0,
-    projectName: 'Mock Project',
-    members: [1, 2],
-    productAreas: [1, 2, 3],
+    projectName: "Mock Project",
+    members: [
+        "2375e026-d348-4fb6-b42b-891a76758d5d",
+       "0fef539d-69be-4013-9380-6a12c3534c67"
+    ],
+    productAreas: []
   },
   role: 'Mock Consultant',
 };
 
-function ProjectCard(props) {
+function ProjectCard({ project }) {
   return (
     <Card>
       <Heading size="lg" color="teal.400" align="center" py={{ base: 4, md: 0 }} w="50%">
-        {props.project.projectName}
+        {project.projectName}
       </Heading>
       <Spacer />
       <VStack p={2} spacing={0}>
@@ -33,9 +37,11 @@ function ProjectCard(props) {
         </Text>
       </VStack>
       <Spacer />
-      <Button bg="teal.500" align="center" _hover={{ bg: 'teal.400' }} w={24}>
-        open
-      </Button>
+      <Link to={'' + project.projectID}>
+        <Button bg="teal.500" align="center" _hover={{ bg: 'teal.400' }} w={24}>
+          open
+        </Button>
+      </Link>
     </Card>
   );
 }
@@ -80,13 +86,12 @@ export default function ProjectOverview() {
   };
 
   return (
-    <Page title="Project Overview">
-      <List spacing={3} maxW="900px" mx={2}>
+    <Page title="Your Projects">
+      <List spacing={3} mx={2} w='80%'>
         {projectsData.map((project) => (
-          <ProjectCard project={project} key={project.projectID}></ProjectCard>
+          <ProjectCard project={project} key={project.projectID}/>
         ))}
       </List>
-
       <Button size="lg" onClick={createProject}>
         Add new
       </Button>
