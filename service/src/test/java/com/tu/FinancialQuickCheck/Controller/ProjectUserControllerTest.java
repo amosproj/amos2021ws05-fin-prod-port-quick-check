@@ -26,7 +26,10 @@ public class ProjectUserControllerTest {
     private String projects = "/projects";
     private String projectID1 = "/1";
     private String users = "/users";
+    private String productAreas = "/productareas";
+    private String initProductArea = "{\"category\":\"PRIVAT\", \"name\":\"KREDIT\"}";
     private String testUserID;
+    private String productAreaID;
 
 
     // creates an entry with projectID 1 in test db and creates a user
@@ -36,11 +39,26 @@ public class ProjectUserControllerTest {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
+        HttpEntity<String> request = new HttpEntity<>(initProductArea, headers);
+
+        String responseBody = restTemplate.exchange(
+                host + port + productAreas,
+                HttpMethod.POST,
+                request,
+                String.class).getBody();
+
+        System.out.println("Product Area: " + responseBody);
+
+        String[] bodyStringListID = responseBody.split(",");
+
+        String tmpID = bodyStringListID[0].split(":")[1];
+        productAreaID = tmpID;
+
         //create Project
         HttpEntity<String> createProjectRequest = new HttpEntity<>(
                 "{\"creatorID\":\"bf6d44d2-52bc-11ec-bf63-0242ac130002\"," +
                         "\"projectName\":\"new_Project\"," +
-                        "\"productAreas\":[]}",
+                        "\"productAreas\":[" + productAreaID + "]}",
                 headers);
 
         String createProjectResponse = restTemplate.exchange(
