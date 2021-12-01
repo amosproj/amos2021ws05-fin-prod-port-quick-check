@@ -52,6 +52,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/user'
+        400:
+          $ref: '#/components/responses/400badrequest'
         401:
           $ref: '#/components/responses/401unauthorized'
         403:
@@ -230,5 +232,7 @@ components:
       description: User is not authorized to access this resource
     401unauthorized:
       description: User not authenticated
+    400badrequest:
+      description: Incorrect Input
     genericError:
       description: Error
