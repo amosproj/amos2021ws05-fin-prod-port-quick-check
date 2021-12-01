@@ -110,11 +110,11 @@ function RemoveButton({ onRemove }) {
 
 function MemberHead({ editable, addButton }) {
   return (
-    <HStack px={4} rounded="md" align="center" spacing={5}>
-      <Heading size="md" w="50%" bg="gray.600" p={3} rounded="md">
+    <HStack px={4} rounded="md" align="center" spacing={3} mb={5}>
+      <Heading size="md" w="50%" bg="gray.600" p={2} pb={5} rounded="md">
         Email
       </Heading>
-      <Heading size="md" minW={36} w={48} bg="gray.600" p={3} rounded="md">
+      <Heading size="md" minW={36} w={48} bg="gray.600" p={2} pb={5} rounded="md">
         Role
       </Heading>
       {editable ? addButton : <div />}
@@ -124,7 +124,7 @@ function MemberHead({ editable, addButton }) {
 
 function MemberRow({ editable, member, onChangeRole, removeButton }) {
   return (
-    <HStack px={4} rounded="md" align="center" spacing={5}>
+    <HStack px={4} rounded="md" align="center" spacing={3}>
       <Text w="50%" bg="blue.700" rounded="md" p={2} px={3} align="left">
         {member.email}
       </Text>
@@ -171,12 +171,11 @@ export default function MemberTable({ editable, members, handleChange }) {
   };
 
   return (
-    <List spacing={4} direction="column" minW="80%" align="center" pb={5}>
+    <List spacing={2} direction="column" minW="80%" align="center" pb={5}>
       <MemberHead
         editable={editable}
         addButton={<AddButton w={16} onAddMember={handleAddMember}></AddButton>}
       />
-
       {members.map((member) => (
         <MemberRow
           key={member.email}
