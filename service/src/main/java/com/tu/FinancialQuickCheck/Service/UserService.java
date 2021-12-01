@@ -37,13 +37,17 @@ public class UserService {
      */
     public UserDto createUser(UserDto userDto) {
 
-        UserEntity newUser = new UserEntity();
-        newUser.id = UUID.randomUUID().toString();
-        newUser.username = userDto.username;
-        newUser.email = userDto.email;
-        newUser.password = userDto.password;
-        repository.save(newUser);
-        return new UserDto(UUID.fromString(newUser.id), newUser.email, newUser.username);
+        if(userDto.username != null && userDto.email != null && userDto.password != null){
+            UserEntity newUser = new UserEntity();
+            newUser.id = UUID.randomUUID().toString();
+            newUser.username = userDto.username;
+            newUser.email = userDto.email;
+            newUser.password = userDto.password;
+            repository.save(newUser);
+            return new UserDto(UUID.fromString(newUser.id), newUser.email, newUser.username);
+        }else{
+            return null;
+        }
     }
 
     /**

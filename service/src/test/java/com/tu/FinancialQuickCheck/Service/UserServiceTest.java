@@ -2,6 +2,7 @@ package com.tu.FinancialQuickCheck.Service;
 
 import com.tu.FinancialQuickCheck.db.UserEntity;
 import com.tu.FinancialQuickCheck.db.UserRepository;
+import com.tu.FinancialQuickCheck.dto.ProductAreaDto;
 import com.tu.FinancialQuickCheck.dto.UserDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -12,7 +13,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Logger;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -35,6 +39,7 @@ public class UserServiceTest {
 
     private UserDto dto1;
     private UserDto dto2;
+    private UserDto dto3;
     private UserDto emptyDto;
 
     private UserEntity entity1;
@@ -68,6 +73,11 @@ public class UserServiceTest {
         dto2.email = email2;
         dto2.password = pw2;
 
+        dto3 = new UserDto();
+        dto3.username = username1;
+        dto3.email = keineEmail;
+        dto3.password = pw1;
+
         emptyDto = new UserDto();
 
         entity1 = new UserEntity();
@@ -95,21 +105,64 @@ public class UserServiceTest {
      * testCreateUser3: input attributes do not comply with requirements -> throw BadRequest Exception
      */
     @Test
-    @Disabled
     public void testCreateUser1() {
-        // Step 1: init test object         
+        for(int i = 1; i <= 11; i++){
+            // Step 1: init test object
+            dto1.id = UUID.randomUUID();
 
-        
-        // Step 2: provide knowledge
+            // Step 2: execute createUser
+            log.info("@Test createUser() - test object : " + dto1.username);
+            UserDto out = service.createUser(dto1);
+            log.info("@Test createUser() - return object id : " + out.id.toString());
+
+            // Step 3: assert result
+            assertAll("create User",
+                    () -> assertEquals(dto1.username, out.username),
+                    () -> assertEquals(dto1.email, out.email),
+                    () -> assertNotEquals(dto1.password, out.password),
+                    () -> assertNotEquals(dto1.id, out.id)
+            );
+        }
+    }
+
+    @Test
+    public void testCreateUser2a() {
+        // Step 1: init test object
+        dto1.password = null;
+        dto2.username = null;
+        dto3.email = null;
 
 
-        // Step 3: execute getAllRatings()
+        // Step 2 and 3: execute createUser and assert result
+        assertNull(service.createUser(dto1));
+        assertNull(service.createUser(dto2));
+        assertNull(service.createUser(dto3));
+        assertNull(service.createUser(emptyDto));
 
     }
 
     @Test
+    public void testCreateUser2b() {
+        // Step 1: init test object
+        dto1.password = null;
+        dto1.username = null;
+
+        dto2.email = null;
+        dto2.username = null;
+
+        dto3.email = null;
+        dto3.password = null;
+
+        // Step 2 and 3: execute createUser and assert result
+        assertNull(service.createUser(dto1));
+        assertNull(service.createUser(dto2));
+        assertNull(service.createUser(dto3));
+    }
+
+    @Test
     @Disabled
-    public void testCreateUser2() {
+    public void testCreateUser3a() {
+        // TODO: define requirements for input attribute pw, e.g. pw length
         // Step 1: init test object
 
 
@@ -122,7 +175,7 @@ public class UserServiceTest {
 
     @Test
     @Disabled
-    public void testCreateUser3() {
+    public void testCreateUser3b() {
         // Step 1: init test object
 
 

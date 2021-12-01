@@ -1,14 +1,13 @@
 package com.tu.FinancialQuickCheck.Controller;
 
+import com.tu.FinancialQuickCheck.Exceptions.BadRequest;
 import com.tu.FinancialQuickCheck.Service.UserService;
-import com.tu.FinancialQuickCheck.dto.ProductDto;
 import com.tu.FinancialQuickCheck.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Presentation layer
@@ -19,42 +18,48 @@ import java.util.UUID;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private UserService service;
 
     @GetMapping(produces = "application/json")
     public List<UserDto> findAllUser(){
-        return userService.findAllUser();
+        return service.findAllUser();
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto createUser(@RequestBody UserDto userDto) {
-        return userService.createUser(userDto);
+        UserDto tmp = service.createUser(userDto);
+
+        if (tmp == null) {
+            throw new BadRequest("User cannot be created due to missing information.");
+        }else {
+            return tmp;
+        }
     }
 
     @GetMapping("email/{email}")
     public UserDto findByEmail(@PathVariable String email){
-        return userService.findByEmail(email);
+        return service.findByEmail(email);
     }
 
     @PutMapping("email/{email}")
     public void updateUserByEmail(@RequestBody UserDto userDto, @PathVariable String email){
-        userService.updateByEmail(userDto, email);
+        service.updateByEmail(userDto, email);
     }
 
     @PutMapping("/{userID}")
     public void updateUserByUserID(@RequestBody UserDto userDto, @PathVariable String userID){
-        userService.updateByUserID(userDto, userID);
+        service.updateByUserID(userDto, userID);
     }
 
     @DeleteMapping("email/{email}")
     void deleteByEmail(@PathVariable String email){
-        userService.deleteUser(email);
+        service.deleteUser(email);
     }
 
     @DeleteMapping("/{userID}")
     void deleteByUserId(@PathVariable String userID){
-        userService.deleteUserById(userID);
+        service.deleteUserById(userID);
     }
 
 }
