@@ -1,8 +1,9 @@
 package com.tu.FinancialQuickCheck.Service;
 
+import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.db.UserEntity;
 import com.tu.FinancialQuickCheck.db.UserRepository;
-import com.tu.FinancialQuickCheck.dto.ProductAreaDto;
+import com.tu.FinancialQuickCheck.dto.ProjectDto;
 import com.tu.FinancialQuickCheck.dto.UserDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -13,10 +14,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -36,6 +39,7 @@ public class UserServiceTest {
     private String keineEmail;
     private String pw1;
     private String pw2;
+    private String userID;
 
     private UserDto dto1;
     private UserDto dto2;
@@ -63,6 +67,8 @@ public class UserServiceTest {
         pw1 = "advnkjbgdvj";
         pw2 = "nvkjavdfihvs";
 
+        userID = "5710db7c-e875-4e63-9e03-7f6ad85cc429";
+
         dto1 = new UserDto();
         dto1.username = username1;
         dto1.email = email1;
@@ -81,6 +87,7 @@ public class UserServiceTest {
         emptyDto = new UserDto();
 
         entity1 = new UserEntity();
+        entity1.id = userID;
         entity1.username = username1;
         entity1.password = pw1;
         entity1.email = email1;
@@ -100,8 +107,8 @@ public class UserServiceTest {
      * tests for createUser()
      *
      * testCreateUser1: input contains necessary information -> return UserDto with created userID
-     * testCreateUser2: input is missing information -> throw BadRequest Exception
-     * testCreateUser3: input attributes do not comply with requirements -> throw BadRequest Exception
+     * testCreateUser2: input is missing information -> return null
+     * testCreateUser3: input attributes do not comply with requirements -> return null
      */
     @Test
     public void testCreateUser1() {
@@ -178,28 +185,29 @@ public class UserServiceTest {
      * testUpdateByUserID4: userID exists, input correct -> return updated UserDto
      */
     @Test
-    @Disabled
     public void testUpdateUser1() {
-        // Step 1: init test object
+        // Step 1: provide knowledge
+        when(repository.existsById(userID)).thenReturn(false);
 
+        // Step 2: execute updateByUserID()
+        Exception exception = assertThrows(ResourceNotFound.class, ()
+                -> service.updateByUserID(dto1,"5710db7c-e875-4e63-9e03-7f6ad85cc429"));
 
-        // Step 2: provide knowledge
+        String expectedMessage = "userID " + userID + " not found";
+        String actualMessage = exception.getMessage();
 
-
-        // Step 3: execute getAllRatings()
-
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 
     @Test
     @Disabled
     public void testUpdateUser2() {
-        // Step 1: init test object
+        // Step 1: provide knowledge
+        when(repository.findById(userID)).thenReturn(Optional.of(entity1));
+
+        // Step 3: execute updateByUserID()
 
 
-        // Step 2: provide knowledge
-
-
-        // Step 3: execute getAllRatings()
 
     }
 
