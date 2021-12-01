@@ -87,9 +87,9 @@ export default function ProjectOverview() {
 
   return (
     <Page title="Your Projects">
-      <List spacing={3} maxW="900px" mx={2}>
+      <List spacing={3} mx={2} w='80%'>
         {projectsData.map((project) => (
-          <ProjectCard project={project} key={project.projectID}></ProjectCard>
+          <ProjectCard project={project} key={project.projectID}/>
         ))}
       </List>
       <Button size="lg" onClick={createProject}>

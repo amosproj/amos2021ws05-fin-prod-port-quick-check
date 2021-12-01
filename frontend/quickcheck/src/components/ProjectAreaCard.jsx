@@ -1,127 +1,83 @@
-import React from 'react';
+import { React, useState } from 'react';
 import {
   useDisclosure,
   Modal,
   ModalOverlay,
   ModalContent,
   ModalBody,
-  FormControl,
-  FormLabel,
-  Input,
   ModalFooter,
   ModalCloseButton,
   ModalHeader,
   Button,
+  Flex,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  HStack,
+  LinkOverlay,
+  Heading,
   Link,
-  Table,
-  Thead,
-  Th,
-  Tr,
-  Td,
-  Tfoot,
-  Tbody,
-  Box,
-  Center,
-  Text,
-  Stack,
+  IconButton,
+  LinkBox,
+  Spacer,
   CircularProgress,
   CircularProgressLabel,
+  List,
 } from '@chakra-ui/react';
-import Card from './Card.jsx';
-import { AddIcon } from '@chakra-ui/icons';
-import ShowEditable from '../components/editable.jsx';
+import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
+import { Selection } from './Inputs.jsx';
 
-export function AddArea(prop) {
+function AddButton({ onAdd }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const allAreas = fetchAllAreas();
 
-  const initialRef = React.useRef();
-  const finalRef = React.useRef();
-  if (prop.editable) {
-    return (
-      <>
-        <Button
-          onClick={onOpen}
-          size="md"
-          color="green.900"
-          boxShadow={'2xl'}
-          rounded={'md'}
-          w="50px"
-          bg="purple.400"
-          p={3}
-        >
-          <AddIcon />
-        </Button>
+  const [selectedArea, setSelectedArea] = useState();
 
-        <Modal
-          initialFocusRef={initialRef}
-          finalFocusRef={finalRef}
-          isOpen={isOpen}
-          onClose={onClose}
-        >
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>{prop.question}</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody pb={6}>
-              <FormControl>
-                <FormLabel>Name</FormLabel>
-                <Input ref={initialRef} placeholder={prop.default} />
-              </FormControl>
-            </ModalBody>
+  const header = 'Add Product Area';
 
-            <ModalFooter>
-              <Button colorScheme="blue" mr={3}>
-                Save
-              </Button>
-              <Button onClick={onClose}>Cancel</Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-      </>
-    );
-  } else {
-    return <></>;
-  }
-}
-
-function Remove(prop) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const initialRef = React.useRef();
-  const finalRef = React.useRef();
+  const getAreaFromName = (areaName) => {
+    return allAreas.filter((m) => m.name === areaName)[0];
+  };
 
   return (
     <>
-      <Button
+      <IconButton
+        icon={<AddIcon />}
+        aria-label="Add Product Area"
         onClick={onOpen}
         size="md"
-        color="green.900"
+        colorScheme="green"
         boxShadow={'2xl'}
         rounded={'md'}
         w="50px"
-        bg="purple.400"
         p={3}
-      ></Button>
+      ></IconButton>
 
-      <Modal
-        initialFocusRef={initialRef}
-        finalFocusRef={finalRef}
-        isOpen={isOpen}
-        onClose={onClose}
-      >
+      <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Create Product Area</ModalHeader>
+          <ModalHeader color="teal.300">{header}</ModalHeader>
           <ModalCloseButton />
-          <ModalBody pb={6}>
-            <FormControl>
-              <FormLabel>Name</FormLabel>
-              <Input ref={initialRef} placeholder="Product Area name" />
-            </FormControl>
+
+          <ModalBody px={10}>
+            <Selection
+              placeholder="Select Poduct Area..."
+              options={allAreas.map((e) => e.name)}
+              onChange={setSelectedArea}
+            />
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3}>
+            <Button
+              colorScheme="blue"
+              mr={3}
+              onClick={(e) => {
+                onAdd(getAreaFromName(selectedArea).id);
+                onClose();
+              }}
+            >
               Save
             </Button>
             <Button onClick={onClose}>Cancel</Button>
@@ -132,82 +88,112 @@ function Remove(prop) {
   );
 }
 
-function ProjectArea(prop) {
+function RemoveButton({ onRemove }) {
+  const { onOpen, onClose, isOpen } = useDisclosure();
   return (
-    <Tr>
-      <Td>
-        <Box color="white" boxShadow={'2xl'} rounded={'md'} w="200px" bg="green.500" p={3}>
-          <Text color={'gray.100'} fontWeight={800} fontSize={'sm'} letterSpacing={1.1}>
-            <ShowEditable text={prop.name} editable={prop.editable}></ShowEditable>
-          </Text>
-        </Box>
-      </Td>
-
-      <Td>
-        <Box color="white" boxShadow={'2xl'} rounded={'md'} w="20px" p={3}>
-          <Text
-            color={'gray.100'}
-            textTransform={'uppercase'}
-            fontWeight={700}
-            fontSize={'sm'}
-            letterSpacing={1.1}
-          >
-            <CircularProgress value={prop.percent} color="pink.400">
-              <CircularProgressLabel>{prop.percent}%</CircularProgressLabel>
-            </CircularProgress>
-          </Text>
-        </Box>
-      </Td>
-      <Td>
-        <Link to="../projects">
+    <Popover isOpen={isOpen} onOpen={onOpen} onClose={onClose} isLazy={true} w="wrap">
+      <PopoverTrigger>
+        <IconButton
+          icon={<DeleteIcon />}
+          onClick={onOpen}
+          size="md"
+          color="red.900"
+          bg="red.400"
+          isRound="true"
+          // w={16}
+        />
+      </PopoverTrigger>
+      <PopoverContent>
+        <PopoverHeader fontWeight="semibold">Confirm removing this User</PopoverHeader>
+        <PopoverBody>
           <Button
-            size="lg"
-            color="green.900"
-            boxShadow={'2xl'}
-            rounded={'md'}
-            w="100px"
-            bg="green.400"
-            p={3}
+            colorScheme="red"
+            mx={1}
+            onClick={(e) => {
+              onRemove();
+              onClose();
+            }}
           >
-            Open
+            Remove
           </Button>
-        </Link>
-      </Td>
-    </Tr>
+          <Button mx={1} onClick={onClose}>
+            Cancel
+          </Button>
+        </PopoverBody>
+      </PopoverContent>
+    </Popover>
   );
 }
 
-export default function ProjectAreaList(prop) {
+function ProductArea({ productArea, removeButton }) {
   return (
-    <Table variant="simple" size="sm">
-      <Thead>
-        <Tr>
-          <Th>Name</Th>
-          <Th>Progress</Th>
-          <Th>
-            {' '}
-            <Center>
-              <Link to="../projects"></Link>
-              <AddArea
-                editable={prop.editable}
-                question="Create Product Area"
-                default="Product Area Name"
-              ></AddArea>
-            </Center>
-          </Th>
-        </Tr>
-      </Thead>
-      <Tbody>
-        {prop.areas.map((area) => (
-          <ProjectArea
-            name={area.type}
-            role={area.role}
-            percent={area.percent}
-            editable={prop.editable}
-          ></ProjectArea>
+    <>
+      <HStack spacing={3}>
+        <LinkBox as="button" w="full">
+          <Flex
+            bg="blue.700"
+            w="full"
+            rounded="lg"
+            p={3}
+            align="center"
+            _hover={{ boxShadow: 'md', bg: 'blue.600' }}
+            onClick={<Link to="/projects" />}
+          >
+            <Spacer />
+            <LinkOverlay href="/projects"></LinkOverlay>
+            <Heading size="md" align="center">
+              {productArea.name}
+            </Heading>
+
+            <Spacer />
+            <CircularProgress mx={3} value={50} color="pink.400">
+              <CircularProgressLabel>{50}%</CircularProgressLabel>
+            </CircularProgress>
+          </Flex>
+        </LinkBox>
+        {removeButton}
+      </HStack>
+    </>
+  );
+}
+
+const areaMock = {
+  0: { id: 0, name: 'Kredit (p)', category: 'Privat' },
+  1: { id: 1, name: 'Kredit (b)', category: 'Business' },
+  2: { id: 2, name: 'Kunden (p)', category: 'Privat' },
+  3: { id: 3, name: 'Kunden (b)', category: 'Business' },
+};
+
+const fetchAllAreas = () => {
+  return Object.values(areaMock);
+};
+
+export default function ProductAreaList({ editable, areaIDs, handleChange }) {
+  const fetchArea = (areaID) => {
+    return areaMock[areaID];
+  };
+
+  const handleAddArea = (newID) => {
+    handleChange([...areaIDs, newID]);
+  };
+
+  const handleRemoveArea = (removeID) => () => {
+    const updatedAreaIDs = areaIDs.filter((m) => m !== removeID);
+    handleChange(updatedAreaIDs);
+  };
+
+  return (
+    <>
+      <List spacing={3} w="50%">
+        {areaIDs.map((id) => (
+          <ProductArea
+            productArea={fetchArea(id)}
+            removeButton={editable ? <RemoveButton onRemove={handleRemoveArea(id)} /> : <div />}
+          />
         ))}
-      </Tbody>
-      <Tfoot></Tfoot>
-    </Table>
+      </List>
+
+      {editable ? <AddButton onAdd={handleAddArea}></AddButton> : <div />}
+    </>
   );
 }
