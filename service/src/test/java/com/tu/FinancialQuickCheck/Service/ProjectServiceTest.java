@@ -241,7 +241,7 @@ public class ProjectServiceTest {
      *                  --> throw Exception ResourceNotFound
      */
     @Test
-    public void testFindById1() {
+    public void testFindById1_projectIdExists() {
         // Step 1: init test object
         // refer to @BeforeEach
 
@@ -262,7 +262,7 @@ public class ProjectServiceTest {
 
 
     @Test
-    public void testFindById2() {
+    public void testFindById2_projectIdNotFound() {
         Exception exception = assertThrows(ResourceNotFound.class, () -> service.getProjectById(1));
 
         String expectedMessage = "projectID 1 not found";

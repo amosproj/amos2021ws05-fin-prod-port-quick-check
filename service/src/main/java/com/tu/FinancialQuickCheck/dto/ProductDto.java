@@ -39,7 +39,6 @@ public class ProductDto {
         this.productName = name;
         this.projectID = projectID;
         this.productAreaID = productAreaID;
-        this.productVariations = new ArrayList<>();
     }
 
     public ProductDto(String name, List<ProductRatingEntity> productRatingEntities)

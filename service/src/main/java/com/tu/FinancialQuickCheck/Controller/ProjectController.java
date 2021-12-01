@@ -84,7 +84,12 @@ public class ProjectController {
             consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public ProductDto createProduct(@PathVariable int projectID, @PathVariable int productAreaID, @RequestBody ProductDto productDto) {
-        return productService.createProduct(projectID, productAreaID, productDto);
+        ProductDto tmp = productService.createProduct(projectID, productAreaID, productDto);
+        if(tmp == null){
+            throw new BadRequest("Incorrect Input.");
+        }else{
+            return tmp;
+        }
     }
 
 }
