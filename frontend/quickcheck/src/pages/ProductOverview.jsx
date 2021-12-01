@@ -62,6 +62,7 @@ function ProjectCard(props) {
   );
 }
 
+
 /* function TextF(props) {
   return (
     <p>{props.product}</p>
@@ -71,13 +72,33 @@ function ProjectCard(props) {
 
 export default function ProductOverview() {
   const [projectsData, setProjectsData] = useState([product1, product2])
-
+  const [editable, setEditable] = useState(false);
   let [value, setValue] = React.useState("")
 
   let handleInputChange = (e) => {
     let inputValue = e.target.value
     setValue(inputValue)
   }
+  const EditButtons = () => {
+    if (editable) {
+      return (
+        <HStack>
+          <Button size="md" onClick={() => setEditable(false)}>
+            Cancel
+          </Button>
+          <Button size="md" onClick={() => setEditable(false)}>
+            Confirm
+          </Button>
+        </HStack>
+      );
+    } else {
+      return (
+        <Button size="md" onClick={() => setEditable(true)}>
+          Edit
+        </Button>
+      );
+    }
+  };
   return (
     <div>
       <Page title="Product Overview">
@@ -88,10 +109,10 @@ export default function ProductOverview() {
               //<TextF product={product.productName}/>
 
             ))}
-            <Button> Edit </Button>
           </List>
-          
+
         </Card>
+        <EditButtons />
       </Page>
     </div>
   )
