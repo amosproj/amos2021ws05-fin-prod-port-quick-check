@@ -9,7 +9,8 @@ import {
   HStack,
   Spacer, IconButton,
   VStack
-} from "@chakra-ui/react"
+} from "@chakra-ui/react";
+import { AddIcon} from '@chakra-ui/icons';
 import Card from '../components/Card';
 import ProductRow from '../components/ProductRow';
 
@@ -92,7 +93,7 @@ export default function ProductOverview() {
       return (
         <div>
           <IconButton
-          //icon={<AddIcon />}
+          icon={<AddIcon/>}
           colorScheme='teal'
           variant='outline'
           size="md"
