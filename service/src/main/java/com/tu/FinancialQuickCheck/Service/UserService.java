@@ -98,9 +98,9 @@ public class UserService {
      * @param userDto
      * @param userID
      */
-    public UserDto updateByUserID(UserDto userDto, String userID) {
+    public UserDto updateByUserID(UserDto userDto, UUID userID) {
 
-        Optional<UserEntity> entity = repository.findById(userID);
+        Optional<UserEntity> entity = repository.findById(userID.toString());
 
         if (entity.isEmpty()) {
             throw new ResourceNotFound("userID " + userID + " not found");
@@ -135,13 +135,12 @@ public class UserService {
      *
      * @param userID
      */
-    public void deleteUserById(String userID) {
-        Optional<UserEntity> entity = repository.findById(userID);
+    public void deleteUserById(UUID userID) {
 
-        if (entity.isEmpty()) {
+        if (!repository.existsById(userID.toString())) {
             throw new ResourceNotFound("userID " + userID + " not found");
         } else {
-            repository.deleteById(userID);
+            repository.deleteById(userID.toString());
         }
     }
 
