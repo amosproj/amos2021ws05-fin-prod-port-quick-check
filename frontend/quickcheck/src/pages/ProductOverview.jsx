@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Page from '../components/Page'
 import {
   Text,
@@ -8,11 +8,12 @@ import {
   Heading,
   HStack,
   Spacer, IconButton,
-  VStack
+  VStack, Input
 } from "@chakra-ui/react";
-import { AddIcon} from '@chakra-ui/icons';
+import { AddIcon } from '@chakra-ui/icons';
 import Card from '../components/Card';
 import ProductRow from '../components/ProductRow';
+import uuid4 from "uuid";
 
 // import { useToast } from '@chakra-ui/react';
 
@@ -31,17 +32,16 @@ const prod1mock = {
 
 const products = [
   {
-  productName: "Product1",
-  productID: 1,
-  projectID: 1,
-  productAreaID: 2
-}, {
-  productName: "Product2",
-  productID: 2,
-  projectID: 1,
-  productAreaID: 2
-}]
-
+    productName: "Product1",
+    productID: 1,
+    projectID: 1,
+    productAreaID: 2
+  }, {
+    productName: "Product2",
+    productID: 2,
+    projectID: 1,
+    productAreaID: 2
+  }]
 
 
 function ProjectCard(props) {
@@ -65,7 +65,6 @@ function ProjectCard(props) {
   );
 }
 
-
 /* function TextF(props) {
   return (
     <p>{props.product}</p>
@@ -75,8 +74,10 @@ function ProjectCard(props) {
 
 export default function ProductOverview() {
 
-  const [productsData, setProductsData] = useState(products)
-  const [editable, setEditable] = useState(false)
+  const [productsData, setProductsData] = useState(products);
+  const [editable, setEditable] = useState(false);
+  const [input, setInput] = useState("");
+  const refInputProd = useRef()
   const EditButtons = () => {
     if (editable) {
       return (
@@ -93,31 +94,56 @@ export default function ProductOverview() {
       return (
         <div>
           <IconButton
-          icon={<AddIcon/>}
-          colorScheme='teal'
-          variant='outline'
-          size="md"
-          w={10}>
-        </IconButton>
-        <Button size="md" onClick={() => setEditable(true)}>
-          Edit
-        </Button>
-          </div>
+            icon={<AddIcon />}
+            colorScheme='teal'
+            variant='outline'
+            size="md"
+            w={10}
+            onClick={handleClickAddButton}>
+          </IconButton>
+          <Button size="md" onClick={() => setEditable(true)}>
+            Edit
+          </Button>
+        </div>
       );
     }
+
   }
+ 
+  const handleClickAddButton = () => {
+    const newProduct = {
+      productName: refInputProd.current.value,
+      productID: uuid4(),
+      projectID: 1,
+      productAreaID: 2
+    }
+    
+    setProductsData([...productsData, newProduct]);
+    refInputProd.current.value = null
+  }
+
+  /* function handleProductChange(e){
+    const productName = refInputProd.current.value
+    newProduct = {
+      productName: productName,
+      productID: 3,
+      projectID: 1,
+      productAreaID: 2
+    }
+    refInputProd.current.value = null
+  }*/
+  
   return (
     <div>
       <Page title="Product Overview">
-        
+
         <Card barColor="cyan">
           <VStack>
             {productsData.map((product) => <ProductRow product={product}></ProductRow>)}
           </VStack>
         </Card>
-        
+        <Input onInput = {handleClickAddButton} ref={refInputProd} placeholder='Product' />
         <EditButtons />
-        
       </Page>
     </div>
   )

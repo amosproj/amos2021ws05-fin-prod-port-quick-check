@@ -1,5 +1,5 @@
-import { HStack, Box, Wrap, Text, IconButton} from '@chakra-ui/react'
-import React from 'react'
+import { HStack, Box, Wrap, Text, IconButton} from '@chakra-ui/react';
+import React from 'react';
 import { DeleteIcon, AddIcon } from '@chakra-ui/icons';
 
 export default function ProductRow(tag) {
