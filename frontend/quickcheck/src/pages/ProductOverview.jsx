@@ -7,9 +7,12 @@ import {
   List,
   Heading,
   HStack,
-  Spacer
+  Spacer, IconButton,
+  VStack
 } from "@chakra-ui/react"
 import Card from '../components/Card';
+import ProductRow from '../components/ProductRow';
+
 // import { useToast } from '@chakra-ui/react';
 
 // import { api } from '../utils/apiClient';
@@ -25,19 +28,18 @@ const prod1mock = {
   area: 'Loan',
 };
 
-const product1 = {
+const products = [
+  {
   productName: "Product1",
   productID: 1,
   projectID: 1,
   productAreaID: 2
-}
-
-const product2 = {
+}, {
   productName: "Product2",
   productID: 2,
   projectID: 1,
   productAreaID: 2
-}
+}]
 
 
 
@@ -71,14 +73,9 @@ function ProjectCard(props) {
 }*/
 
 export default function ProductOverview() {
-  const [projectsData, setProjectsData] = useState([product1, product2])
-  const [editable, setEditable] = useState(false);
-  let [value, setValue] = React.useState("")
 
-  let handleInputChange = (e) => {
-    let inputValue = e.target.value
-    setValue(inputValue)
-  }
+  const [productsData, setProductsData] = useState(products)
+  const [editable, setEditable] = useState(false)
   const EditButtons = () => {
     if (editable) {
       return (
@@ -93,26 +90,33 @@ export default function ProductOverview() {
       );
     } else {
       return (
+        <div>
+          <IconButton
+          //icon={<AddIcon />}
+          colorScheme='teal'
+          variant='outline'
+          size="md"
+          w={10}>
+        </IconButton>
         <Button size="md" onClick={() => setEditable(true)}>
           Edit
         </Button>
+          </div>
       );
     }
-  };
+  }
   return (
     <div>
       <Page title="Product Overview">
+        
         <Card barColor="cyan">
-          <List spacing={3} maxW="900px" mx={2}>
-            {projectsData.map((product) => (
-              <ProjectCard product={product} key={product.projectID}></ProjectCard>
-              //<TextF product={product.productName}/>
-
-            ))}
-          </List>
-
+          <VStack>
+            {productsData.map((product) => <ProductRow product={product}></ProductRow>)}
+          </VStack>
         </Card>
+        
         <EditButtons />
+        
       </Page>
     </div>
   )
