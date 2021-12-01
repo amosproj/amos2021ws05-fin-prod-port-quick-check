@@ -1,0 +1,188 @@
+openapi: '3.0.0'
+info:
+  version: "0.3"
+  title: API for AMOS5 Financial QuickCheck
+  description: defines endpoints for resource "Project"
+
+paths:
+  /projects:
+    get:
+      summary: retrieves all projects
+      responses:
+        200:
+          description: JSON containing all projects
+          content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    '$ref': '#/components/schemas/smallProject'
+        401:
+          $ref: '#/components/responses/401unauthorized'
+        '5XX':
+          $ref: '#/components/responses/5XXserverError'
+    post:
+      summary: creates a new project
+      requestBody:
+        description: Project object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/project'
+      responses:
+        201:
+          description: JSON containing project meta data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/project'
+        400:
+          $ref: '#/components/responses/400badrequest'
+        401:
+          $ref: '#/components/responses/401unauthorized'
+        '5XX':
+          $ref: '#/components/responses/5XXserverError'
+  /projects/{projectID}:
+    get:
+      summary: returns project with given projectID
+      parameters:
+        - $ref: '#/components/parameters/projectID'
+      responses:
+        200:
+          description: JSON containing project meta data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/project'
+        401:
+          $ref: '#/components/responses/401unauthorized'
+        404:
+          $ref: '#/components/responses/404notfound'
+        '5XX':
+          $ref: '#/components/responses/5XXserverError'
+    put: 
+      summary: updates project with given projectID
+      parameters:
+        - $ref: '#/components/parameters/projectID'
+      requestBody:
+        description: Project object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/project'
+      responses:
+        200:
+          description: project updated successfully
+        400:
+          $ref: '#/components/responses/400badrequest'
+        401:
+          $ref: '#/components/responses/401unauthorized'
+        404:
+          $ref: '#/components/responses/404notfound'
+        '5XX':
+          $ref: '#/components/responses/5XXserverError'
+
+  /productareas:
+    get:
+      summary: retrieves all available product areas 
+      responses:
+        200:
+          description: JSON containing project data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/productArea'
+        404:
+          $ref: '#/components/responses/404notfound'
+      
+
+
+
+
+components:
+  parameters:
+    projectID:
+      name: projectID
+      in: path
+      description: unique project ID
+      required: true
+      schema:
+        type: integer
+
+  schemas:
+    smallProject:
+      type: object
+      properties:
+        projectID:
+          type: integer
+        projectName:
+          type: string
+    project:
+      type: object
+      properties:
+        projectID:
+          type: integer
+          required: false
+        creatorID:
+          type: string
+          description: UUID of user who creates project
+          example: "2375e026-d348-4fb6-b42b-891a76758d5d"
+          required: true
+        projectName:
+          type: string
+          required: true
+        members:
+          type: array
+          required: false
+          example: ["2375e026-d348-4fb6-b42b-891a76758d5d","0fef539d-69be-4013-9380-6a12c3534c67"]
+          items:
+            type: string
+        productAreas:
+          type: array
+          required: true
+          example: [ 1, 2 ,3]
+          items:
+            type: integer
+    productArea:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          example: "Kredit"
+        category:
+          type: string
+          example: "Privat"
+
+  responses:
+    5XXserverError:
+      description: Internal error
+      content:
+        application/json:
+          schema:
+            type: string
+    404notfound:
+      description: resource not found
+    403forbidden:
+      description: User is not authorized to access this resource
+      content:
+        application/json:
+          schema:
+            type: string
+    401unauthorized:
+      description: User not authenticated
+      content:
+        application/json:
+          schema:
+            type: string
+    400badrequest:
+      description: request is missing required information
+      content:
+        application/json:
+          schema:
+            type: string
+    genericError:
+      description: Error

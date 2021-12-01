@@ -1,0 +1,7 @@
+POST localhost:8080/productareas
+Content-Type: application/json
+
+{
+"name": "KREDIT",
+"category": "BUSINESS"
+}

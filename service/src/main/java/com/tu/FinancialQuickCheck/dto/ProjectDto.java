@@ -1,11 +1,8 @@
 package com.tu.FinancialQuickCheck.dto;
 
-//import java.util.ArrayList;
 import com.tu.FinancialQuickCheck.db.ProductEntity;
 import com.tu.FinancialQuickCheck.db.ProjectUserEntity;
-import org.h2.command.dml.Set;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
@@ -15,7 +12,7 @@ public class ProjectDto {
 
     public int projectID;
     public String projectName;
-    public int creatorID;
+    public UUID creatorID;
     public HashSet<UUID> members;
     public HashSet<Integer> productAreas;
 //    public List<Product> products;
@@ -23,11 +20,15 @@ public class ProjectDto {
     //necessary for mapping
     public ProjectDto() {}
 
-    public ProjectDto(int projectID){
+
+    public ProjectDto(int projectID, String projectName, UUID creatorID, List<ProductEntity> productEntity){
         this.projectID = projectID;
+        this.projectName = projectName;
+        this.creatorID = creatorID;
+        this.productAreas = convertProductAreaEntities(productEntity);
     }
 
-    public ProjectDto(int projectID, String projectName, int creatorID,
+    public ProjectDto(int projectID, String projectName, UUID creatorID,
                       List<ProductEntity> productEntity, List<ProjectUserEntity> projectUserEntities){
         this.projectID = projectID;
         this.projectName = projectName;

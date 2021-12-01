@@ -1,0 +1,9 @@
+POST localhost:8080/users
+Content-Type: application/json
+
+{
+  "username": "Tobias",
+  "email": "tobias@amose.de",
+  "password": "vnkajdvbk"
+
+}

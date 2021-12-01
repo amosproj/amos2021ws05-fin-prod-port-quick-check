@@ -1,0 +1,9 @@
+POST localhost:8080/projects/1/productArea/1/products
+Content-Type: application/json
+
+{
+  "productID": 1,
+  "productName": "Optionen",
+  "projectID": 1,
+  "productAreaID": 1
+}

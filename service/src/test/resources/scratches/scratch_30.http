@@ -1,0 +1,8 @@
+POST localhost:8080/projects
+Content-Type: application/json
+
+{
+  "name": "DKB",
+  "creator_id": 99,
+  "productAreas": [2,3]
+}

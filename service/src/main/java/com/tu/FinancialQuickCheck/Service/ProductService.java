@@ -1,101 +1,115 @@
 package com.tu.FinancialQuickCheck.Service;
 
 import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
+import com.tu.FinancialQuickCheck.db.ProductAreaRepository;
 import com.tu.FinancialQuickCheck.db.ProductEntity;
 import com.tu.FinancialQuickCheck.db.ProductRepository;
-import com.tu.FinancialQuickCheck.db.ProjectEntity;
 import com.tu.FinancialQuickCheck.db.ProjectRepository;
 import com.tu.FinancialQuickCheck.dto.ProductDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class ProductService {
 
-    private ProductRepository productRepository;
+    private ProductRepository repository;
     private ProjectRepository projectRepository;
+    private ProductAreaRepository productAreaRepository;
 
-    @Autowired
-    public ProductService(ProductRepository productRepository, ProjectRepository projectRepository) {
-
-        this.productRepository = productRepository;
+    public ProductService(ProductRepository productRepository, ProjectRepository projectRepository,
+                          ProductAreaRepository productAreaRepository) {
+        this.repository = productRepository;
         this.projectRepository = projectRepository;
+        this.productAreaRepository = productAreaRepository;
     }
 
 
     public ProductDto createProduct(int projectID, int productAreaID, ProductDto productDto){
-    // TODO: erstellte IDs müssen ans Frontend kommuniziert werden
-        ProductEntity newProduct = new ProductEntity();
-        newProduct.name = productDto.productName;
-        newProduct.projectid = projectRepository.findById(projectID).get();
-        newProduct.productareaid = productAreaID;
-        productRepository.save(newProduct);
+        if(projectRepository.existsById(projectID)
+                && productAreaRepository.existsById(productAreaID)){
+            if(productDto.productName != null){
 
-        if(productDto.productVariations != null){
-            for (ProductDto productVariation: productDto.productVariations) {
-                ProductEntity entity = new ProductEntity();
-                entity.name = productVariation.productName;
-                entity.projectid = projectRepository.findById(projectID).get();
-                entity.productareaid = productAreaID;
-                entity.parentProduct = productRepository.getById(newProduct.product_id);
-                productRepository.save(entity);
+                List<ProductEntity> entities = new ArrayList<>();
+                ProductEntity newProduct = new ProductEntity();
+                newProduct.name = productDto.productName;
+                newProduct.projectid = projectRepository.findById(projectID).get();
+                newProduct.productareaid = productAreaID;
+                entities.add(newProduct);
+
+                if(productDto.productVariations != null){
+                    for (ProductDto productVariation: productDto.productVariations) {
+                        ProductEntity entity = new ProductEntity();
+                        entity.name = productVariation.productName;
+                        entity.projectid = projectRepository.findById(projectID).get();
+                        entity.productareaid = productAreaID;
+                        entity.parentProduct = repository.getById(newProduct.product_id);
+                        entities.add(entity);
+                    }
+                }
+
+                repository.saveAll(entities);
+                return new ProductDto(newProduct.product_id, newProduct.name, newProduct.projectid.id,
+                        newProduct.productareaid);
+            }else{
+                return null;
             }
+
+        }else {
+            throw new ResourceNotFound("Resource not Found. ProjectID and/or ProjectAreaID does not exist.");
         }
-
-
-        productDto.projectID = newProduct.product_id;
-        productDto.productAreaID = newProduct.productareaid;
-        productDto.projectID = newProduct.projectid.id;
-        return productDto;
     }
 
 
     public ProductDto findById(int productID) {
 
-        Optional<ProductEntity> productEntity = productRepository.findById(productID);
+        Optional<ProductEntity> productEntity = repository.findById(productID);
 
         if (productEntity.isEmpty()) {
             throw new ResourceNotFound("productID " + productID + " not found");
         }else{
-            return new ProductDto(productEntity.get().product_id,productEntity.get().name,
+            return new ProductDto(productEntity.get().product_id, productEntity.get().name,
                     productEntity.get().projectid.id, productEntity.get().productareaid);
         }
     }
 
 
-    public void updateById(ProductDto productDto, int productID) {
+    public ProductDto updateById(ProductDto productDto, int productID) {
 
-        if (!productRepository.existsById(productID)) {
+        if (!repository.existsById(productID)) {
             throw new ResourceNotFound("productID " + productID + " not found");
         }else{
-            productRepository.findById(productID).map(
-                    product -> {
-                        product.name = productDto.productName;
-                        return productRepository.save(product);
-                    });
+            if(productDto.productName != null){
+                repository.findById(productID).map(
+                        product -> {
+                            product.name = productDto.productName;
+                            return repository.save(product);
+                        });
+//                new ProductDto(product.product_id, product.name, product.projectid.id,
+//                        product.productareaid);
+                return new ProductDto();
+            }else{
+                return null;
+            }
         }
     }
 
 
     public void deleteProduct(int productID) {
-        Optional<ProductEntity> productEntity = productRepository.findById(productID);
+        Optional<ProductEntity> productEntity = repository.findById(productID);
         if (productEntity.isEmpty()) {
             throw new ResourceNotFound("productID " + productID + " not found");
         }else{
-            productRepository.deleteById(productID);
+            repository.deleteById(productID);
         }
     }
 
 
     public List<ProductDto> getProductsByProjectId(int projectID){
         List<ProductDto> productsByProject = new ArrayList<>();
-        Iterable<ProductEntity> productEntities = productRepository.findByProjectid(projectRepository.findById(projectID).get());
+        Iterable<ProductEntity> productEntities = repository.findByProjectid(projectRepository.findById(projectID).get());
 
 
         for(ProductEntity tmp : productEntities){
@@ -113,7 +127,7 @@ public class ProductService {
 
         List<ProductDto> productsByProjectAndProductArea = new ArrayList<>() {
         };
-        Iterable<ProductEntity> productEntities = productRepository.findByProjectidAndProductareaid(
+        Iterable<ProductEntity> productEntities = repository.findByProjectidAndProductareaid(
                 projectRepository.findById(projectID).get(),
                 projectAreaID);
 
