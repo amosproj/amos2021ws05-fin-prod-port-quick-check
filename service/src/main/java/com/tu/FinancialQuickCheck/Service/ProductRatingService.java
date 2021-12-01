@@ -91,22 +91,30 @@ public class ProductRatingService {
         }
     }
 
-
+    // TODO: implementierung mit Alex oder Max bequatschen
     public void updateProductRatings(ProductDto productDto, int productID) {
-
         if (!productRepository.existsById(productID)) {
             throw new ResourceNotFound("productID " + productID + " not found");
         } else {
+            List<ProductRatingEntity> updates = new ArrayList<>();
 
             for (ProductRatingDto tmp : productDto.ratings) {
-                repository.findById(new ProductRatingId(productRepository.getById(productID),
-                        ratingRepository.getById(tmp.ratingID)))
-                        .map(
-                            productRating -> {
-                                assignAttributes(tmp, productRating);
-                                return repository.save(productRating);
-                            });
+                ProductRatingId tmpId = new ProductRatingId(productRepository.getById(productID),
+                        ratingRepository.getById(tmp.ratingID));
+                Optional<ProductRatingEntity> updateEntity = repository.findById(tmpId);
+
+                if(updateEntity.isPresent()){
+                    updateEntity.map(
+                                productRating -> {
+                                    assignAttributes(tmp, productRating);
+                                    return updates.add(productRating);
+                                });
+                }else{
+                    throw new ResourceNotFound("ratingID " + tmp.ratingID + " not found");
+                }
             }
+
+            repository.saveAll(updates);
         }
     }
 
