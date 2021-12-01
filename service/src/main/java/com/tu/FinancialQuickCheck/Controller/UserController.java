@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Presentation layer
@@ -52,7 +53,7 @@ public class UserController {
 
 
     @PutMapping("/{userID}")
-    public void updateUserByUserID(@RequestBody UserDto userDto, @PathVariable String userID){
+    public void updateUserByUserID(@RequestBody UserDto userDto, @PathVariable UUID userID){
 
         if (service.updateByUserID(userDto, userID) == null) {
             throw new BadRequest("User cannot be updated due to missing/incorrect information.");
@@ -61,7 +62,7 @@ public class UserController {
 
 
     @DeleteMapping("/{userID}")
-    void deleteByUserId(@PathVariable String userID){
+    void deleteByUserId(@PathVariable UUID userID){
         service.deleteUserById(userID);
     }
 
