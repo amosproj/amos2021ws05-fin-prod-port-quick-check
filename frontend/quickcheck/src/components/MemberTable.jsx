@@ -50,7 +50,7 @@ function AddButton(props) {
             <Selection
               options={Object.values(roles)}
               selected={roles.consultant}
-              onChange={(e) => setRole(e.target.value)}
+              onChange={setRole}
             />
           </ModalBody>
 
