@@ -14,7 +14,7 @@ public class ProjectEntity {
     public String name;
 
     @Column(name = "creator_id")
-    public int creator_id;
+    public String creator_id;
 
     // TODO: CascadeType mit Max und Alexander besprechen
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

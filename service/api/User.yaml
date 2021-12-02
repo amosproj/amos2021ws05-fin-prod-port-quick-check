@@ -52,6 +52,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/user'
+        400:
+          $ref: '#/components/responses/400badrequest'
         401:
           $ref: '#/components/responses/401unauthorized'
         403:
@@ -155,6 +157,14 @@ components:
       description: unique email adress
       schema:
         type: string
+    userID:
+      name: userID
+      in: path
+      required: true
+      description: UUID as string
+      schema:
+        type: string
+        format: uuid
     projectID:
       name: projectID
       in: path
@@ -206,10 +216,6 @@ components:
         password:
           type: string
           required: true
-        role:
-          type: string
-          required: true
-          enum: [ CLIENT, PROJECT_MANAGER, ADMIN ]
 
     createUserProject:
       type: object
@@ -230,5 +236,7 @@ components:
       description: User is not authorized to access this resource
     401unauthorized:
       description: User not authenticated
+    400badrequest:
+      description: Incorrect Input
     genericError:
       description: Error

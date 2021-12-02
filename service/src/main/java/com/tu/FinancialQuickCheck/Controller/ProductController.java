@@ -1,9 +1,9 @@
 package com.tu.FinancialQuickCheck.Controller;
 
 
+import com.tu.FinancialQuickCheck.Exceptions.BadRequest;
 import com.tu.FinancialQuickCheck.Service.ProductService;
 import com.tu.FinancialQuickCheck.dto.ProductDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -12,23 +12,28 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("products")
 public class ProductController {
 
-    @Autowired
-    private ProductService productService;
+    private ProductService service;
+
+    public ProductController(ProductService productService){
+        this.service = productService;
+    }
 
     @GetMapping("/{productID}")
     public ProductDto findById(@PathVariable int productID) {
-        return productService.findById(productID);
+        return service.findById(productID);
     }
 
     @PutMapping("/{productID}")
     public void updateProduct(@RequestBody ProductDto productDto, @PathVariable Integer productID) {
-
-        productService.updateById(productDto, productID);
+        ProductDto tmp = service.updateById(productDto, productID);
+        if(tmp == null){
+            throw new BadRequest("Missing Input.");
+        }
     }
 
     @DeleteMapping("/{productID}")
     void deleteByID(@PathVariable int productID) {
-        productService.deleteProduct(productID);
+        service.deleteProduct(productID);
     }
 
 }

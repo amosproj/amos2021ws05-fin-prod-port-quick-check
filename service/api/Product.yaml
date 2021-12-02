@@ -138,8 +138,6 @@ paths:
         '5XX':
           $ref: '#/components/responses/5XXserverError'
 
-  
-
 
 components:
   parameters:
@@ -168,14 +166,14 @@ components:
   schemas:
     createProduct:
       type: object
+      required:
+        - productName
       properties:
         productID:
           type: integer
-          required: false
           example: 111
         productName:
           type: string
-          required: true
           example: "Optionen"
         productVariations:
           type: array
@@ -183,10 +181,11 @@ components:
             $ref: '#/components/schemas/productVariation'
     productVariation:
       type: object
+      required:
+        - productName
       properties:
         productName:
           type: string
-          required: true
           example: "Optionen"
     product:
       type: object
@@ -203,7 +202,6 @@ components:
         projectID:
           type: integer
           example: 1
-
 
 
   responses:

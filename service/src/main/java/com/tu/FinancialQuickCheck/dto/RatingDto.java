@@ -13,6 +13,8 @@ public class RatingDto {
 
     public RatingArea ratingArea;
 
+    public RatingDto(){}
+
     public RatingDto(int id, String criterion, String category, RatingArea ratingArea)
     {
         this.id = id;

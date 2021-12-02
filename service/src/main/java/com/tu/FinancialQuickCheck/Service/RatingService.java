@@ -4,7 +4,6 @@ import com.tu.FinancialQuickCheck.RatingArea;
 import com.tu.FinancialQuickCheck.db.RatingEntity;
 import com.tu.FinancialQuickCheck.db.RatingRepository;
 import com.tu.FinancialQuickCheck.dto.RatingDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,11 +12,11 @@ import java.util.List;
 @Service
 public class RatingService {
 
-    private RatingRepository ratingRepository;
+    private RatingRepository repository;
 
-    @Autowired
-    public RatingService(RatingRepository repository) {
-        this.ratingRepository = repository;
+
+    public RatingService(RatingRepository ratingRepository) {
+        this.repository = ratingRepository;
     }
 
 
@@ -25,8 +24,7 @@ public class RatingService {
 
         List<RatingDto> ratingDtos = new ArrayList<>() {};
 
-        Iterable<RatingEntity> ratingEntities = this.ratingRepository.findAll();
-
+        Iterable<RatingEntity> ratingEntities = this.repository.findAll();
 
         for(RatingEntity tmp : ratingEntities){
             ratingDtos.add(new RatingDto(tmp.id, tmp.criterion, tmp.category, tmp.ratingarea));
@@ -40,7 +38,7 @@ public class RatingService {
 
         List<RatingDto> ratingDtos = new ArrayList<>() {};
 
-        Iterable<RatingEntity> ratingEntities = ratingRepository.findByRatingarea(ratingArea);
+        Iterable<RatingEntity> ratingEntities = repository.findByRatingarea(ratingArea);
 
         for(RatingEntity tmp : ratingEntities){
             ratingDtos.add(new RatingDto(tmp.id, tmp.criterion, tmp.category, tmp.ratingarea));
