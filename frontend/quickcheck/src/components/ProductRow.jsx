@@ -1,4 +1,4 @@
-import { HStack, Box, Wrap, Text, IconButton } from '@chakra-ui/react';
+import { HStack, Box, Wrap, Heading, IconButton, Button, CircularProgress, CircularProgressLabel, Spacer } from '@chakra-ui/react';
 import React from 'react';
 import { DeleteIcon, AddIcon } from '@chakra-ui/icons';
 import { useEffect } from 'react';
@@ -11,37 +11,47 @@ export default function ProductRow({ product, productsData, childToParent, edita
 
     }
 
-
-
     return (
         <div>
-                <Box w="full"
-                    minW="15em"
-                    bg="gray.400"
-                    p={3}
-                    mb={6}
-                    align="center"
-                    rounded="md"
-                    boxShadow="md"
-                    overflow="hidden"
-                    _hover={{ boxShadow: '2xl' }}>
-                    <HStack>
-                        <Text> {product.productName} </Text>
-                        if (editable) {
-                            <IconButton
-                                icon={<DeleteIcon />}
-                                onClick={() => { removeProduct(product) }}
-                                colorScheme='teal'
-                                variant='outline'
-                                size="md"
-                                color="white"
-                                bg="red.700"
-                                w={10}
-                            />}
-                    </HStack>
+            <Box w="full"
+                minW="15em"
+                bg="gray.600"
+                p={3}
+                mb={6}
+                align="center"
+                rounded="md"
+                boxShadow="md"
+                overflow="hidden"
+                _hover={{ boxShadow: '2xl' }}>
+                <HStack spacing={3}>
 
-                </Box>
-            
+                    <Heading as='h4' size='md'> {product.productName} </Heading>
+                    <Spacer/>
+                    <Button bg={"gray.500"}> Economical Evaluation </Button>
+                    <CircularProgress value={40} color='green.400'>
+                        <CircularProgressLabel>40%</CircularProgressLabel>
+                    </CircularProgress>
+                    <Spacer/>
+                    <Button bg={"gray.500"}> Complexity Evaluation </Button>
+                    <CircularProgress value={40} color='green.400'>
+                        <CircularProgressLabel>40%</CircularProgressLabel>
+                    </CircularProgress>
+                    <Spacer/>
+                    if (editable) {
+                        <IconButton
+                            icon={<DeleteIcon />}
+                            onClick={() => { removeProduct(product) }}
+                            colorScheme='teal'
+                            variant='outline'
+                            size="md"
+                            color="white"
+                            bg="red.700"
+                            w={10}
+                        />}
+                </HStack>
+
+            </Box>
+
         </div >
     )
 }

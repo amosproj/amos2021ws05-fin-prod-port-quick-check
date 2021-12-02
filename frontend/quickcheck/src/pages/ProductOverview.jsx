@@ -111,7 +111,7 @@ export default function ProductOverview() {
           <Input ref={refInputProd} placeholder='Product' />
           <IconButton
             icon={<AddIcon />}
-            colorScheme='teal'
+            colorScheme='white'
             bg="gray.700"
             variant='outline'
             size="md"
@@ -148,7 +148,7 @@ export default function ProductOverview() {
           <VStack>
 
             {productsData.map((product) => <ProductRow product={product} key={uuid4()} productsData={productsData} childToParent={childToParent} editable={editable}></ProductRow>)}
-
+          <Button bg={"gray.500"}>Generate Results</Button>
           </VStack>
         </Card>
 
