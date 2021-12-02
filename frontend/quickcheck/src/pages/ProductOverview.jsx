@@ -1,13 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import Page from '../components/Page'
 import {
-  Text,
-  Box,
+  //Text,
+  //Box,
   Button,
-  List,
-  Heading,
+  //List,
+  //Heading,
   HStack,
-  Spacer, IconButton,
+  //Spacer, 
+  IconButton,
   VStack, Input
 } from "@chakra-ui/react";
 import { AddIcon } from '@chakra-ui/icons';
@@ -18,9 +19,9 @@ import uuid4 from "uuid";
 // import { useToast } from '@chakra-ui/react';
 
 // import { api } from '../utils/apiClient';
-import { Link } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
 
-const prod1mock = {
+/*const prod1mock = {
   newProject: {
     creatorID: 0,
     projectName: 'Karl-Heinz Günther',
@@ -28,7 +29,7 @@ const prod1mock = {
     productAreas: [],
   },
   area: 'Loan',
-};
+};*/
 
 const products = [
   {
@@ -45,28 +46,6 @@ const products = [
 
   }]
 
-
-function ProjectCard(props) {
-
-  return (
-    <Card>
-      <HStack p={2} spacing={5} >
-        <Heading size="lg" color="white" align="center" py={{ base: 4, md: 0 }} w="50%">
-          {props.product.productName}
-        </Heading>
-
-        <Text fontWeight="bolder" fontSize="md">
-          <p>Product Area {props.product.productAreaID} </p>
-        </Text>
-
-        <Button bg="teal.500" align="center" _hover={{ bg: 'teal.400' }} w={24}>
-          Edit
-        </Button>
-      </HStack>
-    </Card>
-  );
-}
-
 /* function TextF(props) {
   return (
     <p>{props.product}</p>
@@ -79,7 +58,7 @@ export default function ProductOverview() {
 
   const [productsData, setProductsData] = useState(products);
   const [editable, setEditable] = useState(false);
-  const [input, setInput] = useState("");
+  //const [input, setInput] = useState("");
   const refInputProd = useRef()
 
   const handleClickAddButton = () => {
@@ -145,7 +124,7 @@ export default function ProductOverview() {
       <Page title="Product Overview">
 
         <Card barColor="cyan">
-          <VStack>
+          <VStack spacing={2}>
 
             {productsData.map((product) => <ProductRow product={product} key={uuid4()} productsData={productsData} childToParent={childToParent} editable={editable}></ProductRow>)}
           <Button bg={"gray.500"}>Generate Results</Button>

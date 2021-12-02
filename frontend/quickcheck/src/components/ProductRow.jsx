@@ -1,7 +1,7 @@
-import { HStack, Box, Wrap, Heading, IconButton, Button, CircularProgress, CircularProgressLabel, Spacer } from '@chakra-ui/react';
+import { HStack, Box, Input, Heading, IconButton, Button, CircularProgress, CircularProgressLabel, Spacer } from '@chakra-ui/react';
 import React from 'react';
-import { DeleteIcon, AddIcon } from '@chakra-ui/icons';
-import { useEffect } from 'react';
+import { DeleteIcon } from '@chakra-ui/icons';
+// import { useEffect } from 'react';
 
 export default function ProductRow({ product, productsData, childToParent, editable }) {
 
@@ -23,7 +23,7 @@ export default function ProductRow({ product, productsData, childToParent, edita
                 boxShadow="md"
                 overflow="hidden"
                 _hover={{ boxShadow: '2xl' }}>
-                <HStack spacing={3}>
+                <HStack spacing={5}>
 
                     <Heading as='h4' size='md'> {product.productName} </Heading>
                     <Spacer/>
@@ -37,6 +37,7 @@ export default function ProductRow({ product, productsData, childToParent, edita
                         <CircularProgressLabel>40%</CircularProgressLabel>
                     </CircularProgress>
                     <Spacer/>
+                    <Input width={125} placeholder='Anmerkung' />
                     if (editable) {
                         <IconButton
                             icon={<DeleteIcon />}
