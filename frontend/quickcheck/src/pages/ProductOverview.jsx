@@ -35,12 +35,14 @@ const products = [
     productName: "Product1",
     productID: 1,
     projectID: 1,
-    productAreaID: 2
+    productAreaID: 2,
+
   }, {
     productName: "Product2",
     productID: 2,
     projectID: 1,
-    productAreaID: 2
+    productAreaID: 2,
+
   }]
 
 
@@ -72,16 +74,50 @@ function ProjectCard(props) {
   )
 }*/
 
+
 export default function ProductOverview() {
 
   const [productsData, setProductsData] = useState(products);
   const [editable, setEditable] = useState(false);
   const [input, setInput] = useState("");
   const refInputProd = useRef()
+
+  const handleClickAddButton = () => {
+    const newProduct = {
+      productName: refInputProd.current.value,
+      productID: uuid4(),
+      projectID: 1,
+      productAreaID: 2
+    }
+
+    setProductsData([...productsData, newProduct]);
+    refInputProd.current.value = null
+  }
+
+  /*const handleRemoveProduct = () => {
+    const newProductsData = productsData.filter((p) => p.productName !== refInputProd.current.value);
+    setProductsData(newProductsData);
+  };*/
+
+  const childToParent = (childdata) => {
+    setProductsData(childdata);
+  }
+
+
   const EditButtons = () => {
     if (editable) {
       return (
         <HStack>
+          <Input ref={refInputProd} placeholder='Product' />
+          <IconButton
+            icon={<AddIcon />}
+            colorScheme='teal'
+            bg="gray.700"
+            variant='outline'
+            size="md"
+            w={10}
+            onClick={handleClickAddButton}>
+          </IconButton>
           <Button size="md" onClick={() => setEditable(false)}>
             Cancel
           </Button>
@@ -93,14 +129,6 @@ export default function ProductOverview() {
     } else {
       return (
         <div>
-          <IconButton
-            icon={<AddIcon />}
-            colorScheme='teal'
-            variant='outline'
-            size="md"
-            w={10}
-            onClick={handleClickAddButton}>
-          </IconButton>
           <Button size="md" onClick={() => setEditable(true)}>
             Edit
           </Button>
@@ -109,40 +137,21 @@ export default function ProductOverview() {
     }
 
   }
- 
-  const handleClickAddButton = () => {
-    const newProduct = {
-      productName: refInputProd.current.value,
-      productID: uuid4(),
-      projectID: 1,
-      productAreaID: 2
-    }
-    
-    setProductsData([...productsData, newProduct]);
-    refInputProd.current.value = null
-  }
 
-  /* function handleProductChange(e){
-    const productName = refInputProd.current.value
-    newProduct = {
-      productName: productName,
-      productID: 3,
-      projectID: 1,
-      productAreaID: 2
-    }
-    refInputProd.current.value = null
-  }*/
-  
+
+
   return (
     <div>
       <Page title="Product Overview">
 
         <Card barColor="cyan">
           <VStack>
-            {productsData.map((product) => <ProductRow product={product}></ProductRow>)}
+
+            {productsData.map((product) => <ProductRow product={product} key={uuid4()} productsData={productsData} childToParent={childToParent} editable={editable}></ProductRow>)}
+
           </VStack>
         </Card>
-        <Input onInput = {handleClickAddButton} ref={refInputProd} placeholder='Product' />
+
         <EditButtons />
       </Page>
     </div>
