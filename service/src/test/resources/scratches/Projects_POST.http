@@ -1,0 +1,13 @@
+POST localhost:8080/projects
+Content-Type: application/json
+
+{
+  "projectName": "Bank 2"
+}
+
+<> 2021-11-26T133700.400.json
+<> 2021-11-26T101132.400.json
+<> 2021-11-26T100426.400.json
+<> 2021-11-26T095055.500.json
+<> 2021-11-26T095016.201.json
+<> 2021-11-26T094933.201.json

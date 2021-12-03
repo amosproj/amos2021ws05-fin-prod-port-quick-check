@@ -1,0 +1,10 @@
+POST localhost:8080/projects
+Content-Type: application/json
+
+{
+  "id": 0,
+  "creatorID": 111,
+  "projectName": "DKB",
+  "members": [ 99 ],
+  "productAreas": [ 1, 2 ,3]
+}

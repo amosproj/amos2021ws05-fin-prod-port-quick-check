@@ -90,7 +90,7 @@ paths:
           $ref: '#/components/responses/5XXserverError'
 
     
-  /projects/{projectID}/productArea/{productAreaID}/products:
+  /projects/{projectID}/productareas/{productAreaID}/products:
     get:
       summary: retrieves all products of given project and project area
       parameters:
@@ -123,7 +123,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/product'
+              $ref: '#/components/schemas/createProduct'
       responses:
         201:
           description: JSON containing product data
@@ -137,8 +137,6 @@ paths:
           $ref: '#/components/responses/403forbidden'
         '5XX':
           $ref: '#/components/responses/5XXserverError'
-
-  
 
 
 components:
@@ -166,6 +164,29 @@ components:
         type: integer
 
   schemas:
+    createProduct:
+      type: object
+      required:
+        - productName
+      properties:
+        productID:
+          type: integer
+          example: 111
+        productName:
+          type: string
+          example: "Optionen"
+        productVariations:
+          type: array
+          items:
+            $ref: '#/components/schemas/productVariation'
+    productVariation:
+      type: object
+      required:
+        - productName
+      properties:
+        productName:
+          type: string
+          example: "Optionen"
     product:
       type: object
       properties:
@@ -175,13 +196,13 @@ components:
         productName:
           type: string
           example: "Optionen"
-        projectID:
-          type: integer
-          example: 5
         productAreaID:
           type: integer
+          example: 2
+        projectID:
+          type: integer
           example: 1
-    
+
 
   responses:
     5XXserverError:

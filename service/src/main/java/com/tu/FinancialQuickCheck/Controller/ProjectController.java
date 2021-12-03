@@ -1,5 +1,6 @@
 package com.tu.FinancialQuickCheck.Controller;
 
+import com.tu.FinancialQuickCheck.Exceptions.BadRequest;
 import com.tu.FinancialQuickCheck.Service.ProductService;
 import com.tu.FinancialQuickCheck.Service.ProjectService;
 import com.tu.FinancialQuickCheck.dto.ProductDto;
@@ -17,43 +18,53 @@ import java.util.List;
 @RequestMapping("projects")
 public class ProjectController {
 
+//    @Autowired
+    private ProjectService service;
     @Autowired
-    private ProjectService projectService;
     private ProductService productService;
 
+    public ProjectController(ProjectService projectService){
+        this.service = projectService;
+    }
 
-
+    // TODO: should we return a Reource not found if no projects exist?
     @GetMapping(produces = "application/json")
     public List<SmallProjectDto> findALL() {
-        return projectService.getAllProjects();
+        return service.getAllProjects();
     }
 
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public ProjectDto createByName(@RequestBody ProjectDto projectDto) {
-        return projectService.createProject(projectDto);
+        ProjectDto tmp = service.createProject(projectDto);
+
+        if (tmp == null) {
+            throw new BadRequest("Project cannot be created due to missing information.");
+        }else {
+            return tmp;
+        }
     }
 
     @GetMapping("/{projectID}")
     public ProjectDto findById(@PathVariable int projectID) {
-        return projectService.findById(projectID);
+        return service.getProjectById(projectID);
     }
 
     // TODO: Should we return the updated ProjectedDTO?
-    @PutMapping(value = "/{projectID}", consumes = "application/json")
-    public void updateById(@RequestBody ProjectDto projectDto, @PathVariable Integer projectID) {
+    @PutMapping("/{projectID}")
+    public void updateById(@RequestBody ProjectDto projectDto, @PathVariable int projectID) {
 
-        projectService.updateById(projectDto, projectID);
+        service.updateProject(projectDto, projectID);
     }
 
-
-    @DeleteMapping("/{projectID}")
-    void deleteByID(@PathVariable int projectID) {
-
-        projectService.deleteProject(projectID);
-
-    }
+// TODO: auskommentiert lassen bisher keine Anforderung für diese Funktionalität
+//    @DeleteMapping("/{projectID}")
+//    void deleteByID(@PathVariable int projectID) {
+//
+//        projectService.deleteProject(projectID);
+//
+//    }
 
 
     @GetMapping("/{projectID}/products")
@@ -62,17 +73,23 @@ public class ProjectController {
     }
 
 
-    @GetMapping("{projectID}/productArea/{projectAreaID}/products")
+    @GetMapping("{projectID}/productareas/{projectAreaID}/products")
     public List<ProductDto> findProductsByProductAndProjectArea(@PathVariable int projectID,
                                                                 @PathVariable int projectAreaID) {
         return productService.getProductsByProjectIdAndProductAreaId(projectID, projectAreaID);
     }
 
-    @PostMapping(value = "/{projectID}/productArea/{productAreaID}/products",
+
+    @PostMapping(value = "/{projectID}/productareas/{productAreaID}/products",
             consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public ProductDto createProduct(@PathVariable int projectID, @PathVariable int productAreaID, @RequestBody ProductDto productDto) {
-        return productService.createProduct(projectID, productAreaID,productDto);
+        ProductDto tmp = productService.createProduct(projectID, productAreaID, productDto);
+        if(tmp == null){
+            throw new BadRequest("Incorrect Input.");
+        }else{
+            return tmp;
+        }
     }
 
 }

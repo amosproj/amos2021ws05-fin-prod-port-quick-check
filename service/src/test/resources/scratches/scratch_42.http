@@ -1,0 +1,14 @@
+POST localhost:8080/projects/5/productareas/2/products
+Content-Type: application/json
+
+{
+  "productName": "Bank 11",
+  "productVariations": [
+    {
+      "productName": "Bank 11.1"
+    },
+    {
+      "productName": "Bank 11.2"
+    }
+  ]
+}
