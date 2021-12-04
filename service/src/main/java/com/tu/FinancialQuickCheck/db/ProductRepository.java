@@ -9,9 +9,9 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Integer>
 
 
     Boolean existsByProjectAndProductarea(ProjectEntity project, ProductAreaEntity productArea);
-////
-//    Iterable<ProductEntity> findByProjectid(ProjectEntity projectID);
-////
-//    Iterable<ProductEntity> findByProjectidAndProductareaid(ProjectEntity projectID, int productAreaId);
+
+    Iterable<ProductEntity> findByProject(ProjectEntity project);
+
+    Iterable<ProductEntity> findByProjectAndProductarea(ProjectEntity project, ProductAreaEntity productArea);
 
 }

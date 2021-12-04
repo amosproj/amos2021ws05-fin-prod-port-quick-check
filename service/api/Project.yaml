@@ -19,6 +19,8 @@ paths:
                     '$ref': '#/components/schemas/smallProject'
         401:
           $ref: '#/components/responses/401unauthorized'
+        404:
+          $ref: '#/components/responses/404notfound'
         '5XX':
           $ref: '#/components/responses/5XXserverError'
     post:
