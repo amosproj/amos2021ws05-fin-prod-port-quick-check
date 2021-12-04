@@ -70,18 +70,18 @@ public class UserServiceTest {
         userID2 = UUID.fromString("4710db7c-e875-4e63-9e03-7f6ad85cc428");
 
         dto1 = new UserDto();
-        dto1.username = username1;
-        dto1.email = email1;
+        dto1.userName = username1;
+        dto1.userEmail = email1;
         dto1.password = pw1;
 
         dto2 = new UserDto();
-        dto2.username = username2;
-        dto2.email = email2;
+        dto2.userName = username2;
+        dto2.userEmail = email2;
         dto2.password = pw2;
 
         dto3 = new UserDto();
-        dto3.username = username1;
-        dto3.email = keineEmail;
+        dto3.userName = username1;
+        dto3.userEmail = keineEmail;
         dto3.password = pw1;
 
         emptyDto = new UserDto();
@@ -134,9 +134,9 @@ public class UserServiceTest {
 
         out.forEach(
                 user -> assertAll("get Users",
-                        () -> assertNotNull(user.username),
-                        () -> assertNotNull(user.email),
-                        () -> assertNotNull(user.id),
+                        () -> assertNotNull(user.userName),
+                        () -> assertNotNull(user.userEmail),
+                        () -> assertNotNull(user.userID),
                         () -> assertNull(user.password)
                 )
         );
@@ -189,9 +189,9 @@ public class UserServiceTest {
         UserDto out = service.findByEmail(email1);
 
         assertAll("get User",
-                () -> assertEquals(dto1.username, out.username),
-                () -> assertEquals(dto1.email, out.email),
-                () -> assertNotNull(out.id),
+                () -> assertEquals(dto1.userName, out.userName),
+                () -> assertEquals(dto1.userEmail, out.userEmail),
+                () -> assertNotNull(out.userID),
                 () -> assertNull(out.password),
                 () -> assertNull(out.role));
 
@@ -227,19 +227,19 @@ public class UserServiceTest {
     public void testCreateUser1_succesfulCreation() {
         for(int i = 1; i <= 11; i++){
             // Step 1: init test object
-            dto1.id = UUID.randomUUID();
+            dto1.userID = UUID.randomUUID();
 
             // Step 2: execute createUser
-            log.info("@Test createUser() - test object : " + dto1.username);
+            log.info("@Test createUser() - test object : " + dto1.userName);
             UserDto out = service.createUser(dto1);
-            log.info("@Test createUser() - return object id : " + out.id.toString());
+            log.info("@Test createUser() - return object id : " + out.userID.toString());
 
             // Step 3: assert result
             assertAll("create User",
-                    () -> assertEquals(dto1.username, out.username),
-                    () -> assertEquals(dto1.email, out.email),
+                    () -> assertEquals(dto1.userName, out.userName),
+                    () -> assertEquals(dto1.userEmail, out.userEmail),
                     () -> assertNotEquals(dto1.password, out.password),
-                    () -> assertNotEquals(dto1.id, out.id)
+                    () -> assertNotEquals(dto1.userID, out.userID)
             );
         }
     }
@@ -248,8 +248,8 @@ public class UserServiceTest {
     public void testCreateUser2a_missingOneAttribute() {
         // Step 1: init test object
         dto1.password = null;
-        dto2.username = null;
-        dto3.email = null;
+        dto2.userName = null;
+        dto3.userEmail = null;
 
 
         // Step 2 and 3: execute createUser and assert result
@@ -264,12 +264,12 @@ public class UserServiceTest {
     public void testCreateUser2b_missingTwoAttributes() {
         // Step 1: init test object
         dto1.password = null;
-        dto1.username = null;
+        dto1.userName = null;
 
-        dto2.email = null;
-        dto2.username = null;
+        dto2.userEmail = null;
+        dto2.userName = null;
 
-        dto3.email = null;
+        dto3.userEmail = null;
         dto3.password = null;
 
         // Step 2 and 3: execute createUser and assert result
@@ -357,15 +357,15 @@ public class UserServiceTest {
 
         assertAll("update User",
                 () -> assertNull(out.password),
-                () -> assertEquals(dto2.username, out.username),
-                () -> assertEquals(dto2.email, out.email)
+                () -> assertEquals(dto2.userName, out.userName),
+                () -> assertEquals(dto2.userEmail, out.userEmail)
         );
     }
 
     @Test
     public void testUpdateUser5a_partialUpdate_email() {
         // Step 1: init test object
-        dto2.username = null;
+        dto2.userName = null;
         dto2.password = null;
 
         // Step 2: provide knowledge
@@ -376,15 +376,15 @@ public class UserServiceTest {
 
         assertAll("update User",
                 () -> assertNull(out.password),
-                () -> assertEquals(entity1.username, out.username),
-                () -> assertEquals(dto2.email, out.email)
+                () -> assertEquals(entity1.username, out.userName),
+                () -> assertEquals(dto2.userEmail, out.userEmail)
         );
     }
 
     @Test
     public void testUpdateUser5b_partialUpdate_username() {
         // Step 1: init test object
-        dto2.email = null;
+        dto2.userEmail = null;
         dto2.password = null;
 
         // Step 2: provide knowledge
@@ -395,16 +395,16 @@ public class UserServiceTest {
 
         assertAll("update User",
                 () -> assertNull(out.password),
-                () -> assertEquals(dto2.username, out.username),
-                () -> assertEquals(entity1.email, out.email)
+                () -> assertEquals(dto2.userName, out.userName),
+                () -> assertEquals(entity1.email, out.userEmail)
         );
     }
 
     @Test
     public void testUpdateUser5c_partialUpdate_password() {
         // Step 1: init test object
-        dto2.email = null;
-        dto2.username = null;
+        dto2.userEmail = null;
+        dto2.userName = null;
 
         // Step 2: provide knowledge
         when(repository.findById(userID1.toString())).thenReturn(Optional.of(entity1));
@@ -414,8 +414,8 @@ public class UserServiceTest {
 
         assertAll("update User",
                 () -> assertNull(out.password),
-                () -> assertEquals(entity1.username, out.username),
-                () -> assertEquals(entity1.email, out.email)
+                () -> assertEquals(entity1.username, out.userName),
+                () -> assertEquals(entity1.email, out.userEmail)
         );
     }
 
@@ -432,15 +432,15 @@ public class UserServiceTest {
 
         assertAll("update User",
                 () -> assertNull(out.password),
-                () -> assertEquals(dto2.username, out.username),
-                () -> assertEquals(dto2.email, out.email)
+                () -> assertEquals(dto2.userName, out.userName),
+                () -> assertEquals(dto2.userEmail, out.userEmail)
         );
     }
 
     @Test
     public void testUpdateUser5e_partialUpdate_usernameAndPassword() {
         // Step 1: init test object
-        dto2.email = null;
+        dto2.userEmail = null;
 
         // Step 2: provide knowledge
         when(repository.findById(userID1.toString())).thenReturn(Optional.of(entity1));
@@ -450,15 +450,15 @@ public class UserServiceTest {
 
         assertAll("update User",
                 () -> assertNull(out.password),
-                () -> assertEquals(dto2.username, out.username),
-                () -> assertEquals(entity1.email, out.email)
+                () -> assertEquals(dto2.userName, out.userName),
+                () -> assertEquals(entity1.email, out.userEmail)
         );
     }
 
     @Test
     public void testUpdateUser5f_partialUpdate_emailAndPassword() {
         // Step 1: init test object
-        dto2.username = null;
+        dto2.userName = null;
 
         // Step 2: provide knowledge
         when(repository.findById(userID1.toString())).thenReturn(Optional.of(entity1));
@@ -468,8 +468,8 @@ public class UserServiceTest {
 
         assertAll("update User",
                 () -> assertNull(out.password),
-                () -> assertEquals(entity1.username, out.username),
-                () -> assertEquals(dto2.email, out.email)
+                () -> assertEquals(entity1.username, out.userName),
+                () -> assertEquals(dto2.userEmail, out.userEmail)
         );
     }
 

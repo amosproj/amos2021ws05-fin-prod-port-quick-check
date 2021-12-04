@@ -77,12 +77,12 @@ public class UserService {
      */
     public UserDto createUser(UserDto userDto) {
 
-        if(userDto.username != null && userDto.email != null && userDto.password != null
-                && validateEmail(userDto.email)){
+        if(userDto.userName != null && userDto.userEmail != null && userDto.password != null
+                && validateEmail(userDto.userEmail)){
             UserEntity newUser = new UserEntity();
             newUser.id = UUID.randomUUID().toString();
-            newUser.username = userDto.username;
-            newUser.email = userDto.email;
+            newUser.username = userDto.userName;
+            newUser.email = userDto.userEmail;
             newUser.password = userDto.password;
             repository.save(newUser);
             return new UserDto(UUID.fromString(newUser.id), newUser.email, newUser.username);
@@ -104,22 +104,22 @@ public class UserService {
 
         if (entity.isEmpty()) {
             throw new ResourceNotFound("userID " + userID + " not found");
-        } else if ((userDto.email == null && userDto.username == null
-                && userDto.password == null) || (userDto.email != null && !validateEmail(userDto.email))){
+        } else if ((userDto.userEmail == null && userDto.userName == null
+                && userDto.password == null) || (userDto.userEmail != null && !validateEmail(userDto.userEmail))){
             return null;
         } else {
             entity.map(
                     user -> {
-                        if (userDto.email != null) {
-                            user.email = userDto.email;
+                        if (userDto.userEmail != null) {
+                            user.email = userDto.userEmail;
                         }
 
                         if (userDto.password != null) {
                             user.password = userDto.password;
                         }
 
-                        if (userDto.username != null) {
-                            user.username = userDto.username;
+                        if (userDto.userName != null) {
+                            user.username = userDto.userName;
                         }
 
                         return repository.save(user);

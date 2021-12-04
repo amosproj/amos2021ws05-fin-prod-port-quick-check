@@ -6,40 +6,37 @@ import java.util.UUID;
 
 public class UserDto {
 
-    public UUID id;
-
-    public String username;
-
-    public String email;
-
+    public String userEmail;
+    public String userName;
+    public UUID userID;
+    public Role role;
     public String password;
 
-    public Role role;
 
     public UserDto(){}
 
     public UserDto(String email)
     {
-        this.email = email;
+        this.userEmail = email;
     }
 
     public UserDto(String email, Role role)
     {
-        this.email= email;
+        this.userEmail = email;
         this.role = role;
     }
 
     public UserDto(UUID userID, String email, String username)
     {
-        this.id = userID;
-        this.email = email;
-        this.username = username;
+        this.userID = userID;
+        this.userEmail = email;
+        this.userName = username;
     }
 
     public UserDto(UUID userID, String email, Role role)
     {
-        this.id = userID;
-        this.email=email;
+        this.userID = userID;
+        this.userEmail =email;
         this.role = role;
     }
 
