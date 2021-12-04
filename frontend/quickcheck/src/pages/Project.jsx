@@ -85,7 +85,6 @@ export default function Project() {
         <ProductAreaList editMode={editMode} />
       </Card>
       <EditButtons />
-      <p>{JSON.stringify(project)}</p>
     </Page>
   );
 }
