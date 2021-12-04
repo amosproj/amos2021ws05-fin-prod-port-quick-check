@@ -32,11 +32,10 @@ import { useStoreActions, useStoreState } from 'easy-peasy';
 
 function AddButton({ onAdd }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const productAreas = useStoreState((state) => state.project.productAreas);
   const allAreas = fetchAllAreas();
 
   const [selectedArea, setSelectedArea] = useState();
-
-  const header = 'Add Product Area';
 
   const getAreaFromName = (areaName) => {
     return allAreas.filter((m) => m.name === areaName)[0];
@@ -59,7 +58,7 @@ function AddButton({ onAdd }) {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader color="teal.300">{header}</ModalHeader>
+          <ModalHeader color="teal.300">Add Product Area</ModalHeader>
           <ModalCloseButton />
 
           <ModalBody px={10}>
@@ -167,6 +166,7 @@ const areaMock = {
 };
 
 const fetchAllAreas = () => {
+  // api mock
   return Object.values(areaMock);
 };
 

@@ -2,12 +2,12 @@ import React from 'react';
 import {
   Button,
   HStack,
+  Box,
   Text,
   useDisclosure,
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalFooter,
   ModalCloseButton,
   FormControl,
   FormLabel,
@@ -29,14 +29,14 @@ import { roles } from '../utils/const';
 import { Selection } from './Inputs.jsx';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 
-function AddButton(props) {
+function AddButton({ onAddMember }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [email, setEmail] = useState('');
   const [role, setRole] = useState(roles.consultant);
   const header = 'Add new Member';
   return (
     <>
-      <IconButton icon={<AddIcon />} colorScheme="green" size="lg" {...props} onClick={onOpen} />
+      <IconButton icon={<AddIcon />} colorScheme="green" size="lg" onClick={onOpen} />
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -53,21 +53,21 @@ function AddButton(props) {
               selected={roles.consultant}
               onChange={(e) => setRole(e.target.value)}
             />
-          </ModalBody>
 
-          <ModalFooter py={5} px={10}>
-            <Button
-              colorScheme="blue"
-              mr={3}
-              onClick={(e) => {
-                props.onAddMember({ email: email, role: role });
-                onClose();
-              }}
-            >
-              Save
-            </Button>
-            <Button onClick={onClose}>Cancel</Button>
-          </ModalFooter>
+            <Box align="right" pt={8} pb={2}>
+              <Button
+                colorScheme="blue"
+                mr={3}
+                onClick={(e) => {
+                  onAddMember({ email: email, role: role });
+                  onClose();
+                }}
+              >
+                Save
+              </Button>
+              <Button onClick={onClose}>Cancel</Button>
+            </Box>
+          </ModalBody>
         </ModalContent>
       </Modal>
     </>
@@ -160,11 +160,11 @@ export default function MemberTable({ editMode }) {
     updateMembers(newMembers);
   };
 
-  const handleAddMember = (newMember) => {
+  const addMember = (newMember) => {
     updateMembers([...members, newMember]);
   };
 
-  const handleRoleChange = (member) => (newRole) => {
+  const changeMemberRole = (member) => (newRole) => {
     // This is a curried function in JS
     let index = members.map((m) => m.email).indexOf(member.email);
     members[index] = { ...member, role: newRole };
@@ -175,14 +175,14 @@ export default function MemberTable({ editMode }) {
     <List spacing={2} direction="column" minW="80%" align="center" pb={5}>
       <MemberHead
         editMode={editMode}
-        addButton={<AddButton w={16} onAddMember={handleAddMember}></AddButton>}
+        addButton={<AddButton w={16} onAddMember={addMember}></AddButton>}
       />
       {members.map((member) => (
         <MemberRow
           key={member.email}
           member={member}
           editMode={editMode}
-          onChangeRole={handleRoleChange(member)}
+          onChangeRole={changeMemberRole(member)}
           removeButton={<RemoveButton onRemove={handleRemoveMember(member)} />}
         ></MemberRow>
       ))}

@@ -28,30 +28,12 @@ function CardHeader({ text }) {
   );
 }
 
-export default function Project(prop) {
+export default function Project() {
   const project = useStoreState((state) => state.project);
   const updateProject = useStoreActions((actions) => actions.updateProject);
   const fetchProject = useStoreActions((actions) => actions.fetchProject);
 
-  const [name, setName] = useState(project.projectName);
-
   const [editMode, setEditMode] = useState(true);
-  const [projectData, setprojectData] = useState({
-    projectID: 0,
-    projectName: '',
-    members: [],
-    productAreas: [],
-  });
-
-  const handleChange = (key) => (value) => {
-    updateProject({
-      ...project,
-      [key]: value,
-    });
-  };
-
-  const setMembers = handleChange('members');
-  const setProductAreas = handleChange('productAreas');
 
   const { id } = useParams();
   useEffect(() => {
@@ -100,11 +82,7 @@ export default function Project(prop) {
 
       <Card direction="column">
         <CardHeader text="PRODUCT AREAS" />
-        <ProductAreaList
-          areaIDs={project.productAreas}
-          handleChange={setProductAreas}
-          editMode={editMode}
-        />
+        <ProductAreaList editMode={editMode} />
       </Card>
       <EditButtons />
       <p>{JSON.stringify(project)}</p>
