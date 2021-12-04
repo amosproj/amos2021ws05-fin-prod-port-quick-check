@@ -1,13 +1,16 @@
 import React from 'react';
-import { Box, Wrap } from '@chakra-ui/react';
+import { Box, Wrap, useColorModeValue } from '@chakra-ui/react';
 
 export default function Card(props) {
+
+  const  bgColor  = useColorModeValue('bg.300', 'gray.700')
+
   return (
     <Box
       w={props.w || 'full'}
       minW="12em"
       maxW={props.maxW}
-      bg={props.bg || 'gray.700'}
+      bg={props.bg || bgColor}
       p={3}
       mb={6}
       align="center"
