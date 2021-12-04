@@ -35,7 +35,7 @@ function ProjectCard({ project }) {
       </VStack>
       <Spacer />
       <Link to={'' + project.projectID}>
-        <Button bg="teal.500" align="center" _hover={{ bg: 'teal.400' }} w={24}>
+        <Button colorScheme="teal" align="center" w={24}>
           open
         </Button>
       </Link>

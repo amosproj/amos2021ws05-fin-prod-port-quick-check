@@ -82,7 +82,7 @@ function RemoveButton({ onRemove }) {
           icon={<DeleteIcon />}
           onClick={onOpen}
           size="md"
-          color="red.900"
+          colorScheme="red"
           bg="red.400"
           w={16}
         />
