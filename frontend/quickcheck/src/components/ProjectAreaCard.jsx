@@ -66,8 +66,7 @@ function AddButton({ onAdd }) {
               placeholder="Select Poduct Area..."
               options={allAreas
                 .filter((area) => !productAreas.includes(area.id)) // filter out areas that already exist
-                .map((e) => e.name)
-              }
+                .map((e) => e.name)}
               onChange={(e) => setSelectedArea(e.target.value)}
             />
           </ModalBody>

@@ -1,6 +1,6 @@
 import { Select, Input, Text, Box } from '@chakra-ui/react';
 
-export function Selection({options, selected, ...rest}) {
+export function Selection({ options, selected, ...rest }) {
   // required args: options, selected (option), onChange :updateFunction
   return (
     <Select {...rest} value={selected}>
@@ -14,7 +14,7 @@ export function Selection({options, selected, ...rest}) {
 }
 
 // pass value and onchange just like with a regular input
-export function ConditionalInput({editable, value, onChange, fontStyle, ...rest }) {
+export function ConditionalInput({ editable, value, onChange, fontStyle, ...rest }) {
   return (
     <Box align="center" {...rest} rounded="md">
       {editable ? (

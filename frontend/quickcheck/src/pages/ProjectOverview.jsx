@@ -70,11 +70,11 @@ export default function ProjectOverview() {
   // runs when rendering
   useEffect(() => {
     getProjects();
-  },[]);
+  }, []);
 
   // FOR DEV ONLY: create new mock project when pressing 'add new' button
   const createProject = () => {
-    projectsData.push(mocks.newProject)
+    projectsData.push(mocks.newProject);
     api
       .url('/projects')
       .post(mocks.newProject)
