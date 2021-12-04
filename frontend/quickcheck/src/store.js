@@ -19,7 +19,7 @@ export const store = createStore({
 
   fetchProject: thunk(async (actions, payload) => {
     await api
-      .url('/projects/' + payload.id)
+      .url('/projects/' + payload.projectID)
       .get()
       .json((json) => actions.updateProject(json))
       .catch(console.error);

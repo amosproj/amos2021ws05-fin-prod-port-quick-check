@@ -28,6 +28,7 @@ import {
 } from '@chakra-ui/react';
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
 import { Selection } from './Inputs.jsx';
+import { useStoreActions, useStoreState } from 'easy-peasy';
 
 function AddButton({ onAdd }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -65,12 +66,13 @@ function AddButton({ onAdd }) {
             <Selection
               placeholder="Select Poduct Area..."
               options={allAreas.map((e) => e.name)}
-              onChange={setSelectedArea}
+              onChange={(e) => setSelectedArea(e.target.value)}
             />
           </ModalBody>
 
           <ModalFooter>
             <Button
+              disabled={selectedArea === undefined}
               colorScheme="blue"
               mr={3}
               onClick={(e) => {
@@ -137,7 +139,7 @@ function ProductArea({ productArea, removeButton }) {
             p={3}
             align="center"
             _hover={{ boxShadow: 'md', bg: 'blue.600' }}
-            onClick={<Link to="/projects" />}
+            onClick={() => <Link to="/projects" />}
           >
             <Spacer />
             <LinkOverlay href="/projects"></LinkOverlay>
@@ -168,25 +170,30 @@ const fetchAllAreas = () => {
   return Object.values(areaMock);
 };
 
-export default function ProductAreaList({ editMode, areaIDs, handleChange }) {
+export default function ProductAreaList({ editMode }) {
+  const productAreas = useStoreState((state) => state.project.productAreas);
+  const updateProject = useStoreActions((actions) => actions.updateProject);
+  const updateAreaIDs = (areaIDs) => updateProject({ productAreas: areaIDs });
+
   const fetchArea = (areaID) => {
     return areaMock[areaID];
   };
 
   const handleAddArea = (newID) => {
-    handleChange([...areaIDs, newID]);
+    updateAreaIDs([...productAreas, newID]);
   };
 
   const handleRemoveArea = (removeID) => () => {
-    const updatedAreaIDs = areaIDs.filter((m) => m !== removeID);
-    handleChange(updatedAreaIDs);
+    const updatedAreaIDs = productAreas.filter((m) => m !== removeID);
+    updateAreaIDs(updatedAreaIDs);
   };
 
   return (
     <>
       <List spacing={3} w="50%">
-        {areaIDs.map((id) => (
+        {productAreas.map((id) => (
           <ProductArea
+            key={id}
             productArea={fetchArea(id)}
             removeButton={editMode ? <RemoveButton onRemove={handleRemoveArea(id)} /> : <div />}
           />

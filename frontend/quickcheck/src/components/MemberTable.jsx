@@ -27,11 +27,12 @@ import { DeleteIcon, AddIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
 import { roles } from '../utils/const';
 import { Selection } from './Inputs.jsx';
+import { useStoreActions, useStoreState } from 'easy-peasy';
 
 function AddButton(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [email, setEmail] = useState('');
-  const [role, setRole] = useState('Client');
+  const [role, setRole] = useState(roles.consultant);
   const header = 'Add new Member';
   return (
     <>
@@ -50,7 +51,7 @@ function AddButton(props) {
             <Selection
               options={Object.values(roles)}
               selected={roles.consultant}
-              onChange={setRole}
+              onChange={(e) => setRole(e.target.value)}
             />
           </ModalBody>
 
@@ -133,7 +134,7 @@ function MemberRow({ editMode, member, onChangeRole, removeButton }) {
         <Selection
           selected={member.role}
           options={Object.values(roles)}
-          onChange={onChangeRole}
+          onChange={(e) => onChangeRole(e.target.value)}
           minW={36}
           w={48}
           bg="blue.700"
@@ -149,21 +150,25 @@ function MemberRow({ editMode, member, onChangeRole, removeButton }) {
 }
 
 // Assumption: ProjectMembers is a list of object: {id, role}
-export default function MemberTable({ editMode, members, handleChange }) {
+export default function MemberTable({ editMode }) {
+  const members = useStoreState((state) => state.project.members);
+  const updateProject = useStoreActions((actions) => actions.updateProject);
+  const updateMembers = (members) => updateProject({ members: members });
+
   const handleRemoveMember = (member) => () => {
     const newMembers = members.filter((m) => m.email !== member.email);
-    handleChange(newMembers);
+    updateMembers(newMembers);
   };
 
   const handleAddMember = (newMember) => {
-    handleChange([...members, newMember]);
+    updateMembers([...members, newMember]);
   };
 
   const handleRoleChange = (member) => (newRole) => {
     // This is a curried function in JS
     let index = members.map((m) => m.email).indexOf(member.email);
     members[index] = { ...member, role: newRole };
-    handleChange(members);
+    updateMembers(members);
   };
 
   return (

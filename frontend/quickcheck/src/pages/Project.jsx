@@ -1,14 +1,13 @@
 import { Heading, Button, HStack } from '@chakra-ui/react';
-import MemberTable from '../components/MemberTable';
 import { React, useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { useStoreState, useStoreActions } from 'easy-peasy';
 
 import ProductAreaList from '../components/ProjectAreaCard';
-import ShowEditable from '../components/editable.jsx';
-
+import MemberTable from '../components/MemberTable';
 import Page from '../components/Page';
-import { useParams } from 'react-router-dom';
-import { api } from '../utils/apiClient';
 import Card from '../components/Card';
+import { ConditionalInput } from '../components/Inputs';
 
 const mockProject = {
   projectID: 1,
@@ -30,7 +29,13 @@ function CardHeader({ text }) {
 }
 
 export default function Project(prop) {
-  const [editMode, setEditMode] = useState(false);
+  const project = useStoreState((state) => state.project);
+  const updateProject = useStoreActions((actions) => actions.updateProject);
+  const fetchProject = useStoreActions((actions) => actions.fetchProject);
+
+  const [name, setName] = useState(project.projectName);
+
+  const [editMode, setEditMode] = useState(true);
   const [projectData, setprojectData] = useState({
     projectID: 0,
     projectName: '',
@@ -39,35 +44,20 @@ export default function Project(prop) {
   });
 
   const handleChange = (key) => (value) => {
-    setprojectData({
-      ...projectData,
+    updateProject({
+      ...project,
       [key]: value,
     });
   };
 
   const setMembers = handleChange('members');
   const setProductAreas = handleChange('productAreas');
-  // const setMembers = (newMembers) => {
-  //   // extra func because member card only knows the members
-  //   setprojectData({
-  //     ...projectData,
-  //     members: newMembers,
-  //   });
-  // };
 
   const { id } = useParams();
-  const fetchProject = () => {
-    api
-      .url('/projects/' + id)
-      .get()
-      .json((json) => setprojectData(json))
-      .catch(console.error);
-  };
-
   useEffect(() => {
-    // fetchProject();
-    setprojectData(mockProject);
-  }, []);
+    // fetchProject({projectID: id})
+    updateProject(mockProject);
+  }, [editMode]);
 
   const EditButtons = () => {
     if (editMode) {
@@ -95,26 +85,29 @@ export default function Project(prop) {
       <Card barColor="blue.500">
         <CardHeader text="PROJECT:" />
 
-        <Heading size="lg" fontFamily="body">
-          <ShowEditable text={projectData.projectName} editable={editMode}></ShowEditable>
-        </Heading>
+        <ConditionalInput
+          fontStyle={{ fontSize: '3xl', fontWeight: '700' }}
+          editable={editMode}
+          value={project.projectName}
+          onChange={(val) => updateProject({ projectName: val })}
+        />
       </Card>
 
-      <Card barColor="teal.500" direction="column">
+      <Card direction="column">
         <CardHeader text="MEMBERS" />
-        <MemberTable editMode={editMode} members={projectData.members} handleChange={setMembers} />
+        <MemberTable editMode={editMode} />
       </Card>
 
-      <Card barColor="teal.500" direction="column">
+      <Card direction="column">
         <CardHeader text="PRODUCT AREAS" />
         <ProductAreaList
-          areaIDs={projectData.productAreas}
+          areaIDs={project.productAreas}
           handleChange={setProductAreas}
           editMode={editMode}
         />
       </Card>
-
       <EditButtons />
+      <p>{JSON.stringify(project)}</p>
     </Page>
   );
 }
