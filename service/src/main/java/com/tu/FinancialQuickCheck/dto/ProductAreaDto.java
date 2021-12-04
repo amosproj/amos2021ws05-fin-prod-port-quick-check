@@ -9,6 +9,10 @@ public class ProductAreaDto {
 
     public ProductAreaDto(){}
 
+    public ProductAreaDto(int id){
+        this.id = id;
+    }
+
     public ProductAreaDto(int id, String name, String category){
         this.id = id;
         this.name = name;
