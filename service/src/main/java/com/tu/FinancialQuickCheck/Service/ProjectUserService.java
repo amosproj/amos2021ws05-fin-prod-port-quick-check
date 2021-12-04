@@ -99,4 +99,9 @@ public class ProjectUserService {
                         });
         }
     }
+
+    // TODO: implement deleteUsers()
+    // löscht Datensätze in project_user_entity
+    // repository: projectUserRepository
+    // z.B. projectUserRepository.deleteAll(); (gibt aber auch noch andere Möglichkeiten)
 }

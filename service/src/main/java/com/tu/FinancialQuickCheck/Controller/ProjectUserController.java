@@ -36,6 +36,12 @@ public class ProjectUserController {
         service.updateProjectUser(projectID, UUID.fromString(userID), projectUserDto);
     }
 
-
+    // TODO: implement delete
+//    @DeleteMapping(produces = "application/json")
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public void updateProjectUser(@RequestBody ProjectUserDto projectUserDto,
+//                                  @PathVariable int projectID, @PathVariable String userID) {
+//        service.updateProjectUser(projectID, UUID.fromString(userID), projectUserDto);
+//    }
 
 }
