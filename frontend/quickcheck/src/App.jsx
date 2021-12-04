@@ -9,11 +9,12 @@ import Login from './pages/Login';
 import ProjectOverview from './pages/ProjectOverview';
 import Project from './pages/Project';
 import TestRange from './pages/TestRange';
+import theme from './theme';
 
 function App() {
   return (
     <div>
-      <ChakraProvider>
+      <ChakraProvider theme={theme}>
         <StoreProvider store={store}>
           <Router>
             <Link to="/login"> [Login] </Link>
