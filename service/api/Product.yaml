@@ -24,10 +24,10 @@ paths:
         404:
           $ref: '#/components/responses/404notfound'
         '5XX':
-          $ref: '#/components/responses/5XXserverError'  
-    put: 
+          $ref: '#/components/responses/5XXserverError'
+    put:
       summary: updates product with given productID
-      parameters: 
+      parameters:
         - $ref: '#/components/parameters/productID'
       requestBody:
         required: true
@@ -52,7 +52,7 @@ paths:
           $ref: '#/components/responses/5XXserverError'
     delete:
       summary: deletes product with given productID
-      parameters: 
+      parameters:
         - $ref: '#/components/parameters/productID'
       responses:
         200:
@@ -65,7 +65,7 @@ paths:
           $ref: '#/components/responses/404notfound'
         '5XX':
           $ref: '#/components/responses/5XXserverError'
-  
+
   /projects/{projectID}/products:
     get:
       summary: retrieves all products of given projectID
@@ -89,7 +89,7 @@ paths:
         '5XX':
           $ref: '#/components/responses/5XXserverError'
 
-    
+
   /projects/{projectID}/productareas/{productAreaID}/products:
     get:
       summary: retrieves all products of given project and project area

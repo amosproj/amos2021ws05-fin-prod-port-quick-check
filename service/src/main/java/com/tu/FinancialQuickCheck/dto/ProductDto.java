@@ -3,15 +3,17 @@ package com.tu.FinancialQuickCheck.dto;
 //import com.tu.FinancialQuickCheck.RatingArea;
 //import com.tu.FinancialQuickCheck.Score;
 
-import com.tu.FinancialQuickCheck.db.ProductRatingEntity;
+import com.tu.FinancialQuickCheck.db.ProductAreaEntity;
+//import com.tu.FinancialQuickCheck.db.ProductRatingEntity;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDto {
-
+    // TODO: add value for progress bar of economic and complexity
     public int  productID;
     public String productName;
-    public int productAreaID;
+    //TODO: anpassen
+//    public int productAreaID;
     public int projectID;
     public List<ProductRatingDto> ratings;
     public List<ProductDto> productVariations;
@@ -25,27 +27,30 @@ public class ProductDto {
 
     public ProductDto(String name, int productAreaID){
         this.productName = name;
-        this.productAreaID = productAreaID;
+        //TODO: anpassen
+//        this.productAreaID = productAreaID;
     }
 
-    public ProductDto(int id, int projectID, int productAreaID){
+    public ProductDto(int id, int projectID, ProductAreaEntity productAreaID){
         this. productID = id;
         this.projectID = projectID;
-        this.productAreaID = productAreaID;
+        //TODO:anpassen
+//        this.productAreaID = productAreaID;
     }
 
-    public ProductDto(int id, String name, int projectID, int productAreaID){
+    public ProductDto(int id, String name, int projectID, ProductAreaEntity productAreaID){
         this.productID = id;
         this.productName = name;
         this.projectID = projectID;
-        this.productAreaID = productAreaID;
+        //TODO: anpassen
+//        this.productAreaID = productAreaID;
     }
 
-    public ProductDto(String name, List<ProductRatingEntity> productRatingEntities)
-    {
-        this.productName = name;
-        this.ratings = convertProductRatingEntities(productRatingEntities);
-    }
+//    public ProductDto(String name, List<ProductRatingEntity> productRatingEntities)
+//    {
+//        this.productName = name;
+//        this.ratings = convertProductRatingEntities(productRatingEntities);
+//    }
 
 //    public Product(int id, String name, List<ProductEntity> productEntities, List<RatingEntity> ratingEntities)
 //    {
@@ -77,18 +82,18 @@ public class ProductDto {
 //    }
 
 
-    private List<ProductRatingDto> convertProductRatingEntities(List<ProductRatingEntity> productRatingEntities) {
-        List<ProductRatingDto> tmp = new ArrayList<>();
-
-        for(ProductRatingEntity entity : productRatingEntities){
-            ProductRatingDto p = new ProductRatingDto();
-            p.ratingID = entity.productRatingId.getRatingid().id;
-            p.score = entity.score;
-            p.answer = entity.answer;
-            p.comment = entity.comment;
-            tmp.add(p);
-        }
-
-        return tmp;
-    }
+//    private List<ProductRatingDto> convertProductRatingEntities(List<ProductRatingEntity> productRatingEntities) {
+//        List<ProductRatingDto> tmp = new ArrayList<>();
+//
+//        for(ProductRatingEntity entity : productRatingEntities){
+//            ProductRatingDto p = new ProductRatingDto();
+//            p.ratingID = entity.productRatingId.getRatingid().id;
+//            p.score = entity.score;
+//            p.answer = entity.answer;
+//            p.comment = entity.comment;
+//            tmp.add(p);
+//        }
+//
+//        return tmp;
+//    }
 }
