@@ -64,7 +64,10 @@ function AddButton({ onAdd }) {
           <ModalBody px={10}>
             <Selection
               placeholder="Select Poduct Area..."
-              options={allAreas.map((e) => e.name)}
+              options={allAreas
+                .filter((area) => !productAreas.includes(area.id)) // filter out areas that already exist
+                .map((e) => e.name)
+              }
               onChange={(e) => setSelectedArea(e.target.value)}
             />
           </ModalBody>
