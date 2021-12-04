@@ -1,41 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Input, Heading, Button, Text } from '@chakra-ui/react';
-import { useStoreState, useStoreActions } from 'easy-peasy';
-
-const Child = () => {
-  const project = useStoreState((state) => state.project);
-
-  return (
-    <Box>
-      <Text>project name: {project.projectName} (in child component)</Text>
-    </Box>
-  );
-};
+import { Box, Input, Heading, Button, Text, useColorModeValue } from '@chakra-ui/react';
+import Page from '../components/Page';
 
 export default function TestRange() {
-  const project = useStoreState((state) => state.project);
-  const updateProject = useStoreActions((actions) => actions.updateProject);
-  const fetchProject = useStoreActions((actions) => actions.fetchProject);
 
-  const [name, setName] = useState(project.projectName);
-
-  useEffect(() => {
-    fetchProject({ id: 1 });
-    console.log('rendered');
-  }, []);
+  const  headingColor  = useColorModeValue('blue', 'red')
 
   return (
-    <Box bg="gray.700" align="center" mt="20vh">
-      <Input
-        placeholder="project name"
-        value={name}
-        onChange={(e) => {
-          setName(e.target.value);
-        }}
-      />
-      <Button onClick={() => updateProject({ projectName: name })}>update project name</Button>
-      <Text>project: {JSON.stringify(project)}</Text>
-      <Child />
+    <Page>
+    <Box align='center' w='20%' h='20%'>
+      <Button rounded='3xl' m={3} colorScheme='brand'>button uses custom color, colorScheme is automatic but only works for buttons</Button>
+      <Text variant='brand'>text field using custom variant</Text>
+      <Heading color={headingColor}>switching color for dark and bright</Heading>
     </Box>
+    </Page>
   );
 }

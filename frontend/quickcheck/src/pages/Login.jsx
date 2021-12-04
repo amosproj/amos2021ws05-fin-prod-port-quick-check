@@ -38,7 +38,9 @@ function Login() {
   // TODO use Formik library instead of implementing Form manually
 
   return (
-    <Flex bg="gray.700" height="98vh" alignItems="center" justify="center">
+    <Flex height="90vh" alignItems="center" justify="center"
+    bgGradient='linear(to-l, #7928CA, #FF0080)'
+    >
       <VStack
         spacing={4}
         rounded="lg"
