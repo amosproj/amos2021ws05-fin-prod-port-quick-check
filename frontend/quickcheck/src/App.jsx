@@ -3,12 +3,12 @@ import { BrowserRouter as Router, Route, Routes, Link, Navigate } from 'react-ro
 import { ChakraProvider } from '@chakra-ui/react';
 import { StoreProvider } from 'easy-peasy';
 
-import { store } from './store';
-
 import Login from './pages/Login';
 import ProjectOverview from './pages/ProjectOverview';
 import Project from './pages/Project';
 import TestRange from './pages/TestRange';
+
+import store from './store';
 import theme from './theme';
 
 function App() {

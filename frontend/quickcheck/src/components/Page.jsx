@@ -1,6 +1,6 @@
 import React from 'react';
 import { Flex, Heading, Spacer, Avatar, VStack } from '@chakra-ui/react';
-
+import { ColorModeSwitcher } from './ColorModeSwitcher';
 function Menubar({ title }) {
   return (
     <Flex bg="gray.700" w="full" h={20} justifyContent="center">
@@ -10,7 +10,8 @@ function Menubar({ title }) {
           {title}
         </Heading>
         <Spacer />
-        <Avatar></Avatar>
+        <ColorModeSwitcher mr={4}/>
+        <Avatar/>
       </Flex>
     </Flex>
   );
