@@ -1,29 +1,14 @@
-import { Select, Input, Text, Box } from '@chakra-ui/react';
+import { Select } from '@chakra-ui/select';
 
-export function Selection({options, selected, ...rest}) {
+export function Selection(props) {
   // required args: options, selected (option), onChange :updateFunction
   return (
-    <Select {...rest} value={selected}>
-      {options.map((opt) => (
-        <option value={opt} key={opt}>
+    <Select {...props} onChange={(e) => props.onChange(e.target.value)}>
+      {props.options.map((opt) => (
+        <option selected={opt === props.selected} value={opt}>
           {opt}
         </option>
       ))}
     </Select>
-  );
-}
-
-// pass value and onchange just like with a regular input
-export function ConditionalInput({editable, value, onChange, fontStyle, ...rest }) {
-  return (
-    <Box align="center" {...rest} rounded="md">
-      {editable ? (
-        <Input value={value} onChange={onChange} {...fontStyle} />
-      ) : (
-        <Text align="left" px={4} py={2} {...fontStyle}>
-          {value}
-        </Text>
-      )}
-    </Box>
   );
 }

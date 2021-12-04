@@ -28,14 +28,14 @@ import {
 } from '@chakra-ui/react';
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
 import { Selection } from './Inputs.jsx';
-import { useStoreActions, useStoreState } from 'easy-peasy';
 
 function AddButton({ onAdd }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const productAreas = useStoreState((state) => state.project.productAreas);
   const allAreas = fetchAllAreas();
 
   const [selectedArea, setSelectedArea] = useState();
+
+  const header = 'Add Product Area';
 
   const getAreaFromName = (areaName) => {
     return allAreas.filter((m) => m.name === areaName)[0];
@@ -58,23 +58,19 @@ function AddButton({ onAdd }) {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader color="teal.300">Add Product Area</ModalHeader>
+          <ModalHeader color="teal.300">{header}</ModalHeader>
           <ModalCloseButton />
 
           <ModalBody px={10}>
             <Selection
               placeholder="Select Poduct Area..."
-              options={allAreas
-                .filter((area) => !productAreas.includes(area.id)) // filter out areas that already exist
-                .map((e) => e.name)
-              }
-              onChange={(e) => setSelectedArea(e.target.value)}
+              options={allAreas.map((e) => e.name)}
+              onChange={setSelectedArea}
             />
           </ModalBody>
 
           <ModalFooter>
             <Button
-              disabled={selectedArea === undefined}
               colorScheme="blue"
               mr={3}
               onClick={(e) => {
@@ -141,7 +137,7 @@ function ProductArea({ productArea, removeButton }) {
             p={3}
             align="center"
             _hover={{ boxShadow: 'md', bg: 'blue.600' }}
-            onClick={() => <Link to="/projects" />}
+            onClick={<Link to="/projects" />}
           >
             <Spacer />
             <LinkOverlay href="/projects"></LinkOverlay>
@@ -169,34 +165,28 @@ const areaMock = {
 };
 
 const fetchAllAreas = () => {
-  // api mock
   return Object.values(areaMock);
 };
 
-export default function ProductAreaList({ editMode }) {
-  const productAreas = useStoreState((state) => state.project.productAreas);
-  const updateProject = useStoreActions((actions) => actions.updateProject);
-  const updateAreaIDs = (areaIDs) => updateProject({ productAreas: areaIDs });
-
+export default function ProductAreaList({ editMode, areaIDs, handleChange }) {
   const fetchArea = (areaID) => {
     return areaMock[areaID];
   };
 
   const handleAddArea = (newID) => {
-    updateAreaIDs([...productAreas, newID]);
+    handleChange([...areaIDs, newID]);
   };
 
   const handleRemoveArea = (removeID) => () => {
-    const updatedAreaIDs = productAreas.filter((m) => m !== removeID);
-    updateAreaIDs(updatedAreaIDs);
+    const updatedAreaIDs = areaIDs.filter((m) => m !== removeID);
+    handleChange(updatedAreaIDs);
   };
 
   return (
     <>
       <List spacing={3} w="50%">
-        {productAreas.map((id) => (
+        {areaIDs.map((id) => (
           <ProductArea
-            key={id}
             productArea={fetchArea(id)}
             removeButton={editMode ? <RemoveButton onRemove={handleRemoveArea(id)} /> : <div />}
           />
