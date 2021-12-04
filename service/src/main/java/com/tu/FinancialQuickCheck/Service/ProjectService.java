@@ -3,8 +3,10 @@ package com.tu.FinancialQuickCheck.Service;
 import com.tu.FinancialQuickCheck.Exceptions.BadRequest;
 import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.db.*;
+import com.tu.FinancialQuickCheck.dto.ProductAreaDto;
 import com.tu.FinancialQuickCheck.dto.ProjectDto;
 import com.tu.FinancialQuickCheck.dto.SmallProjectDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,16 +17,21 @@ import java.util.UUID;
 @Service
 public class ProjectService {
 
+    @Autowired
     private ProjectRepository projectRepository;
+
+    @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
     private ProductAreaRepository productAreaRepository;
 
 
     public ProjectService(ProjectRepository projectRepository, ProductRepository productRepository,
                           ProductAreaRepository productAreaRepository) {
-        this.projectRepository = projectRepository;
-        this.productRepository = productRepository;
-        this.productAreaRepository = productAreaRepository;
+//        this.projectRepository = projectRepository;
+//        this.productRepository = productRepository;
+//        this.productAreaRepository = productAreaRepository;
     }
 
 
@@ -61,10 +68,12 @@ public class ProjectService {
             newProject.name = projectDto.projectName;
             newProject.productEntities = new ArrayList<>();
             // add product areas to project through DUMMY data in product_entity table
-            for (int productArea : projectDto.productAreas){
+            for (ProductAreaDto productArea : projectDto.productAreas){
+                System.out.println("Create DUMMY data for productArea: " + productArea.id);
                 ProductEntity product = new ProductEntity();
-                product.projectid = newProject;
-                product.productareaid = productArea;
+                product.id = new ProductId(productAreaRepository.findById(productArea.id).get(), newProject);
+//                product.project = newProject;
+//                product.productarea = productAreaRepository.findById(productArea.id).get();
                 product.name = "DUMMY";
                 newProject.productEntities.add(product);
             }
@@ -73,7 +82,7 @@ public class ProjectService {
 
             // return created projectID
             return new ProjectDto(newProject.id, newProject.name, UUID.fromString(newProject.creator_id),
-                    newProject.productEntities);
+                    convertProductAreaEntities(newProject.productEntities));
         }else{
             return null;
         }
@@ -93,8 +102,11 @@ public class ProjectService {
         if (projectEntity.isEmpty()) {
             throw new ResourceNotFound("projectID " + projectID + " not found");
         }else{
+            List<ProductAreaDto> tmp = new ArrayList<>();
+            tmp = convertProductAreaEntities(projectEntity.get().productEntities);
+
             return new ProjectDto(projectEntity.get().id, projectEntity.get().name,
-                    UUID.fromString(projectEntity.get().creator_id), projectEntity.get().productEntities,
+                    UUID.fromString(projectEntity.get().creator_id), tmp,
                     projectEntity.get().projectUserEntities);
         }
 
@@ -123,15 +135,16 @@ public class ProjectService {
 
             // add none existing product areas
             if(projectDto.productAreas != null){
-                for (int productArea : projectDto.productAreas){
-                    if(productAreaRepository.existsById(productArea)){
-                        if(!productRepository.existsByProjectidAndProductareaid(entity, productArea)){
-                            ProductEntity product = new ProductEntity();
-                            product.projectid = entity;
-                            product.productareaid = productArea;
-                            product.name = "DUMMY";
-                            entity.productEntities.add(product);
-                        }
+                for (ProductAreaDto productArea : projectDto.productAreas){
+                    if(productAreaRepository.existsById(productArea.id)){
+//                        if(!productRepository.existsByProjectidAndProductareaid(entity, productArea.id)){
+//                            ProductEntity product = new ProductEntity();
+//                            product.project = entity;
+//                            // TODO: anpassen
+////                            product.productareaid = productArea;
+//                            product.name = "DUMMY";
+//                            entity.productEntities.add(product);
+//                        }
                     }else{
                         throw new ResourceNotFound("productArea " + productArea + " does not exist");
                     }
@@ -139,9 +152,10 @@ public class ProjectService {
             }
 
             projectRepository.save(entity);
-
-            return new ProjectDto(entity.id, entity.name, UUID.fromString(entity.creator_id),
-                    entity.productEntities, entity.projectUserEntities);
+            //TODO: anpassen
+//            return new ProjectDto(entity.id, entity.name, UUID.fromString(entity.creator_id),
+//                    entity.productEntities, entity.projectUserEntities);
+            return new ProjectDto();
         }
     }
 
@@ -154,5 +168,24 @@ public class ProjectService {
 //            projectRepository.deleteById(projectID);
 //        }
 //    }
+
+    private List<ProductAreaDto> convertProductAreaEntities(List<ProductEntity> productEntities) {
+        //TODO: lässt doppelte Werte zu, d.h. Datentyp anpassen
+        List<ProductAreaDto> areas = new ArrayList<>();
+
+        for (ProductEntity product: productEntities)
+        {
+            System.out.println("Create ProductAreaDto for : " + product.id.productarea.id);
+
+//            int id = product.id.productarea.id;
+//            ProductAreaEntity tmp = productAreaRepository.findById(id).get();
+            areas.add(new ProductAreaDto(
+                    product.id.getProductarea().id,
+                    product.id.getProductarea().name,
+                    product.id.getProductarea().category
+            ));
+        }
+        return areas;
+    }
 
 }

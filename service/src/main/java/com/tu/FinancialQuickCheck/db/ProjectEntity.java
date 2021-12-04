@@ -17,8 +17,9 @@ public class ProjectEntity {
     public String creator_id;
 
     // TODO: CascadeType mit Max und Alexander besprechen
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "projectid")
+//    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "project")
     public List<ProductEntity> productEntities;
 
     @OneToMany(fetch = FetchType.LAZY)
@@ -27,6 +28,5 @@ public class ProjectEntity {
 
     public ProjectEntity(){
     }
-
 
 }

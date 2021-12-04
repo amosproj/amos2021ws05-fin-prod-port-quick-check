@@ -1,40 +1,45 @@
 package com.tu.FinancialQuickCheck.dto;
 
+import com.tu.FinancialQuickCheck.db.ProductAreaEntity;
 import com.tu.FinancialQuickCheck.db.ProductEntity;
 import com.tu.FinancialQuickCheck.db.ProjectUserEntity;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 
 public class ProjectDto {
-
     public int projectID;
-    public String projectName;
     public UUID creatorID;
-    public HashSet<UUID> members;
-    public HashSet<Integer> productAreas;
+    public String projectName;
+    public List<UserDto> members;
+    public List<ProductAreaDto> productAreas;
 //    public List<Product> products;
 
     //necessary for mapping
     public ProjectDto() {}
 
+    public ProjectDto(UUID creatorID, String projectName, List<Integer> productAreas){
+        this.creatorID = creatorID;
+        this.projectName = projectName;
+        this.productAreas = convertProductAreaSet(productAreas);
+    }
 
-    public ProjectDto(int projectID, String projectName, UUID creatorID, List<ProductEntity> productEntity){
+    public ProjectDto(int projectID, String projectName, UUID creatorID, List<ProductAreaDto> productAreas){
         this.projectID = projectID;
         this.projectName = projectName;
         this.creatorID = creatorID;
-        this.productAreas = convertProductAreaEntities(productEntity);
+        this.productAreas = productAreas;
     }
 
     public ProjectDto(int projectID, String projectName, UUID creatorID,
-                      List<ProductEntity> productEntity, List<ProjectUserEntity> projectUserEntities){
+                      List<ProductAreaDto> productAreas, List<ProjectUserEntity> projectUserEntities){
         this.projectID = projectID;
-        this.projectName = projectName;
         this.creatorID = creatorID;
+        this.projectName = projectName;
         this.members = convertProjectUserEntities(projectUserEntities);
-        this.productAreas = convertProductAreaEntities(productEntity);
+        this.productAreas = productAreas;
     }
 
 
@@ -58,21 +63,45 @@ public class ProjectDto {
 //        return products;
 //    }
 
-    private HashSet<Integer> convertProductAreaEntities(List<ProductEntity> productEntity) {
-        HashSet<Integer> areas = new HashSet<>();
-        for (ProductEntity p: productEntity)
+    private List<ProductAreaDto> convertProductAreaSet(List<Integer> productAreas) {
+        List<ProductAreaDto> areas = new ArrayList<>();
+        for (Integer productAreaId: productAreas)
         {
-            areas.add(p.productareaid);
+            areas.add(new ProductAreaDto(productAreaId));
         }
         return areas;
     }
 
-    private HashSet<UUID> convertProjectUserEntities(List<ProjectUserEntity> projectUserEntities) {
-        HashSet<UUID> members = new HashSet<>();
+//    private List<ProductAreaDto> convertProductAreaEntities(List<ProductEntity> productEntities) {
+//        //TODO: lässt doppelte Werte zu, d.h. Datentyp anpassen
+//        List<ProductAreaDto> areas = new ArrayList<>();
+//        for (ProductEntity p: productEntities)
+//        {
+////            System.out.println(p.product_id + ": " + p.productareaid);
+//            ProductAreaEntity tmp = new ProductAreaEntity();
+//            tmp.id = p.productarea.id;
+//            tmp.name = p.productarea.name;
+//            tmp.category = p.productarea.category;
+//
+//            areas.add(new ProductAreaDto(
+//                    p.productarea.id,
+//                    p.productarea.name,
+//                    p.productarea.category
+//            ));
+//        }
+//        return areas;
+//    }
+
+    private List<UserDto> convertProjectUserEntities(List<ProjectUserEntity> projectUserEntities) {
+        List<UserDto> members = new ArrayList<>();
 
         for (ProjectUserEntity member: projectUserEntities)
         {
-            members.add(UUID.fromString(member.projectUserId.getUserid().id));
+            members.add(new UserDto(
+                            UUID.fromString(member.projectUserId.getUserid().id),
+                            member.projectUserId.getUserid().email,
+                            member.role)
+                    );
         }
         return members;
     }

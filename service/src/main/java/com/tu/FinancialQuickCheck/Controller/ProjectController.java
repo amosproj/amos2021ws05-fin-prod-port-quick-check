@@ -18,13 +18,13 @@ import java.util.List;
 @RequestMapping("projects")
 public class ProjectController {
 
-//    @Autowired
     private ProjectService service;
-    @Autowired
     private ProductService productService;
 
-    public ProjectController(ProjectService projectService){
+    public ProjectController(ProjectService projectService, ProductService productService){
+
         this.service = projectService;
+        this.productService = productService;
     }
 
     // TODO: should we return a Reource not found if no projects exist?
