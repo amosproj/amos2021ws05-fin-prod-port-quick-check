@@ -11,8 +11,10 @@ about: Suggest new feature (using user story)
 ## Acceptance criteria
 * Criterion 1
 * Criterion 2
-* ...
 
 ## Definition of done
-* Added only after week 5
-* The same for all features
+* Approved by product owner
+* 50%-60% test coverage
+* No syntax or runtime errors emerged
+* Code has been peer reviewed and approved
+* Tests have been written (e.g. Unit test, integration test etc..)
