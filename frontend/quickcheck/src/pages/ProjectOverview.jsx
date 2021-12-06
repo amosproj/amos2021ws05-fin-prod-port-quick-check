@@ -20,8 +20,8 @@ const mocks = {
 
 function ProjectCard({ project }) {
   return (
-    <Card>
-      <Heading size="lg" color="teal.400" align="center" py={{ base: 4, md: 0 }} w="50%">
+    <Card variant='blue'>
+      <Heading size="lg" align="center" py={{ base: 4, md: 0 }} w="50%">
         {project.projectName}
       </Heading>
       <Spacer />
@@ -35,7 +35,7 @@ function ProjectCard({ project }) {
       </VStack>
       <Spacer />
       <Link to={'' + project.projectID}>
-        <Button colorScheme="teal" align="center" w={24}>
+        <Button colorScheme="blue" align="center" w={24}>
           open
         </Button>
       </Link>

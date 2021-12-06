@@ -1,16 +1,17 @@
 import React from 'react';
-import { Box, Wrap, useColorModeValue } from '@chakra-ui/react';
+import { Box, Wrap, useColorModeValue, useStyleConfig } from '@chakra-ui/react';
 
 export default function Card(props) {
-
   const  bgColor  = useColorModeValue('bg.300', 'gray.700')
+  // const styles = useStyleConfig('Card', { variant: 'card' })
 
   return (
-    <Box
+    <Box //__css={styles}
+      layerStyle='card_light'
       w={props.w || 'full'}
       minW="12em"
       maxW={props.maxW}
-      bg={props.bg || bgColor}
+      // bg={props.bg || bgColor}
       p={3}
       mb={6}
       align="center"

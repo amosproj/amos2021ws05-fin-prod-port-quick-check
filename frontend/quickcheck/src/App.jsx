@@ -9,7 +9,7 @@ import Project from './pages/Project';
 import TestRange from './pages/TestRange';
 
 import store from './store';
-import theme from './theme';
+import theme from './styles/theme';
 
 function App() {
   return (
