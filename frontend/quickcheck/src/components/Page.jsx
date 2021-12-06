@@ -10,8 +10,8 @@ function Menubar({ title }) {
           {title}
         </Heading>
         <Spacer />
-        <ColorModeSwitcher mr={4}/>
-        <Avatar/>
+        <ColorModeSwitcher mr={4} />
+        <Avatar />
       </Flex>
     </Flex>
   );
