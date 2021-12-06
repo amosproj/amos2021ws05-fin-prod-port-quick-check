@@ -30,10 +30,11 @@ public class UserControllerTest{
 
     private String host =  "http://localhost:";
     private String users = "/users";
+    private String email = "/email";
 
-    private String preUserBody =  "{\"username\":\"preUser\", \"email\":\"preUser@mail.com\", \"password\":\"1234\"}";
-    private String testUserBody = "{\"username\":\"testUser\", \"email\":\"testUser@mail.com\", \"password\":\"4321\"}";
-    private String nonExistentUser = "{\"username\":\"preUser\", \"email\":\"preUser@mail.com\", \"password\":\"abcdefg\"}";
+    private String preUserBody =  "{\"userName\":\"preUser\", \"userEmail\":\"preUser@mail.com\", \"password\":\"1234\"}";
+    private String testUserBody = "{\"userName\":\"testUser\", \"userEmail\":\"testUser@mail.com\", \"password\":\"4321\"}";
+    private String nonExistentUser = "{\"userName\":\"user404\", \"userEmail\":\"user404@mail.com\", \"password\":\"abcdefg\"}";
 
 
 
@@ -58,7 +59,7 @@ public class UserControllerTest{
 
 
     //delete preUser
-    @AfterEach
+    //@AfterEach
     public void cleanup(){
 
         HttpHeaders headers = new HttpHeaders();
@@ -102,16 +103,16 @@ public class UserControllerTest{
         HttpEntity<String> request = new HttpEntity<>("", headers);
 
         ResponseEntity<String> response = restTemplate.exchange(
-                host + port + users + "/email" + "/preUser@mail.com",
+                host + port + users + email + "/preUser@mail.com",
                 HttpMethod.GET,
                 request,
                 String.class);
 
         String[] bodyStringList = Objects.requireNonNull(response.getBody()).split(",");
 
-        assertThat(bodyStringList[1]).isEqualTo("\"username\":\"preUser\"");
-        assertThat(bodyStringList[2]).isEqualTo("\"email\":\"preUser@mail.com\"");
-        assertThat(bodyStringList[3]).isEqualTo("\"password\":null");
+        assertThat(bodyStringList[0]).isEqualTo("{\"userEmail\":\"preUser@mail.com\"");
+        assertThat(bodyStringList[1]).isEqualTo("\"userName\":\"preUser\"");
+        assertThat(bodyStringList[4]).isEqualTo("\"password\":null}");
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
@@ -127,7 +128,7 @@ public class UserControllerTest{
         HttpEntity<String> request = new HttpEntity<>("", headers);
 
         ResponseEntity<String> response = restTemplate.exchange(
-                host + port + users + "/email" + "/testUser404@mail.com",
+                host + port + users + email + "/testUser404@mail.com",
                 HttpMethod.GET,
                 request,
                 String.class);
@@ -136,7 +137,7 @@ public class UserControllerTest{
 
     }
 
-    @Test
+    //@Test
     public void updateUserById(){
 
         HttpHeaders headers = new HttpHeaders();
@@ -168,7 +169,7 @@ public class UserControllerTest{
 
     }
 
-   /** @Test
+   @Test
     public void updateUserByEmail(){
 
         HttpHeaders headers = new HttpHeaders();
@@ -179,13 +180,13 @@ public class UserControllerTest{
                 headers);
 
         ResponseEntity<String> response = restTemplate.exchange(
-                host + port + users + "/email" + "/preUser@mail.com",
+                host + port + users + email + "/preUser@mail.com",
                 HttpMethod.PUT,
                 request,
                 String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-    }**/
+    }
 
     /**@Test
     public void updateNonExistingUserByEmail(){

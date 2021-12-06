@@ -77,8 +77,8 @@ public class UserService {
      */
     public UserDto createUser(UserDto userDto) {
 
-        if(userDto.userName != null && userDto.userEmail != null && userDto.password != null
-                && validateEmail(userDto.userEmail)){
+        if (userDto.userName != null && userDto.userEmail != null && userDto.password != null
+                && validateEmail(userDto.userEmail) && !repository.existsById(userDto.userEmail)) {
             UserEntity newUser = new UserEntity();
             newUser.id = UUID.randomUUID().toString();
             newUser.username = userDto.userName;
@@ -98,7 +98,7 @@ public class UserService {
      * @param userDto
      * @param userID
      */
-    public UserDto updateByUserID(UserDto userDto, UUID userID) {
+    /**public UserDto updateByUserID(UserDto userDto, UUID userID) {
 
         Optional<UserEntity> entity = repository.findById(userID.toString());
 
@@ -128,6 +128,36 @@ public class UserService {
             return new UserDto(UUID.fromString(entity.get().id), entity.get().email, entity.get().username);
 
         }
+    }**/
+
+    public UserDto updateUserByEmail(UserDto userDto, String email) {
+
+        Optional<UserEntity> entity = repository.findById(email);
+
+        if (entity.isEmpty()) {
+            throw new ResourceNotFound("user email: " + email + " not found");
+        } else if ((userDto.userEmail == null && userDto.userName == null
+                && userDto.password == null) || (userDto.userEmail != null && !validateEmail(userDto.userEmail))){
+            return null;
+        } else {
+            entity.map(
+                    user -> {
+                        if (userDto.password != null) {
+                            user.password = userDto.password;
+                        }
+
+                        if (userDto.userName != null) {
+                            user.username = userDto.userName;
+                        }
+
+                        return repository.save(user);
+                    });
+
+            return new UserDto(UUID.fromString(entity.get().id), entity.get().email, entity.get().username);
+
+        }
+
+
     }
 
 

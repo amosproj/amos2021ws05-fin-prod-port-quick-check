@@ -22,11 +22,11 @@ public class ProjectUserController {
         return service.getProjectUsersByProjectId(projectID);
     }
 
-    @PostMapping(value = "/{userID}",produces = "application/json")
+    @PostMapping(value = "/{email}",produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public void createProjectUser(@RequestBody ProjectUserDto projectUserDto,
-                                            @PathVariable int projectID, @PathVariable String userID) {
-        service.createProjectUser(projectID, userID, projectUserDto);
+                                            @PathVariable int projectID, @PathVariable String email) {
+        service.createProjectUser(projectID, email, projectUserDto);
     }
 
     @PutMapping(value = "/{userID}",produces = "application/json")
