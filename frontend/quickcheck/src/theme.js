@@ -17,7 +17,7 @@ const colors = {
     800: 'brown',
     900: 'black',
   },
-// BearingPoint style guide: https://www.bearingpoint.com/styleguide/en/general/#Typography
+  // BearingPoint style guide: https://www.bearingpoint.com/styleguide/en/general/#Typography
   bearingpoint: {
     green: '#93D522',
     lightblue: '#29D5FF',
@@ -44,7 +44,6 @@ const colors = {
 
 // check out  https://github.com/chakra-ui/chakra-ui/issues/591
 // for info on how to change default light/dark colors of components
-
 
 const components = {
   Text: {
