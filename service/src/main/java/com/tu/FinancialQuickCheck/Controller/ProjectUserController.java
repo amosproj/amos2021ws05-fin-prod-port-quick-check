@@ -22,18 +22,18 @@ public class ProjectUserController {
         return service.getProjectUsersByProjectId(projectID);
     }
 
-    @PostMapping(value = "/{email}",produces = "application/json")
+    @PostMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public void createProjectUser(@RequestBody ProjectUserDto projectUserDto,
-                                            @PathVariable int projectID, @PathVariable String email) {
-        service.createProjectUser(projectID, email, projectUserDto);
+                                            @PathVariable int projectID) {
+        service.createProjectUser(projectID, projectUserDto);
     }
 
-    @PutMapping(value = "/{userID}",produces = "application/json")
+    @PutMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public void updateProjectUser(@RequestBody ProjectUserDto projectUserDto,
-                                  @PathVariable int projectID, @PathVariable String userID) {
-        service.updateProjectUser(projectID, UUID.fromString(userID), projectUserDto);
+                                  @PathVariable int projectID) {
+        service.updateProjectUser(projectID, projectUserDto);
     }
 
     // TODO: implement delete

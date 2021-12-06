@@ -109,9 +109,7 @@ paths:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/userProject'
+              $ref: '#/components/schemas/userProject'
       responses:
         201:
           description: "users successfully assigned to project"

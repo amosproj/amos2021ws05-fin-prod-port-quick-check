@@ -63,18 +63,18 @@ public class ProjectUserService {
     }
 
 
-    public void createProjectUser(int projectID, String userEmail, ProjectUserDto projectUserDto){
+    public void createProjectUser(int projectID, ProjectUserDto projectUserDto){
 
         ProjectUserEntity entity = new ProjectUserEntity();
 
-        if(!userRepository.existsById(userEmail)){
+        if(!userRepository.existsById(projectUserDto.userEmail)){
             throw new ResourceNotFound("User does not exist.");
         } else if (!projectRepository.existsById(projectID)){
             throw new ResourceNotFound("Project does not exist.");
         } else {
             entity.projectUserId = new ProjectUserId(
                     projectRepository.findById(projectID).get(),
-                    userRepository.findById(userEmail).get()
+                    userRepository.findById(projectUserDto.userEmail).get()
                     );
             entity.role = projectUserDto.role;
 
@@ -83,7 +83,7 @@ public class ProjectUserService {
     }
 
 
-    public void updateProjectUser(int projectID, UUID userID, ProjectUserDto projectUserDto){
+    public void updateProjectUser(int projectID, ProjectUserDto projectUserDto){
 
         if(!projectUserRepository.existsById(new ProjectUserId(projectRepository.findById(projectID).get(),
                 userRepository.findById(projectUserDto.userEmail).get()))){
