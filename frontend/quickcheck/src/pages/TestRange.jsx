@@ -36,29 +36,49 @@ export default function TestRange() {
       </Box>
       <Card variant="brand"></Card>
 
-
-
-
       <Flex variant="brand" p="2">
-        <Button size='lg' variant="primary">click me</Button>
-        <Button shadow='outline'  size='lg' variant="primary">click me</Button>
-        <Button isLoading size='lg' variant="primary">click me</Button>
-        <Button disabled size='lg' variant="primary">click me</Button>
-      </Flex>
-
-      
-      <Flex variant="brand" p="2">
-        <Button size='lg' variant="secondary">click me</Button>
-        <Button shadow='outline'  size='lg' variant="secondary">click me</Button>
-        <Button isLoading size='lg' variant="secondary">click me</Button>
-        <Button disabled size='lg' variant="secondary">click me</Button>
+        <Button size="lg" variant="primary">
+          click me
+        </Button>
+        <Button shadow="outline" size="lg" variant="primary">
+          click me
+        </Button>
+        <Button isLoading size="lg" variant="primary">
+          click me
+        </Button>
+        <Button disabled size="lg" variant="primary">
+          click me
+        </Button>
       </Flex>
 
       <Flex variant="brand" p="2">
-        <Button size='lg' variant="wisper">click me</Button>
-        <Button shadow='outline' focus size='lg' variant="wisper">click me</Button>
-        <Button isLoading size='lg' variant="wisper">click me</Button>
-        <Button disabled size='lg' variant="wisper">click me</Button>
+        <Button size="lg" variant="secondary">
+          click me
+        </Button>
+        <Button shadow="outline" size="lg" variant="secondary">
+          click me
+        </Button>
+        <Button isLoading size="lg" variant="secondary">
+          click me
+        </Button>
+        <Button disabled size="lg" variant="secondary">
+          click me
+        </Button>
+      </Flex>
+
+      <Flex variant="brand" p="2">
+        <Button size="lg" variant="wisper">
+          click me
+        </Button>
+        <Button shadow="outline" focus size="lg" variant="wisper">
+          click me
+        </Button>
+        <Button isLoading size="lg" variant="wisper">
+          click me
+        </Button>
+        <Button disabled size="lg" variant="wisper">
+          click me
+        </Button>
       </Flex>
     </Page>
   );

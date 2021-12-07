@@ -82,13 +82,7 @@ function Login() {
           />
         </FormControl>
         <Link to="/projects">
-          <Button
-          variant='primary'
-          size='lg'
-            type="submit"
-            onClick={handleSubmit}
-            w="20"
-          >
+          <Button variant="primary" size="lg" type="submit" onClick={handleSubmit} w="20">
             Login
           </Button>
         </Link>

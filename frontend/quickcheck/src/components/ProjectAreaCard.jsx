@@ -47,8 +47,8 @@ function AddButton({ onAdd }) {
         icon={<AddIcon />}
         aria-label="Add Product Area"
         onClick={onOpen}
-        variant='primary'
-        size='lg'
+        variant="primary"
+        size="lg"
         w={16}
       ></IconButton>
 
@@ -68,7 +68,7 @@ function AddButton({ onAdd }) {
 
           <ModalFooter>
             <Button
-              variant='primary'
+              variant="primary"
               mr={3}
               onClick={(e) => {
                 onAdd(getAreaFromName(selectedArea).id);
@@ -77,7 +77,9 @@ function AddButton({ onAdd }) {
             >
               Save
             </Button>
-            <Button onClick={onClose} variant='wisper'>Cancel</Button>
+            <Button onClick={onClose} variant="wisper">
+              Cancel
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
@@ -90,12 +92,7 @@ function RemoveButton({ onRemove }) {
   return (
     <Popover isOpen={isOpen} onOpen={onOpen} onClose={onClose} isLazy={true} w="wrap">
       <PopoverTrigger>
-        <IconButton
-          icon={<DeleteIcon />}
-          onClick={onOpen}
-          variant='wisper'
-          size="md"
-        />
+        <IconButton icon={<DeleteIcon />} onClick={onOpen} variant="wisper" size="md" />
       </PopoverTrigger>
       <PopoverContent>
         <PopoverHeader fontWeight="semibold">Confirm removing this User</PopoverHeader>

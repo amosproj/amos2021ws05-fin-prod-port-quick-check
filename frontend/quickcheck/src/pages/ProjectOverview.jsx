@@ -20,8 +20,8 @@ const mocks = {
 
 function ProjectCard({ project }) {
   return (
-    <Card layerStyle='card_bordered'>
-      <Heading color='primary' size="lg" align="center" w="40%" maxW='50%'>
+    <Card layerStyle="card_bordered">
+      <Heading color="primary" size="lg" align="center" w="40%" maxW="50%">
         {project.projectName}
       </Heading>
       <Spacer />
@@ -35,7 +35,7 @@ function ProjectCard({ project }) {
       </VStack>
       <Spacer />
       <Link to={'' + project.projectID}>
-        <Button variant='wisper' size='lg' colorScheme="blue" align="center" w={24}>
+        <Button variant="wisper" size="lg" colorScheme="blue" align="center" w={24}>
           open
         </Button>
       </Link>
@@ -85,7 +85,7 @@ export default function ProjectOverview() {
 
   return (
     <Page title="Your Projects">
-      <List spacing={3} mx={2} w='full'>
+      <List spacing={3} mx={2} w="full">
         {projectsData.map((project) => (
           <ProjectCard project={project} key={project.projectID} />
         ))}

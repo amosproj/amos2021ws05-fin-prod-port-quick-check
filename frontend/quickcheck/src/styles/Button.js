@@ -1,4 +1,4 @@
-import { darken,whiten, mode } from '@chakra-ui/theme-tools';
+import { darken, whiten, mode } from '@chakra-ui/theme-tools';
 
 export const ButtonStyles = {
   // Styles for the base style
@@ -38,7 +38,7 @@ export const ButtonStyles = {
       color: mode(props.color || 'secondary', 'white')(props),
       _hover: {
         border: '2px',
-        color: mode('secondary',  'primary' )(props),
+        color: mode('secondary', 'primary')(props),
       },
     }),
   },

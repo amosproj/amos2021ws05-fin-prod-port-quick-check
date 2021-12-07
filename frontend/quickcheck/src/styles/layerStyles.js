@@ -20,10 +20,9 @@ const card_clickable = {
   rounded: '3xl',
   color: 'white',
   _hover: {
-      bg: 'bp.purple'
-  }
-
-}
+    bg: 'bp.purple',
+  },
+};
 
 const layerStyles = { card, card_bordered, card_clickable };
 

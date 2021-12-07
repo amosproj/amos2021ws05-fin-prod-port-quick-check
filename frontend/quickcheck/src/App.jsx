@@ -17,7 +17,6 @@ function App() {
       <ChakraProvider theme={theme}>
         <StoreProvider store={store}>
           <Router>
-
             <Routes>
               {/* TODO: use proper redirect (see https://gist.github.com/mjackson/b5748add2795ce7448a366ae8f8ae3bb) */}
               <Route path="test" element={<TestRange />} />
@@ -28,7 +27,6 @@ function App() {
             </Routes>
             <Link to="/login"> [Login] </Link>
             <Link to="projects"> [Projects] </Link>
-
           </Router>
         </StoreProvider>
       </ChakraProvider>

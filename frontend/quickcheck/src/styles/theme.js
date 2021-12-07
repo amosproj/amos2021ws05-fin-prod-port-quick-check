@@ -47,20 +47,18 @@ const colors = {
   text: '#222222',
   primary: '#29D5FF',
   secondary: '#6C03A8',
-
 };
 
 // check out  https://github.com/chakra-ui/chakra-ui/issues/591
 // for info on how to change default light/dark colors of components
 
 const components = {
-  Button, Text,
+  Button,
+  Text,
   Heading: {
-    baseStyle: {
-    },
+    baseStyle: {},
   },
 };
-
 
 const fonts = {
   heading: '"BearingPointSans","FS Albert",Calibri,Helvetica,"Trebuchet MS",Arial,sans-serif',

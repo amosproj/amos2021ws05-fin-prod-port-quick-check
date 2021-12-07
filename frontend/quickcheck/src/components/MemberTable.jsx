@@ -110,7 +110,7 @@ function MemberRow({ editMode, member, onChangeRole, removeButton }) {
 
   return (
     <HStack px={4} rounded="md" align="center" spacing={3}>
-      <Text variant='cell' w="50%" align="left">
+      <Text variant="cell" w="50%" align="left">
         {member.email}
       </Text>
       {editMode ? (
@@ -123,7 +123,7 @@ function MemberRow({ editMode, member, onChangeRole, removeButton }) {
           w={48}
         />
       ) : (
-        <Text w={48} variant='cell'  h="full" align="left">
+        <Text w={48} variant="cell" h="full" align="left">
           {member.role}
         </Text>
       )}
@@ -150,14 +150,14 @@ export default function MemberTable({ editMode, members, handleChange }) {
     handleChange(members);
   };
 
-  const bgHeading = useColorModeValue('gray.400', 'gray.500')
+  const bgHeading = useColorModeValue('gray.400', 'gray.500');
   return (
     <List spacing={2} direction="column" minW="80%" align="center" pb={5}>
       <HStack px={4} rounded="md" align="center" spacing={3} mb={5}>
-        <Heading size="md" w="50%" shadow='lg' bg={bgHeading} p={2} pb={5} rounded="md">
+        <Heading size="md" w="50%" shadow="lg" bg={bgHeading} p={2} pb={5} rounded="md">
           Email
         </Heading>
-        <Heading size="md" minW={36} w={48} shadow='lg' bg={bgHeading} p={2} pb={5} rounded="md">
+        <Heading size="md" minW={36} w={48} shadow="lg" bg={bgHeading} p={2} pb={5} rounded="md">
           Role
         </Heading>
         {editMode ? <AddButton w={16} onAddMember={handleAddMember} /> : <div />}

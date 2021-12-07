@@ -73,18 +73,17 @@ export default function Project(prop) {
     if (editMode) {
       return (
         <HStack>
-          <Button variant='wisper' size="md" onClick={() => setEditMode(false)}>
+          <Button variant="wisper" size="md" onClick={() => setEditMode(false)}>
             Cancel
           </Button>
-          <Button variant='primary' size="md" onClick={() => setEditMode(false)}>
+          <Button variant="primary" size="md" onClick={() => setEditMode(false)}>
             Confirm
           </Button>
-
         </HStack>
       );
     } else {
       return (
-        <Button variant='wisper' size="md" onClick={() => setEditMode(true)}>
+        <Button variant="wisper" size="md" onClick={() => setEditMode(true)}>
           Edit
         </Button>
       );
