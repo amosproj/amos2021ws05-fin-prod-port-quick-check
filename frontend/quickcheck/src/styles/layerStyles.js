@@ -22,7 +22,6 @@ const card_bordered = {
   },
 };
 
-
 const layerStyles = { card, card_bordered, card_bar };
 
 export default layerStyles;
