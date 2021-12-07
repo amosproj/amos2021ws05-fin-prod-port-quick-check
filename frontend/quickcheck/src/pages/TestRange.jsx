@@ -15,6 +15,7 @@ export default function TestRange() {
   const headingColor = useColorModeValue('blue', 'red');
 
   return (
+    <>
     <Page>
       <Box
         align="center"
@@ -80,6 +81,12 @@ export default function TestRange() {
           click me
         </Button>
       </Flex>
+
+
     </Page>
+    <Box  bg='red' w='full' h={3} roundedTop='lg' m='0'></Box>
+<Flex bg='blue'  w='full' h={20} roundedBottom='lg'  m='0'  align='center'
+></Flex>
+          </>
   );
 }

@@ -21,9 +21,17 @@ const mockProject = {
   productAreas: [1],
 };
 
-function CardHeader({ text }) {
+function CardHeader({ text, ...rest }) {
   return (
-    <Heading size="md" align="center" letterSpacing={1.5} fontWeight={800} color="green.400" py={2}>
+    <Heading
+      {...rest}
+      size="md"
+      align="center"
+      letterSpacing={1.5}
+      fontWeight={800}
+      color="gray.500"
+      py={2}
+    >
       {text}
     </Heading>
   );
@@ -47,22 +55,8 @@ export default function Project(prop) {
 
   const setMembers = handleChange('members');
   const setProductAreas = handleChange('productAreas');
-  // const setMembers = (newMembers) => {
-  //   // extra func because member card only knows the members
-  //   setprojectData({
-  //     ...projectData,
-  //     members: newMembers,
-  //   });
-  // };
 
   const { id } = useParams();
-  const fetchProject = () => {
-    api
-      .url('/projects/' + id)
-      .get()
-      .json((json) => setprojectData(json))
-      .catch(console.error);
-  };
 
   useEffect(() => {
     // fetchProject();
