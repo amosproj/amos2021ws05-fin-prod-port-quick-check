@@ -1,6 +1,15 @@
 const card = {
   rounded: 'md',
   boxShadow: 'md',
+  border: '0px',
+  p: '3',
+  px: '8',
+  w: 'full',
+};
+
+const card_bar = {
+  ...card,
+  borderTop: '8px',
 };
 
 const card_bordered = {
@@ -24,6 +33,6 @@ const card_clickable = {
   },
 };
 
-const layerStyles = { card, card_bordered, card_clickable };
+const layerStyles = { card, card_bordered, card_clickable, card_bar };
 
 export default layerStyles;
