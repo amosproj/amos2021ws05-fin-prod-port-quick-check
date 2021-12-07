@@ -11,18 +11,6 @@ const config = {
 };
 
 const colors = {
-  brand: {
-    100: 'white',
-    200: 'yellow',
-    300: 'orange',
-    400: 'red',
-    500: 'green',
-    600: 'blue',
-    700: 'pruple',
-    800: 'brown',
-    900: 'black',
-  },
-
   // BearingPoint style guide: https://www.bearingpoint.com/styleguide/en/general/#Typography
   bp: {
     green: '#93D522',
@@ -52,13 +40,7 @@ const colors = {
 // check out  https://github.com/chakra-ui/chakra-ui/issues/591
 // for info on how to change default light/dark colors of components
 
-const components = {
-  Button,
-  Text,
-  Heading: {
-    baseStyle: {},
-  },
-};
+const components = { Button, Text };
 
 const fonts = {
   heading: '"BearingPointSans","FS Albert",Calibri,Helvetica,"Trebuchet MS",Arial,sans-serif',
