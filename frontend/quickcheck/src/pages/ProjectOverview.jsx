@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { List, Button} from '@chakra-ui/react';
+import { List, Button } from '@chakra-ui/react';
 import { useToast } from '@chakra-ui/react';
 
 //utisl
@@ -7,7 +7,7 @@ import { api } from '../utils/apiClient';
 
 //components
 import Page from '../components/Page';
-import ProjectCard from "../components/ProjectCard.jsx"
+import ProjectCard from '../components/ProjectCard.jsx';
 
 export const mocks = {
   newProject: {

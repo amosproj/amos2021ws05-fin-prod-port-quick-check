@@ -1,9 +1,8 @@
 import React from 'react';
-import { Flex, Heading, Spacer, Avatar,  useColorModeValue } from '@chakra-ui/react';
+import { Flex, Heading, Spacer, Avatar, useColorModeValue } from '@chakra-ui/react';
 
 //components
 import { ColorModeSwitcher } from './ColorModeSwitcher';
-
 
 export default function MenuBar({ title }) {
   const bgGradient = useColorModeValue(

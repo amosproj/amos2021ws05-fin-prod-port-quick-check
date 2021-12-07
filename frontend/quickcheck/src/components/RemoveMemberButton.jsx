@@ -9,10 +9,9 @@ import {
   PopoverHeader,
   PopoverBody,
 } from '@chakra-ui/react';
-import { DeleteIcon} from '@chakra-ui/icons';
+import { DeleteIcon } from '@chakra-ui/icons';
 
 //components
-
 
 export default function RemoveButton({ onRemove }) {
   const { onOpen, onClose, isOpen } = useDisclosure();

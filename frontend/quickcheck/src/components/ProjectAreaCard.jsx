@@ -15,7 +15,6 @@ import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
 
 //components
 
-
 export default function ProjectCard({ project }) {
   return (
     <Card layerStyle="card_bordered">

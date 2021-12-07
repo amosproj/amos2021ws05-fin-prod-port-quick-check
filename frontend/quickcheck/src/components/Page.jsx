@@ -3,7 +3,7 @@ import React from 'react';
 import { Flex, VStack, useColorModeValue } from '@chakra-ui/react';
 
 //components
-import MenuBar from "./MenuBar.jsx";
+import MenuBar from './MenuBar.jsx';
 
 export default function Page(props) {
   const bgColor = useColorModeValue('gray.200', 'gray.900');

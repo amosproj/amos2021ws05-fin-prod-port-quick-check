@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link, Navigate } from 'react-router-dom';
-import { ChakraProvider} from '@chakra-ui/react';
+import { ChakraProvider } from '@chakra-ui/react';
 import { StoreProvider } from 'easy-peasy';
 
 //Theme
@@ -12,7 +12,6 @@ import Login from './pages/Login';
 import ProjectOverview from './pages/ProjectOverview';
 import Project from './pages/Project';
 import TestRange from './pages/TestRange';
-
 
 function App() {
   return (

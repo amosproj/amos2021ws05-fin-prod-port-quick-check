@@ -1,6 +1,6 @@
 import { Button, Heading, VStack, Text, Spacer, Link } from '@chakra-ui/react';
 import Card from '../components/Card';
-import {mocks} from "../pages/ProjectOverview.jsx";
+import { mocks } from '../pages/ProjectOverview.jsx';
 
 export default function ProjectCard({ project }) {
   return (

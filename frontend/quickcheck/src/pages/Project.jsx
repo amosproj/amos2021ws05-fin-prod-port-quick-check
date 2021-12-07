@@ -12,8 +12,7 @@ import Page from '../components/Page';
 import ProductAreaList from '../components/ProductAreaList.jsx';
 import ShowEditable from '../components/Editable.jsx';
 import Card from '../components/Card';
-import CardHeader from "../components/CardHeader.jsx";
-
+import CardHeader from '../components/CardHeader.jsx';
 
 const mockProject = {
   projectID: 1,

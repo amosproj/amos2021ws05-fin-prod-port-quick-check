@@ -1,11 +1,5 @@
 import { React } from 'react';
-import {
-  Button,
-  HStack,
-  Heading,
-  Spacer,
-} from '@chakra-ui/react';
-
+import { Button, HStack, Heading, Spacer } from '@chakra-ui/react';
 
 export default function ProductArea({ productArea, RemoveProjectAreaButton }) {
   return (

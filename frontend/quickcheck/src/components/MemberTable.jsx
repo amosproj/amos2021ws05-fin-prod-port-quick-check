@@ -1,16 +1,10 @@
 import React from 'react';
-import {
-  HStack,
-  useColorModeValue,
-  Heading,
-  List,
-} from '@chakra-ui/react';
-
+import { HStack, useColorModeValue, Heading, List } from '@chakra-ui/react';
 
 //components
-import AddButton from "./AddMemberButton.jsx";
-import RemoveButton from "./RemoveMemberButton.jsx";
-import MemberRow from "./MemberRow.jsx";
+import AddButton from './AddMemberButton.jsx';
+import RemoveButton from './RemoveMemberButton.jsx';
+import MemberRow from './MemberRow.jsx';
 
 // Assumption: ProjectMembers is a list of object: {id, role}
 export default function MemberTable({ editMode, members, handleChange }) {

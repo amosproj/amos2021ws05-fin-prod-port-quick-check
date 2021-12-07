@@ -9,15 +9,14 @@ import {
   ModalCloseButton,
   ModalHeader,
   Button,
-  IconButton
+  IconButton,
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 
 //components
 import { Selection } from './Inputs.jsx';
 
-
-import {FetchAllAreas} from "./FetchAllAreas.jsx"
+import { FetchAllAreas } from './FetchAllAreas.jsx';
 
 export default function AddProjectAreaButton({ onAdd }) {
   const { isOpen, onOpen, onClose } = useDisclosure();

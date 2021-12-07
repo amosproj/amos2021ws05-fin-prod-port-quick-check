@@ -25,8 +25,6 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { CloseIcon, EditIcon, CheckIcon } from '@chakra-ui/icons';
 
-
-
 //components
 import { api } from '../utils/apiClient';
 import Page from '../components/Page';

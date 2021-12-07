@@ -1,4 +1,4 @@
-import { React} from 'react';
+import { React } from 'react';
 import {
   useDisclosure,
   Button,
@@ -12,9 +12,6 @@ import {
 import { DeleteIcon } from '@chakra-ui/icons';
 
 //components
-
-
-
 
 export default function RemoveProjectAreaButton({ onRemove }) {
   const { onOpen, onClose, isOpen } = useDisclosure();

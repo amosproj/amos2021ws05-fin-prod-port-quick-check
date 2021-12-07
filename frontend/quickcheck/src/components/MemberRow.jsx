@@ -1,15 +1,9 @@
-
 import React from 'react';
-import {
-  HStack,
-  Text,
-  useColorModeValue,
-} from '@chakra-ui/react';
+import { HStack, Text, useColorModeValue } from '@chakra-ui/react';
 
 //components
 import { roles } from '../utils/const';
 import { Selection } from './Inputs.jsx';
-
 
 export default function MemberRow({ editMode, member, onChangeRole, removeButton }) {
   const bg = useColorModeValue('gray.200', 'gray.600');
