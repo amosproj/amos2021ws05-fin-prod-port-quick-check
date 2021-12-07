@@ -5,7 +5,7 @@ import { api } from '../utils/apiClient';
 import MemberCard from '../components/MemberCard';
 import Card from '../components/Card.jsx';
 import ProjectAreaCard from '../components/ProjectAreaCard.jsx';
-import ShowEditable from '../components/editable.jsx';
+import ShowEditable from '../components/Editable.jsx';
 import Page from '../components/Page';
 
 const mocks = {
@@ -49,27 +49,6 @@ const mocks = {
     },
   ],
 };
-
-function ProjectCard(props) {
-  return (
-    <Card barColor="blue.500">
-      <Stack>
-        <Text
-          color="green.500"
-          textTransform="uppercase"
-          fontWeight={800}
-          fontSize="sm"
-          letterSpacing={1.1}
-        >
-          {props.type}
-        </Text>
-        <Heading fontSize="2xl" fontFamily="body">
-          <ShowEditable text={props.title} editable={props.editable}></ShowEditable>
-        </Heading>
-      </Stack>
-    </Card>
-  );
-}
 
 export default function ManageProject(prop) {
   const [projectData, setProjectData] = useState([]);
@@ -129,7 +108,6 @@ export default function ManageProject(prop) {
       </Card>
 
       <MemberCard members={mocks.project.members} editable={editable} />
-
       <ProjectAreaCard areas={mocks.project.productAreas} editable={editable} />
 
       <EditButtons />

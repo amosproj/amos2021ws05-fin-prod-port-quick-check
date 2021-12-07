@@ -22,11 +22,15 @@ import {
   Input,
 } from '@chakra-ui/react';
 import React, { useState, useEffect } from 'react';
-import Page from '../components/Page';
 import { useParams } from 'react-router-dom';
-import { api } from '../utils/apiClient';
-import Card from '../components/Card';
 import { CloseIcon, EditIcon, CheckIcon } from '@chakra-ui/icons';
+
+
+
+//components
+import { api } from '../utils/apiClient';
+import Page from '../components/Page';
+import Card from '../components/Card';
 
 function MemberTable({ members }) {
   return (

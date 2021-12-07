@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-
-import Card from '../components/Card';
-import Page from '../components/Page';
-import { List, Button, Heading, VStack, Text, Spacer } from '@chakra-ui/react';
+import { List, Button} from '@chakra-ui/react';
 import { useToast } from '@chakra-ui/react';
 
+//utisl
 import { api } from '../utils/apiClient';
-import { Link } from 'react-router-dom';
 
-const mocks = {
+//components
+import Page from '../components/Page';
+import ProjectCard from "../components/ProjectCard.jsx"
+
+export const mocks = {
   newProject: {
     creatorID: '2375e026-d348-4fb6-b42b-891a76758d5d',
     projectName: 'Mock Project',
@@ -17,31 +18,6 @@ const mocks = {
   },
   role: 'Mock Consultant',
 };
-
-function ProjectCard({ project }) {
-  return (
-    <Card layerStyle="card_bordered">
-      <Heading color="primary" size="lg" align="center" w="40%" maxW="50%">
-        {project.projectName}
-      </Heading>
-      <Spacer />
-      <VStack p={2}>
-        <Text fontWeight="bolder" fontSize="md">
-          {mocks.role}
-        </Text>
-        <Text fontSize="sm" color="gray.400">
-          Role
-        </Text>
-      </VStack>
-      <Spacer />
-      <Link to={'' + project.projectID}>
-        <Button variant="wisper" size="lg" colorScheme="blue" align="center" w={24}>
-          open
-        </Button>
-      </Link>
-    </Card>
-  );
-}
 
 export default function ProjectOverview() {
   const [projectsData, setProjectsData] = useState([]);

@@ -6,7 +6,6 @@ export const ColorModeSwitcher = (props) => {
   const { toggleColorMode } = useColorMode();
   const text = useColorModeValue('dark', 'light');
   const SwitchIcon = useColorModeValue(MoonIcon, SunIcon);
-
   return (
     <IconButton
       size="lg"

@@ -1,20 +1,6 @@
-import {
-  Button,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverBody,
-  HStack,
-  Heading,
-  IconButton,
-  Spacer,
-  List,
-} from '@chakra-ui/react';
-import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
-
-//components
-
+import { Button, Heading, VStack, Text, Spacer, Link } from '@chakra-ui/react';
+import Card from '../components/Card';
+import {mocks} from "../pages/ProjectOverview.jsx";
 
 export default function ProjectCard({ project }) {
   return (

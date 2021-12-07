@@ -1,15 +1,18 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link, Navigate } from 'react-router-dom';
-import { ChakraProvider, DarkMode } from '@chakra-ui/react';
+import { ChakraProvider} from '@chakra-ui/react';
 import { StoreProvider } from 'easy-peasy';
 
+//Theme
+import store from './store';
+import theme from './styles/theme';
+
+//Pages
 import Login from './pages/Login';
 import ProjectOverview from './pages/ProjectOverview';
 import Project from './pages/Project';
 import TestRange from './pages/TestRange';
 
-import store from './store';
-import theme from './styles/theme';
 
 function App() {
   return (

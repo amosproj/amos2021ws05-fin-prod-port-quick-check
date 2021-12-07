@@ -1,14 +1,19 @@
 import { Heading, Button, HStack } from '@chakra-ui/react';
 import MemberTable from '../components/MemberTable';
 import { React, useState, useEffect } from 'react';
-
-import ProductAreaList from '../components/ProjectAreaCard';
-import ShowEditable from '../components/editable.jsx';
-
-import Page from '../components/Page';
 import { useParams } from 'react-router-dom';
+
+//uitl
 import { api } from '../utils/apiClient';
+//pages
+import Page from '../components/Page';
+
+//components
+import ProductAreaList from '../components/ProductAreaList.jsx';
+import ShowEditable from '../components/Editable.jsx';
 import Card from '../components/Card';
+import CardHeader from "../components/CardHeader.jsx";
+
 
 const mockProject = {
   projectID: 1,
@@ -20,22 +25,6 @@ const mockProject = {
   ],
   productAreas: [1],
 };
-
-function CardHeader({ text, ...rest }) {
-  return (
-    <Heading
-      {...rest}
-      size="md"
-      align="center"
-      letterSpacing={1.5}
-      fontWeight={800}
-      color="gray.500"
-      py={2}
-    >
-      {text}
-    </Heading>
-  );
-}
 
 export default function Project(prop) {
   const [editMode, setEditMode] = useState(false);
