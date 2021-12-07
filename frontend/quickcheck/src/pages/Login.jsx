@@ -83,10 +83,10 @@ function Login() {
         </FormControl>
         <Link to="/projects">
           <Button
+          variant='primary'
+          size='lg'
             type="submit"
-            bg="teal.400"
             onClick={handleSubmit}
-            _hover={{ bg: 'teal.300' }}
             w="20"
           >
             Login

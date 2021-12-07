@@ -1,8 +1,9 @@
 import { extendTheme } from '@chakra-ui/react';
 
 import { ButtonStyles as Button } from './Button';
-import { FlexStyle as Flex } from './FlexStyle';
-import { darken, whiten, mode } from '@chakra-ui/theme-tools';
+import { TextStyles as Text } from './Text';
+import layerStyles from './layerStyles';
+// import { darken, whiten, mode } from '@chakra-ui/theme-tools';
 
 const config = {
   initialColorMode: 'light',
@@ -23,7 +24,7 @@ const colors = {
   },
 
   // BearingPoint style guide: https://www.bearingpoint.com/styleguide/en/general/#Typography
-  bearingpoint: {
+  bp: {
     green: '#93D522',
     lblue: '#29D5FF',
     blue: '#033E8E',
@@ -35,7 +36,6 @@ const colors = {
     warning: '#FFF300',
     alert: '#D52B1E',
     // background
-    white: '#ffffff',
     lightgray: '#f5f5f5',
     gray: '#e8e8e8',
     dark: '#313131',
@@ -44,49 +44,23 @@ const colors = {
     primary: '#29D5FF',
     secondary: '#6C03A8',
   },
-  bg: {
-    100: '#ffffff',
-    200: '#f5f5f5',
-    300: '#e8e8e8',
-    400: '#313131',
-  },
-
-  bg: {
-    lighter: '#ffffff',
-    light: '#f5f5f5',
-    dark: '#313131',
-    darker: '#111111',
-  },
   text: '#222222',
+  primary: '#29D5FF',
+  secondary: '#6C03A8',
+
 };
 
 // check out  https://github.com/chakra-ui/chakra-ui/issues/591
 // for info on how to change default light/dark colors of components
 
 const components = {
-  Button,
-  Flex,
+  Button, Text,
   Heading: {
     baseStyle: {
-      color: 'bp.lblue',
     },
-  },
-  Text: {
-    color: 'text',
   },
 };
 
-const layerStyles = {
-  card_light: {
-    bg: whiten('gray.200', 80),
-    border: '1px',
-    borderColor: 'black',
-  },
-  card_dark: {
-    bg: 'gray.200',
-    border: '1px',
-  },
-};
 
 const fonts = {
   heading: '"BearingPointSans","FS Albert",Calibri,Helvetica,"Trebuchet MS",Arial,sans-serif',

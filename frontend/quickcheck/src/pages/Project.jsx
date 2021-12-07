@@ -73,17 +73,18 @@ export default function Project(prop) {
     if (editMode) {
       return (
         <HStack>
-          <Button size="md" onClick={() => setEditMode(false)}>
+          <Button variant='wisper' size="md" onClick={() => setEditMode(false)}>
             Cancel
           </Button>
-          <Button size="md" onClick={() => setEditMode(false)}>
+          <Button variant='primary' size="md" onClick={() => setEditMode(false)}>
             Confirm
           </Button>
+
         </HStack>
       );
     } else {
       return (
-        <Button size="md" onClick={() => setEditMode(true)}>
+        <Button variant='wisper' size="md" onClick={() => setEditMode(true)}>
           Edit
         </Button>
       );
@@ -92,7 +93,7 @@ export default function Project(prop) {
 
   return (
     <Page title="Manage Project">
-      <Card barColor="blue.500">
+      <Card barColor="primary">
         <CardHeader text="PROJECT:" />
 
         <Heading size="lg" fontFamily="body">
@@ -100,12 +101,12 @@ export default function Project(prop) {
         </Heading>
       </Card>
 
-      <Card barColor="teal.500" direction="column">
+      <Card direction="column">
         <CardHeader text="MEMBERS" />
         <MemberTable editMode={editMode} members={projectData.members} handleChange={setMembers} />
       </Card>
 
-      <Card barColor="teal.500" direction="column">
+      <Card direction="column">
         <CardHeader text="PRODUCT AREAS" />
         <ProductAreaList
           areaIDs={projectData.productAreas}

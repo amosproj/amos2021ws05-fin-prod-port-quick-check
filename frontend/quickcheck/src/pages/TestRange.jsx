@@ -35,29 +35,30 @@ export default function TestRange() {
         </Box>
       </Box>
       <Card variant="brand"></Card>
-      <Flex w="50%" direction="row" justifyContent="center">
-        <Button2 />
-        <Button2 />
-        <Button2 />
+
+
+
+
+      <Flex variant="brand" p="2">
+        <Button size='lg' variant="primary">click me</Button>
+        <Button shadow='outline'  size='lg' variant="primary">click me</Button>
+        <Button isLoading size='lg' variant="primary">click me</Button>
+        <Button disabled size='lg' variant="primary">click me</Button>
       </Flex>
 
-      <Flex
-        border="2px"
-        borderColor="black"
-        borderRadius="md"
-        direction="column"
-        justifyContent="center"
-        p={16}
-      >
-        <Button2 />
-        <Button2 />
-        <Button2 />
+      
+      <Flex variant="brand" p="2">
+        <Button size='lg' variant="secondary">click me</Button>
+        <Button shadow='outline'  size='lg' variant="secondary">click me</Button>
+        <Button isLoading size='lg' variant="secondary">click me</Button>
+        <Button disabled size='lg' variant="secondary">click me</Button>
       </Flex>
 
       <Flex variant="brand" p="2">
-        <Button variant="secondary">fii</Button>
-        <Button2 />
-        <Button2 />
+        <Button size='lg' variant="wisper">click me</Button>
+        <Button shadow='outline' focus size='lg' variant="wisper">click me</Button>
+        <Button isLoading size='lg' variant="wisper">click me</Button>
+        <Button disabled size='lg' variant="wisper">click me</Button>
       </Flex>
     </Page>
   );

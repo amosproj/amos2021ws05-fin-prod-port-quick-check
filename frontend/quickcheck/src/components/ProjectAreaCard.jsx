@@ -26,7 +26,7 @@ import {
   CircularProgressLabel,
   List,
 } from '@chakra-ui/react';
-import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
+import { AddIcon, DeleteIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import { Selection } from './Inputs.jsx';
 
 function AddButton({ onAdd }) {
@@ -47,18 +47,15 @@ function AddButton({ onAdd }) {
         icon={<AddIcon />}
         aria-label="Add Product Area"
         onClick={onOpen}
-        size="md"
-        colorScheme="green"
-        boxShadow={'2xl'}
-        rounded={'md'}
-        w="50px"
-        p={3}
+        variant='primary'
+        size='lg'
+        w={16}
       ></IconButton>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader color="teal.300">{header}</ModalHeader>
+          <ModalHeader color="primary">{header}</ModalHeader>
           <ModalCloseButton />
 
           <ModalBody px={10}>
@@ -71,7 +68,7 @@ function AddButton({ onAdd }) {
 
           <ModalFooter>
             <Button
-              colorScheme="blue"
+              variant='primary'
               mr={3}
               onClick={(e) => {
                 onAdd(getAreaFromName(selectedArea).id);
@@ -80,7 +77,7 @@ function AddButton({ onAdd }) {
             >
               Save
             </Button>
-            <Button onClick={onClose}>Cancel</Button>
+            <Button onClick={onClose} variant='wisper'>Cancel</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
@@ -96,11 +93,8 @@ function RemoveButton({ onRemove }) {
         <IconButton
           icon={<DeleteIcon />}
           onClick={onOpen}
+          variant='wisper'
           size="md"
-          color="red.900"
-          bg="red.400"
-          isRound="true"
-          // w={16}
         />
       </PopoverTrigger>
       <PopoverContent>
@@ -129,28 +123,13 @@ function ProductArea({ productArea, removeButton }) {
   return (
     <>
       <HStack spacing={3}>
-        <LinkBox as="button" w="full">
-          <Flex
-            bg="blue.700"
-            w="full"
-            rounded="lg"
-            p={3}
-            align="center"
-            _hover={{ boxShadow: 'md', bg: 'blue.600' }}
-            onClick={<Link to="/projects" />}
-          >
-            <Spacer />
-            <LinkOverlay href="/projects"></LinkOverlay>
-            <Heading size="md" align="center">
-              {productArea.name}
-            </Heading>
-
-            <Spacer />
-            <CircularProgress mx={3} value={50} color="pink.400">
-              <CircularProgressLabel>{50}%</CircularProgressLabel>
-            </CircularProgress>
-          </Flex>
-        </LinkBox>
+        <Button as="a" variant="secondary" rounded="3xl" href="/projects" w="full" py={9}>
+          <Spacer />
+          <Heading size="lg" align="center">
+            {productArea.name}
+          </Heading>
+          <Spacer />
+        </Button>
         {removeButton}
       </HStack>
     </>
@@ -158,10 +137,9 @@ function ProductArea({ productArea, removeButton }) {
 }
 
 const areaMock = {
-  0: { id: 0, name: 'Kredit (p)', category: 'Privat' },
-  1: { id: 1, name: 'Kredit (b)', category: 'Business' },
-  2: { id: 2, name: 'Kunden (p)', category: 'Privat' },
-  3: { id: 3, name: 'Kunden (b)', category: 'Business' },
+  0: { id: 0, name: 'Kredit', category: 'Privat' },
+  1: { id: 1, name: 'Kunden', category: 'Business' },
+  2: { id: 2, name: 'Payments', category: 'Privat' },
 };
 
 const fetchAllAreas = () => {
