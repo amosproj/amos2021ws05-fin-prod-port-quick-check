@@ -14,7 +14,7 @@ about: Suggest new feature (using user story)
 
 ## Definition of done
 * Approved by product owner
-* 50%-60% test coverage
-* No syntax or runtime errors emerged
-* Code has been peer reviewed and approved
 * Tests have been written (e.g. Unit test, integration test etc..)
+* Code has been peer reviewed and approved
+* No syntax or runtime errors emerged
+* Code has to be included in the release candidate
