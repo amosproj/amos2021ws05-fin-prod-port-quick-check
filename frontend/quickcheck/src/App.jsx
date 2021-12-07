@@ -15,7 +15,6 @@ import theme from './styles/theme';
 function App() {
   return (
     <div>
-
       <ChakraProvider theme={theme}>
         <StoreProvider store={store}>
           <Router>
@@ -26,11 +25,11 @@ function App() {
               <Route path="login" element={<Login />} />
               <Route path="projects" element={<ProjectOverview />} />
               <Route path="projects/:id" element={<Project />} />
-                <Route path="products" element={<ProductOverview />}/>
+              <Route path="products" element={<ProductOverview />} />
             </Routes>
             <Link to="login"> [Login] </Link>
             <Link to="projects"> [Projects] </Link>
-  <Link to="products"> [Products] </Link>
+            <Link to="products"> [Products] </Link>
           </Router>
         </StoreProvider>
       </ChakraProvider>
