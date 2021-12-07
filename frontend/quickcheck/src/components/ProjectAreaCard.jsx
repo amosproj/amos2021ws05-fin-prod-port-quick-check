@@ -159,16 +159,15 @@ export default function ProductAreaList({ editMode, areaIDs, handleChange }) {
 
   return (
     <>
-      <List w="50%" align='center' spacing={4} pb={5}>
+      <List w="50%" align="center" spacing={4} pb={5}>
         {areaIDs.map((id) => (
           <ProductArea
             productArea={fetchArea(id)}
             removeButton={editMode ? <RemoveButton onRemove={handleRemoveArea(id)} /> : <div />}
           />
-          ))}
-          {editMode ? <AddButton onAdd={handleAddArea}></AddButton> : <div />}
+        ))}
+        {editMode ? <AddButton onAdd={handleAddArea}></AddButton> : <div />}
       </List>
-
     </>
   );
 }
