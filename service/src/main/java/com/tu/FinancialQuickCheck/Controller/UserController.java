@@ -66,11 +66,11 @@ public class UserController {
             throw new BadRequest("User cannot be updated due to missing/incorrect information.");
         }
     }
-
+    **/
 
     @DeleteMapping("/{userID}")
     void deleteByUserId(@PathVariable UUID userID){
         service.deleteUserById(userID);
-    }**/
+    }
 
 }

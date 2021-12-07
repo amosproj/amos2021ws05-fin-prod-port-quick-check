@@ -3,6 +3,7 @@ package com.tu.FinancialQuickCheck.Controller;
 import com.tu.FinancialQuickCheck.dto.UserDto;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,6 +35,8 @@ public class UserControllerTest{
 
     private String preUserBody =  "{\"userName\":\"preUser\", \"userEmail\":\"preUser@mail.com\", \"password\":\"1234\"}";
     private String testUserBody = "{\"userName\":\"testUser\", \"userEmail\":\"testUser@mail.com\", \"password\":\"4321\"}";
+    private String testUserBodyInvalidEmail = "{\"userName\":\"testUser\", \"userEmail\":\"testUsermail.com\", \"password\":\"4321\"}";
+    private String testUserBodyMissingPW = "{\"userName\":\"testUser\", \"userEmail\":\"testUsermail.com\", \"password\":\"\"}";
     private String nonExistentUser = "{\"userName\":\"user404\", \"userEmail\":\"user404@mail.com\", \"password\":\"abcdefg\"}";
 
 
@@ -59,7 +62,7 @@ public class UserControllerTest{
 
 
     //delete preUser
-    //@AfterEach
+    @AfterEach
     public void cleanup(){
 
         HttpHeaders headers = new HttpHeaders();
@@ -90,7 +93,40 @@ public class UserControllerTest{
                 String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+    }
 
+    @Test
+    public void postNewUserInvalidEmail(){
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<String> request = new HttpEntity<>(testUserBodyInvalidEmail, headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                host + port + users,
+                HttpMethod.POST,
+                request,
+                String.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
+    public void postNewUserMissingPW(){
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<String> request = new HttpEntity<>(testUserBodyMissingPW, headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                host + port + users,
+                HttpMethod.POST,
+                request,
+                String.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     @Test
@@ -137,7 +173,8 @@ public class UserControllerTest{
 
     }
 
-    //@Test
+    @Test
+    @Disabled
     public void updateUserById(){
 
         HttpHeaders headers = new HttpHeaders();
@@ -188,7 +225,7 @@ public class UserControllerTest{
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
-    /**@Test
+    @Test
     public void updateNonExistingUserByEmail(){
 
         HttpHeaders headers = new HttpHeaders();
@@ -205,6 +242,6 @@ public class UserControllerTest{
                 String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-    }**/
+    }
 
 }
