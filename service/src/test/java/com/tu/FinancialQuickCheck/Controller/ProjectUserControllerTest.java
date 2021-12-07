@@ -102,7 +102,7 @@ public class ProjectUserControllerTest {
         String tmp = bodyStringList[2].split(":")[1];
         testUserID = tmp.substring(1, tmp.length()-1);
 
-        System.out.println("Get UserMail: " + testUserID);
+        System.out.println("Get UserID: " + testUserID);
     }
 
 
@@ -146,7 +146,7 @@ public class ProjectUserControllerTest {
         );
 
         ResponseEntity<String> response = restTemplate.exchange(
-                host + port + projects + "/" + testProjectID + users + "/" + "preUser@mail.com",
+                host + port + projects + "/" + testProjectID + users,
                 HttpMethod.POST,
                 request,
                 String.class);
@@ -170,7 +170,7 @@ public class ProjectUserControllerTest {
         );
 
         ResponseEntity<String> response = restTemplate.exchange(
-                host + port + projects + "/" + testProjectID + users + "/" + "preUser@mail.com",
+                host + port + projects + "/" + testProjectID + users,
                 HttpMethod.POST,
                 request,
                 String.class);
