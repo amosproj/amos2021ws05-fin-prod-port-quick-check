@@ -1,41 +1,89 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Input, Heading, Button, Text } from '@chakra-ui/react';
-import { useStoreState, useStoreActions } from 'easy-peasy';
+import { Box, Input, Wrap, Flex, Heading, Button, Text, useColorModeValue } from '@chakra-ui/react';
+import Card from '../components/Card';
 
-const Child = () => {
-  const project = useStoreState((state) => state.project);
+import Page from '../components/Page';
 
+export const Button2 = () => {
   return (
-    <Box>
-      <Text>project name: {project.projectName} (in child component)</Text>
-    </Box>
+    <Button variant="card" w="100px">
+      button 2
+    </Button>
   );
 };
 
 export default function TestRange() {
-  const project = useStoreState((state) => state.project);
-  const updateProject = useStoreActions((actions) => actions.updateProject);
-  const fetchProject = useStoreActions((actions) => actions.fetchProject);
-
-  const [name, setName] = useState(project.projectName);
-
-  useEffect(() => {
-    fetchProject({ id: 1 });
-    console.log('rendered');
-  }, []);
+  const headingColor = useColorModeValue('blue', 'red');
 
   return (
-    <Box bg="gray.700" align="center" mt="20vh">
-      <Input
-        placeholder="project name"
-        value={name}
-        onChange={(e) => {
-          setName(e.target.value);
-        }}
-      />
-      <Button onClick={() => updateProject({ projectName: name })}>update project name</Button>
-      <Text>project: {JSON.stringify(project)}</Text>
-      <Child />
-    </Box>
+    <>
+      <Page>
+        <Box
+          align="center"
+          w="80%"
+          h="80%"
+          rounded="2xl"
+          bg="bg.300"
+          border="10px"
+          borderWidth="10px"
+          borderColor="red"
+        >
+          <Button rounded="3xl" m={3} colorScheme="brand">
+            button uses custom color, colorScheme is automatic but only works for buttons
+          </Button>
+          <Heading color={headingColor}>switching color for dark and bright</Heading>
+          <Box border="1px" borderColor="blue">
+            Card
+          </Box>
+        </Box>
+        <Card variant="brand"></Card>
+
+        <Flex variant="brand" p="2">
+          <Button size="lg" variant="primary">
+            click me
+          </Button>
+          <Button shadow="outline" size="lg" variant="primary">
+            click me
+          </Button>
+          <Button isLoading size="lg" variant="primary">
+            click me
+          </Button>
+          <Button disabled size="lg" variant="primary">
+            click me
+          </Button>
+        </Flex>
+
+        <Flex variant="brand" p="2">
+          <Button size="lg" variant="secondary">
+            click me
+          </Button>
+          <Button shadow="outline" size="lg" variant="secondary">
+            click me
+          </Button>
+          <Button isLoading size="lg" variant="secondary">
+            click me
+          </Button>
+          <Button disabled size="lg" variant="secondary">
+            click me
+          </Button>
+        </Flex>
+
+        <Flex variant="brand" p="2">
+          <Button size="lg" variant="wisper">
+            click me
+          </Button>
+          <Button shadow="outline" focus size="lg" variant="wisper">
+            click me
+          </Button>
+          <Button isLoading size="lg" variant="wisper">
+            click me
+          </Button>
+          <Button disabled size="lg" variant="wisper">
+            click me
+          </Button>
+        </Flex>
+      </Page>
+      <Box bg="red" w="full" h={3} roundedTop="lg" m="0"></Box>
+      <Flex bg="blue" w="full" h={20} roundedBottom="lg" m="0" align="center"></Flex>
+    </>
   );
 }

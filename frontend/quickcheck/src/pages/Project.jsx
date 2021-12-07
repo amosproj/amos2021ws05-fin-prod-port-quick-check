@@ -1,13 +1,14 @@
 import { Heading, Button, HStack } from '@chakra-ui/react';
+import MemberTable from '../components/MemberTable';
 import { React, useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useStoreState, useStoreActions } from 'easy-peasy';
 
 import ProductAreaList from '../components/ProjectAreaCard';
-import MemberTable from '../components/MemberTable';
+import ShowEditable from '../components/editable.jsx';
+
 import Page from '../components/Page';
+import { useParams } from 'react-router-dom';
+import { api } from '../utils/apiClient';
 import Card from '../components/Card';
-import { ConditionalInput } from '../components/Inputs';
 
 const mockProject = {
   projectID: 1,
@@ -20,42 +21,63 @@ const mockProject = {
   productAreas: [1],
 };
 
-function CardHeader({ text }) {
+function CardHeader({ text, ...rest }) {
   return (
-    <Heading size="md" align="center" letterSpacing={1.5} fontWeight={800} color="green.400" py={2}>
+    <Heading
+      {...rest}
+      size="md"
+      align="center"
+      letterSpacing={1.5}
+      fontWeight={800}
+      color="gray.500"
+      py={2}
+    >
       {text}
     </Heading>
   );
 }
 
-export default function Project() {
-  const project = useStoreState((state) => state.project);
-  const updateProject = useStoreActions((actions) => actions.updateProject);
-  const fetchProject = useStoreActions((actions) => actions.fetchProject);
+export default function Project(prop) {
+  const [editMode, setEditMode] = useState(false);
+  const [projectData, setprojectData] = useState({
+    projectID: 0,
+    projectName: '',
+    members: [],
+    productAreas: [],
+  });
 
-  const [editMode, setEditMode] = useState(true);
+  const handleChange = (key) => (value) => {
+    setprojectData({
+      ...projectData,
+      [key]: value,
+    });
+  };
+
+  const setMembers = handleChange('members');
+  const setProductAreas = handleChange('productAreas');
 
   const { id } = useParams();
+
   useEffect(() => {
-    // fetchProject({projectID: id})
-    updateProject(mockProject);
-  }, [editMode]);
+    // fetchProject();
+    setprojectData(mockProject);
+  }, []);
 
   const EditButtons = () => {
     if (editMode) {
       return (
         <HStack>
-          <Button size="md" onClick={() => setEditMode(false)}>
+          <Button variant="wisper" size="md" onClick={() => setEditMode(false)}>
             Cancel
           </Button>
-          <Button size="md" onClick={() => setEditMode(false)}>
+          <Button variant="primary" size="md" onClick={() => setEditMode(false)}>
             Confirm
           </Button>
         </HStack>
       );
     } else {
       return (
-        <Button size="md" onClick={() => setEditMode(true)}>
+        <Button variant="wisper" size="md" onClick={() => setEditMode(true)}>
           Edit
         </Button>
       );
@@ -64,26 +86,28 @@ export default function Project() {
 
   return (
     <Page title="Manage Project">
-      <Card barColor="blue.500">
-        <CardHeader text="PROJECT:" />
+      <Card barColor="primary" layerStyle="card_bar" justifyContent="center">
+        <CardHeader text="PROJECT:" mr={8} />
 
-        <ConditionalInput
-          fontStyle={{ fontSize: '3xl', fontWeight: '700' }}
-          editable={editMode}
-          value={project.projectName}
-          onChange={(val) => updateProject({ projectName: val })}
-        />
+        <Heading size="lg" fontFamily="body">
+          <ShowEditable text={projectData.projectName} editable={editMode}></ShowEditable>
+        </Heading>
       </Card>
 
       <Card direction="column">
         <CardHeader text="MEMBERS" />
-        <MemberTable editMode={editMode} />
+        <MemberTable editMode={editMode} members={projectData.members} handleChange={setMembers} />
       </Card>
 
       <Card direction="column">
         <CardHeader text="PRODUCT AREAS" />
-        <ProductAreaList editMode={editMode} />
+        <ProductAreaList
+          areaIDs={projectData.productAreas}
+          handleChange={setProductAreas}
+          editMode={editMode}
+        />
       </Card>
+
       <EditButtons />
     </Page>
   );
