@@ -22,17 +22,7 @@ const card_bordered = {
   },
 };
 
-const card_clickable = {
-  ...card,
-  border: '10px',
-  bg: 'primary',
-  rounded: '3xl',
-  color: 'white',
-  _hover: {
-    bg: 'bp.purple',
-  },
-};
 
-const layerStyles = { card, card_bordered, card_clickable, card_bar };
+const layerStyles = { card, card_bordered, card_bar };
 
 export default layerStyles;
