@@ -21,9 +21,17 @@ const mockProject = {
   productAreas: [1],
 };
 
-function CardHeader({ text }) {
+function CardHeader({ text, ...rest }) {
   return (
-    <Heading size="md" align="center" letterSpacing={1.5} fontWeight={800} color="green.400" py={2}>
+    <Heading
+      {...rest}
+      size="md"
+      align="center"
+      letterSpacing={1.5}
+      fontWeight={800}
+      color="gray.500"
+      py={2}
+    >
       {text}
     </Heading>
   );
@@ -47,22 +55,8 @@ export default function Project(prop) {
 
   const setMembers = handleChange('members');
   const setProductAreas = handleChange('productAreas');
-  // const setMembers = (newMembers) => {
-  //   // extra func because member card only knows the members
-  //   setprojectData({
-  //     ...projectData,
-  //     members: newMembers,
-  //   });
-  // };
 
   const { id } = useParams();
-  const fetchProject = () => {
-    api
-      .url('/projects/' + id)
-      .get()
-      .json((json) => setprojectData(json))
-      .catch(console.error);
-  };
 
   useEffect(() => {
     // fetchProject();
@@ -73,17 +67,17 @@ export default function Project(prop) {
     if (editMode) {
       return (
         <HStack>
-          <Button size="md" onClick={() => setEditMode(false)}>
+          <Button variant="wisper" size="md" onClick={() => setEditMode(false)}>
             Cancel
           </Button>
-          <Button size="md" onClick={() => setEditMode(false)}>
+          <Button variant="primary" size="md" onClick={() => setEditMode(false)}>
             Confirm
           </Button>
         </HStack>
       );
     } else {
       return (
-        <Button size="md" onClick={() => setEditMode(true)}>
+        <Button variant="wisper" size="md" onClick={() => setEditMode(true)}>
           Edit
         </Button>
       );
@@ -92,20 +86,20 @@ export default function Project(prop) {
 
   return (
     <Page title="Manage Project">
-      <Card barColor="blue.500">
-        <CardHeader text="PROJECT:" />
+      <Card barColor="primary" layerStyle="card_bar" justifyContent="center">
+        <CardHeader text="PROJECT:" mr={8} />
 
         <Heading size="lg" fontFamily="body">
           <ShowEditable text={projectData.projectName} editable={editMode}></ShowEditable>
         </Heading>
       </Card>
 
-      <Card barColor="teal.500" direction="column">
+      <Card direction="column">
         <CardHeader text="MEMBERS" />
         <MemberTable editMode={editMode} members={projectData.members} handleChange={setMembers} />
       </Card>
 
-      <Card barColor="teal.500" direction="column">
+      <Card direction="column">
         <CardHeader text="PRODUCT AREAS" />
         <ProductAreaList
           areaIDs={projectData.productAreas}

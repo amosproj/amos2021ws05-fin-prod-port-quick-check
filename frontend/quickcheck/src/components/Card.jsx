@@ -1,33 +1,22 @@
 import React from 'react';
-import { Box, Wrap } from '@chakra-ui/react';
+import { Flex, useColorModeValue } from '@chakra-ui/react';
 
-export default function Card(props) {
+export default function Card({ layerStyle, children, ...rest }) {
+  const bg = useColorModeValue('gray.50', 'gray.700');
+  const barColor = useColorModeValue('primary', 'secondary');
+
+  // use property gridGap={some_int} with have gap between children
+  // use justifyContent property to align items left, right, center, spaced out, spaced evenly
+  //      (check out https://medium.com/@lainakarosic/getting-started-with-css-flexbox-basics-58d875a574ce)
   return (
-    <Box
-      w={props.w || 'full'}
-      minW="12em"
-      maxW={props.maxW}
-      bg={props.bg || 'gray.700'}
-      p={3}
-      mb={6}
+    <Flex
+      {...rest}
+      bg={bg}
+      layerStyle={layerStyle || 'card'}
+      borderColor={layerStyle === 'card_bar' ? barColor : 'transparent'}
       align="center"
-      rounded="md"
-      boxShadow="md"
-      overflow="hidden"
-      _hover={{ boxShadow: '2xl' }}
     >
-      <Box h={2} bg={props.barColor} mt={-3} mx={-3} mb={props.barColor ? 3 : 0} pos={'relative'} />
-      <Wrap
-        wrap="wrap"
-        direction={props.direction || 'row'}
-        spacing={{ base: 2, md: 4 }}
-        px={4}
-        py={2}
-        align="center"
-        justify="center"
-      >
-        {props.children}
-      </Wrap>
-    </Box>
+      {children}
+    </Flex>
   );
 }
