@@ -71,7 +71,7 @@ function AddButton({ onAdd }) {
             >
               Save
             </Button>
-            <Button onClick={onClose} variant="wisper">
+            <Button onClick={onClose} variant="whisper">
               Cancel
             </Button>
           </ModalFooter>
@@ -86,7 +86,7 @@ function RemoveButton({ onRemove }) {
   return (
     <Popover isOpen={isOpen} onOpen={onOpen} onClose={onClose} isLazy={true} w="wrap">
       <PopoverTrigger>
-        <IconButton icon={<DeleteIcon />} onClick={onOpen} variant="wisper" size="md" />
+        <IconButton icon={<DeleteIcon />} onClick={onOpen} variant="whisper" size="md" />
       </PopoverTrigger>
       <PopoverContent>
         <PopoverHeader fontWeight="semibold">Confirm removing this User</PopoverHeader>

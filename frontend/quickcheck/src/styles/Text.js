@@ -21,6 +21,6 @@ export const TextStyles = {
   },
   // The default `size` or `variant` values
   defaultProps: {
-    // variant: 'wisper'
+    // variant: 'whisper'
   },
 };

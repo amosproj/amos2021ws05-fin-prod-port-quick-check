@@ -35,7 +35,7 @@ function ProjectCard({ project }) {
       </VStack>
       <Spacer />
       <Link to={'' + project.projectID}>
-        <Button variant="wisper" size="lg" colorScheme="blue" align="center" w={24}>
+        <Button variant="whisper" size="lg" colorScheme="blue" align="center" w={24}>
           open
         </Button>
       </Link>

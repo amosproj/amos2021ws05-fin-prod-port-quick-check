@@ -31,7 +31,7 @@ export const ButtonStyles = {
         bg: mode(whiten('secondary', 20), 'secondary')(props),
       },
     }),
-    wisper: (props) => ({
+    whisper: (props) => ({
       bg: 'transparent',
       border: '1px',
       px: '6',
@@ -44,6 +44,6 @@ export const ButtonStyles = {
   },
   // The default `size` or `variant` values
   defaultProps: {
-    // variant: 'wisper'
+    // variant: 'whisper'
   },
 };
