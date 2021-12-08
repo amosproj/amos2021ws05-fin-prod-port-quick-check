@@ -1,11 +1,11 @@
 import { Select } from '@chakra-ui/select';
 
-export function Selection(props) {
+export function Selection({ options, selected, onChange, ...rest }) {
   // required args: options, selected (option), onChange :updateFunction
   return (
-    <Select {...props} onChange={(e) => props.onChange(e.target.value)}>
-      {props.options.map((opt) => (
-        <option selected={opt === props.selected} value={opt}>
+    <Select {...rest} value={selected} onChange={onChange}>
+      {options.map((opt) => (
+        <option value={opt} key={opt}>
           {opt}
         </option>
       ))}
