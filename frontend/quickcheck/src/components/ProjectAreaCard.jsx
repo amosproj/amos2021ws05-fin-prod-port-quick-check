@@ -9,25 +9,19 @@ import {
   ModalCloseButton,
   ModalHeader,
   Button,
-  Flex,
   Popover,
   PopoverTrigger,
   PopoverContent,
   PopoverHeader,
   PopoverBody,
   HStack,
-  LinkOverlay,
   Heading,
-  Link,
   IconButton,
-  LinkBox,
   Spacer,
-  CircularProgress,
-  CircularProgressLabel,
   List,
 } from '@chakra-ui/react';
-import { AddIcon, DeleteIcon, ArrowForwardIcon } from '@chakra-ui/icons';
-import { Selection } from './Inputs.jsx';
+import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
+import { Selection } from './Selection.jsx';
 
 function AddButton({ onAdd }) {
   const { isOpen, onOpen, onClose } = useDisclosure();

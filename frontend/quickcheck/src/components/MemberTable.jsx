@@ -27,7 +27,7 @@ import {
 import { DeleteIcon, AddIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
 import { roles } from '../utils/const';
-import { Selection } from './Inputs.jsx';
+import { Selection } from './Selection.jsx';
 
 function AddButton(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
