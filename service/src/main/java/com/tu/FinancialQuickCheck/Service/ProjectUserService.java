@@ -63,16 +63,18 @@ public class ProjectUserService {
     }
 
 
-    public void createProjectUser(int projectID, String userID, ProjectUserDto projectUserDto){
+    public void createProjectUser(int projectID, ProjectUserDto projectUserDto){
 
         ProjectUserEntity entity = new ProjectUserEntity();
 
-        if(!userRepository.existsById(userID) || !projectRepository.existsById(projectID)){
-            throw new ResourceNotFound("User or project does not exist.");
-        }else{
+        if(!userRepository.existsById(projectUserDto.userEmail)){
+            throw new ResourceNotFound("User does not exist.");
+        } else if (!projectRepository.existsById(projectID)){
+            throw new ResourceNotFound("Project does not exist.");
+        } else {
             entity.projectUserId = new ProjectUserId(
                     projectRepository.findById(projectID).get(),
-                    userRepository.findById(userID).get()
+                    userRepository.findById(projectUserDto.userEmail).get()
                     );
             entity.role = projectUserDto.role;
 
@@ -81,14 +83,14 @@ public class ProjectUserService {
     }
 
 
-    public void updateProjectUser(int projectID, UUID userID, ProjectUserDto projectUserDto){
+    public void updateProjectUser(int projectID, ProjectUserDto projectUserDto){
 
         if(!projectUserRepository.existsById(new ProjectUserId(projectRepository.findById(projectID).get(),
-                userRepository.findById(userID.toString()).get()))){
+                userRepository.findById(projectUserDto.userEmail).get()))){
             throw new ResourceNotFound("User is not assigned to project.");
         }else{
             projectUserRepository.findById(new ProjectUserId(projectRepository.findById(projectID).get(),
-                    userRepository.findById(userID.toString()).get()))
+                    userRepository.findById(projectUserDto.userEmail).get()))
                     .map(
                         projectUser -> {
                             if(projectUserDto.role != null){

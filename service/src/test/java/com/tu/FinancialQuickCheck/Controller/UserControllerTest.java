@@ -3,6 +3,7 @@ package com.tu.FinancialQuickCheck.Controller;
 import com.tu.FinancialQuickCheck.dto.UserDto;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,10 +31,13 @@ public class UserControllerTest{
 
     private String host =  "http://localhost:";
     private String users = "/users";
+    private String email = "/email";
 
-    private String preUserBody =  "{\"username\":\"preUser\", \"email\":\"preUser@mail.com\", \"password\":\"1234\"}";
-    private String testUserBody = "{\"username\":\"testUser\", \"email\":\"testUser@mail.com\", \"password\":\"4321\"}";
-    private String nonExistentUser = "{\"username\":\"preUser\", \"email\":\"preUser@mail.com\", \"password\":\"abcdefg\"}";
+    private String preUserBody =  "{\"userName\":\"preUser\", \"userEmail\":\"preUser@mail.com\", \"password\":\"1234\"}";
+    private String testUserBody = "{\"userName\":\"testUser\", \"userEmail\":\"testUser@mail.com\", \"password\":\"4321\"}";
+    private String testUserBodyInvalidEmail = "{\"userName\":\"testUser\", \"userEmail\":\"testUsermail.com\", \"password\":\"4321\"}";
+    private String testUserBodyMissingPW = "{\"userName\":\"testUser\", \"userEmail\":\"testUsermail.com\", \"password\":\"\"}";
+    private String nonExistentUser = "{\"userName\":\"user404\", \"userEmail\":\"user404@mail.com\", \"password\":\"abcdefg\"}";
 
 
 
@@ -89,7 +93,40 @@ public class UserControllerTest{
                 String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+    }
 
+    @Test
+    public void postNewUserInvalidEmail(){
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<String> request = new HttpEntity<>(testUserBodyInvalidEmail, headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                host + port + users,
+                HttpMethod.POST,
+                request,
+                String.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
+    public void postNewUserMissingPW(){
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<String> request = new HttpEntity<>(testUserBodyMissingPW, headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                host + port + users,
+                HttpMethod.POST,
+                request,
+                String.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     @Test
@@ -102,16 +139,16 @@ public class UserControllerTest{
         HttpEntity<String> request = new HttpEntity<>("", headers);
 
         ResponseEntity<String> response = restTemplate.exchange(
-                host + port + users + "/email" + "/preUser@mail.com",
+                host + port + users + email + "/preUser@mail.com",
                 HttpMethod.GET,
                 request,
                 String.class);
 
         String[] bodyStringList = Objects.requireNonNull(response.getBody()).split(",");
 
-        assertThat(bodyStringList[1]).isEqualTo("\"username\":\"preUser\"");
-        assertThat(bodyStringList[2]).isEqualTo("\"email\":\"preUser@mail.com\"");
-        assertThat(bodyStringList[3]).isEqualTo("\"password\":null");
+        assertThat(bodyStringList[0]).isEqualTo("{\"userEmail\":\"preUser@mail.com\"");
+        assertThat(bodyStringList[1]).isEqualTo("\"userName\":\"preUser\"");
+        assertThat(bodyStringList[4]).isEqualTo("\"password\":null}");
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
@@ -127,7 +164,7 @@ public class UserControllerTest{
         HttpEntity<String> request = new HttpEntity<>("", headers);
 
         ResponseEntity<String> response = restTemplate.exchange(
-                host + port + users + "/email" + "/testUser404@mail.com",
+                host + port + users + email + "/testUser404@mail.com",
                 HttpMethod.GET,
                 request,
                 String.class);
@@ -137,6 +174,7 @@ public class UserControllerTest{
     }
 
     @Test
+    @Disabled
     public void updateUserById(){
 
         HttpHeaders headers = new HttpHeaders();
@@ -168,7 +206,7 @@ public class UserControllerTest{
 
     }
 
-   /** @Test
+   @Test
     public void updateUserByEmail(){
 
         HttpHeaders headers = new HttpHeaders();
@@ -179,15 +217,15 @@ public class UserControllerTest{
                 headers);
 
         ResponseEntity<String> response = restTemplate.exchange(
-                host + port + users + "/email" + "/preUser@mail.com",
+                host + port + users + email + "/preUser@mail.com",
                 HttpMethod.PUT,
                 request,
                 String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-    }**/
+    }
 
-    /**@Test
+    @Test
     public void updateNonExistingUserByEmail(){
 
         HttpHeaders headers = new HttpHeaders();
@@ -204,6 +242,6 @@ public class UserControllerTest{
                 String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-    }**/
+    }
 
 }

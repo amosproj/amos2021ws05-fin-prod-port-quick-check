@@ -109,9 +109,7 @@ paths:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/userProject'
+              $ref: '#/components/schemas/userProject'
       responses:
         201:
           description: "users successfully assigned to project"
@@ -193,14 +191,15 @@ components:
           type: string
     createProject:
         required:
-          - creatorID
+          - creator
           - projectName
           - productAreas
+          - members
         properties:
-          creatorID:
+          creator:
             type: string
-            description: UUID of user who creates project
-            example: "2375e026-d348-4fb6-b42b-891a76758d5d"
+            description: user email address
+            example: "test@test.com"
           projectName:
             type: string
             example: "DKB"
@@ -211,16 +210,20 @@ components:
             items:
               type: integer
               description: unique identifiers of product areas
+          members:
+            type: array
+            items:
+              $ref: '#/components/schemas/user'
     createdProject:
       properties:
         projectID:
           type: integer
           description: unique project ID
           example: 10
-        creatorID:
+        creator:
           type: string
-          description: UUID of user who creates project
-          example: "2375e026-d348-4fb6-b42b-891a76758d5d"
+          description: user email address
+          example: "test@test.com"
         projectName:
           type: string
           example: "DKB"
@@ -228,7 +231,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/productArea'
+
+
     updateProject:
+      required:
+        - members
       properties:
         projectName:
           type: string
@@ -239,15 +246,19 @@ components:
           example: [ 1, 2 ,3 ]
           items:
             type: integer
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/user'
     project:
       type: object
       properties:
         projectID:
           type: integer
-        creatorID:
+        creator:
           type: string
-          description: UUID of user who creates project
-          example: "2375e026-d348-4fb6-b42b-891a76758d5d"
+          description: user email address
+          example: "test@test.com"
         projectName:
           type: string
           example: "DKB"
@@ -265,9 +276,6 @@ components:
           type: string
         userName:
           type: string
-        userID:
-          type: string
-          format: uuid
         role:
           type: string
           required: true
@@ -299,11 +307,11 @@ components:
     deleteUserProject:
       type: object
       required:
-        - userID
+        - userEmail
       properties:
-        userID:
+        userEmail:
           type: string
-          example: "0fef539d-69be-4013-9380-6a12c3534c67"
+          example: "test@test.com"
           description: unique identifier of user
 
   responses:
