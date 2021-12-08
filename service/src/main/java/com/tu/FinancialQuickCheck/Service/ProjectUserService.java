@@ -114,8 +114,9 @@ public class ProjectUserService {
                 throw new ResourceNotFound("User is not assigned to project.");
             } else {
 
-                projectUserRepository.deleteById(new ProjectUserId(projectRepository.findById(projectID).get(),
-                        userRepository.findById(projectUserDto.userEmail).get()));
+                projectUserRepository.deleteById(new ProjectUserId(
+                        projectRepository.getById(projectID),
+                        userRepository.getById(projectUserDto.userEmail)));
             }
 
         } else {

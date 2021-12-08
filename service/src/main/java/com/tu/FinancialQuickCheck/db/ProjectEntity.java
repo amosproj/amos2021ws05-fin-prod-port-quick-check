@@ -29,4 +29,8 @@ public class ProjectEntity {
     public ProjectEntity(){
     }
 
+    public void removeProjectUser(ProjectUserEntity projectUser){
+        this.projectUserEntities.remove(projectUser);
+    }
+
 }

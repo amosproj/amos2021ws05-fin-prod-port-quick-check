@@ -31,6 +31,10 @@ public class ProjectServiceTest {
     ProductRepository productRepository;
     @Mock
     ProductAreaRepository productAreaRepository;
+    @Mock
+    UserRepository userRepository;
+    @Mock
+    ProjectUserRepository projectUserRepository;
 
     private ProjectService service;
 
@@ -50,7 +54,8 @@ public class ProjectServiceTest {
     public void init() {
         log.info("@BeforeEach - setup for Tests in ProjectServiceTest.class");
         // init ProjectService
-        service = new ProjectService(repository, productRepository, productAreaRepository);
+        service = new ProjectService(repository, productRepository, productAreaRepository, userRepository,
+                projectUserRepository);
         // init empty test object
         emptyProject = new ProjectDto();
         // init necessary information for test objects

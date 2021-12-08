@@ -10,7 +10,7 @@ import java.util.Objects;
 @Embeddable
 public class ProjectUserId implements Serializable {
 
-    @ManyToOne(targetEntity = ProjectEntity.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = ProjectEntity.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "projectid")
     private ProjectEntity projectid;
 

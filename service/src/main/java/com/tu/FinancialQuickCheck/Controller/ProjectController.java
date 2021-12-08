@@ -67,8 +67,13 @@ public class ProjectController {
     @PutMapping("/{projectID}")
     public void updateById(@RequestBody ProjectDto projectDto, @PathVariable int projectID) {
 
-        service.updateProject(projectDto, projectID);
+        if(projectDto.members == null){
+            throw new BadRequest("Input is missing/incorrect.");
+        }else{
+            ProjectDto out = service.updateProject(projectDto, projectID);
+        }
     }
+
 
 // TODO: auskommentiert lassen bisher keine Anforderung für diese Funktionalität
 //    @DeleteMapping("/{projectID}")

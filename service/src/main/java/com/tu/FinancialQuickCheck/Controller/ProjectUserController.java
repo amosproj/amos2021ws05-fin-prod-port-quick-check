@@ -36,9 +36,8 @@ public class ProjectUserController {
         service.updateProjectUser(projectID, projectUserDto);
     }
 
-    // TODO: implement delete
+
      @DeleteMapping(produces = "application/json")
-     @ResponseStatus(HttpStatus.CREATED)
      public void deleteProjectUser(@RequestBody ProjectUserDto projectUserDto,
                                   @PathVariable int projectID) {
         service.deleteProjectUser(projectID, projectUserDto);

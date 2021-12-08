@@ -3,17 +3,17 @@ package com.tu.FinancialQuickCheck.Service;
 import com.tu.FinancialQuickCheck.Exceptions.BadRequest;
 import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.db.*;
-import com.tu.FinancialQuickCheck.dto.ProductAreaDto;
-import com.tu.FinancialQuickCheck.dto.ProjectDto;
-import com.tu.FinancialQuickCheck.dto.SmallProjectDto;
-import com.tu.FinancialQuickCheck.dto.UserDto;
+import com.tu.FinancialQuickCheck.dto.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class ProjectService {
 
     @Autowired
@@ -28,12 +28,17 @@ public class ProjectService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ProjectUserRepository projectUserRepository;
+
 
     public ProjectService(ProjectRepository projectRepository, ProductRepository productRepository,
-                          ProductAreaRepository productAreaRepository) {
+                          ProductAreaRepository productAreaRepository, UserRepository userRepository, ProjectUserRepository projectUserRepository) {
 //        this.projectRepository = projectRepository;
 //        this.productRepository = productRepository;
 //        this.productAreaRepository = productAreaRepository;
+//        this.userRepository = userRepository;
+//        this.projectUserRepository = projectUserRepository;
     }
 
 
@@ -92,19 +97,7 @@ public class ProjectService {
 
             // assign members to projects
             newProject.projectUserEntities = new ArrayList<>();
-            // check if members exist
-            Set<UserDto> newUsers = new HashSet<>(projectDto.members);
-            for(UserDto member: newUsers){
-                Optional<UserEntity> u = userRepository.findById(member.userEmail);
-                if(u.isPresent()){
-                    ProjectUserEntity newUserProject = new ProjectUserEntity();
-                    newUserProject.projectUserId = new ProjectUserId(newProject, u.get());
-                    newUserProject.role = member.role;
-                    newProject.projectUserEntities.add(newUserProject);
-                }else{
-                    throw new ResourceNotFound("User does not exist.");
-                }
-            }
+            assignMembersToProject(projectDto.members, newProject);
 
             projectRepository.save(newProject);
 
@@ -145,13 +138,15 @@ public class ProjectService {
     }
 
 
+
     /**
      * updates an existing ProjectEntity in DB
-     * attributes that can be updated: projectName, productAreas
-     * attributes that can not be updated: members, creator_id, projectID
+     * attributes/relations that can be updated: projectName, productAreas, members
+     * attributes that can not be updated: creator, projectID
      * @param projectID unique identifier for ProjectEntity
-     * @param projectDto contains data that needs to changed
+     * @param projectDto contains data that needs to be updated
      */
+    @Transactional
     public ProjectDto updateProject(ProjectDto projectDto, int projectID) {
 
         if (!projectRepository.existsById(projectID)) {
@@ -181,6 +176,12 @@ public class ProjectService {
                 }
             }
 
+            // unassign existing users from project
+            projectUserRepository.deleteByProjectUserId_projectid(entity);
+            projectRepository.flush();
+            // assign new users to project
+            assignMembersToProject(projectDto.members, entity);
+
             projectRepository.save(entity);
             return new ProjectDto(entity.id, entity.name, entity.creator,
                    convertProductAreaEntities(entity.productEntities) , entity.projectUserEntities);
@@ -203,6 +204,24 @@ public class ProjectService {
         return new ArrayList<>(areas);
     }
 
+
+    private void assignMembersToProject(List<UserDto> members, ProjectEntity projectEntity){
+
+        // check if members exist
+        Set<UserDto> newUsers = new HashSet<>(members);
+        for(UserDto member: newUsers){
+            Optional<UserEntity> u = userRepository.findById(member.userEmail);
+            if(u.isPresent()){
+                ProjectUserEntity newUserProject = new ProjectUserEntity();
+                newUserProject.projectUserId = new ProjectUserId(projectEntity, u.get());
+                newUserProject.role = member.role;
+                projectEntity.projectUserEntities.add(newUserProject);
+            }else{
+                throw new ResourceNotFound("User does not exist.");
+            }
+        }
+
+    }
 
 // TODO: auskommentiert lassen bisher keine Anforderung dafür vorhanden
 //    public void deleteProject(int projectID) {
