@@ -13,11 +13,11 @@ import React from 'react';
 import { DeleteIcon } from '@chakra-ui/icons';
 // import { useEffect } from 'react';
 
-export default function ProductRow({ product, productsData, childToParent, editable }) {
-  const removeProduct = (product) => {
+export default function ProductRow({ product, productsData, removeButton}) {
+  /*const removeProduct = (product) => {
     const newProductsData = productsData.filter((p) => p.productName !== product.productName);
     childToParent(newProductsData);
-  };
+  };*/
 
   return (
     <div>
@@ -49,21 +49,9 @@ export default function ProductRow({ product, productsData, childToParent, edita
           </CircularProgress>
           <Spacer />
           <Input width={125} placeholder="Anmerkung" />
-          if (editable){' '}
-          {
-            <IconButton
-              icon={<DeleteIcon />}
-              onClick={() => {
-                removeProduct(product);
-              }}
-              colorScheme="teal"
-              variant="outline"
-              size="md"
-              color="white"
-              bg="red.700"
-              w={10}
-            />
-          }
+          {removeButton}
+         
+
         </HStack>
       </Box>
     </div>

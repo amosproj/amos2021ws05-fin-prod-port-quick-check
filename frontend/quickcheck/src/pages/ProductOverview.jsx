@@ -1,4 +1,4 @@
-import React, { useState, useRef} from 'react';
+import React, { useState, useRef } from 'react';
 import Page from '../components/Page';
 import {
   //Text,
@@ -22,7 +22,7 @@ import {
   VStack,
   Input,
 } from '@chakra-ui/react';
-import { AddIcon } from '@chakra-ui/icons';
+import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
 import Card from '../components/Card';
 import ProductRow from '../components/ProductRow';
 import uuid4 from 'uuid';
@@ -71,8 +71,8 @@ function AddButton(props) {
           <ModalCloseButton />
           <ModalBody px={10}>
             <FormControl>
-              <FormLabel pl={3}>Product</FormLabel>
-              <Input mb={6} placeholder="Product" onChange={(e) => setProductName(e.target.value)} />
+
+              <Input mb={6} placeholder="Product Name" onChange={(e) => setProductName(e.target.value)} />
             </FormControl>
           </ModalBody>
 
@@ -97,6 +97,24 @@ function AddButton(props) {
   );
 }
 
+function RemoveButton({onRemove, product}){
+  return(<div>
+    <IconButton
+              icon={<DeleteIcon />}
+              onClick={() => {
+                //onRemove();
+                onRemove(product);
+              }}
+              colorScheme="teal"
+              variant="outline"
+              size="md"
+              color="white"
+              bg="red.700"
+              w={10}
+            /></div>
+  );
+}
+
 /* function TextF(props) {
   return (
     <p>{props.product}</p>
@@ -110,7 +128,7 @@ export default function ProductOverview() {
   //const [input, setInput] = useState("");
   const refInputProd = useRef();
 
-  const handleClickAddButton = () => {
+  /*const handleClickAddButton = () => {
     const newProduct = {
       productName: refInputProd.current.value,
       productID: uuid4(),
@@ -120,7 +138,7 @@ export default function ProductOverview() {
 
     setProductsData([...productsData, newProduct]);
     refInputProd.current.value = null;
-  };
+  };*/
 
   const handleAddProduct = (productName) => {
     const newProduct = {
@@ -141,22 +159,21 @@ export default function ProductOverview() {
   const childToParent = (childdata) => {
     setProductsData(childdata);
   };
+  const varf = "DFGHJ";
+
+  const removeProduct = (product) => {
+    const newProductsData = productsData.filter((p) => p.productName !== product.productName);
+    setProductsData(newProductsData);
+  };
 
   const EditButtons = () => {
     if (editable) {
       return (
+
         <HStack>
-          <Input ref={refInputProd} placeholder="Product" />
+
           {editable ? <AddButton w={16} onAddProduct={handleAddProduct} /> : {}}
-          <IconButton
-            icon={<AddIcon />}
-            colorScheme="white"
-            bg="gray.700"
-            variant="outline"
-            size="md"
-            w={10}
-            onClick={handleClickAddButton}
-          ></IconButton>
+
           <Button size="md" onClick={() => setEditable(false)}>
             Cancel
           </Button>
@@ -164,6 +181,7 @@ export default function ProductOverview() {
             Confirm
           </Button>
         </HStack>
+
       );
     } else {
       return (
@@ -186,9 +204,9 @@ export default function ProductOverview() {
                 product={product}
                 key={uuid4()}
                 productsData={productsData}
-                childToParent={childToParent}
-                editable={editable}
-              ></ProductRow>
+                //childToParent={childToParent}
+                removeButton={editable ? <RemoveButton onRemove={removeProduct} product={product}/> : <div/>}
+              > </ProductRow>
             ))}
             <Button>Generate Results</Button>
           </VStack>
