@@ -1,9 +1,19 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef} from 'react';
 import Page from '../components/Page';
 import {
   //Text,
   //Box,
+  Modal,
+  ModalOverlay,
+  ModalHeader,
+  ModalContent,
+  ModalBody,
+  FormControl,
+  FormLabel,
+  ModalFooter,
+  ModalCloseButton,
   Button,
+  useDisclosure,
   //List,
   //Heading,
   HStack,
@@ -47,6 +57,46 @@ const products = [
   },
 ];
 
+function AddButton(props) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [productName, setProductName] = useState('');
+  const header = 'Add Product';
+  return (
+    <>
+      <IconButton icon={<AddIcon />} variant="primary" size="lg" {...props} onClick={onOpen} />
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader color="primary">{header}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody px={10}>
+            <FormControl>
+              <FormLabel pl={3}>Product</FormLabel>
+              <Input mb={6} placeholder="Product" onChange={(e) => setProductName(e.target.value)} />
+            </FormControl>
+          </ModalBody>
+
+          <ModalFooter py={5} px={10}>
+            <Button
+              variant="primary"
+              mx={3}
+              onClick={(e) => {
+                props.onAddProduct(productName);
+                onClose();
+              }}
+            >
+              Save
+            </Button>
+            <Button onClick={onClose} variant="wisper">
+              Cancel
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
+  );
+}
+
 /* function TextF(props) {
   return (
     <p>{props.product}</p>
@@ -72,6 +122,17 @@ export default function ProductOverview() {
     refInputProd.current.value = null;
   };
 
+  const handleAddProduct = (productName) => {
+    const newProduct = {
+      productName: productName,
+      productID: uuid4(),
+      projectID: 1, // Abfragen
+      productAreaID: 2, //Abfragen wo man sich befindet
+    };
+    setProductsData([...productsData, newProduct]);
+
+  }
+
   /*const handleRemoveProduct = () => {
     const newProductsData = productsData.filter((p) => p.productName !== refInputProd.current.value);
     setProductsData(newProductsData);
@@ -86,6 +147,7 @@ export default function ProductOverview() {
       return (
         <HStack>
           <Input ref={refInputProd} placeholder="Product" />
+          {editable ? <AddButton w={16} onAddProduct={handleAddProduct} /> : {}}
           <IconButton
             icon={<AddIcon />}
             colorScheme="white"
