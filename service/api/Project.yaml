@@ -234,6 +234,8 @@ components:
 
 
     updateProject:
+      required:
+        - members
       properties:
         projectName:
           type: string
