@@ -22,7 +22,7 @@ function ProductArea({ productArea }) {
 const RemoveButton = ({ handleRemove, ...buttonProps }) => {
   return (
     <ConfirmClick onConfirm={handleRemove} confirmPrompt="Remove this product area?">
-      <IconButton icon={<DeleteIcon/>} {...buttonProps} />
+      <IconButton icon={<DeleteIcon />} {...buttonProps} />
     </ConfirmClick>
   );
 };
@@ -54,7 +54,7 @@ export default function ProductAreaList({ editMode, areaIDs, handleChange }) {
           <Flex gridGap={5} w="full" align="center">
             <ProductArea key={id} productArea={fetchArea(id)} />
             {editMode ? (
-              <RemoveButton variant="whisper" size="lg" handleRemove={handleRemoveArea(id)}/>
+              <RemoveButton variant="whisper" size="lg" handleRemove={handleRemoveArea(id)} />
             ) : undefined}
           </Flex>
         ))}
