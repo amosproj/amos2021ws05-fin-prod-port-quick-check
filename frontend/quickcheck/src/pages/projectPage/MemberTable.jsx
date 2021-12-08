@@ -3,8 +3,8 @@ import { Text, useColorModeValue, IconButton, Heading, List, Flex } from '@chakr
 import { DeleteIcon } from '@chakra-ui/icons';
 
 import { roles } from '../../utils/const';
-import Selection from '../Selection.jsx';
-import ConfirmClick from '../ConfirmClick';
+import Selection from '../../components/Selection.jsx';
+import ConfirmClick from '../../components/ConfirmClick';
 import AddMemberButton from './AddMemberButton';
 
 function MemberRow({ editMode, member, onChangeRole, ...props }) {

@@ -5,7 +5,7 @@ import { StoreProvider } from 'easy-peasy';
 
 import Login from './pages/Login';
 import ProjectOverview from './pages/ProjectOverview';
-import Project from './pages/Project';
+import Project from './pages/projectPage/Page';
 import TestRange from './pages/TestRange';
 
 import store from './store';
