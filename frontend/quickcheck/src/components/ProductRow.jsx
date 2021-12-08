@@ -24,7 +24,6 @@ export default function ProductRow({ product, productsData, childToParent, edita
       <Box
         w="full"
         minW="15em"
-        bg="gray.600"
         p={3}
         mb={6}
         align="center"
@@ -39,12 +38,12 @@ export default function ProductRow({ product, productsData, childToParent, edita
             {product.productName}{' '}
           </Heading>
           <Spacer />
-          <Button bg={'gray.500'}> Economical Evaluation </Button>
+          <Button> Economical Evaluation </Button>
           <CircularProgress value={40} color="green.400">
             <CircularProgressLabel>40%</CircularProgressLabel>
           </CircularProgress>
           <Spacer />
-          <Button bg={'gray.500'}> Complexity Evaluation </Button>
+          <Button> Complexity Evaluation </Button>
           <CircularProgress value={40} color="green.400">
             <CircularProgressLabel>40%</CircularProgressLabel>
           </CircularProgress>

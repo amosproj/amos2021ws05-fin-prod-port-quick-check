@@ -60,7 +60,7 @@ function AddButton({ onAdd }) {
 
           <ModalBody px={10}>
             <Selection
-              placeholder="Select Poduct Area..."
+              placeholder="Select Product Area..."
               options={allAreas.map((e) => e.name)}
               onChange={setSelectedArea}
             />

@@ -128,7 +128,7 @@ export default function ProductOverview() {
                 editable={editable}
               ></ProductRow>
             ))}
-            <Button bg={'gray.500'}>Generate Results</Button>
+            <Button>Generate Results</Button>
           </VStack>
         </Card>
 
