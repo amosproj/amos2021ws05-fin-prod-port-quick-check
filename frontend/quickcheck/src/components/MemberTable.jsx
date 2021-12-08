@@ -16,18 +16,15 @@ import {
   ModalHeader,
   useColorModeValue,
   IconButton,
-  Popover,
-  PopoverTrigger,
   Heading,
-  PopoverContent,
-  PopoverHeader,
-  PopoverBody,
   List,
 } from '@chakra-ui/react';
 import { DeleteIcon, AddIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
 import { roles } from '../utils/const';
 import { Selection } from './Selection.jsx';
+import ConfirmClick from './ConfirmClick';
+
 
 function AddButton(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -76,35 +73,6 @@ function AddButton(props) {
   );
 }
 
-function RemoveButton({ onRemove }) {
-  const { onOpen, onClose, isOpen } = useDisclosure();
-  return (
-    <Popover isOpen={isOpen} onOpen={onOpen} onClose={onClose} isLazy={true} w="wrap">
-      <PopoverTrigger>
-        <IconButton icon={<DeleteIcon />} onClick={onOpen} size="md" variant="whisper" w={16} />
-      </PopoverTrigger>
-      <PopoverContent>
-        <PopoverHeader fontWeight="semibold">Confirm removing this User</PopoverHeader>
-        <PopoverBody>
-          <Button
-            colorScheme="red"
-            mx={1}
-            onClick={(e) => {
-              onRemove();
-              onClose();
-            }}
-          >
-            Remove
-          </Button>
-          <Button mx={1} onClick={onClose}>
-            Cancel
-          </Button>
-        </PopoverBody>
-      </PopoverContent>
-    </Popover>
-  );
-}
-
 function MemberRow({ editMode, member, onChangeRole, removeButton }) {
   const bg = useColorModeValue('gray.200', 'gray.600');
 
@@ -131,6 +99,14 @@ function MemberRow({ editMode, member, onChangeRole, removeButton }) {
     </HStack>
   );
 }
+
+const RemoveButton = ({ handleRemove, ...rest }) => {
+  return (
+    <ConfirmClick onConfirm={handleRemove} confirmPrompt="Remove this product area?">
+      <IconButton icon={<DeleteIcon />} {...rest} />
+    </ConfirmClick>
+  );
+};
 
 // Assumption: ProjectMembers is a list of object: {id, role}
 export default function MemberTable({ editMode, members, handleChange }) {
@@ -169,7 +145,7 @@ export default function MemberTable({ editMode, members, handleChange }) {
           member={member}
           editMode={editMode}
           onChangeRole={handleRoleChange(member)}
-          removeButton={<RemoveButton onRemove={handleRemoveMember(member)} />}
+          removeButton={<RemoveButton variant="whisper" w={16} handleRemove={handleRemoveMember(member)} />}
         ></MemberRow>
       ))}
     </List>

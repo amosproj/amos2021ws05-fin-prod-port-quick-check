@@ -22,7 +22,8 @@ import {
 } from '@chakra-ui/react';
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
 import { Selection } from './Selection.jsx';
-import ConfirmClick from './ConfirmPrompt.jsx';
+import ConfirmClick from './ConfirmClick.jsx';
+import Card from './Card.jsx';
 
 function AddButton({ onAdd }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -87,51 +88,27 @@ function AddButton({ onAdd }) {
   );
 }
 
-function RemoveButton({ onRemove }) {
-  const { onOpen, onClose, isOpen } = useDisclosure();
-  return (
-    <Popover isOpen={isOpen} onOpen={onOpen} onClose={onClose} isLazy={true} w="wrap">
-      <PopoverTrigger>
-        <IconButton icon={<DeleteIcon />} onClick={onOpen} variant="whisper" size="md" />
-      </PopoverTrigger>
-      <PopoverContent>
-        <PopoverHeader fontWeight="semibold">Confirm removing this User</PopoverHeader>
-        <PopoverBody>
-          <Button
-            colorScheme="red"
-            mx={1}
-            onClick={(e) => {
-              onRemove();
-              onClose();
-            }}
-          >
-            Remove
-          </Button>
-          <Button mx={1} onClick={onClose}>
-            Cancel
-          </Button>
-        </PopoverBody>
-      </PopoverContent>
-    </Popover>
-  );
-}
-
 function ProductArea({ productArea, removeButton }) {
   return (
     <>
-      <HStack spacing={3}>
-        <Button as="a" variant="secondary" rounded="3xl" href="/projects" w="full" py={9}>
-          <Spacer />
-          <Heading size="lg" align="center">
-            {productArea.name}
-          </Heading>
-          <Spacer />
-        </Button>
-        {removeButton}
-      </HStack>
+      <Button as="a" variant="secondary" rounded="3xl" href="/projects" w="full" py={9}>
+        <Spacer />
+        <Heading size="lg" align="center">
+          {productArea.name}
+        </Heading>
+        <Spacer />
+      </Button>
     </>
   );
 }
+
+const RemoveButton = ({ handleRemove, ...rest }) => {
+  return (
+    <ConfirmClick onConfirm={handleRemove} confirmPrompt="Remove this product area?">
+      <IconButton icon={<DeleteIcon />} {...rest} />
+    </ConfirmClick>
+  );
+};
 
 const areaMock = {
   0: { id: 0, name: 'Kredit', category: 'Privat' },
@@ -161,22 +138,12 @@ export default function ProductAreaList({ editMode, areaIDs, handleChange }) {
     <>
       <List w="50%" align="center" spacing={4} pb={5}>
         {areaIDs.map((id) => (
-          <ProductArea
-            key={id}
-            productArea={fetchArea(id)}
-            removeButton={
-              editMode ? (
-                <ConfirmClick
-                  onConfirm={handleRemoveArea(id)}
-                  confirmPrompt="Remove this product area?"
-                >
-                  <IconButton icon={<DeleteIcon />} variant="whisper" size="md" />
-                </ConfirmClick>
-              ) : (
-                <div />
-              )
-            }
-          />
+          <Card gridGap={5} w="full">
+            <ProductArea key={id} productArea={fetchArea(id)} />
+            {editMode ? (
+              <RemoveButton variant='whisper' size='lg' handleRemove={handleRemoveArea(id)}></RemoveButton>
+            ) : undefined}
+          </Card>
         ))}
         {editMode ? <AddButton onAdd={handleAddArea}></AddButton> : <div />}
       </List>
