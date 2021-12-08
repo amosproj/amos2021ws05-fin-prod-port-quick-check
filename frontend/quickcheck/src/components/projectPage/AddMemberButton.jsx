@@ -17,18 +17,17 @@ import {
 import { AddIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
 import { roles } from '../../utils/const';
-
 import Selection from '../Selection.jsx';
 
 
-export default function AddMemberButton(props) {
+export default function AddMemberButton({onAdd, ...buttonProps}) {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [email, setEmail] = useState('');
     const [role, setRole] = useState('Client');
     const header = 'Add new Member';
     return (
       <>
-        <IconButton icon={<AddIcon />} {...props} onClick={onOpen}/>
+        <IconButton icon={<AddIcon />} {...buttonProps} aria-label="Add new Member" onClick={onOpen}/>
   
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
@@ -52,7 +51,7 @@ export default function AddMemberButton(props) {
                 variant="primary"
                 mx={3}
                 onClick={(e) => {
-                  props.onAddMember({ email: email, role: role });
+                  onAdd({ email: email, role: role });
                   onClose();
                 }}
               >

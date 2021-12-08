@@ -25,7 +25,7 @@ const fetchAllAreas = () => {
   return Object.values(areaMock);
 };
 
-export default function AddAreaButton({ onAdd }) {
+export default function AddAreaButton({ onAdd, ...buttonProps }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const allAreas = fetchAllAreas();
   const [selectedArea, setSelectedArea] = useState();
@@ -44,9 +44,7 @@ export default function AddAreaButton({ onAdd }) {
         icon={<AddIcon />}
         aria-label="Add Product Area"
         onClick={onOpen}
-        variant="primary"
-        size="lg"
-        w={16}
+        {...buttonProps}
       ></IconButton>
 
       <Modal isOpen={isOpen} onClose={onClose}>

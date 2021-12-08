@@ -29,15 +29,15 @@ function MemberRow({ editMode, member, onChangeRole, removeButton }) {
           {member.role}
         </Text>
       )}
-      {editMode ? removeButton : <div />}
+      {editMode ? removeButton : undefined}
     </HStack>
   );
 }
 
-const RemoveButton = ({ handleRemove, ...rest }) => {
+const RemoveButton = ({ handleRemove, ...buttonProps }) => {
   return (
     <ConfirmClick onConfirm={handleRemove} confirmPrompt="Remove this product area?">
-      <IconButton icon={<DeleteIcon />} {...rest} />
+      <IconButton icon={<DeleteIcon/>} {...buttonProps} />
     </ConfirmClick>
   );
 };
