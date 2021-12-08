@@ -2,7 +2,7 @@ import { React } from 'react';
 import { Button, Heading, IconButton, Spacer, List, Flex } from '@chakra-ui/react';
 import { DeleteIcon } from '@chakra-ui/icons';
 
-import ConfirmClick from '../ConfirmClick.jsx';
+import ConfirmClick from '../../components/ConfirmClick.jsx';
 import AddAreaButton from './AddAreaButton.jsx';
 
 function ProductArea({ productArea }) {

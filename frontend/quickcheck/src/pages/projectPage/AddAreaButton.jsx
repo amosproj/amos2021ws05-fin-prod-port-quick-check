@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 
-import Selection from '../Selection.jsx';
+import Selection from '../../components/Selection.jsx';
 
 const areaMock = {
   0: { id: 0, name: 'Kredit', category: 'Privat' },

@@ -17,7 +17,7 @@ import {
 import { AddIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
 import { roles } from '../../utils/const';
-import Selection from '../Selection.jsx';
+import Selection from '../../components/Selection.jsx';
 
 export default function AddMemberButton({ onAdd, ...buttonProps }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
