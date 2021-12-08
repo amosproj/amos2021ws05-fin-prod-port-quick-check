@@ -41,7 +41,12 @@ export default function AddMemberButton({ onAdd, ...buttonProps }) {
           <ModalBody px={10}>
             <FormControl>
               <FormLabel pl={3}>Email</FormLabel>
-              <Input mb={6} placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
+              <Input
+                maxLength={60}
+                mb={6}
+                placeholder="Email"
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </FormControl>
             <Selection
               options={Object.values(roles)}

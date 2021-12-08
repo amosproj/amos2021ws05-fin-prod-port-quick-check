@@ -23,13 +23,14 @@ const mockProject = {
 function CardHeader({ text, ...rest }) {
   return (
     <Heading
-      {...rest}
+      mb={3}
       size="md"
       align="center"
       letterSpacing={1.5}
       fontWeight={800}
-      color="gray.500"
+      color="primary"
       py={2}
+      {...rest}
     >
       {text}
     </Heading>
