@@ -253,10 +253,10 @@ components:
       properties:
         projectID:
           type: integer
-        creatorID:
+        creator:
           type: string
-          description: UUID of user who creates project
-          example: "2375e026-d348-4fb6-b42b-891a76758d5d"
+          description: user email address
+          example: "test@test.com"
         projectName:
           type: string
           example: "DKB"
