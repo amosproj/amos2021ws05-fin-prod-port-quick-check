@@ -191,7 +191,7 @@ components:
           type: string
     createProject:
         required:
-          - creatorID
+          - creator
           - projectName
           - productAreas
           - members
