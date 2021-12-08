@@ -13,7 +13,7 @@ import React from 'react';
 import { DeleteIcon } from '@chakra-ui/icons';
 // import { useEffect } from 'react';
 
-export default function ProductRow({ product, productsData, removeButton}) {
+export default function ProductRow({ product, productsData, removeButton }) {
   /*const removeProduct = (product) => {
     const newProductsData = productsData.filter((p) => p.productName !== product.productName);
     childToParent(newProductsData);
@@ -50,8 +50,6 @@ export default function ProductRow({ product, productsData, removeButton}) {
           <Spacer />
           <Input width={125} placeholder="Anmerkung" />
           {removeButton}
-         
-
         </HStack>
       </Box>
     </div>

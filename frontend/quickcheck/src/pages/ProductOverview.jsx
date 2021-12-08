@@ -71,7 +71,11 @@ function AddButton(props) {
           <ModalCloseButton />
           <ModalBody px={10}>
             <FormControl>
-              <Input mb={6} placeholder="Product Name" onChange={(e) => setProductName(e.target.value)} />
+              <Input
+                mb={6}
+                placeholder="Product Name"
+                onChange={(e) => setProductName(e.target.value)}
+              />
             </FormControl>
           </ModalBody>
           <ModalFooter py={5} px={10}>
@@ -96,20 +100,22 @@ function AddButton(props) {
 }
 
 function RemoveButton({ onRemove, product }) {
-  return (<div>
-    <IconButton
-      icon={<DeleteIcon />}
-      onClick={() => {
-        //onRemove();
-        onRemove(product);
-      }}
-      colorScheme="teal"
-      variant="outline"
-      size="md"
-      color="white"
-      bg="red.700"
-      w={10}
-    /></div>
+  return (
+    <div>
+      <IconButton
+        icon={<DeleteIcon />}
+        onClick={() => {
+          //onRemove();
+          onRemove(product);
+        }}
+        colorScheme="teal"
+        variant="outline"
+        size="md"
+        color="white"
+        bg="red.700"
+        w={10}
+      />
+    </div>
   );
 }
 
@@ -146,8 +152,7 @@ export default function ProductOverview() {
       productAreaID: 2, //Abfragen wo man sich befindet
     };
     setProductsData([...productsData, newProduct]);
-
-  }
+  };
 
   /*const handleRemoveProduct = () => {
     const newProductsData = productsData.filter((p) => p.productName !== refInputProd.current.value);
@@ -157,7 +162,7 @@ export default function ProductOverview() {
   const childToParent = (childdata) => {
     setProductsData(childdata);
   };
-  const varf = "DFGHJ";
+  const varf = 'DFGHJ';
 
   const removeProduct = (product) => {
     const newProductsData = productsData.filter((p) => p.productName !== product.productName);
@@ -167,9 +172,7 @@ export default function ProductOverview() {
   const EditButtons = () => {
     if (editable) {
       return (
-
         <HStack>
-
           {editable ? <AddButton w={16} onAddProduct={handleAddProduct} /> : {}}
 
           <Button size="md" onClick={() => setEditable(false)}>
@@ -179,7 +182,6 @@ export default function ProductOverview() {
             Confirm
           </Button>
         </HStack>
-
       );
     } else {
       return (
@@ -203,8 +205,12 @@ export default function ProductOverview() {
                 key={uuid4()}
                 productsData={productsData}
                 //childToParent={childToParent}
-                removeButton={editable ? <RemoveButton onRemove={removeProduct} product={product} /> : <div />}
-              > </ProductRow>
+                removeButton={
+                  editable ? <RemoveButton onRemove={removeProduct} product={product} /> : <div />
+                }
+              >
+                {' '}
+              </ProductRow>
             ))}
             <Button>Generate Results</Button>
           </VStack>
