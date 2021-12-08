@@ -33,7 +33,7 @@ function AddButton(props) {
   const header = 'Add new Member';
   return (
     <>
-      <IconButton icon={<AddIcon />} {...props} onClick={onOpen} />
+      <IconButton icon={<AddIcon />} {...props} onClick={onOpen}/>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -127,6 +127,7 @@ export default function MemberTable({ editMode, members, handleChange }) {
   };
 
   const bgHeading = useColorModeValue('gray.400', 'gray.500');
+
   return (
     <List spacing={2} direction="column" minW="80%" align="center" pb={5}>
       <HStack px={4} rounded="md" align="center" spacing={3} mb={5}>

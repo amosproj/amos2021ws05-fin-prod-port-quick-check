@@ -9,8 +9,6 @@ import {
   ModalCloseButton,
   ModalHeader,
   Button,
-  Flex,
-  HStack,
   Heading,
   IconButton,
   Spacer,
@@ -24,12 +22,11 @@ import Card from './Card.jsx';
 function AddButton({ onAdd }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const allAreas = fetchAllAreas();
-
-  const existingAreas = []; // mock. use state management
-
   const [selectedArea, setSelectedArea] = useState();
-
   const header = 'Add Product Area';
+
+  // TODO: replace this var with state management
+  const existingAreas = []; // mock
 
   const getAreaFromName = (areaName) => {
     return allAreas.filter((m) => m.name === areaName)[0];
@@ -84,7 +81,7 @@ function AddButton({ onAdd }) {
   );
 }
 
-function ProductArea({ productArea, removeButton }) {
+function ProductArea({ productArea }) {
   return (
     <>
       <Button as="a" variant="secondary" rounded="3xl" href="/projects" w="full" py={9}>
