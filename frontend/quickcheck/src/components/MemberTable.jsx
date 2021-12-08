@@ -136,7 +136,7 @@ export default function MemberTable({ editMode, members, handleChange }) {
         <Heading size="md" minW={36} w={48} shadow="lg" bg={bgHeading} p={2} pb={5} rounded="md">
           Role
         </Heading>
-        {editMode ? <AddButton w={16} onAddMember={handleAddMember} /> : <div />}
+        {editMode ? <AddButton w={16} variant='primary' onAddMember={handleAddMember} /> : undefined}
       </HStack>
 
       {members.map((member) => (
