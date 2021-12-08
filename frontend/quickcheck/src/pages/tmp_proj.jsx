@@ -31,9 +31,9 @@ import { CloseIcon, EditIcon, CheckIcon } from '@chakra-ui/icons';
 function MemberTable({ members }) {
   return (
     <Table w="full" size="md" bg="gray.600" rounded="md">
-      <Thead size='2xl'>
+      <Thead size="2xl">
         <Tr>
-          <Th w="40%" >ID</Th>
+          <Th w="40%">ID</Th>
           <Th w="40%">Name</Th>
           <Th w="20%" isNumeric>
             btn
@@ -95,7 +95,6 @@ function CustomEditable({ value, valueSetter, showEditButtons }) {
   return <Button>{value}</Button>;
 }
 
-
 export default function Project() {
   const [projectData, setprojectData] = useState({
     projectID: 0,
@@ -146,7 +145,6 @@ export default function Project() {
         <Heading size="lg">Product Areas</Heading>
         <Button onClick={() => setHeader('clicked')}>hello</Button>
       </Card>
-
 
       <CustomEditable value={testText} valueSetter={setTestText} showEditButtons={true} />
 

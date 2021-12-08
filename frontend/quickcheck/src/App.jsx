@@ -4,8 +4,7 @@ import { BrowserRouter as Router, Route, Routes, Link, Navigate } from 'react-ro
 import Login from './pages/Login';
 import ProjectOverview from './pages/ProjectOverview';
 
-import Project from './pages/Project'
-
+import Project from './pages/Project';
 
 function App() {
   return (
