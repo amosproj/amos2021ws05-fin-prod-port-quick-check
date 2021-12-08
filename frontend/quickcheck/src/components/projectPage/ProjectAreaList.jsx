@@ -15,9 +15,9 @@ import {
   List,
 } from '@chakra-ui/react';
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
-import { Selection } from './Selection.jsx';
-import ConfirmClick from './ConfirmClick.jsx';
-import Card from './Card.jsx';
+import { Selection } from '../Selection.jsx';
+import ConfirmClick from '../ConfirmClick.jsx';
+import Card from '../Card.jsx';
 
 function AddButton({ onAdd }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
