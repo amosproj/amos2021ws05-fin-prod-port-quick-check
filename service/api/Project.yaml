@@ -307,11 +307,11 @@ components:
     deleteUserProject:
       type: object
       required:
-        - userID
+        - userEmail
       properties:
-        userID:
+        userEmail:
           type: string
-          example: "0fef539d-69be-4013-9380-6a12c3534c67"
+          example: "test@test.com"
           description: unique identifier of user
 
   responses:
