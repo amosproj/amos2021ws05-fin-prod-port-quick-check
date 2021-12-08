@@ -25,6 +25,7 @@ public class ProjectUserControllerTest {
     private String host = "http://localhost:";
     private String projects = "/projects";
     private String projectID1 = "/1";
+    private String testProjectID;
     private String users = "/users";
     private String productAreas = "/productareas";
     private String initProductArea = "{\"category\":\"PRIVAT\", \"name\":\"KREDIT\"}";
@@ -67,12 +68,15 @@ public class ProjectUserControllerTest {
                 createProjectRequest,
                 String.class).getBody();
 
+        String[] bodyStringList = createProjectResponse.split(",");
+        testProjectID = bodyStringList[0].split(":")[1];
+
         System.out.println("Create Project: " + createProjectResponse);
 
         //create User
         HttpEntity<String> createUserRequest = new HttpEntity<>(
-                "{\"username\":\"preUser\"," +
-                        "\"email\":\"preUser@mail.com\", " +
+                "{\"userName\":\"preUser\"," +
+                        "\"userEmail\":\"preUser@mail.com\", " +
                         "\"password\":\"1234\"}",
                 headers);
 
@@ -93,13 +97,14 @@ public class ProjectUserControllerTest {
                 userIdRequest,
                 String.class);
 
-        String[] bodyStringList = Objects.requireNonNull(response.getBody()).split(",");
+        bodyStringList = Objects.requireNonNull(response.getBody()).split(",");
 
-        String tmp = bodyStringList[0].split(":")[1];
+        String tmp = bodyStringList[2].split(":")[1];
         testUserID = tmp.substring(1, tmp.length()-1);
 
         System.out.println("Get UserID: " + testUserID);
     }
+
 
     // delete all data entries in test db
     @AfterEach
@@ -133,15 +138,15 @@ public class ProjectUserControllerTest {
 
         HttpEntity<String> request = new HttpEntity<>(
                 "{\"userID\":" + "\"" + testUserID + "\"" + "," +
-                        "\"projectID\": 1," +
-                        "\"userName\":\"testUser\"," +
-                        "\"userEmail\":\"testUser@mail.com\"," +
+                        "\"projectID\":" + "\"" + testProjectID + "\"" + "," +
+                        "\"userName\":\"preUser\"," +
+                        "\"userEmail\":\"preUser@mail.com\"," +
                         "\"role\":\"CLIENT\"}",
                 headers
         );
 
         ResponseEntity<String> response = restTemplate.exchange(
-                host + port + projects + projectID1 + users + "/" + testUserID,
+                host + port + projects + "/" + testProjectID + users,
                 HttpMethod.POST,
                 request,
                 String.class);
@@ -157,15 +162,15 @@ public class ProjectUserControllerTest {
 
         HttpEntity<String> request = new HttpEntity<>(
                 "{\"userID\":" + "\"" + testUserID + "\"" + "," +
-                        "\"projectID\": 1," +
+                        "\"projectID\":" + "\"" + testProjectID + "\"" + "," +
                         "\"userName\":\"testUser\"," +
-                        "\"userEmail\":\"testUser@mail.com\"," +
+                        "\"userEmail\":\"preUser@mail.com\"," +
                         "\"role\":\"ADMIN\"}",
                 headers
         );
 
         ResponseEntity<String> response = restTemplate.exchange(
-                host + port + projects + projectID1 + users + "/" + testUserID,
+                host + port + projects + "/" + testProjectID + users,
                 HttpMethod.POST,
                 request,
                 String.class);

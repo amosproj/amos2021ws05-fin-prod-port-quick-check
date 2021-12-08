@@ -1,8 +1,11 @@
 package com.tu.FinancialQuickCheck.Controller;
 
 import com.tu.FinancialQuickCheck.Exceptions.BadRequest;
+import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
+import com.tu.FinancialQuickCheck.RatingArea;
 import com.tu.FinancialQuickCheck.Service.ProductService;
 import com.tu.FinancialQuickCheck.Service.ProjectService;
+import com.tu.FinancialQuickCheck.dto.ProductAreaDto;
 import com.tu.FinancialQuickCheck.dto.ProductDto;
 import com.tu.FinancialQuickCheck.dto.ProjectDto;
 import com.tu.FinancialQuickCheck.dto.SmallProjectDto;
@@ -10,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.OptionalInt;
 
 
 @CrossOrigin
@@ -18,19 +24,25 @@ import java.util.List;
 @RequestMapping("projects")
 public class ProjectController {
 
-//    @Autowired
     private ProjectService service;
-    @Autowired
     private ProductService productService;
 
-    public ProjectController(ProjectService projectService){
+    public ProjectController(ProjectService projectService, ProductService productService){
+
         this.service = projectService;
+        this.productService = productService;
     }
 
-    // TODO: should we return a Reource not found if no projects exist?
+
     @GetMapping(produces = "application/json")
     public List<SmallProjectDto> findALL() {
-        return service.getAllProjects();
+        List<SmallProjectDto> tmp = service.getAllProjects();
+
+        if(tmp.isEmpty()){
+            throw new ResourceNotFound("No projects found.");
+        }else{
+            return tmp;
+        }
     }
 
 
@@ -55,8 +67,13 @@ public class ProjectController {
     @PutMapping("/{projectID}")
     public void updateById(@RequestBody ProjectDto projectDto, @PathVariable int projectID) {
 
-        service.updateProject(projectDto, projectID);
+        if(projectDto.members == null){
+            throw new BadRequest("Input is missing/incorrect.");
+        }else{
+            ProjectDto out = service.updateProject(projectDto, projectID);
+        }
     }
+
 
 // TODO: auskommentiert lassen bisher keine Anforderung für diese Funktionalität
 //    @DeleteMapping("/{projectID}")
@@ -68,22 +85,35 @@ public class ProjectController {
 
 
     @GetMapping("/{projectID}/products")
-    public List<ProductDto> findProductsByProject(@PathVariable int projectID) {
-        return productService.getProductsByProjectId(projectID);
-    }
+    public List<ProductDto> findProductsByProject(@PathVariable int projectID,
+                                                  @RequestParam(required = false) Optional<String> productArea) {
+        List<ProductDto> tmp;
 
+        if(productArea.isEmpty()){
+            tmp = productService.getProductsByProjectId(projectID);
+        }else{
+            try{
+                int area = Integer.parseInt(productArea.get());
+                tmp = productService.getProductsByProjectIdAndProductAreaId(projectID, area);
+            }catch (Exception e){
+                throw new BadRequest("Input missing/incorrect.");
+            }
+        }
 
-    @GetMapping("{projectID}/productareas/{projectAreaID}/products")
-    public List<ProductDto> findProductsByProductAndProjectArea(@PathVariable int projectID,
-                                                                @PathVariable int projectAreaID) {
-        return productService.getProductsByProjectIdAndProductAreaId(projectID, projectAreaID);
+        if(tmp.isEmpty()){
+            throw new ResourceNotFound("No products found");
+        }else{
+            return tmp;
+        }
+
     }
 
 
     @PostMapping(value = "/{projectID}/productareas/{productAreaID}/products",
             consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public ProductDto createProduct(@PathVariable int projectID, @PathVariable int productAreaID, @RequestBody ProductDto productDto) {
+    public ProductDto createProduct(@PathVariable int projectID, @PathVariable int productAreaID,
+                                    @RequestBody ProductDto productDto) {
         ProductDto tmp = productService.createProduct(projectID, productAreaID, productDto);
         if(tmp == null){
             throw new BadRequest("Incorrect Input.");

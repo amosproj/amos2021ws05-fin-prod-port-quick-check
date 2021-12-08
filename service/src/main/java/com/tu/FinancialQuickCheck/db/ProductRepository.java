@@ -8,10 +8,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ProductRepository extends JpaRepository<ProductEntity, Integer> {
 
 
-    Boolean existsByProjectidAndProductareaid(ProjectEntity projectID, int productAreaId);
+    Boolean existsByProjectAndProductarea(ProjectEntity project, ProductAreaEntity productArea);
 
-    Iterable<ProductEntity> findByProjectid(ProjectEntity projectID);
+    Iterable<ProductEntity> findByProject(ProjectEntity project);
 
-    Iterable<ProductEntity> findByProjectidAndProductareaid(ProjectEntity projectID, int productAreaId);
+    Iterable<ProductEntity> findByProjectAndProductarea(ProjectEntity project, ProductAreaEntity productArea);
 
 }

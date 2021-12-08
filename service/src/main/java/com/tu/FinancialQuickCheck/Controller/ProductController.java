@@ -27,13 +27,14 @@ public class ProductController {
     public void updateProduct(@RequestBody ProductDto productDto, @PathVariable Integer productID) {
         ProductDto tmp = service.updateById(productDto, productID);
         if(tmp == null){
-            throw new BadRequest("Missing Input.");
+            throw new BadRequest("Input missing/incorrect");
         }
     }
 
-    @DeleteMapping("/{productID}")
-    void deleteByID(@PathVariable int productID) {
-        service.deleteProduct(productID);
-    }
+// TODO: auskommentiert lassen bis geklärt ist, wie mit ProductVarianten umgegangen werden soll und was mit evtl. Ratings passieren soll die bereits existieren
+//    @DeleteMapping("/{productID}")
+//    void deleteByID(@PathVariable int productID) {
+//        service.deleteProduct(productID);
+//    }
 
 }
