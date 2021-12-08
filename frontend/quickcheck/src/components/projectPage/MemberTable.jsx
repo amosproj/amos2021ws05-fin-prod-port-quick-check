@@ -1,5 +1,5 @@
 import React from 'react';
-import { HStack, Text, useColorModeValue, IconButton, Heading, List } from '@chakra-ui/react';
+import { Text, useColorModeValue, IconButton, Heading, List, Flex } from '@chakra-ui/react';
 import { DeleteIcon } from '@chakra-ui/icons';
 
 import { roles } from '../../utils/const';
@@ -7,14 +7,15 @@ import Selection from '../Selection.jsx';
 import ConfirmClick from '../ConfirmClick';
 import AddMemberButton from './AddMemberButton';
 
-function MemberRow({ editMode, member, onChangeRole, removeButton }) {
+function MemberRow({ editMode, member, onChangeRole, ...props }) {
   const bg = useColorModeValue('gray.200', 'gray.600');
 
   return (
-    <HStack px={4} rounded="md" align="center" spacing={3}>
-      <Text variant="cell" w="50%" align="left">
+    <Flex {...props}>
+      <Text variant="cell" align="left" w='full'>
         {member.email}
       </Text>
+      <Flex w={60}>
       {editMode ? (
         <Selection
           bg={bg}
@@ -22,17 +23,19 @@ function MemberRow({ editMode, member, onChangeRole, removeButton }) {
           selected={member.role}
           options={Object.values(roles)}
           onChange={onChangeRole}
-          w={48}
+          w='full'
         />
       ) : (
-        <Text w={48} variant="cell" h="full" align="left">
+        <Text variant="cell" align="left" w='full'>
           {member.role}
         </Text>
+        
       )}
-      {editMode ? removeButton : undefined}
-    </HStack>
+      </Flex>
+    </Flex>
   );
 }
+
 
 const RemoveButton = ({ handleRemove, ...buttonProps }) => {
   return (
@@ -63,29 +66,31 @@ export default function MemberTable({ editMode, members, handleChange }) {
   const bgHeading = useColorModeValue('gray.400', 'gray.500');
 
   return (
-    <List spacing={2} direction="column" minW="80%" align="center" pb={5}>
-      <HStack px={4} rounded="md" align="center" spacing={3} mb={5}>
-        <Heading size="md" w="50%" shadow="lg" bg={bgHeading} p={2} pb={5} rounded="md">
-          Email
-        </Heading>
-        <Heading size="md" minW={36} w={48} shadow="lg" bg={bgHeading} p={2} pb={5} rounded="md">
-          Role
-        </Heading>
+    <List spacing={2} direction="column" minW="80%" align="center">
+      <Flex gridGap={3} w='full'>
+
+      <Flex gridGap={3} h={12} w='full'>
+        <Heading size="md" rounded="md" pt={2} bg={bgHeading} w="full">Email</Heading>
+        <Heading size="md" rounded="md" pt={2} bg={bgHeading} w={60} >Role</Heading>
+      </Flex>
         {editMode ? (
-          <AddMemberButton w={16} variant="primary" onAddMember={handleAddMember} />
+          <AddMemberButton minW={16} size='lg' variant="primary" onAddMember={handleAddMember} />
         ) : undefined}
-      </HStack>
+      </Flex>
+
 
       {members.map((member) => (
-        <MemberRow
+        <Flex gridGap={3}>
+        <MemberRow rounded="md" align="center" w='full' gridGap={3}
           key={member.email}
           member={member}
           editMode={editMode}
           onChangeRole={handleRoleChange(member)}
-          removeButton={
-            <RemoveButton variant="whisper" w={16} handleRemove={handleRemoveMember(member)} />
-          }
         ></MemberRow>
+      {editMode ?  <RemoveButton variant="whisper" minW={16} handleRemove={handleRemoveMember(member)} /> : undefined}
+
+       
+        </Flex>
       ))}
     </List>
   );
