@@ -71,11 +71,9 @@ function AddButton(props) {
           <ModalCloseButton />
           <ModalBody px={10}>
             <FormControl>
-
               <Input mb={6} placeholder="Product Name" onChange={(e) => setProductName(e.target.value)} />
             </FormControl>
           </ModalBody>
-
           <ModalFooter py={5} px={10}>
             <Button
               variant="primary"
@@ -97,21 +95,21 @@ function AddButton(props) {
   );
 }
 
-function RemoveButton({onRemove, product}){
-  return(<div>
+function RemoveButton({ onRemove, product }) {
+  return (<div>
     <IconButton
-              icon={<DeleteIcon />}
-              onClick={() => {
-                //onRemove();
-                onRemove(product);
-              }}
-              colorScheme="teal"
-              variant="outline"
-              size="md"
-              color="white"
-              bg="red.700"
-              w={10}
-            /></div>
+      icon={<DeleteIcon />}
+      onClick={() => {
+        //onRemove();
+        onRemove(product);
+      }}
+      colorScheme="teal"
+      variant="outline"
+      size="md"
+      color="white"
+      bg="red.700"
+      w={10}
+    /></div>
   );
 }
 
@@ -205,7 +203,7 @@ export default function ProductOverview() {
                 key={uuid4()}
                 productsData={productsData}
                 //childToParent={childToParent}
-                removeButton={editable ? <RemoveButton onRemove={removeProduct} product={product}/> : <div/>}
+                removeButton={editable ? <RemoveButton onRemove={removeProduct} product={product} /> : <div />}
               > </ProductRow>
             ))}
             <Button>Generate Results</Button>
