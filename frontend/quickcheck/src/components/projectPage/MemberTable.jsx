@@ -11,7 +11,7 @@ function MemberRow({ editMode, member, onChangeRole, ...props }) {
   const bg = useColorModeValue('gray.200', 'gray.600');
 
   return (
-    <Flex {...props} w='full'>
+    <Flex {...props} w="full">
       <Text variant="cell" align="left" w="full">
         {member.email}
       </Text>
@@ -64,7 +64,7 @@ export default function MemberTable({ editMode, members, handleChange }) {
   const bgHeading = useColorModeValue('gray.400', 'gray.500');
 
   return (
-    <List spacing={2} direction="column" w='full' align="center" maxW={700}>
+    <List spacing={2} direction="column" w="full" align="center" maxW={700}>
       <Flex gridGap={3} w="full">
         <Flex gridGap={3} h={12} w="full">
           <Heading size="md" rounded="md" pt={2} bg={bgHeading} w="full">

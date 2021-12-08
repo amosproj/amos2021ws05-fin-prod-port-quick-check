@@ -49,7 +49,7 @@ export default function ProductAreaList({ editMode, areaIDs, handleChange }) {
 
   return (
     <>
-      <List w='full' maxW={500} align="center" spacing={4} pb={5}>
+      <List w="full" maxW={500} align="center" spacing={4} pb={5}>
         {areaIDs.map((id) => (
           <Flex gridGap={2} w="full" align="center">
             <ProductArea key={id} productArea={fetchArea(id)} />
