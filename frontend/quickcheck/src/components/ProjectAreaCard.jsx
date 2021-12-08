@@ -22,6 +22,7 @@ import {
 } from '@chakra-ui/react';
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
 import { Selection } from './Selection.jsx';
+import ConfirmClick from './ConfirmPrompt.jsx';
 
 function AddButton({ onAdd }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -163,7 +164,18 @@ export default function ProductAreaList({ editMode, areaIDs, handleChange }) {
           <ProductArea
             key={id}
             productArea={fetchArea(id)}
-            removeButton={editMode ? <RemoveButton onRemove={handleRemoveArea(id)} /> : <div />}
+            removeButton={
+              editMode ? (
+                <ConfirmClick
+                  onConfirm={handleRemoveArea(id)}
+                  confirmPrompt="Remove this product area?"
+                >
+                  <IconButton icon={<DeleteIcon />} variant="whisper" size="md" />
+                </ConfirmClick>
+              ) : (
+                <div />
+              )
+            }
           />
         ))}
         {editMode ? <AddButton onAdd={handleAddArea}></AddButton> : <div />}
