@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect} from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useToast } from '@chakra-ui/react';
 import Page from '../components/Page';
 import {
@@ -64,8 +64,8 @@ const mocks = {
     productID: 223,
     projectID: 1,
     productAreaID: 2,
-  }
-}
+  },
+};
 
 function AddButton(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -81,7 +81,11 @@ function AddButton(props) {
           <ModalCloseButton />
           <ModalBody px={10}>
             <FormControl>
-              <Input mb={6} placeholder="Product Name" onChange={(e) => setProductName(e.target.value)} />
+              <Input
+                mb={6}
+                placeholder="Product Name"
+                onChange={(e) => setProductName(e.target.value)}
+              />
             </FormControl>
           </ModalBody>
           <ModalFooter py={5} px={10}>
@@ -106,23 +110,24 @@ function AddButton(props) {
 }
 
 function RemoveButton({ onRemove, product }) {
-  return (<div>
-    <IconButton
-      icon={<DeleteIcon />}
-      onClick={() => {
-        //onRemove();
-        onRemove(product);
-      }}
-      colorScheme="teal"
-      variant="outline"
-      size="md"
-      color="white"
-      bg="red.700"
-      w={10}
-    /></div>
+  return (
+    <div>
+      <IconButton
+        icon={<DeleteIcon />}
+        onClick={() => {
+          //onRemove();
+          onRemove(product);
+        }}
+        colorScheme="teal"
+        variant="outline"
+        size="md"
+        color="white"
+        bg="red.700"
+        w={10}
+      />
+    </div>
   );
 }
-
 
 export default function ProductOverview() {
   const [productsData, setProductsData] = useState(products);
@@ -130,7 +135,6 @@ export default function ProductOverview() {
   const toast = useToast();
   //const [input, setInput] = useState("");
   const refInputProd = useRef();
-
 
   const handleAddProduct = (productName) => {
     const newProduct = {
@@ -140,13 +144,11 @@ export default function ProductOverview() {
       productAreaID: 2, //Abfragen wo man sich befindet
     };
     setProductsData([...productsData, newProduct]);
-
-  }
+  };
 
   const childToParent = (childdata) => {
     setProductsData(childdata);
   };
-
 
   const removeProduct = (product) => {
     const newProductsData = productsData.filter((p) => p.productName !== product.productName);
@@ -189,7 +191,6 @@ export default function ProductOverview() {
   const EditButtons = () => {
     if (editable) {
       return (
-
         <HStack>
           {editable ? <AddButton w={16} onAddProduct={handleAddProduct} /> : {}}
           <Button size="md" onClick={() => setEditable(false)}>
@@ -199,7 +200,6 @@ export default function ProductOverview() {
             Confirm
           </Button>
         </HStack>
-
       );
     } else {
       return (
@@ -222,13 +222,17 @@ export default function ProductOverview() {
                 product={product}
                 key={uuid4()}
                 editable={editable}
-                removeButton={editable ? <RemoveButton onRemove={removeProduct} product={product} /> : <div />}
-              > </ProductRow>
+                removeButton={
+                  editable ? <RemoveButton onRemove={removeProduct} product={product} /> : <div />
+                }
+              >
+                {' '}
+              </ProductRow>
             ))}
             <Button>Generate Results</Button>
           </VStack>
         </Card>
-              {mocks.product.productName}
+        {mocks.product.productName}
         <EditButtons />
         <Button onClick={createProject}> API</Button>
       </Page>

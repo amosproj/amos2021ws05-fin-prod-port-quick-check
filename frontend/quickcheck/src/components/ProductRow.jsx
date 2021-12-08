@@ -16,14 +16,17 @@ import React from 'react';
 import { DeleteIcon } from '@chakra-ui/icons';
 // import { useEffect } from 'react';
 
-export default function ProductRow({ product, editable, removeButton, childToParent, handleAddProduct }) {
-
-
+export default function ProductRow({
+  product,
+  editable,
+  removeButton,
+  childToParent,
+  handleAddProduct,
+}) {
   /*const removeProduct = (product) => {
     const newProductsData = productsData.filter((p) => p.productName !== product.productName);
     childToParent(newProductsData);
   };*/
-
 
   return (
     <div>
@@ -40,10 +43,14 @@ export default function ProductRow({ product, editable, removeButton, childToPar
       >
         <HStack spacing={5}>
           <Heading as="h4" size="md">
-            {editable ? <Editable defaultValue={product.productName}>
-              <EditablePreview />
-              <EditableInput />
-            </Editable> : product.productName}
+            {editable ? (
+              <Editable defaultValue={product.productName}>
+                <EditablePreview />
+                <EditableInput />
+              </Editable>
+            ) : (
+              product.productName
+            )}
           </Heading>
           <Spacer />
           <Button> Economical Evaluation </Button>
@@ -58,8 +65,6 @@ export default function ProductRow({ product, editable, removeButton, childToPar
           <Spacer />
           <Input width={125} placeholder="Anmerkung" />
           {removeButton}
-
-
         </HStack>
       </Box>
     </div>
