@@ -1,6 +1,6 @@
 import { mode } from '@chakra-ui/theme-tools';
 
-export const TextStyles = {
+export const Text = {
   // Styles for the base style
   baseStyle: {
     baseStyle: (props) => ({

@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Button, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Flex, Heading, Button, useColorModeValue, Input } from '@chakra-ui/react';
 import Card from '../components/Card';
 
 import Page from '../components/Page';
@@ -81,6 +81,9 @@ export default function TestRange() {
             click me
           </Button>
         </Flex>
+
+
+        <Input variant='head'></Input>
       </Page>
       <Box bg="red" w="full" h={3} roundedTop="lg" m="0"></Box>
       <Flex bg="blue" w="full" h={20} roundedBottom="lg" m="0" align="center"></Flex>

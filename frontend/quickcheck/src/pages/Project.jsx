@@ -1,9 +1,8 @@
-import { Heading, Button, HStack } from '@chakra-ui/react';
+import { Heading, Button, HStack, Input, Spacer } from '@chakra-ui/react';
 import { React, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import ProductAreaList from '../components/projectPage/ProjectAreaList';
-import ShowEditable from '../components/Editable.jsx';
 
 import MemberTable from '../components/projectPage/MemberTable';
 import Page from '../components/Page';
@@ -19,23 +18,6 @@ const mockProject = {
   ],
   productAreas: [1],
 };
-
-function CardHeader({ text, ...rest }) {
-  return (
-    <Heading
-      mb={3}
-      size="md"
-      align="center"
-      letterSpacing={1.5}
-      fontWeight={800}
-      color="primary"
-      py={2}
-      {...rest}
-    >
-      {text}
-    </Heading>
-  );
-}
 
 export default function Project(prop) {
   const [editMode, setEditMode] = useState(false);
@@ -87,20 +69,31 @@ export default function Project(prop) {
   return (
     <Page title="Manage Project">
       <Card layerStyle="card_bar" justifyContent="center">
-        <CardHeader text="PROJECT:" mr={8} />
-
-        <Heading size="lg" fontFamily="body">
-          <ShowEditable text={projectData.projectName} editable={editMode}></ShowEditable>
+        <Spacer />
+        <Heading variant="upper" size="md" mr={3}>
+          Project:
         </Heading>
+        <Input
+          align="center"
+          variant="heading"
+          isDisabled={!editMode}
+          onChange={(e) => handleChange('projectName')(e.target.value)}
+          value={projectData.projectName}
+        />
+        <Spacer />
       </Card>
 
       <Card direction="column">
-        <CardHeader text="MEMBERS" />
+        <Heading variant="upper" size="md">
+          Members
+        </Heading>
         <MemberTable editMode={editMode} members={projectData.members} handleChange={setMembers} />
       </Card>
 
       <Card direction="column">
-        <CardHeader text="PRODUCT AREAS" />
+        <Heading variant="upper" size="md">
+          Product Areas
+        </Heading>
         <ProductAreaList
           areaIDs={projectData.productAreas}
           handleChange={setProductAreas}
