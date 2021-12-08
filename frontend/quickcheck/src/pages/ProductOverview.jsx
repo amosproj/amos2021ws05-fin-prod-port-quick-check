@@ -1,4 +1,4 @@
-import React, { useState, useRef} from 'react';
+import React, { useState, useRef } from 'react';
 import Page from '../components/Page';
 import {
   //Text,
@@ -72,7 +72,11 @@ function AddButton(props) {
           <ModalBody px={10}>
             <FormControl>
               <FormLabel pl={3}>Product</FormLabel>
-              <Input mb={6} placeholder="Product" onChange={(e) => setProductName(e.target.value)} />
+              <Input
+                mb={6}
+                placeholder="Product"
+                onChange={(e) => setProductName(e.target.value)}
+              />
             </FormControl>
           </ModalBody>
 
@@ -130,8 +134,7 @@ export default function ProductOverview() {
       productAreaID: 2, //Abfragen wo man sich befindet
     };
     setProductsData([...productsData, newProduct]);
-
-  }
+  };
 
   /*const handleRemoveProduct = () => {
     const newProductsData = productsData.filter((p) => p.productName !== refInputProd.current.value);
