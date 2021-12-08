@@ -209,6 +209,10 @@ components:
             items:
               type: integer
               description: unique identifiers of product areas
+          members:
+            type: array
+            items:
+              $ref: '#/components/schemas/user'
     createdProject:
       properties:
         projectID:
@@ -226,6 +230,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/productArea'
+
+
     updateProject:
       properties:
         projectName:
