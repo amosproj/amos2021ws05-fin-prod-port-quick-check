@@ -9,5 +9,4 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface ProjectUserRepository extends CrudRepository<ProjectUserEntity, ProjectUserId> {
 
-
 }
