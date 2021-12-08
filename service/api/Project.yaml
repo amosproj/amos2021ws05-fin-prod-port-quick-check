@@ -194,6 +194,7 @@ components:
           - creatorID
           - projectName
           - productAreas
+          - members
         properties:
           creatorID:
             type: string
@@ -243,6 +244,10 @@ components:
           example: [ 1, 2 ,3 ]
           items:
             type: integer
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/user'
     project:
       type: object
       properties:
@@ -269,9 +274,6 @@ components:
           type: string
         userName:
           type: string
-        userID:
-          type: string
-          format: uuid
         role:
           type: string
           required: true
