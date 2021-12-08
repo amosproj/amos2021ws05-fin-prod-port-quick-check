@@ -16,17 +16,15 @@ import React from 'react';
 import { DeleteIcon } from '@chakra-ui/icons';
 // import { useEffect } from 'react';
 
-function MyHeading(){
-
-}
-
-export default function ProductRow({ product, editable, removeButton }) {
+export default function ProductRow({ product, editable, removeButton, childToParent, handleAddProduct }) {
 
 
   /*const removeProduct = (product) => {
     const newProductsData = productsData.filter((p) => p.productName !== product.productName);
     childToParent(newProductsData);
   };*/
+
+
   return (
     <div>
       <Box
@@ -41,12 +39,12 @@ export default function ProductRow({ product, editable, removeButton }) {
         _hover={{ boxShadow: '2xl' }}
       >
         <HStack spacing={5}>
-            <Heading as="h4" size="md">
-              {editable ? <Editable defaultValue={product.productName}>
-          <EditablePreview />
-          <EditableInput />
-        </Editable>:  product.productName }
-            </Heading>
+          <Heading as="h4" size="md">
+            {editable ? <Editable defaultValue={product.productName}>
+              <EditablePreview />
+              <EditableInput />
+            </Editable> : product.productName}
+          </Heading>
           <Spacer />
           <Button> Economical Evaluation </Button>
           <CircularProgress value={40} color="green.400">
