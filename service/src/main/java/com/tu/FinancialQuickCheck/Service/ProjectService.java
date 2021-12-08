@@ -59,10 +59,10 @@ public class ProjectService {
      * @return ProjectDto projectDto including created projectID
      */
     public ProjectDto createProject(ProjectDto projectDto) {
-        if(projectDto.projectName != null && projectDto.productAreas != null && projectDto.creatorID != null){
+        if(projectDto.projectName != null && projectDto.productAreas != null && projectDto.creator != null){
             // create db entry
             ProjectEntity newProject = new ProjectEntity();
-            newProject.creator_id = projectDto.creatorID.toString();
+            newProject.creator = projectDto.creator;
             newProject.name = projectDto.projectName;
             newProject.productEntities = new ArrayList<>();
             // add product areas to project through DUMMY data in product_entity table
@@ -84,7 +84,7 @@ public class ProjectService {
 
 
             // return created projectID
-            return new ProjectDto(newProject.id, newProject.name, UUID.fromString(newProject.creator_id),
+            return new ProjectDto(newProject.id, newProject.name, newProject.creator,
                     convertProductAreaEntities(newProject.productEntities));
         }else{
             return null;
@@ -108,7 +108,7 @@ public class ProjectService {
             return new ProjectDto(
                     projectEntity.get().id,
                     projectEntity.get().name,
-                    UUID.fromString(projectEntity.get().creator_id),
+                    projectEntity.get().creator,
                     convertProductAreaEntities(projectEntity.get().productEntities),
                     projectEntity.get().projectUserEntities);
         }
@@ -153,20 +153,11 @@ public class ProjectService {
             }
 
             projectRepository.save(entity);
-            return new ProjectDto(entity.id, entity.name, UUID.fromString(entity.creator_id),
+            return new ProjectDto(entity.id, entity.name, entity.creator,
                    convertProductAreaEntities(entity.productEntities) , entity.projectUserEntities);
         }
     }
 
-// TODO: auskommentiert lassen bisher keine Anforderung dafür vorhanden
-//    public void deleteProject(int projectID) {
-//        Optional<ProjectEntity> projectEntity = projectRepository.findById(projectID);
-//        if (projectEntity.isEmpty()) {
-//            throw new ResourceNotFound("projectID " + projectID + " not found");
-//        }else{
-//            projectRepository.deleteById(projectID);
-//        }
-//    }
 
     private List<ProductAreaDto> convertProductAreaEntities(List<ProductEntity> productEntities) {
         //TODO: greift alle Produktdaten für project ab, es würde ausreichen nur die DUMMY Daten abzugreifen
@@ -182,4 +173,15 @@ public class ProjectService {
         }
         return new ArrayList<>(areas);
     }
+
+
+// TODO: auskommentiert lassen bisher keine Anforderung dafür vorhanden
+//    public void deleteProject(int projectID) {
+//        Optional<ProjectEntity> projectEntity = projectRepository.findById(projectID);
+//        if (projectEntity.isEmpty()) {
+//            throw new ResourceNotFound("projectID " + projectID + " not found");
+//        }else{
+//            projectRepository.deleteById(projectID);
+//        }
+//    }
 }

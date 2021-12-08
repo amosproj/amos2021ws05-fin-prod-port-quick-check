@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public class ProjectDto {
     public int projectID;
-    public UUID creatorID;
+    public String creator;
     public String projectName;
     public List<UserDto> members;
     public List<ProductAreaDto> productAreas;
@@ -20,23 +20,23 @@ public class ProjectDto {
     //necessary for mapping
     public ProjectDto() {}
 
-    public ProjectDto(UUID creatorID, String projectName, List<Integer> productAreas){
-        this.creatorID = creatorID;
+    public ProjectDto(String creator, String projectName, List<Integer> productAreas){
+        this.creator = creator;
         this.projectName = projectName;
         this.productAreas = convertProductAreaSet(productAreas);
     }
 
-    public ProjectDto(int projectID, String projectName, UUID creatorID, List<ProductAreaDto> productAreas){
+    public ProjectDto(int projectID, String projectName, String creator, List<ProductAreaDto> productAreas){
         this.projectID = projectID;
         this.projectName = projectName;
-        this.creatorID = creatorID;
+        this.creator = creator;
         this.productAreas = productAreas;
     }
 
-    public ProjectDto(int projectID, String projectName, UUID creatorID,
+    public ProjectDto(int projectID, String projectName, String creator,
                       List<ProductAreaDto> productAreas, List<ProjectUserEntity> projectUserEntities){
         this.projectID = projectID;
-        this.creatorID = creatorID;
+        this.creator = creator;
         this.projectName = projectName;
         this.members = convertProjectUserEntities(projectUserEntities);
         this.productAreas = productAreas;
