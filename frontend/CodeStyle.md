@@ -22,7 +22,7 @@ Instances of Components are in camelCase (first word , first letter small, all f
 			- Components only this page can use. (Ex. MemberRow, and MemberTable for the page ManageProject)
 
 
-##Import Style
+## Import Style
 
 ```
 //Foreign
