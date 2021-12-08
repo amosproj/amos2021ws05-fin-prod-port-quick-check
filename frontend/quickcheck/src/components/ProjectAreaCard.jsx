@@ -162,6 +162,7 @@ export default function ProductAreaList({ editMode, areaIDs, handleChange }) {
       <List w="50%" align="center" spacing={4} pb={5}>
         {areaIDs.map((id) => (
           <ProductArea
+            key={id}
             productArea={fetchArea(id)}
             removeButton={editMode ? <RemoveButton onRemove={handleRemoveArea(id)} /> : <div />}
           />

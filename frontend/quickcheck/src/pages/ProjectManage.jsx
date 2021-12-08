@@ -52,7 +52,7 @@ const mocks = {
 
 function ProjectCard(props) {
   return (
-    <Card barColor="blue.500">
+    <Card>
       <Stack>
         <Text
           color="green.500"

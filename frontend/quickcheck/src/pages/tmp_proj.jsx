@@ -131,7 +131,7 @@ export default function Project() {
 
   return (
     <Page title="Project">
-      <Card barColor="teal">
+      <Card>
         <Heading>Project: </Heading>
         <Heading color="teal.300"> {projectData.projectName} </Heading>
       </Card>

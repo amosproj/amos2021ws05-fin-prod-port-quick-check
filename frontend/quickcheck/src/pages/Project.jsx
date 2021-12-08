@@ -86,7 +86,7 @@ export default function Project(prop) {
 
   return (
     <Page title="Manage Project">
-      <Card barColor="primary" layerStyle="card_bar" justifyContent="center">
+      <Card layerStyle="card_bar" justifyContent="center">
         <CardHeader text="PROJECT:" mr={8} />
 
         <Heading size="lg" fontFamily="body">
