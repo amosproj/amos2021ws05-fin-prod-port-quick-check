@@ -11,12 +11,9 @@ import { Link } from 'react-router-dom';
 const mocks = {
   newProject: {
     creatorID: 0,
-    projectName: "Mock Project",
-    members: [
-        "2375e026-d348-4fb6-b42b-891a76758d5d",
-       "0fef539d-69be-4013-9380-6a12c3534c67"
-    ],
-    productAreas: []
+    projectName: 'Mock Project',
+    members: ['2375e026-d348-4fb6-b42b-891a76758d5d', '0fef539d-69be-4013-9380-6a12c3534c67'],
+    productAreas: [],
   },
   role: 'Mock Consultant',
 };
@@ -87,9 +84,9 @@ export default function ProjectOverview() {
 
   return (
     <Page title="Your Projects">
-      <List spacing={3} mx={2} w='80%'>
+      <List spacing={3} mx={2} w="80%">
         {projectsData.map((project) => (
-          <ProjectCard project={project} key={project.projectID}/>
+          <ProjectCard project={project} key={project.projectID} />
         ))}
       </List>
       <Button size="lg" onClick={createProject}>
