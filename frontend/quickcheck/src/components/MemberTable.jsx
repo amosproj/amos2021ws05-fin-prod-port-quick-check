@@ -36,7 +36,7 @@ function AddButton(props) {
   const header = 'Add new Member';
   return (
     <>
-      <IconButton icon={<AddIcon />} variant="primary" size="lg" {...props} onClick={onOpen} />
+      <IconButton icon={<AddIcon />} {...props} onClick={onOpen} />
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />

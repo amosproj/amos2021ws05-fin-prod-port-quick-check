@@ -27,6 +27,8 @@ function AddButton({ onAdd }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const allAreas = fetchAllAreas();
 
+  const existingAreas = []; // mock. use state management
+
   const [selectedArea, setSelectedArea] = useState();
 
   const header = 'Add Product Area';
@@ -55,8 +57,10 @@ function AddButton({ onAdd }) {
           <ModalBody px={10}>
             <Selection
               placeholder="Select Poduct Area..."
-              options={allAreas.map((e) => e.name)}
-              onChange={setSelectedArea}
+              options={allAreas
+                .filter((area) => !existingAreas.includes(area.id)) // filter out areas that already exist
+                .map((e) => e.name)}
+              onChange={(e) => setSelectedArea(e.target.value)}
             />
           </ModalBody>
 
@@ -64,6 +68,7 @@ function AddButton({ onAdd }) {
             <Button
               variant="primary"
               mr={3}
+              disabled={selectedArea === undefined}
               onClick={(e) => {
                 onAdd(getAreaFromName(selectedArea).id);
                 onClose();
