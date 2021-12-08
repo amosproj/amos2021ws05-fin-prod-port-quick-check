@@ -5,7 +5,7 @@ import { api } from '../utils/apiClient';
 import MemberCard from '../components/MemberCard';
 import Card from '../components/Card.jsx';
 import ProjectAreaCard from '../components/ProjectAreaCard.jsx';
-import ShowEditable from '../components/editable.jsx';
+import ShowEditable from '../components/Editable.jsx';
 import Page from '../components/Page';
 
 const mocks = {

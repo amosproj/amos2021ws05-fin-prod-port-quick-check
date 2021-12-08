@@ -1,4 +1,4 @@
-import { Box, Input, Wrap, Flex, Heading, Button, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Flex, Heading, Button, Text, useColorModeValue } from '@chakra-ui/react';
 import Card from '../components/Card';
 
 import Page from '../components/Page';

@@ -1,4 +1,4 @@
-import { darken, whiten, mode } from '@chakra-ui/theme-tools';
+import { mode } from '@chakra-ui/theme-tools';
 
 export const TextStyles = {
   // Styles for the base style

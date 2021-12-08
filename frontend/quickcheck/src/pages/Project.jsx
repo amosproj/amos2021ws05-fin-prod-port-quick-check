@@ -3,11 +3,10 @@ import MemberTable from '../components/MemberTable';
 import { React, useState, useEffect } from 'react';
 
 import ProductAreaList from '../components/ProjectAreaCard';
-import ShowEditable from '../components/editable.jsx';
+import ShowEditable from '../components/Editable.jsx';
 
 import Page from '../components/Page';
 import { useParams } from 'react-router-dom';
-import { api } from '../utils/apiClient';
 import Card from '../components/Card';
 
 const mockProject = {
