@@ -1,4 +1,5 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect} from 'react';
+import { useToast } from '@chakra-ui/react';
 import Page from '../components/Page';
 import {
   //Text,
@@ -26,6 +27,7 @@ import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
 import Card from '../components/Card';
 import ProductRow from '../components/ProductRow';
 import uuid4 from 'uuid';
+import { api } from '../utils/apiClient';
 
 // import { useToast } from '@chakra-ui/react';
 
@@ -56,6 +58,14 @@ const products = [
     productAreaID: 2,
   },
 ];
+const mocks = {
+  product: {
+    productName: 'ProductAPI',
+    productID: 223,
+    projectID: 1,
+    productAreaID: 2,
+  }
+}
 
 function AddButton(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -113,30 +123,14 @@ function RemoveButton({ onRemove, product }) {
   );
 }
 
-/* function TextF(props) {
-  return (
-    <p>{props.product}</p>
-    //<p>{proj}</p> 
-  )
-}*/
 
 export default function ProductOverview() {
   const [productsData, setProductsData] = useState(products);
   const [editable, setEditable] = useState(false);
+  const toast = useToast();
   //const [input, setInput] = useState("");
   const refInputProd = useRef();
 
-  /*const handleClickAddButton = () => {
-    const newProduct = {
-      productName: refInputProd.current.value,
-      productID: uuid4(),
-      projectID: 1,
-      productAreaID: 2,
-    };
-
-    setProductsData([...productsData, newProduct]);
-    refInputProd.current.value = null;
-  };*/
 
   const handleAddProduct = (productName) => {
     const newProduct = {
@@ -149,19 +143,47 @@ export default function ProductOverview() {
 
   }
 
-  /*const handleRemoveProduct = () => {
-    const newProductsData = productsData.filter((p) => p.productName !== refInputProd.current.value);
-    setProductsData(newProductsData);
-  };*/
-
   const childToParent = (childdata) => {
     setProductsData(childdata);
   };
-  const varf = "DFGHJ";
+
 
   const removeProduct = (product) => {
     const newProductsData = productsData.filter((p) => p.productName !== product.productName);
     setProductsData(newProductsData);
+  };
+  // get all projects from the API
+  const getProducts = () => {
+    api
+      .url('/products')
+      .get()
+      .json((json) => setProductsData(json));
+  };
+
+  // runs when rendering
+  useEffect(() => {
+    getProducts();
+  }, []);
+
+  const errorNotification = (err) => {
+    console.error('internal error:', err.message);
+    toast({
+      title: 'Error occured!',
+      description: 'check dev console',
+      status: 'error',
+      duration: 3000,
+      isClosable: true,
+    });
+  };
+  // FOR DEV ONLY: create new mock project when pressing 'add new' button
+  const createProject = () => {
+    productsData.push(mocks.product);
+    api
+      .url('/products')
+      .post(mocks.product)
+      .internalError((err) => errorNotification(err))
+      .res()
+      .catch(console.error);
   };
 
   const EditButtons = () => {
@@ -169,9 +191,7 @@ export default function ProductOverview() {
       return (
 
         <HStack>
-
           {editable ? <AddButton w={16} onAddProduct={handleAddProduct} /> : {}}
-
           <Button size="md" onClick={() => setEditable(false)}>
             Cancel
           </Button>
@@ -201,16 +221,16 @@ export default function ProductOverview() {
               <ProductRow
                 product={product}
                 key={uuid4()}
-                productsData={productsData}
-                //childToParent={childToParent}
+                editable={editable}
                 removeButton={editable ? <RemoveButton onRemove={removeProduct} product={product} /> : <div />}
               > </ProductRow>
             ))}
             <Button>Generate Results</Button>
           </VStack>
         </Card>
-
+              {mocks.product.productName}
         <EditButtons />
+        <Button onClick={createProject}> API</Button>
       </Page>
     </div>
   );
