@@ -1,12 +1,12 @@
 import { Heading, Button, HStack } from '@chakra-ui/react';
-import MemberTable from '../components/MemberTable';
 import { React, useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
-import ProductAreaList from '../components/ProjectAreaCard';
+import ProductAreaList from '../components/projectPage/ProjectAreaList';
 import ShowEditable from '../components/Editable.jsx';
 
+import MemberTable from '../components/projectPage/MemberTable';
 import Page from '../components/Page';
-import { useParams } from 'react-router-dom';
 import Card from '../components/Card';
 
 const mockProject = {

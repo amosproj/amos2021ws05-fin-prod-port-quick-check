@@ -1,6 +1,6 @@
 import { Select } from '@chakra-ui/select';
 
-export function Selection({ options, selected, onChange, ...rest }) {
+export default function Selection({ options, selected, onChange, ...rest }) {
   // required args: options, selected (option), onChange :updateFunction
   return (
     <Select {...rest} value={selected} onChange={onChange}>

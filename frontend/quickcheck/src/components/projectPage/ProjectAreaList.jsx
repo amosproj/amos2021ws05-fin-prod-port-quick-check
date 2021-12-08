@@ -1,85 +1,9 @@
-import { React, useState } from 'react';
-import {
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalBody,
-  ModalFooter,
-  ModalCloseButton,
-  ModalHeader,
-  Button,
-  Heading,
-  IconButton,
-  Spacer,
-  List,
-} from '@chakra-ui/react';
-import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
-import { Selection } from '../Selection.jsx';
+import { React } from 'react';
+import { Button, Heading, IconButton, Spacer, List, Flex } from '@chakra-ui/react';
+import { DeleteIcon } from '@chakra-ui/icons';
+
 import ConfirmClick from '../ConfirmClick.jsx';
-import Card from '../Card.jsx';
-
-function AddButton({ onAdd }) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const allAreas = fetchAllAreas();
-  const [selectedArea, setSelectedArea] = useState();
-  const header = 'Add Product Area';
-
-  // TODO: replace this var with state management
-  const existingAreas = []; // mock
-
-  const getAreaFromName = (areaName) => {
-    return allAreas.filter((m) => m.name === areaName)[0];
-  };
-
-  return (
-    <>
-      <IconButton
-        icon={<AddIcon />}
-        aria-label="Add Product Area"
-        onClick={onOpen}
-        variant="primary"
-        size="lg"
-        w={16}
-      ></IconButton>
-
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader color="primary">{header}</ModalHeader>
-          <ModalCloseButton />
-
-          <ModalBody px={10}>
-            <Selection
-              placeholder="Select Poduct Area..."
-              options={allAreas
-                .filter((area) => !existingAreas.includes(area.id)) // filter out areas that already exist
-                .map((e) => e.name)}
-              onChange={(e) => setSelectedArea(e.target.value)}
-            />
-          </ModalBody>
-
-          <ModalFooter>
-            <Button
-              variant="primary"
-              mr={3}
-              disabled={selectedArea === undefined}
-              onClick={(e) => {
-                onAdd(getAreaFromName(selectedArea).id);
-                onClose();
-              }}
-            >
-              Save
-            </Button>
-            <Button onClick={onClose} variant="whisper">
-              Cancel
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </>
-  );
-}
+import AddAreaButton from './AddAreaButton.jsx';
 
 function ProductArea({ productArea }) {
   return (
@@ -109,10 +33,6 @@ const areaMock = {
   2: { id: 2, name: 'Payments', category: 'Privat' },
 };
 
-const fetchAllAreas = () => {
-  return Object.values(areaMock);
-};
-
 export default function ProductAreaList({ editMode, areaIDs, handleChange }) {
   const fetchArea = (areaID) => {
     return areaMock[areaID];
@@ -131,14 +51,14 @@ export default function ProductAreaList({ editMode, areaIDs, handleChange }) {
     <>
       <List w="50%" align="center" spacing={4} pb={5}>
         {areaIDs.map((id) => (
-          <Card gridGap={5} w="full">
+          <Flex gridGap={5} w="full" align="center">
             <ProductArea key={id} productArea={fetchArea(id)} />
             {editMode ? (
               <RemoveButton variant='whisper' size='lg' handleRemove={handleRemoveArea(id)}></RemoveButton>
             ) : undefined}
-          </Card>
+          </Flex>
         ))}
-        {editMode ? <AddButton onAdd={handleAddArea}></AddButton> : <div />}
+        {editMode ? <AddAreaButton onAdd={handleAddArea}></AddAreaButton> : <div />}
       </List>
     </>
   );

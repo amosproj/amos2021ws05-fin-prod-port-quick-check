@@ -1,77 +1,11 @@
 import React from 'react';
-import {
-  Button,
-  HStack,
-  Text,
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalFooter,
-  ModalCloseButton,
-  FormControl,
-  FormLabel,
-  Input,
-  ModalBody,
-  ModalHeader,
-  useColorModeValue,
-  IconButton,
-  Heading,
-  List,
-} from '@chakra-ui/react';
-import { DeleteIcon, AddIcon } from '@chakra-ui/icons';
-import { useState } from 'react';
-import { roles } from '../utils/const';
-import { Selection } from './Selection.jsx';
-import ConfirmClick from './ConfirmClick';
+import { HStack, Text, useColorModeValue, IconButton, Heading, List } from '@chakra-ui/react';
+import { DeleteIcon } from '@chakra-ui/icons';
 
-
-function AddButton(props) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [email, setEmail] = useState('');
-  const [role, setRole] = useState('Client');
-  const header = 'Add new Member';
-  return (
-    <>
-      <IconButton icon={<AddIcon />} {...props} onClick={onOpen}/>
-
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader color="primary">{header}</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody px={10}>
-            <FormControl>
-              <FormLabel pl={3}>Email</FormLabel>
-              <Input mb={6} placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-            </FormControl>
-            <Selection
-              options={Object.values(roles)}
-              selected={roles.consultant}
-              onChange={setRole}
-            />
-          </ModalBody>
-
-          <ModalFooter py={5} px={10}>
-            <Button
-              variant="primary"
-              mx={3}
-              onClick={(e) => {
-                props.onAddMember({ email: email, role: role });
-                onClose();
-              }}
-            >
-              Save
-            </Button>
-            <Button onClick={onClose} variant="whisper">
-              Cancel
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </>
-  );
-}
+import { roles } from '../../utils/const';
+import Selection from '../Selection.jsx';
+import ConfirmClick from '../ConfirmClick';
+import AddMemberButton from './AddMemberButton';
 
 function MemberRow({ editMode, member, onChangeRole, removeButton }) {
   const bg = useColorModeValue('gray.200', 'gray.600');
@@ -137,7 +71,9 @@ export default function MemberTable({ editMode, members, handleChange }) {
         <Heading size="md" minW={36} w={48} shadow="lg" bg={bgHeading} p={2} pb={5} rounded="md">
           Role
         </Heading>
-        {editMode ? <AddButton w={16} variant='primary' onAddMember={handleAddMember} /> : undefined}
+        {editMode ? (
+          <AddMemberButton w={16} variant="primary" onAddMember={handleAddMember} />
+        ) : undefined}
       </HStack>
 
       {members.map((member) => (
@@ -146,7 +82,9 @@ export default function MemberTable({ editMode, members, handleChange }) {
           member={member}
           editMode={editMode}
           onChangeRole={handleRoleChange(member)}
-          removeButton={<RemoveButton variant="whisper" w={16} handleRemove={handleRemoveMember(member)} />}
+          removeButton={
+            <RemoveButton variant="whisper" w={16} handleRemove={handleRemoveMember(member)} />
+          }
         ></MemberRow>
       ))}
     </List>
