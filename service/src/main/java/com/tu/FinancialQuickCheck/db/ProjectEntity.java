@@ -22,7 +22,7 @@ public class ProjectEntity {
     @JoinColumn(name = "project")
     public List<ProductEntity> productEntities;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "projectid")
     public List<ProjectUserEntity> projectUserEntities;
 

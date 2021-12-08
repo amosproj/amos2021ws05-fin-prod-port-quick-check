@@ -6,6 +6,7 @@ import com.tu.FinancialQuickCheck.db.*;
 import com.tu.FinancialQuickCheck.dto.ProductAreaDto;
 import com.tu.FinancialQuickCheck.dto.ProjectDto;
 import com.tu.FinancialQuickCheck.dto.SmallProjectDto;
+import com.tu.FinancialQuickCheck.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,9 @@ public class ProjectService {
 
     @Autowired
     private ProductAreaRepository productAreaRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
 
     public ProjectService(ProjectRepository projectRepository, ProductRepository productRepository,
@@ -55,22 +59,27 @@ public class ProjectService {
     /**
      * adds a new ProjectEntity to DB
      * required information: see Project.yaml
-     * TODO: creator_id muss noch in members mit aufgenommen werden --> output und tests entsprechend anpassen
+     * // TODO: wollen wir es zulassen, dass die productAreas und members Listen leer sein können?
      * @return ProjectDto projectDto including created projectID
      */
     public ProjectDto createProject(ProjectDto projectDto) {
-        if(projectDto.projectName != null && projectDto.productAreas != null && projectDto.creator != null){
+
+        // Step 0: Check if input contains required information
+        if(projectDto.projectName != null && projectDto.productAreas != null && projectDto.creator != null
+                && projectDto.members != null){
+
             // create db entry
             ProjectEntity newProject = new ProjectEntity();
             newProject.creator = projectDto.creator;
             newProject.name = projectDto.projectName;
-            newProject.productEntities = new ArrayList<>();
+
             // add product areas to project through DUMMY data in product_entity table
+            newProject.productEntities = new ArrayList<>();
             Set<ProductAreaDto> newProductAreas = new HashSet<>(projectDto.productAreas);
             for (ProductAreaDto productArea : newProductAreas){
                 Optional<ProductAreaEntity> tmp = productAreaRepository.findById(productArea.id);
                 if(tmp.isPresent()){
-                    System.out.println("Create DUMMY data for productArea: " + productArea.id);
+//                    System.out.println("Create DUMMY data for productArea: " + productArea.id);
                     ProductEntity product = new ProductEntity();
                     product.project = newProject;
                     product.productarea = tmp.get();
@@ -80,12 +89,32 @@ public class ProjectService {
                     throw new ResourceNotFound("productArea " + productArea.id + " does not exist" );
                 }
             }
+
+            // assign members to projects
+            newProject.projectUserEntities = new ArrayList<>();
+            // check if members exist
+            Set<UserDto> newUsers = new HashSet<>(projectDto.members);
+            for(UserDto member: newUsers){
+                Optional<UserEntity> u = userRepository.findById(member.userEmail);
+                if(u.isPresent()){
+                    ProjectUserEntity newUserProject = new ProjectUserEntity();
+                    newUserProject.projectUserId = new ProjectUserId(newProject, u.get());
+                    newUserProject.role = member.role;
+                    newProject.projectUserEntities.add(newUserProject);
+                }else{
+                    throw new ResourceNotFound("User does not exist.");
+                }
+            }
+
             projectRepository.save(newProject);
 
-
             // return created projectID
-            return new ProjectDto(newProject.id, newProject.name, newProject.creator,
-                    convertProductAreaEntities(newProject.productEntities));
+            return new ProjectDto(
+                    newProject.id,
+                    newProject.name,
+                    newProject.creator,
+                    convertProductAreaEntities(newProject.productEntities),
+                    newProject.projectUserEntities);
         }else{
             return null;
         }

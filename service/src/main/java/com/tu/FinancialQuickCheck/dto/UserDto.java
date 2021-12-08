@@ -2,6 +2,7 @@ package com.tu.FinancialQuickCheck.dto;
 
 import com.tu.FinancialQuickCheck.Role;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class UserDto {
@@ -40,4 +41,17 @@ public class UserDto {
         this.role = role;
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserDto userDto = (UserDto) o;
+        return userEmail.equals(userDto.userEmail);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userEmail);
+    }
 }
