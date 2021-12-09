@@ -25,17 +25,11 @@ export default function Project(props) {
   const project = useStoreState((state) => state.project.data);
   const setName = useStoreActions((actions) => actions.project.setProjectName);
   const updateProject = useStoreActions((actions) => actions.project.update);
-
   const [editMode, setEditMode] = useState(false);
 
-  // const setProjectName = (newName) => updateProject({projectName: newName})
-  const setMembers = (members) => updateProject({ members: members });
-  const setProductAreas = (productAreas) => updateProject({ productAreas: productAreas });
-
   const { id } = useParams();
-
   useEffect(() => {
-    // fetchProject();
+    // fetchProject(id);
     updateProject({ ...mockProject });
   }, []);
 
