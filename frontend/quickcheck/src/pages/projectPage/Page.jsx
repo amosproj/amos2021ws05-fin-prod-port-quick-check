@@ -1,12 +1,14 @@
-import { Heading, Button, HStack, Input, Spacer } from '@chakra-ui/react';
+import { Heading, Button, HStack, Input, Spacer, Text } from '@chakra-ui/react';
 import { React, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-import ProductAreaList from './ProjectAreaList';
+import { useStoreActions, useStoreState } from 'easy-peasy';
 
-import MemberTable from './MemberTable';
 import Page from '../../components/Page';
 import Card from '../../components/Card';
+
+import ProductAreaList from './ProjectAreaList';
+import MemberTable from './MemberTable';
 
 const mockProject = {
   projectID: 1,
@@ -19,7 +21,11 @@ const mockProject = {
   productAreas: [1],
 };
 
-export default function Project(prop) {
+export default function Project(props) {
+  const projectName = useStoreState((state) => state.project.projectName);
+  const project = useStoreState((state) => state.project);
+  const updateProject = useStoreActions((actions) => actions.updateProject);
+
   const [editMode, setEditMode] = useState(false);
   const [projectData, setprojectData] = useState({
     projectID: 0,
@@ -50,8 +56,8 @@ export default function Project(prop) {
           align="center"
           variant="heading"
           isDisabled={!editMode}
-          onChange={(e) => handleChange('projectName')(e.target.value)}
-          value={projectData.projectName}
+          onChange={(e) => setProjectName(e.target.value)}
+          value={projectName}
         />
         <Spacer />
       </Card>
