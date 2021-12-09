@@ -2,11 +2,11 @@ import { Heading, Button, HStack, Input, Spacer } from '@chakra-ui/react';
 import { React, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-import ProductAreaList from './ProjectAreaList';
-
-import MemberTable from './MemberTable';
 import Page from '../../components/Page';
 import Card from '../../components/Card';
+
+import MemberTable from './MemberTable';
+import ProductAreaList from './ProjectAreaList';
 
 const mockProject = {
   projectID: 1,
