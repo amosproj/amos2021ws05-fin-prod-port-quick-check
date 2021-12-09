@@ -5,7 +5,9 @@ Hi everbody please follow these ideas, will help to join code :D
 
 **Files**, and **Components** are to be named useing **PascalCase** (first letter of every word capital, no _ - ect.).
 
-Instances of Components are in camelCase (first word , first letter small, all following words capitlize first letter).
+**Instances** of **Components** are in **camelCase** (first word , first letter small, all following words capitlize first letter).
+
+**Folder names** are also **camelCase.**
 
 ## Folder Structure
 
@@ -22,7 +24,7 @@ Instances of Components are in camelCase (first word , first letter small, all f
 			- Components only this page can use. (Ex. MemberRow, and MemberTable for the page ManageProject)
 
 
-## Import Style
+##Import Style
 
 ```
 //Foreign
@@ -44,3 +46,4 @@ import * from './components'
 
 ```
 
+****
