@@ -9,13 +9,9 @@ import { api } from './utils/apiClient';
 const projectListModel = {
   items: [], // list of: {"projectID": 2,"projectName": "Mock Project" }
 
-  set: action((state, items) => {
-    state.items = items;
-  }),
-  add: action((state, newProject) => {
-    state.items.push(newProject);
-  }),
-
+  set: action((state, items) => {state.items = items}),
+  add: action((state, newProject) => {state.items.push(newProject)}),
+  
   fetch: thunk(async (actions, payload) => {
     await api
       .url('/projects')
@@ -23,7 +19,7 @@ const projectListModel = {
       .json((json) => actions.set(json))
       .catch(console.error);
   }),
-};
+}
 
 const projectModel = {
   data: {
@@ -33,9 +29,7 @@ const projectModel = {
     productAreas: [],
   },
   // to change name pass {name: 'new name' } as payload
-  update: action((state, updatedProps) => {
-    state.project = { ...state.project, ...updatedProps };
-  }),
+  update: action((state, updatedProps) => {state.project = { ...state.project, ...updatedProps }}),
   // GET project by id
   fetch: thunk(async (actions, id) => {
     await api
@@ -45,14 +39,19 @@ const projectModel = {
       .catch(console.error);
   }),
 
-  // POST new Project
+  // POST new Project 
   create: thunk(async (actions, newProject) => {
     console.log(newProject);
-    await api.url('/projects').post(newProject).res(console.log);
+    await api
+      .url('/projects')
+      .post(newProject)
+      .res(console.log)
   }),
-};
+}
 
-const store = createStore({
+
+
+const store = createStore({ 
   projectList: projectListModel,
   project: projectModel,
 });
