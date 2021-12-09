@@ -1,6 +1,7 @@
 import { React } from 'react';
 import { Button, Heading, IconButton, Spacer, List, Flex } from '@chakra-ui/react';
 import { DeleteIcon } from '@chakra-ui/icons';
+import { useStoreActions, useStoreState } from 'easy-peasy';
 
 import ConfirmClick from '../../components/ConfirmClick.jsx';
 
@@ -34,28 +35,38 @@ const areaMock = {
   2: { id: 2, name: 'Payments', category: 'Privat' },
 };
 
-export default function ProductAreaList({ editMode, areaIDs, handleChange }) {
+export default function ProductAreaList({ editMode, productAreas, setProductAreas }) {
+
+
+  
+  // const productAreas = useStoreState((state) => state.project.productAreas);
+  // const updateProject = useStoreActions((actions) => actions.updateProject);
+  const handleUpdateAreas = (productAreas) => setProductAreas(productAreas)
+
   const fetchArea = (areaID) => {
     return areaMock[areaID];
   };
 
   const handleAddArea = (newID) => {
-    handleChange([...areaIDs, newID]);
+    handleUpdateAreas([...productAreas, newID]);
   };
 
   const handleRemoveArea = (removeID) => () => {
-    const updatedAreaIDs = areaIDs.filter((m) => m !== removeID);
-    handleChange(updatedAreaIDs);
+    const updatedAreaIDs = productAreas.filter((m) => m !== removeID);
+    handleUpdateAreas(updatedAreaIDs);
   };
 
   return (
     <>
       <List w="full" maxW={500} align="center" spacing={4} pb={5}>
-        {areaIDs.map((id) => (
+        {productAreas.map((id) => (
           <Flex gridGap={2} w="full" align="center">
             <ProductArea key={id} productArea={fetchArea(id)} />
             {editMode ? (
-              <RemoveButton variant="whisper" size="lg" handleRemove={handleRemoveArea(id)} />
+              // <RemoveButton variant="whisper" size="lg" handleRemove={handleRemoveArea(id)} />
+              <ConfirmClick onConfirm={handleRemoveArea(id)} confirmPrompt="Remove this product area?">
+              <IconButton icon={<DeleteIcon />} variant="whisper" size="lg" />
+            </ConfirmClick>
             ) : undefined}
           </Flex>
         ))}

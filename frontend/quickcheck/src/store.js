@@ -28,8 +28,10 @@ const projectModel = {
     members: [],
     productAreas: [],
   },
+
+  set: action((state, project) => {state.data = project}),
   // to change name pass {name: 'new name' } as payload
-  update: action((state, updatedProps) => {state.project = { ...state.project, ...updatedProps }}),
+  update: action((state, updatedProps) => {state.data = { ...state.data, ...updatedProps }}),
   // GET project by id
   fetch: thunk(async (actions, id) => {
     await api
@@ -45,7 +47,8 @@ const projectModel = {
     await api
       .url('/projects')
       .post(newProject)
-      .res(console.log)
+      .json(json => actions.set(json))
+      .catch(console.error)
   }),
 }
 

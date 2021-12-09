@@ -2,6 +2,8 @@ import React from 'react';
 import { Text, useColorModeValue, IconButton, Heading, List, Flex } from '@chakra-ui/react';
 import { DeleteIcon } from '@chakra-ui/icons';
 
+import { useStoreActions, useStoreState } from 'easy-peasy';
+
 import { roles } from '../../utils/const';
 import Selection from '../../components/Selection.jsx';
 import ConfirmClick from '../../components/ConfirmClick';
@@ -44,21 +46,25 @@ const RemoveButton = ({ handleRemove, ...buttonProps }) => {
 };
 
 // Assumption: ProjectMembers is a list of object: {id, role}
-export default function MemberTable({ editMode, members, handleChange }) {
+export default function MemberTable({ editMode, members, setMembers }) {
+
+  // const members = useStoreState((state) => state.project.members);
+  // const updateProject = useStoreActions((actions) => actions.updateProject);
+  
   const handleRemoveMember = (member) => () => {
     const newMembers = members.filter((m) => m.email !== member.email);
-    handleChange(newMembers);
+    setMembers(newMembers);
   };
 
   const handleAddMember = (newMember) => {
-    handleChange([...members, newMember]);
+    setMembers([...members, newMember]);
   };
 
   const handleRoleChange = (member) => (newRole) => {
     // This is a curried function in JS
     let index = members.map((m) => m.email).indexOf(member.email);
     members[index] = { ...member, role: newRole };
-    handleChange(members);
+    setMembers( members);
   };
 
   const bgHeading = useColorModeValue('gray.400', 'gray.500');
