@@ -35,12 +35,9 @@ const areaMock = {
 };
 
 export default function ProductAreaList({ editMode, handleChange }) {
-
-
-  
   const productAreas = useStoreState((state) => state.project.productAreas);
   const updateProject = useStoreActions((actions) => actions.updateProject);
-  const handleUpdateAreas = (productAreas) => updateProject({productAreas: productAreas})
+  const handleUpdateAreas = (productAreas) => updateProject({ productAreas: productAreas });
 
   const fetchArea = (areaID) => {
     return areaMock[areaID];
@@ -63,9 +60,12 @@ export default function ProductAreaList({ editMode, handleChange }) {
             <ProductArea key={id} productArea={fetchArea(id)} />
             {editMode ? (
               // <RemoveButton variant="whisper" size="lg" handleRemove={handleRemoveArea(id)} />
-              <ConfirmClick onConfirm={handleRemoveArea(id)} confirmPrompt="Remove this product area?">
-              <IconButton icon={<DeleteIcon />} variant="whisper" size="lg" />
-            </ConfirmClick>
+              <ConfirmClick
+                onConfirm={handleRemoveArea(id)}
+                confirmPrompt="Remove this product area?"
+              >
+                <IconButton icon={<DeleteIcon />} variant="whisper" size="lg" />
+              </ConfirmClick>
             ) : undefined}
           </Flex>
         ))}

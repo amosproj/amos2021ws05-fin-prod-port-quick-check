@@ -47,12 +47,10 @@ const RemoveButton = ({ handleRemove, ...buttonProps }) => {
 
 // Assumption: ProjectMembers is a list of object: {id, role}
 export default function MemberTable({ editMode, handleChange }) {
-
   const members = useStoreState((state) => state.project.members);
   const updateProject = useStoreActions((actions) => actions.updateProject);
-  
-  const handleUpdateMembers = (members) => updateProject({members: members})
 
+  const handleUpdateMembers = (members) => updateProject({ members: members });
 
   const handleRemoveMember = (member) => () => {
     const newMembers = members.filter((m) => m.email !== member.email);
@@ -67,7 +65,7 @@ export default function MemberTable({ editMode, handleChange }) {
     // This is a curried function in JS
     let index = members.map((m) => m.email).indexOf(member.email);
     members[index] = { ...member, role: newRole };
-    handleUpdateMembers( members);
+    handleUpdateMembers(members);
   };
 
   const bgHeading = useColorModeValue('gray.400', 'gray.500');
