@@ -1,6 +1,6 @@
-import { darken, whiten, mode } from '@chakra-ui/theme-tools';
+import { mode } from '@chakra-ui/theme-tools';
 
-export const TextStyles = {
+export const Text = {
   // Styles for the base style
   baseStyle: {
     baseStyle: (props) => ({
@@ -21,6 +21,6 @@ export const TextStyles = {
   },
   // The default `size` or `variant` values
   defaultProps: {
-    // variant: 'wisper'
+    // variant: 'whisper'
   },
 };

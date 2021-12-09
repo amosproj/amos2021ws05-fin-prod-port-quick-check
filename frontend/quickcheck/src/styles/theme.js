@@ -1,7 +1,9 @@
 import { extendTheme } from '@chakra-ui/react';
 
 import { ButtonStyles as Button } from './Button';
-import { TextStyles as Text } from './Text';
+import { Text } from './Text';
+import { Input } from './Input';
+import { Heading } from './Heading';
 import layerStyles from './layerStyles';
 // import { darken, whiten, mode } from '@chakra-ui/theme-tools';
 
@@ -40,7 +42,7 @@ const colors = {
 // check out  https://github.com/chakra-ui/chakra-ui/issues/591
 // for info on how to change default light/dark colors of components
 
-const components = { Button, Text };
+const components = { Button, Text, Input, Heading };
 
 const fonts = {
   heading: '"BearingPointSans","FS Albert",Calibri,Helvetica,"Trebuchet MS",Arial,sans-serif',
