@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 const mocks = {
   newProject: {
     creatorID: '2375e026-d348-4fb6-b42b-891a76758d5d',
-    projectName: 'Mock Project_'+ new Date().getSeconds(),
+    projectName: 'Mock Project_' + new Date().getSeconds(),
     members: ['2375e026-d348-4fb6-b42b-891a76758d5d', '0fef539d-69be-4013-9380-6a12c3534c67'],
     productAreas: [],
   },
@@ -58,7 +58,7 @@ export default function ProjectOverview() {
   // FOR DEV ONLY: create new mock project when pressing 'add new' button
   const postProject = () => {
     createProject(mocks.newProject);
-    addProject(mocks.newProject)
+    addProject(mocks.newProject);
   };
 
   return (
