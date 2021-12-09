@@ -52,14 +52,21 @@ public class UserController {
     }
 
 
-    @PutMapping("/{userID}")
+    @PutMapping("email/{email}")
+    public void updateUserByEmail(@RequestBody UserDto userDto, @PathVariable String email) {
+        if (service.updateUserByEmail(userDto, email) == null){
+            throw new BadRequest("User cannot be updated due to missing/incorrect information.");
+        }
+    }
+
+    /**@PutMapping("/{userID}")
     public void updateUserByUserID(@RequestBody UserDto userDto, @PathVariable UUID userID){
 
         if (service.updateByUserID(userDto, userID) == null) {
             throw new BadRequest("User cannot be updated due to missing/incorrect information.");
         }
     }
-
+    **/
 
     @DeleteMapping("/{userID}")
     void deleteByUserId(@PathVariable UUID userID){

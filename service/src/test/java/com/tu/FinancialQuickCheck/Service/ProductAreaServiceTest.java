@@ -72,8 +72,8 @@ public class ProductAreaServiceTest {
         productAreas.add(productArea1);
         productAreas.add(productArea2);
     }
-    
-    
+
+
     /**
      * tests for getAllProductAreas()
      *
@@ -82,9 +82,9 @@ public class ProductAreaServiceTest {
      */
     @Test
     public void testGetAllProductAreas1() {
-        // Step 1: init test object         
+        // Step 1: init test object
         List productAreaEntities = Collections.EMPTY_LIST;
-        
+
         // Step 2: provide knowledge
         when(repository.findAll()).thenReturn(productAreaEntities);
 
