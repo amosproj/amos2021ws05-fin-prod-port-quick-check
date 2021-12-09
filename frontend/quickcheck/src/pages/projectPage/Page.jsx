@@ -28,43 +28,16 @@ export default function Project(prop) {
     productAreas: [],
   });
 
-  const handleChange = (key) => (value) => {
-    setprojectData({
-      ...projectData,
-      [key]: value,
-    });
+  const setProjectName = (name) => {
+    updateProject({ projectName: name });
   };
-
-  const setMembers = handleChange('members');
-  const setProductAreas = handleChange('productAreas');
 
   const { id } = useParams();
 
   useEffect(() => {
     // fetchProject();
-    setprojectData(mockProject);
+    updateProject({ ...mockProject });
   }, []);
-
-  const EditButtons = () => {
-    if (editMode) {
-      return (
-        <HStack>
-          <Button variant="whisper" size="md" onClick={() => setEditMode(false)}>
-            Cancel
-          </Button>
-          <Button variant="primary" size="md" onClick={() => setEditMode(false)}>
-            Confirm
-          </Button>
-        </HStack>
-      );
-    } else {
-      return (
-        <Button variant="whisper" size="md" onClick={() => setEditMode(true)}>
-          Edit
-        </Button>
-      );
-    }
-  };
 
   return (
     <Page title="Manage Project">
@@ -87,21 +60,30 @@ export default function Project(prop) {
         <Heading variant="upper" size="md">
           Members
         </Heading>
-        <MemberTable editMode={editMode} members={projectData.members} handleChange={setMembers} />
+        <MemberTable editMode={editMode} />
       </Card>
 
       <Card direction="column">
         <Heading variant="upper" size="md">
           Product Areas
         </Heading>
-        <ProductAreaList
-          areaIDs={projectData.productAreas}
-          handleChange={setProductAreas}
-          editMode={editMode}
-        />
+        <ProductAreaList editMode={editMode} />
       </Card>
 
-      <EditButtons />
+      {editMode ? (
+        <HStack>
+          <Button variant="whisper" size="md" onClick={() => setEditMode(false)}>
+            Cancel
+          </Button>
+          <Button variant="primary" size="md" onClick={() => setEditMode(false)}>
+            Confirm
+          </Button>
+        </HStack>
+      ) : (
+        <Button variant="whisper" size="md" onClick={() => setEditMode(true)}>
+          Edit
+        </Button>
+      )}
     </Page>
   );
 }
