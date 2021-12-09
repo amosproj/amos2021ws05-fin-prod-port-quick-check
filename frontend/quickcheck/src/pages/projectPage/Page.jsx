@@ -26,18 +26,17 @@ export default function Project(props) {
   const setName = useStoreActions((actions) => actions.project.setProjectName);
   const updateProject = useStoreActions((actions) => actions.project.update);
 
-
   const [editMode, setEditMode] = useState(false);
 
-  // const setProjectName = (newName) => updateProject({projectName: newName}) 
-  const setMembers = (members) => updateProject({members: members}) 
-  const setProductAreas = (productAreas) => updateProject({productAreas: productAreas}) 
+  // const setProjectName = (newName) => updateProject({projectName: newName})
+  const setMembers = (members) => updateProject({ members: members });
+  const setProductAreas = (productAreas) => updateProject({ productAreas: productAreas });
 
   const { id } = useParams();
 
   useEffect(() => {
     // fetchProject();
-    updateProject({...mockProject});
+    updateProject({ ...mockProject });
   }, []);
 
   const EditButtons = () => {
@@ -94,7 +93,6 @@ export default function Project(props) {
 
       <EditButtons />
       <p>{JSON.stringify(project)}</p>
-
     </Page>
   );
 }

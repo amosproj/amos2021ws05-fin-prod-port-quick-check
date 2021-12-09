@@ -10,7 +10,6 @@ import ConfirmClick from '../../components/ConfirmClick';
 import AddMemberButton from './AddMemberButton';
 
 function MemberRow({ editMode, member, ...rest }) {
-
   const updateMember = useStoreActions((actions) => actions.project.updateMember);
   const handleRoleChange = (newRole) => {
     updateMember({ ...member, role: newRole });

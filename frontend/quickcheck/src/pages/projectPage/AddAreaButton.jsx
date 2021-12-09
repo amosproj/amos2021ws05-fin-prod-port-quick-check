@@ -25,7 +25,6 @@ const fetchAllAreas = () => {
   return Object.values(areaMock);
 };
 
-
 export default function AddAreaButton({ onAdd, ...buttonProps }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const allAreas = fetchAllAreas();
@@ -38,7 +37,6 @@ export default function AddAreaButton({ onAdd, ...buttonProps }) {
   const getAreaFromName = (areaName) => {
     return allAreas.filter((m) => m.name === areaName)[0];
   };
-
 
   return (
     <>

@@ -9,9 +9,13 @@ import { api } from './utils/apiClient';
 const projectListModel = {
   items: [], // list of: {"projectID": 2,"projectName": "Mock Project" }
 
-  set: action((state, items) => {state.items = items}),
-  add: action((state, newProject) => {state.items.push(newProject)}),
-  
+  set: action((state, items) => {
+    state.items = items;
+  }),
+  add: action((state, newProject) => {
+    state.items.push(newProject);
+  }),
+
   fetch: thunk(async (actions, payload) => {
     await api
       .url('/projects')
@@ -19,7 +23,7 @@ const projectListModel = {
       .json((json) => actions.set(json))
       .catch(console.error);
   }),
-}
+};
 
 const projectModel = {
   data: {
@@ -29,23 +33,35 @@ const projectModel = {
     productAreas: [],
   },
   // general actions
-  set: action((state, project) => {state.data = project}),
-  update: action((state, updatedProps) => {state.data = { ...state.data, ...updatedProps }}),
-  
-  setProjectName: action((state, projectName) => {state.data.projectName = projectName}),
-  addMember:      action((state, newMember) => {state.data.members.push(newMember)}),
-  removeMember:   action((state, member) => {   // remove member with matching email from items
-      state.data.members = state.data.members.filter(m => (m.email !== member.email))
-    }),   
-  updateMember: action((state, member) => {   // overwrite member with same email
+  set: action((state, project) => {
+    state.data = project;
+  }),
+  update: action((state, updatedProps) => {
+    state.data = { ...state.data, ...updatedProps };
+  }),
+
+  setProjectName: action((state, projectName) => {
+    state.data.projectName = projectName;
+  }),
+  addMember: action((state, newMember) => {
+    state.data.members.push(newMember);
+  }),
+  removeMember: action((state, member) => {
+    // remove member with matching email from items
+    state.data.members = state.data.members.filter((m) => m.email !== member.email);
+  }),
+  updateMember: action((state, member) => {
+    // overwrite member with same email
     const index = state.data.members.map((m) => m.email).indexOf(member.email); // get index of member with same email. if not found, index=-1
-    state.data.members[index] = {...state.data.members[index], ...member}
-  }), 
-  addProductArea: action((state, newArea) => {state.data.productAreas.push(newArea)}),
-  removeProductArea: action((state, areaID) => {   // remove member with matching email from items
-    state.data.productAreas = state.data.productAreas.filter(aID => (aID !== areaID))
-  }),   
-  
+    state.data.members[index] = { ...state.data.members[index], ...member };
+  }),
+  addProductArea: action((state, newArea) => {
+    state.data.productAreas.push(newArea);
+  }),
+  removeProductArea: action((state, areaID) => {
+    // remove member with matching email from items
+    state.data.productAreas = state.data.productAreas.filter((aID) => aID !== areaID);
+  }),
 
   // GET project by id
   fetch: thunk(async (actions, id) => {
@@ -56,20 +72,18 @@ const projectModel = {
       .catch(console.error);
   }),
 
-  // POST new Project 
+  // POST new Project
   sendCreate: thunk(async (actions, newProject) => {
     console.log(newProject);
     await api
       .url('/projects')
       .post(newProject)
-      .json(json => actions.set(json))
-      .catch(console.error)
+      .json((json) => actions.set(json))
+      .catch(console.error);
   }),
-}
+};
 
-
-
-const store = createStore({ 
+const store = createStore({
   projectList: projectListModel,
   project: projectModel,
 });
