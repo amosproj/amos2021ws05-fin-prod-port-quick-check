@@ -26,6 +26,18 @@ public class ProductService {
         this.productAreaRepository = productAreaRepository;
     }
 
+    public ProductDto findById(int productID) {
+        Optional<ProductEntity> productEntity = repository.findById(productID);
+
+        if (productEntity.isEmpty()) {
+            throw new ResourceNotFound("productID " + productID + " not found");
+        }else{
+            return new ProductDto(productEntity.get().id, productEntity.get().name,
+                    productEntity.get().project.id, productEntity.get().productarea,
+                    productEntity.get().parentProduct);
+        }
+    }
+
 
     public ProductDto createProduct(int projectID, int productAreaID, ProductDto productDto){
         if(projectRepository.existsById(projectID)
@@ -35,24 +47,24 @@ public class ProductService {
                 List<ProductEntity> entities = new ArrayList<>();
                 ProductEntity newProduct = new ProductEntity();
                 newProduct.name = productDto.productName;
-                newProduct.projectid = projectRepository.findById(projectID).get();
-                newProduct.productareaid = productAreaID;
+                newProduct.project = projectRepository.findById(projectID).get();
+                newProduct.productarea = productAreaRepository.getById(productAreaID);
                 entities.add(newProduct);
 
                 if(productDto.productVariations != null){
                     for (ProductDto productVariation: productDto.productVariations) {
                         ProductEntity entity = new ProductEntity();
                         entity.name = productVariation.productName;
-                        entity.projectid = projectRepository.findById(projectID).get();
-                        entity.productareaid = productAreaID;
-                        entity.parentProduct = repository.getById(newProduct.product_id);
+                        entity.project = projectRepository.findById(projectID).get();
+                        entity.productarea = productAreaRepository.getById(productAreaID);
+                        entity.parentProduct = newProduct;
                         entities.add(entity);
                     }
                 }
 
                 repository.saveAll(entities);
-                return new ProductDto(newProduct.product_id, newProduct.name, newProduct.projectid.id,
-                        newProduct.productareaid);
+                return new ProductDto(newProduct.id, newProduct.name, newProduct.project.id,
+                        newProduct.productarea, newProduct.parentProduct);
             }else{
                 return null;
             }
@@ -63,32 +75,17 @@ public class ProductService {
     }
 
 
-    public ProductDto findById(int productID) {
-
-        Optional<ProductEntity> productEntity = repository.findById(productID);
-
-        if (productEntity.isEmpty()) {
-            throw new ResourceNotFound("productID " + productID + " not found");
-        }else{
-            return new ProductDto(productEntity.get().product_id, productEntity.get().name,
-                    productEntity.get().projectid.id, productEntity.get().productareaid);
-        }
-    }
-
-
     public ProductDto updateById(ProductDto productDto, int productID) {
-
+        // TODO: soll update als Batch implementiert werden (d.h. auch für productvariations?
         if (!repository.existsById(productID)) {
             throw new ResourceNotFound("productID " + productID + " not found");
         }else{
-            if(productDto.productName != null){
+            if(productDto.productName != null && productDto.productName.length() > 0){
                 repository.findById(productID).map(
                         product -> {
                             product.name = productDto.productName;
                             return repository.save(product);
                         });
-//                new ProductDto(product.product_id, product.name, product.projectid.id,
-//                        product.productareaid);
                 return new ProductDto();
             }else{
                 return null;
@@ -97,24 +94,15 @@ public class ProductService {
     }
 
 
-    public void deleteProduct(int productID) {
-        Optional<ProductEntity> productEntity = repository.findById(productID);
-        if (productEntity.isEmpty()) {
-            throw new ResourceNotFound("productID " + productID + " not found");
-        }else{
-            repository.deleteById(productID);
-        }
-    }
-
-
     public List<ProductDto> getProductsByProjectId(int projectID){
         List<ProductDto> productsByProject = new ArrayList<>();
-        Iterable<ProductEntity> productEntities = repository.findByProjectid(projectRepository.findById(projectID).get());
+        Iterable<ProductEntity> productEntities = repository.findByProject(projectRepository.findById(projectID).get());
 
 
         for(ProductEntity tmp : productEntities){
             if(!tmp.name.equals("DUMMY")){
-                ProductDto addProduct = new ProductDto(tmp.product_id, tmp.name, tmp.projectid.id, tmp.productareaid);
+                ProductDto addProduct = new ProductDto(tmp.id, tmp.name, tmp.project.id, tmp.productarea,
+                        tmp.parentProduct);
                 productsByProject.add(addProduct);
             }
         }
@@ -125,26 +113,37 @@ public class ProductService {
 
     public List<ProductDto> getProductsByProjectIdAndProductAreaId(int projectID, int projectAreaID){
 
-        List<ProductDto> productsByProjectAndProductArea = new ArrayList<>() {
-        };
-        Iterable<ProductEntity> productEntities = repository.findByProjectidAndProductareaid(
+        List<ProductDto> productsByProjectAndProductArea = new ArrayList<>();
+        Iterable<ProductEntity> productEntities = repository.findByProjectAndProductarea(
                 projectRepository.findById(projectID).get(),
-                projectAreaID);
+                productAreaRepository.getById(projectAreaID));
 
         for(ProductEntity tmp : productEntities){
             if(!tmp.name.equals("DUMMY")) {
                 productsByProjectAndProductArea.add(
                         new ProductDto(
-                            tmp.product_id,
+                            tmp.id,
                             tmp.name,
-                            tmp.projectid.id,
-                            tmp.productareaid
+                            tmp.project.id,
+                            tmp.parentProduct
                             ));
             }
         }
 
         return productsByProjectAndProductArea;
     }
+
+
+//    public void deleteProduct(int productID) {
+//        // TODO: was soll mit ProductVarianten beim löschen passieren? sollen die auch mit gelöscht werden?
+//        Optional<ProductEntity> productEntity = repository.findById(productID);
+//
+//        if (productEntity.isEmpty()) {
+//            throw new ResourceNotFound("productID " + productID + " not found");
+//        }else{
+//            repository.deleteById(productID);
+//        }
+//    }
 
 
 }

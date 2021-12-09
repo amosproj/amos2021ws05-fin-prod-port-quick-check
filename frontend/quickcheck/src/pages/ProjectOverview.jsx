@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 
 const mocks = {
   newProject: {
-    creatorID: 0,
+    creatorID: '2375e026-d348-4fb6-b42b-891a76758d5d',
     projectName: 'Mock Project',
     members: ['2375e026-d348-4fb6-b42b-891a76758d5d', '0fef539d-69be-4013-9380-6a12c3534c67'],
     productAreas: [],
@@ -20,12 +20,12 @@ const mocks = {
 
 function ProjectCard({ project }) {
   return (
-    <Card>
-      <Heading size="lg" color="teal.400" align="center" py={{ base: 4, md: 0 }} w="50%">
+    <Card layerStyle="card_bordered">
+      <Heading color="primary" size="lg" align="center" w="40%" maxW="50%">
         {project.projectName}
       </Heading>
       <Spacer />
-      <VStack p={2} spacing={0}>
+      <VStack p={2}>
         <Text fontWeight="bolder" fontSize="md">
           {mocks.role}
         </Text>
@@ -35,7 +35,7 @@ function ProjectCard({ project }) {
       </VStack>
       <Spacer />
       <Link to={'' + project.projectID}>
-        <Button bg="teal.500" align="center" _hover={{ bg: 'teal.400' }} w={24}>
+        <Button variant="wisper" size="lg" colorScheme="blue" align="center" w={24}>
           open
         </Button>
       </Link>
@@ -70,10 +70,11 @@ export default function ProjectOverview() {
   // runs when rendering
   useEffect(() => {
     getProjects();
-  });
+  }, []);
 
   // FOR DEV ONLY: create new mock project when pressing 'add new' button
   const createProject = () => {
+    projectsData.push(mocks.newProject);
     api
       .url('/projects')
       .post(mocks.newProject)
@@ -84,7 +85,7 @@ export default function ProjectOverview() {
 
   return (
     <Page title="Your Projects">
-      <List spacing={3} mx={2} w="80%">
+      <List spacing={3} mx={2} w="full">
         {projectsData.map((project) => (
           <ProjectCard project={project} key={project.projectID} />
         ))}

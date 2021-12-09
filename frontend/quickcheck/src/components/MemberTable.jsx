@@ -14,6 +14,7 @@ import {
   Input,
   ModalBody,
   ModalHeader,
+  useColorModeValue,
   IconButton,
   Popover,
   PopoverTrigger,
@@ -35,12 +36,12 @@ function AddButton(props) {
   const header = 'Add new Member';
   return (
     <>
-      <IconButton icon={<AddIcon />} colorScheme="green" size="lg" {...props} onClick={onOpen} />
+      <IconButton icon={<AddIcon />} variant="primary" size="lg" {...props} onClick={onOpen} />
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader color="teal.300">{header}</ModalHeader>
+          <ModalHeader color="primary">{header}</ModalHeader>
           <ModalCloseButton />
           <ModalBody px={10}>
             <FormControl>
@@ -56,8 +57,8 @@ function AddButton(props) {
 
           <ModalFooter py={5} px={10}>
             <Button
-              colorScheme="blue"
-              mr={3}
+              variant="primary"
+              mx={3}
               onClick={(e) => {
                 props.onAddMember({ email: email, role: role });
                 onClose();
@@ -65,7 +66,9 @@ function AddButton(props) {
             >
               Save
             </Button>
-            <Button onClick={onClose}>Cancel</Button>
+            <Button onClick={onClose} variant="wisper">
+              Cancel
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
@@ -78,14 +81,7 @@ function RemoveButton({ onRemove }) {
   return (
     <Popover isOpen={isOpen} onOpen={onOpen} onClose={onClose} isLazy={true} w="wrap">
       <PopoverTrigger>
-        <IconButton
-          icon={<DeleteIcon />}
-          onClick={onOpen}
-          size="md"
-          color="red.900"
-          bg="red.400"
-          w={16}
-        />
+        <IconButton icon={<DeleteIcon />} onClick={onOpen} size="md" variant="wisper" w={16} />
       </PopoverTrigger>
       <PopoverContent>
         <PopoverHeader fontWeight="semibold">Confirm removing this User</PopoverHeader>
@@ -109,37 +105,25 @@ function RemoveButton({ onRemove }) {
   );
 }
 
-function MemberHead({ editMode, addButton }) {
-  return (
-    <HStack px={4} rounded="md" align="center" spacing={3} mb={5}>
-      <Heading size="md" w="50%" bg="gray.600" p={2} pb={5} rounded="md">
-        Email
-      </Heading>
-      <Heading size="md" minW={36} w={48} bg="gray.600" p={2} pb={5} rounded="md">
-        Role
-      </Heading>
-      {editMode ? addButton : <div />}
-    </HStack>
-  );
-}
-
 function MemberRow({ editMode, member, onChangeRole, removeButton }) {
+  const bg = useColorModeValue('gray.200', 'gray.600');
+
   return (
     <HStack px={4} rounded="md" align="center" spacing={3}>
-      <Text w="50%" bg="blue.700" rounded="md" p={2} px={3} align="left">
+      <Text variant="cell" w="50%" align="left">
         {member.email}
       </Text>
       {editMode ? (
         <Selection
+          bg={bg}
+          border="0px"
           selected={member.role}
           options={Object.values(roles)}
           onChange={onChangeRole}
-          minW={36}
           w={48}
-          bg="blue.700"
         />
       ) : (
-        <Text minW={36} w={48} rounded="md" bg="blue.700" p={2} px={3} h="full" align="left">
+        <Text w={48} variant="cell" h="full" align="left">
           {member.role}
         </Text>
       )}
@@ -166,12 +150,19 @@ export default function MemberTable({ editMode, members, handleChange }) {
     handleChange(members);
   };
 
+  const bgHeading = useColorModeValue('gray.400', 'gray.500');
   return (
     <List spacing={2} direction="column" minW="80%" align="center" pb={5}>
-      <MemberHead
-        editMode={editMode}
-        addButton={<AddButton w={16} onAddMember={handleAddMember}></AddButton>}
-      />
+      <HStack px={4} rounded="md" align="center" spacing={3} mb={5}>
+        <Heading size="md" w="50%" shadow="lg" bg={bgHeading} p={2} pb={5} rounded="md">
+          Email
+        </Heading>
+        <Heading size="md" minW={36} w={48} shadow="lg" bg={bgHeading} p={2} pb={5} rounded="md">
+          Role
+        </Heading>
+        {editMode ? <AddButton w={16} onAddMember={handleAddMember} /> : <div />}
+      </HStack>
+
       {members.map((member) => (
         <MemberRow
           key={member.email}
