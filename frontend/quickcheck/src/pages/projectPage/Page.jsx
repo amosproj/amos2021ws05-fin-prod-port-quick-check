@@ -15,8 +15,8 @@ const mockProject = {
   creatorID: '2375e026-d348-4fb6-b42b-891a76758d5d',
   projectName: 'Amos Bank',
   members: [
-    { email: 'consultant@amos.de', role: 'Consultant' },
-    { email: 'manager@amos.de', role: 'Project Owner' },
+    { userEmail: 'consultant@amos.de', role: 'Consultant' },
+    { userEmail: 'manager@amos.de', role: 'Project Owner' },
   ],
   productAreas: [1],
 };
@@ -24,13 +24,14 @@ const mockProject = {
 export default function Project(props) {
   const project = useStoreState((state) => state.project.data);
   const setName = useStoreActions((actions) => actions.project.setProjectName);
-  const updateProject = useStoreActions((actions) => actions.project.update);
+  // const updateProject = useStoreActions((actions) => actions.project.update);
+  const fetchProject = useStoreActions((actions) => actions.project.fetch);
   const [editMode, setEditMode] = useState(false);
 
   const { id } = useParams();
   useEffect(() => {
-    // fetchProject(id);
-    updateProject({ ...mockProject });
+    fetchProject(id);
+    // updateProject({ ...mockProject });
   }, []);
 
   const EditButtons = () => {

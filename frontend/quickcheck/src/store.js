@@ -48,11 +48,11 @@ const projectModel = {
   }),
   removeMember: action((state, member) => {
     // remove member with matching email from items
-    state.data.members = state.data.members.filter((m) => m.email !== member.email);
+    state.data.members = state.data.members.filter((m) => m.userEmail !== member.userEmail);
   }),
   updateMember: action((state, member) => {
     // overwrite member with same email
-    const index = state.data.members.map((m) => m.email).indexOf(member.email); // get index of member with same email. if not found, index=-1
+    const index = state.data.members.map((m) => m.userEmail).indexOf(member.userEmail); // get index of member with same email. if not found, index=-1
     state.data.members[index] = { ...state.data.members[index], ...member };
   }),
   addProductArea: action((state, newArea) => {
@@ -68,18 +68,20 @@ const projectModel = {
     await api
       .url('/projects/' + id)
       .get()
-      .json((json) => actions.updateProject(json))
+      .json((json) => actions.set(json))
+      // .json((json) => console.log(json))
       .catch(console.error);
   }),
 
   // POST new Project
   sendCreate: thunk(async (actions, newProject) => {
-    console.log(newProject);
+    console.log('send POST', {newProject});
     await api
       .url('/projects')
       .post(newProject)
       .json((json) => actions.set(json))
       .catch(console.error);
+    actions.set(newProject);
   }),
 };
 

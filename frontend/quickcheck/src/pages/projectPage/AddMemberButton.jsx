@@ -61,7 +61,7 @@ export default function AddMemberButton({ onAdd, ...buttonProps }) {
               variant="primary"
               mx={3}
               onClick={(e) => {
-                onAdd({ email: email, role: role });
+                onAdd({ userEmail: email, role: role });
                 onClose();
               }}
             >

@@ -20,7 +20,7 @@ function MemberRow({ editMode, member, ...rest }) {
   return (
     <Flex {...rest} w="full">
       <Text variant="cell" align="left" w="full">
-        {member.email}
+        {member.userEmail}
       </Text>
       <Flex w={60}>
         {editMode ? (
