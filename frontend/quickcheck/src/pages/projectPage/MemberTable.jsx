@@ -46,7 +46,7 @@ const RemoveButton = ({ handleRemove, ...buttonProps }) => {
 };
 
 // Assumption: ProjectMembers is a list of object: {id, role}
-export default function MemberTable({ editMode, handleChange }) {
+export default function MemberTable({ editMode }) {
   const members = useStoreState((state) => state.project.members);
   const updateProject = useStoreActions((actions) => actions.updateProject);
 
