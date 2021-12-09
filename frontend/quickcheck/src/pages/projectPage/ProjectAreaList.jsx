@@ -48,7 +48,7 @@ export default function ProductAreaList({ editMode }) {
     <>
       <List w="full" maxW={500} align="center" spacing={4} pb={5}>
         {productAreas.map((id) => (
-          <Flex gridGap={2} w="full" align="center">
+          <Flex gridGap={2} w="full" align="center" key={id}>
             <ProductArea key={id} productArea={fetchArea(id)} />
             {editMode ? (
               <ConfirmClick

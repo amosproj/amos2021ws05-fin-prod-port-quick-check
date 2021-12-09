@@ -14,21 +14,20 @@ function MemberRow({ editMode, member, ...rest }) {
   const handleRoleChange = (newRole) => {
     updateMember({ ...member, role: newRole });
   };
-
   const bg = useColorModeValue('gray.200', 'gray.600');
 
   return (
     <Flex {...rest} w="full">
-      <Text variant="cell" align="left" w="full">
+      <Text variant="cell" align="left" w="66%">
         {member.userEmail}
       </Text>
-      <Flex w={60}>
+      <Flex minW={70} w='33%'>
         {editMode ? (
           <Selection
             bg={bg}
             border="0px"
             selected={member.role}
-            options={Object.values(roles)}
+            options={Object.keys(roles)}
             onChange={handleRoleChange}
             w="full"
           />
@@ -61,10 +60,10 @@ export default function MemberTable({ editMode }) {
     <List spacing={2} direction="column" w="full" align="center" maxW={700}>
       <Flex gridGap={3} w="full">
         <Flex gridGap={3} h={12} w="full">
-          <Heading size="md" rounded="md" pt={2} bg={bgHeading} w="full">
+          <Heading size="md" rounded="md" pt={2} bg={bgHeading} w="66%">
             Email
           </Heading>
-          <Heading size="md" rounded="md" pt={2} bg={bgHeading} w={60}>
+          <Heading size="md" rounded="md" pt={2} bg={bgHeading} minW={70} w='33%'>
             Role
           </Heading>
         </Flex>
@@ -74,13 +73,12 @@ export default function MemberTable({ editMode }) {
       </Flex>
 
       {members.map((member) => (
-        <Flex gridGap={3}>
+        <Flex gridGap={3} key={member.userEmail}>
           <MemberRow
             rounded="md"
             align="center"
             w="full"
             gridGap={3}
-            key={member.email}
             member={member}
             editMode={editMode}
           ></MemberRow>

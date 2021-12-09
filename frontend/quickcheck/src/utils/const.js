@@ -1,7 +1,7 @@
 export const roles = {
-  consultant: 'Consultant',
-  manager: 'Project Manager',
-  owner: 'Project Owner',
+  CLIENT: 'Client',
+  ADMIN: 'Admin',
+  PROJECT_MANAGER: 'Project Manager',
 };
 
 // todo use this definition instread of hard coded strings for bsp if(role === "Consultant") ...
