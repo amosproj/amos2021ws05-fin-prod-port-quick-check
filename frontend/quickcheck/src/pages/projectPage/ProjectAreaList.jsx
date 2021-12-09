@@ -35,26 +35,14 @@ const areaMock = {
   2: { id: 2, name: 'Payments', category: 'Privat' },
 };
 
-export default function ProductAreaList({ editMode, productAreas, setProductAreas }) {
+const fetchArea = (id) => {
+  return areaMock[id];
+};
 
-
-  
-  // const productAreas = useStoreState((state) => state.project.productAreas);
-  // const updateProject = useStoreActions((actions) => actions.updateProject);
-  const handleUpdateAreas = (productAreas) => setProductAreas(productAreas)
-
-  const fetchArea = (areaID) => {
-    return areaMock[areaID];
-  };
-
-  const handleAddArea = (newID) => {
-    handleUpdateAreas([...productAreas, newID]);
-  };
-
-  const handleRemoveArea = (removeID) => () => {
-    const updatedAreaIDs = productAreas.filter((m) => m !== removeID);
-    handleUpdateAreas(updatedAreaIDs);
-  };
+export default function ProductAreaList({ editMode }) {
+  const productAreas = useStoreState((state) => state.project.data.productAreas);
+  const addProductArea = useStoreActions((actions) => actions.project.addProductArea);
+  const removeProductArea = useStoreActions((actions) => actions.project.removeProductArea);
 
   return (
     <>
@@ -63,15 +51,17 @@ export default function ProductAreaList({ editMode, productAreas, setProductArea
           <Flex gridGap={2} w="full" align="center">
             <ProductArea key={id} productArea={fetchArea(id)} />
             {editMode ? (
-              // <RemoveButton variant="whisper" size="lg" handleRemove={handleRemoveArea(id)} />
-              <ConfirmClick onConfirm={handleRemoveArea(id)} confirmPrompt="Remove this product area?">
-              <IconButton icon={<DeleteIcon />} variant="whisper" size="lg" />
-            </ConfirmClick>
+              <ConfirmClick
+                onConfirm={() => removeProductArea(id)}
+                confirmPrompt="Remove this product area?"
+              >
+                <IconButton icon={<DeleteIcon />} variant="whisper" size="lg" />
+              </ConfirmClick>
             ) : undefined}
           </Flex>
         ))}
         {editMode ? (
-          <AddAreaButton variant="primary" size="lg" w={32} onAdd={handleAddArea}></AddAreaButton>
+          <AddAreaButton variant="primary" size="lg" w={32} onAdd={addProductArea}></AddAreaButton>
         ) : (
           <div />
         )}

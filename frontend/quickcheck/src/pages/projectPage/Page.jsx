@@ -23,15 +23,13 @@ const mockProject = {
 
 export default function Project(props) {
   const project = useStoreState((state) => state.project.data);
+  const setName = useStoreActions((actions) => actions.project.setProjectName);
   const updateProject = useStoreActions((actions) => actions.project.update);
+
 
   const [editMode, setEditMode] = useState(false);
 
-  const handleChange = (key) => (value) => {
-    updateProject({ [key]: value });
-  };
-
-  const setProjectName = (newName) => updateProject({projectName: newName}) 
+  // const setProjectName = (newName) => updateProject({projectName: newName}) 
   const setMembers = (members) => updateProject({members: members}) 
   const setProductAreas = (productAreas) => updateProject({productAreas: productAreas}) 
 
@@ -74,7 +72,7 @@ export default function Project(props) {
           align="center"
           variant="heading"
           isDisabled={!editMode}
-          onChange={(e) => setProjectName(e.target.value)}
+          onChange={(e) => setName(e.target.value)}
           value={project.projectName}
         />
         <Spacer />
@@ -84,21 +82,19 @@ export default function Project(props) {
         <Heading variant="upper" size="md">
           Members
         </Heading>
-        <MemberTable editMode={editMode} members={project.members} setMembers={setMembers} />
+        <MemberTable editMode={editMode} />
       </Card>
 
       <Card direction="column">
         <Heading variant="upper" size="md">
           Product Areas
         </Heading>
-        <ProductAreaList
-          productAreas={project.productAreas}
-          setProductAreas={setProductAreas}
-          editMode={editMode}
-        />
+        <ProductAreaList editMode={editMode} />
       </Card>
 
       <EditButtons />
+      <p>{JSON.stringify(project)}</p>
+
     </Page>
   );
 }

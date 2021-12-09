@@ -25,6 +25,7 @@ const fetchAllAreas = () => {
   return Object.values(areaMock);
 };
 
+
 export default function AddAreaButton({ onAdd, ...buttonProps }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const allAreas = fetchAllAreas();
@@ -37,6 +38,7 @@ export default function AddAreaButton({ onAdd, ...buttonProps }) {
   const getAreaFromName = (areaName) => {
     return allAreas.filter((m) => m.name === areaName)[0];
   };
+
 
   return (
     <>
@@ -59,7 +61,7 @@ export default function AddAreaButton({ onAdd, ...buttonProps }) {
               options={allAreas
                 .filter((area) => !existingAreas.includes(area.id)) // filter out areas that already exist
                 .map((e) => e.name)}
-              onChange={(e) => setSelectedArea(e.target.value)}
+              onChange={setSelectedArea}
             />
           </ModalBody>
 

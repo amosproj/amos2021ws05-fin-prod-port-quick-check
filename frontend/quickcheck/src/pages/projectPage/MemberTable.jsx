@@ -9,11 +9,17 @@ import Selection from '../../components/Selection.jsx';
 import ConfirmClick from '../../components/ConfirmClick';
 import AddMemberButton from './AddMemberButton';
 
-function MemberRow({ editMode, member, onChangeRole, ...props }) {
+function MemberRow({ editMode, member, ...rest }) {
+
+  const updateMember = useStoreActions((actions) => actions.project.updateMember);
+  const handleRoleChange = (newRole) => {
+    updateMember({ ...member, role: newRole });
+  };
+
   const bg = useColorModeValue('gray.200', 'gray.600');
 
   return (
-    <Flex {...props} w="full">
+    <Flex {...rest} w="full">
       <Text variant="cell" align="left" w="full">
         {member.email}
       </Text>
@@ -24,7 +30,7 @@ function MemberRow({ editMode, member, onChangeRole, ...props }) {
             border="0px"
             selected={member.role}
             options={Object.values(roles)}
-            onChange={onChangeRole}
+            onChange={handleRoleChange}
             w="full"
           />
         ) : (
@@ -44,28 +50,11 @@ const RemoveButton = ({ handleRemove, ...buttonProps }) => {
     </ConfirmClick>
   );
 };
-
 // Assumption: ProjectMembers is a list of object: {id, role}
-export default function MemberTable({ editMode, members, setMembers }) {
-
-  // const members = useStoreState((state) => state.project.members);
-  // const updateProject = useStoreActions((actions) => actions.updateProject);
-  
-  const handleRemoveMember = (member) => () => {
-    const newMembers = members.filter((m) => m.email !== member.email);
-    setMembers(newMembers);
-  };
-
-  const handleAddMember = (newMember) => {
-    setMembers([...members, newMember]);
-  };
-
-  const handleRoleChange = (member) => (newRole) => {
-    // This is a curried function in JS
-    let index = members.map((m) => m.email).indexOf(member.email);
-    members[index] = { ...member, role: newRole };
-    setMembers( members);
-  };
+export default function MemberTable({ editMode }) {
+  const members = useStoreState((state) => state.project.data.members);
+  const addMember = useStoreActions((actions) => actions.project.addMember);
+  const removeMember = useStoreActions((actions) => actions.project.removeMember);
 
   const bgHeading = useColorModeValue('gray.400', 'gray.500');
 
@@ -81,7 +70,7 @@ export default function MemberTable({ editMode, members, setMembers }) {
           </Heading>
         </Flex>
         {editMode ? (
-          <AddMemberButton minW={16} size="lg" variant="primary" onAdd={handleAddMember} />
+          <AddMemberButton minW={16} size="lg" variant="primary" onAdd={addMember} />
         ) : undefined}
       </Flex>
 
@@ -95,10 +84,9 @@ export default function MemberTable({ editMode, members, setMembers }) {
             key={member.email}
             member={member}
             editMode={editMode}
-            onChangeRole={handleRoleChange(member)}
           ></MemberRow>
           {editMode ? (
-            <RemoveButton variant="whisper" minW={16} handleRemove={handleRemoveMember(member)} />
+            <RemoveButton variant="whisper" minW={16} handleRemove={() => removeMember(member)} />
           ) : undefined}
         </Flex>
       ))}
