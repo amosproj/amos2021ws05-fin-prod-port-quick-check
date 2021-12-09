@@ -82,8 +82,7 @@ export default function TestRange() {
           </Button>
         </Flex>
 
-
-        <Input variant='head'></Input>
+        <Input variant="head"></Input>
       </Page>
       <Box bg="red" w="full" h={3} roundedTop="lg" m="0"></Box>
       <Flex bg="blue" w="full" h={20} roundedBottom="lg" m="0" align="center"></Flex>
