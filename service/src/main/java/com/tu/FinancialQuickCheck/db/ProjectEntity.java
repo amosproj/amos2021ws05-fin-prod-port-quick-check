@@ -13,20 +13,24 @@ public class ProjectEntity {
     @Column(name = "name")
     public String name;
 
-    @Column(name = "creator_id")
-    public String creator_id;
+    @Column(name = "creator")
+    public String creator;
 
     // TODO: CascadeType mit Max und Alexander besprechen
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "projectid")
+//    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "project")
     public List<ProductEntity> productEntities;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "projectid")
     public List<ProjectUserEntity> projectUserEntities;
 
     public ProjectEntity(){
     }
 
+    public void removeProjectUser(ProjectUserEntity projectUser){
+        this.projectUserEntities.remove(projectUser);
+    }
 
 }

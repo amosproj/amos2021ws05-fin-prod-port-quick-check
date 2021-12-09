@@ -1,5 +1,6 @@
 package com.tu.FinancialQuickCheck.Service;
 
+import com.tu.FinancialQuickCheck.Exceptions.BadRequest;
 import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.db.*;
 import com.tu.FinancialQuickCheck.dto.ProjectUserDto;
@@ -35,7 +36,7 @@ public class ProjectUserService {
     }
 
 
-    public List<ProjectUserDto> getProjectUsersByProjectId(int projectID){
+    public List<ProjectUserDto> getProjectUsersByProjectId(int projectID) {
 
         Optional<ProjectEntity> entity = projectRepository.findById(projectID);
 
@@ -63,17 +64,19 @@ public class ProjectUserService {
     }
 
 
-    public void createProjectUser(int projectID, String userID, ProjectUserDto projectUserDto){
+    public void createProjectUser(int projectID, ProjectUserDto projectUserDto) {
 
         ProjectUserEntity entity = new ProjectUserEntity();
 
-        if(!userRepository.existsById(userID) || !projectRepository.existsById(projectID)){
-            throw new ResourceNotFound("User or project does not exist.");
-        }else{
+        if (!userRepository.existsById(projectUserDto.userEmail)) {
+            throw new ResourceNotFound("User does not exist.");
+        } else if (!projectRepository.existsById(projectID)) {
+            throw new ResourceNotFound("Project does not exist.");
+        } else {
             entity.projectUserId = new ProjectUserId(
                     projectRepository.findById(projectID).get(),
-                    userRepository.findById(userID).get()
-                    );
+                    userRepository.findById(projectUserDto.userEmail).get()
+            );
             entity.role = projectUserDto.role;
 
             projectUserRepository.save(entity);
@@ -81,22 +84,44 @@ public class ProjectUserService {
     }
 
 
-    public void updateProjectUser(int projectID, UUID userID, ProjectUserDto projectUserDto){
+    public void updateProjectUser(int projectID, ProjectUserDto projectUserDto) {
 
-        if(!projectUserRepository.existsById(new ProjectUserId(projectRepository.findById(projectID).get(),
-                userRepository.findById(userID.toString()).get()))){
+        if (!projectUserRepository.existsById(new ProjectUserId(projectRepository.findById(projectID).get(),
+                userRepository.findById(projectUserDto.userEmail).get()))) {
             throw new ResourceNotFound("User is not assigned to project.");
-        }else{
+        } else {
             projectUserRepository.findById(new ProjectUserId(projectRepository.findById(projectID).get(),
-                    userRepository.findById(userID.toString()).get()))
+                    userRepository.findById(projectUserDto.userEmail).get()))
                     .map(
-                        projectUser -> {
-                            if(projectUserDto.role != null){
-                                projectUser.role = projectUserDto.role;
-                            }
+                            projectUser -> {
+                                if (projectUserDto.role != null) {
+                                    projectUser.role = projectUserDto.role;
+                                }
 
-                            return projectUserRepository.save(projectUser);
-                        });
+                                return projectUserRepository.save(projectUser);
+                            });
         }
+    }
+
+    // TODO: implement deleteUsers()
+
+    public void deleteProjectUser(int projectID, ProjectUserDto projectUserDto) {
+
+        if (projectUserDto.userEmail != null) {
+
+            if (!projectUserRepository.existsById(new ProjectUserId(projectRepository.findById(projectID).get(),
+                userRepository.findById(projectUserDto.userEmail).get()))) {
+                throw new ResourceNotFound("User is not assigned to project.");
+            } else {
+
+                projectUserRepository.deleteById(new ProjectUserId(
+                        projectRepository.getById(projectID),
+                        userRepository.getById(projectUserDto.userEmail)));
+            }
+
+        } else {
+            throw new BadRequest("Input missing/is incorrect");
+        }
+
     }
 }

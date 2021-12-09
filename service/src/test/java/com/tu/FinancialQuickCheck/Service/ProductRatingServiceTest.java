@@ -57,8 +57,9 @@ public class ProductRatingServiceTest {
 
         entity = new ProductEntity();
         entity.name = name;
-        entity.productareaid = 1;
-        entity.projectid = projectEntity;
+        //TODO: anpassen
+//        entity.productarea = 1;
+        entity.project = projectEntity;
         entity.productRatingEntities = new ArrayList<>();
         ratingEntities = new ArrayList<>();
         for(int i = 1; i < 20; i++){
@@ -121,21 +122,20 @@ public class ProductRatingServiceTest {
      * testGetProductRatings6: ratings exist for ratingArea.ECONOMIC --> return ProductDto with exisitng ratings
      * testGetProductRatings7: productID and ratings exist --> return ProductDto with exisitng ratings
      */
-
     @Test
     public void testGetProductRatings1() {
         // Step 0: init test object
         Optional<ProductEntity>  entities = Optional.empty();
 
         // Step 1: provide knowledge
-        when(productRepository.findById(entity.product_id)).thenReturn(entities);
+        when(productRepository.findById(entity.id)).thenReturn(entities);
 
         // Step 2: Execute updateProject()
         Exception exception = assertThrows(ResourceNotFound.class, ()
-                -> service.getProductRatings(entity.product_id, null));
+                -> service.getProductRatings(entity.id, null));
 
         // Step 3: assert exception
-        String expectedMessage = "productID " + entity.product_id + " not found";
+        String expectedMessage = "productID " + entity.id + " not found";
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
@@ -147,10 +147,10 @@ public class ProductRatingServiceTest {
         entity.productRatingEntities = new ArrayList<>(){};
 
         // Step 1: provide knowledge
-        when(productRepository.findById(entity.product_id)).thenReturn(Optional.of(entity));
+        when(productRepository.findById(entity.id)).thenReturn(Optional.of(entity));
 
         // Step 2: Execute getProductRatings()
-        assertEquals(new ArrayList<>(), service.getProductRatings(entity.product_id, null).ratings);
+        assertEquals(new ArrayList<>(), service.getProductRatings(entity.id, null).ratings);
     }
 
     @Test
@@ -160,10 +160,10 @@ public class ProductRatingServiceTest {
                 productRatingEntity.productRatingId.getRatingid().ratingarea == RatingArea.COMPLEXITY);
 
         // Step 1: provide knowledge
-        when(productRepository.findById(entity.product_id)).thenReturn(Optional.of(entity));
+        when(productRepository.findById(entity.id)).thenReturn(Optional.of(entity));
 
         // Step 2: Execute getProductRatings() and assert
-        assertEquals(new ArrayList<>(), service.getProductRatings(entity.product_id, RatingArea.COMPLEXITY).ratings);
+        assertEquals(new ArrayList<>(), service.getProductRatings(entity.id, RatingArea.COMPLEXITY).ratings);
     }
 
     @Test
@@ -173,19 +173,19 @@ public class ProductRatingServiceTest {
                 productRatingEntity.productRatingId.getRatingid().ratingarea == RatingArea.ECONOMIC);
 
         // Step 1: provide knowledge
-        when(productRepository.findById(entity.product_id)).thenReturn(Optional.of(entity));
+        when(productRepository.findById(entity.id)).thenReturn(Optional.of(entity));
 
         // Step 2: Execute getProductRatings() and assert
-        assertEquals(new ArrayList<>(), service.getProductRatings(entity.product_id, RatingArea.ECONOMIC).ratings);
+        assertEquals(new ArrayList<>(), service.getProductRatings(entity.id, RatingArea.ECONOMIC).ratings);
     }
 
     @Test
     public void testGetProductRatings5() {
         // Step 1: provide knowledge
-        when(productRepository.findById(entity.product_id)).thenReturn(Optional.of(entity));
+        when(productRepository.findById(entity.id)).thenReturn(Optional.of(entity));
 
         // Step 2: Execute getProductRatings()
-        ProductDto out = service.getProductRatings(entity.product_id, RatingArea.COMPLEXITY);
+        ProductDto out = service.getProductRatings(entity.id, RatingArea.COMPLEXITY);
 
         out.ratings.forEach(
                 rating -> assertThat(rating.ratingID > 8)
@@ -195,10 +195,10 @@ public class ProductRatingServiceTest {
     @Test
     public void testGetProductRatings6() {
         // Step 1: provide knowledge
-        when(productRepository.findById(entity.product_id)).thenReturn(Optional.of(entity));
+        when(productRepository.findById(entity.id)).thenReturn(Optional.of(entity));
 
         // Step 2: Execute getProductRatings()
-        ProductDto out = service.getProductRatings(entity.product_id, RatingArea.ECONOMIC);
+        ProductDto out = service.getProductRatings(entity.id, RatingArea.ECONOMIC);
 
         out.ratings.forEach(
                 rating -> assertThat(rating.ratingID < 9)
@@ -208,10 +208,10 @@ public class ProductRatingServiceTest {
     @Test
     public void testGetProductRatings7() {
         // Step 1: provide knowledge
-        when(productRepository.findById(entity.product_id)).thenReturn(Optional.of(entity));
+        when(productRepository.findById(entity.id)).thenReturn(Optional.of(entity));
 
         // Step 2: Execute getProductRatings()
-        ProductDto out = service.getProductRatings(entity.product_id, null);
+        ProductDto out = service.getProductRatings(entity.id, null);
 
         assertNotNull(out.ratings);
         out.ratings.forEach(rating ->
@@ -498,8 +498,5 @@ public class ProductRatingServiceTest {
 
         assertTrue(actualMessage.contains(expectedMessage));
     }
-
-
-
 
 }
