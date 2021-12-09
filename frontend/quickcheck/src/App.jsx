@@ -8,8 +8,7 @@ import ProjectOverview from './pages/ProjectOverview';
 import Project from './pages/Project';
 import TestRange from './pages/TestRange';
 
-import store from './store';
-import theme from './styles/theme';
+import Project from './pages/Project';
 
 function App() {
   return (

@@ -14,7 +14,7 @@ function Menubar({ title }) {
     <Flex bgGradient={bgGradient} w="full" h={20} justifyContent="center">
       <Flex align="center" basis={1000} px={5}>
         <Spacer />
-        <Heading size="xl" align="center" color="white">
+        <Heading size="xl" align="center">
           {title}
         </Heading>
         <Spacer />
