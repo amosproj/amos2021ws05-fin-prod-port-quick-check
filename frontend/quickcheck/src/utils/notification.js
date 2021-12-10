@@ -5,11 +5,10 @@ export function notification(title, message, status = 'error') {
   // possible status values:  info | warning | success | error
   const toast = createStandaloneToast();
 
-
   toast({
     title: title,
     description: message,
-    status: status, 
+    status: status,
     duration: 5000,
     isClosable: true,
   });
