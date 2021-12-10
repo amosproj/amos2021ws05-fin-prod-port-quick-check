@@ -13,8 +13,7 @@ export const Input = {
     heading: (props) => ({
       field: {
         fontWeight: 'bold',
-        fontSize: '30',
-        py: '7',
+        py: 7,
         w: 'wrap',
         bg: mode('gray.200', 'gray.600')(props),
         _disabled: {
