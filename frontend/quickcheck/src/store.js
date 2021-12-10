@@ -75,7 +75,7 @@ const projectModel = {
 
   // POST new Project
   sendCreate: thunk(async (actions, newProject) => {
-    console.log('send POST', {newProject});
+    console.log('send POST', { newProject });
     await api
       .url('/projects')
       .post(newProject)

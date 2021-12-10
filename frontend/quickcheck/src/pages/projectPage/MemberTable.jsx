@@ -21,7 +21,7 @@ function MemberRow({ editMode, member, ...rest }) {
       <Text variant="cell" align="left" w="66%">
         {member.userEmail}
       </Text>
-      <Flex minW={70} w='33%'>
+      <Flex minW={70} w="33%">
         {editMode ? (
           <Selection
             bg={bg}
@@ -63,7 +63,7 @@ export default function MemberTable({ editMode }) {
           <Heading size="md" rounded="md" pt={2} bg={bgHeading} w="66%">
             Email
           </Heading>
-          <Heading size="md" rounded="md" pt={2} bg={bgHeading} minW={70} w='33%'>
+          <Heading size="md" rounded="md" pt={2} bg={bgHeading} minW={70} w="33%">
             Role
           </Heading>
         </Flex>
