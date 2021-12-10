@@ -74,14 +74,24 @@ const projectModel = {
   }),
 
   // POST new Project
-  sendCreate: thunk(async (actions, newProject) => {
-    console.log('send POST', {newProject});
+  sendCreate: thunk(async (actions, projectData) => {
+    console.log('send POST', {projectData});
     await api
       .url('/projects')
-      .post(newProject)
+      .post(projectData)
       .json((json) => actions.set(json))
       .catch(console.error);
-    actions.set(newProject);
+    actions.set(projectData);
+  }),
+
+  sendUpdate: thunk(async (actions, { id, projectData }) => {
+    console.log('send POST', { id, projectData });
+    await api
+      .url(`/projects/${id}`)
+      .put(projectData)
+      .json((json) => actions.set(json))
+      .catch(console.error);
+    actions.set(projectData);
   }),
 };
 
