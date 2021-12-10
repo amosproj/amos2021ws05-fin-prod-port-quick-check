@@ -23,20 +23,12 @@ const input_sizes = {
 
 export const Input = {
   // Styles for the base style
-  baseStyle: {},
-  // Styles for the size variations
-  sizes: {
-    xl: {
-      field: input_sizes.xl,
-      addon: input_sizes.xl,
+  baseStyle: {
+    field: {
+      _disabled: { bg: 'transparent' },
     },
-    '2xl': {
-      field: input_sizes.xxl,
-      addon: input_sizes.xxl,
-    },
-    '3xl': {
-      field: input_sizes.xxxl,
-      addon: input_sizes.xxxl,
+    addon: {
+      _disabled: { bg: 'transparent' },
     },
   },
 
