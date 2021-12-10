@@ -40,7 +40,7 @@ public class ProductRatingService {
 
             if (ratingArea != null) {
                 entities = StreamSupport.stream(entities.spliterator(), false)
-                        .filter(product -> product.productRatingId.getRatingid().ratingarea == ratingArea)
+                        .filter(product -> product.productRatingId.getRating().ratingarea == ratingArea)
                         .collect(Collectors.toList());
             }
 

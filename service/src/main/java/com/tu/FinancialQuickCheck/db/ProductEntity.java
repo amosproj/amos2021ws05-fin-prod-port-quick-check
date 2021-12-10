@@ -6,7 +6,7 @@ import java.util.List;
 
 @Entity
 public class ProductEntity {
-    // TODO: add attribute for overall economic rating (what type is it?)
+    // TODO: (talk to frontend) add attribute for overall economic rating (what type is it?)
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -24,7 +24,7 @@ public class ProductEntity {
     public ProductAreaEntity productarea;
 
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "productid", insertable = false, updatable = false)
+    @JoinColumn(name = "product", insertable = false, updatable = false)
     public List<ProductRatingEntity> productRatingEntities;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -109,13 +109,13 @@ public class ProjectController {
     }
 
 
-    //TODO: change Path (see api def)
+    //TODO: (prio: high) change Path (see api def)
     @PostMapping(value = "/{projectID}/products",
             consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public ProductDto createProduct(@PathVariable int projectID, @PathVariable int productAreaID,
+    public List<ProductDto> createProduct(@PathVariable int projectID, @PathVariable int productAreaID,
                                     @RequestBody ProductDto productDto) {
-        ProductDto tmp = productService.createProduct(projectID, productAreaID, productDto);
+        List<ProductDto> tmp = productService.createProduct(projectID, productAreaID, productDto);
         if(tmp == null){
             throw new BadRequest("Incorrect Input.");
         }else{

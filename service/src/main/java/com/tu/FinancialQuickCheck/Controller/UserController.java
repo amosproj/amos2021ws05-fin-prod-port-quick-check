@@ -41,13 +41,13 @@ public class UserController {
         }
     }
 
-    //TODO: change path-var to request-body userDto & change path
+    //TODO: (prio: low) change path-var to request-body userDto & change path
     @GetMapping("email/{email}")
     public UserDto findByEmail(@PathVariable String email){
         return service.findByEmail(email);
     }
 
-    //TODO: change path-var to request-body userDto & change path
+    //TODO: (prio: low) change path-var to request-body userDto & change path
     @PutMapping("email/{email}")
     public void updateUserByEmail(@RequestBody UserDto userDto, @PathVariable String email) {
         if (service.updateUserByEmail(userDto, email) == null){
@@ -61,12 +61,13 @@ public class UserController {
     }
 
 
-    /**@PutMapping("/{userID}")
-    public void updateUserByUserID(@RequestBody UserDto userDto, @PathVariable UUID userID){
 
-    if (service.updateByUserID(userDto, userID) == null) {
-    throw new BadRequest("User cannot be updated due to missing/incorrect information.");
-    }
-    }
-     **/
+//    @PutMapping("/{userID}")
+//    public void updateUserByUserID(@RequestBody UserDto userDto, @PathVariable UUID userID){
+//
+//        if (service.updateByUserID(userDto, userID) == null) {
+//            throw new BadRequest("User cannot be updated due to missing/incorrect information.");
+//        }
+//    }
+
 }

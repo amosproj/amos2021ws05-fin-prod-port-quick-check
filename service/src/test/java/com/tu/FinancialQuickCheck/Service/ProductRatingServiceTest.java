@@ -157,7 +157,7 @@ public class ProductRatingServiceTest {
     public void testGetProductRatings3() {
         // Step 0: init test object
         entity.productRatingEntities.removeIf(productRatingEntity ->
-                productRatingEntity.productRatingId.getRatingid().ratingarea == RatingArea.COMPLEXITY);
+                productRatingEntity.productRatingId.getRating().ratingarea == RatingArea.COMPLEXITY);
 
         // Step 1: provide knowledge
         when(productRepository.findById(entity.id)).thenReturn(Optional.of(entity));
@@ -170,7 +170,7 @@ public class ProductRatingServiceTest {
     public void testGetProductRatings4() {
         // Step 0: init test object
         entity.productRatingEntities.removeIf(productRatingEntity ->
-                productRatingEntity.productRatingId.getRatingid().ratingarea == RatingArea.ECONOMIC);
+                productRatingEntity.productRatingId.getRating().ratingarea == RatingArea.ECONOMIC);
 
         // Step 1: provide knowledge
         when(productRepository.findById(entity.id)).thenReturn(Optional.of(entity));
@@ -435,9 +435,9 @@ public class ProductRatingServiceTest {
         // Step 1: provide knowledge
         when(productRepository.existsById(productID)).thenReturn(true);
         when(productRepository.getById(productID)).thenReturn(entity);
-        when(ratingRepository.getById(entity.productRatingEntities.get(0).productRatingId.getRatingid().id)).thenReturn(ratingEntities.get(0));
-        when(ratingRepository.getById(entity.productRatingEntities.get(1).productRatingId.getRatingid().id)).thenReturn(ratingEntities.get(1));
-        when(ratingRepository.getById(entity.productRatingEntities.get(2).productRatingId.getRatingid().id)).thenReturn(ratingEntities.get(2));
+        when(ratingRepository.getById(entity.productRatingEntities.get(0).productRatingId.getRating().id)).thenReturn(ratingEntities.get(0));
+        when(ratingRepository.getById(entity.productRatingEntities.get(1).productRatingId.getRating().id)).thenReturn(ratingEntities.get(1));
+        when(ratingRepository.getById(entity.productRatingEntities.get(2).productRatingId.getRating().id)).thenReturn(ratingEntities.get(2));
         when(repository.findById(entity.productRatingEntities.get(0).productRatingId))
                 .thenReturn(Optional.of(entity.productRatingEntities.get(0)));
         when(repository.findById(entity.productRatingEntities.get(1).productRatingId))
@@ -478,9 +478,9 @@ public class ProductRatingServiceTest {
         // Step 1: provide knowledge
         when(productRepository.existsById(productID)).thenReturn(true);
         when(productRepository.getById(productID)).thenReturn(entity);
-        when(ratingRepository.getById(entity.productRatingEntities.get(0).productRatingId.getRatingid().id)).thenReturn(ratingEntities.get(0));
-        when(ratingRepository.getById(entity.productRatingEntities.get(1).productRatingId.getRatingid().id)).thenReturn(ratingEntities.get(1));
-        when(ratingRepository.getById(entity.productRatingEntities.get(2).productRatingId.getRatingid().id)).thenReturn(ratingEntities.get(2));
+        when(ratingRepository.getById(entity.productRatingEntities.get(0).productRatingId.getRating().id)).thenReturn(ratingEntities.get(0));
+        when(ratingRepository.getById(entity.productRatingEntities.get(1).productRatingId.getRating().id)).thenReturn(ratingEntities.get(1));
+        when(ratingRepository.getById(entity.productRatingEntities.get(2).productRatingId.getRating().id)).thenReturn(ratingEntities.get(2));
         when(repository.findById(entity.productRatingEntities.get(0).productRatingId))
                 .thenReturn(Optional.of(entity.productRatingEntities.get(0)));
         when(repository.findById(entity.productRatingEntities.get(1).productRatingId))

@@ -51,11 +51,11 @@ public class ProjectUserService {
 
             for (ProjectUserEntity tmp : entities) {
                 projectUserDtos.add(new ProjectUserDto(
-                        UUID.fromString(tmp.projectUserId.getUserid().id),
+                        UUID.fromString(tmp.projectUserId.getUser().id),
                         tmp.role,
-                        tmp.projectUserId.getUserid().email,
-                        tmp.projectUserId.getProjectid().id,
-                        tmp.projectUserId.getUserid().username
+                        tmp.projectUserId.getUser().email,
+                        tmp.projectUserId.getProject().id,
+                        tmp.projectUserId.getUser().username
                 ));
             }
 
@@ -64,8 +64,12 @@ public class ProjectUserService {
     }
 
 
-    //TODO: check for role -> if role dosent exsit send "BAD REQUEST"
+    //TODO: (done - needs review) check for role -> if role dosent exsit send "BAD REQUEST"
     public void createProjectUser(int projectID, ProjectUserDto projectUserDto) {
+
+        if(projectUserDto.role == null){
+            throw new BadRequest("Input is missing/incorrect.");
+        }
 
         ProjectUserEntity entity = new ProjectUserEntity();
 
@@ -104,8 +108,8 @@ public class ProjectUserService {
         }
     }
 
-    // TODO: implement deleteUsers()
 
+    // TODO: (Max) implement testcases
     public void deleteProjectUser(int projectID, ProjectUserDto projectUserDto) {
 
         if (projectUserDto.userEmail != null) {

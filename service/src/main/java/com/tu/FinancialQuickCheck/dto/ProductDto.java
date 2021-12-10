@@ -12,12 +12,14 @@ import java.util.List;
 
 public class ProductDto {
 
-    // TODO: add value for progress bar of economic and complexity
+    // TODO: add progressComplexity and progressEconomic to necessary constructors
     public int  productID;
     public String productName;
     public ProductAreaDto productArea;
     public int projectID;
     public int parentID;
+    public int progressComplexity;
+    public int progressEconomic;
     public List<ProductRatingDto> ratings;
     public List<ProductDto> productVariations;
 
@@ -72,7 +74,7 @@ public class ProductDto {
 
         for(ProductRatingEntity entity : productRatingEntities){
             ProductRatingDto p = new ProductRatingDto();
-            p.ratingID = entity.productRatingId.getRatingid().id;
+            p.ratingID = entity.productRatingId.getRating().id;
             p.score = entity.score;
             p.answer = entity.answer;
             p.comment = entity.comment;
@@ -86,12 +88,12 @@ public class ProductDto {
         return new ProductAreaDto(productAreaEntity.id, productAreaEntity.name, productAreaEntity.category);
     }
 
-    //TODO: change returned parent-id to 0 if no parent exist
+    //TODO: (done - review needed) change returned parent-id to 0 if no parent exist
     private int convertParentEntity(ProductEntity parentEntity) {
         if(parentEntity != null){
             return parentEntity.id;
         }else{
-            return -1;
+            return 0;
         }
     }
 }

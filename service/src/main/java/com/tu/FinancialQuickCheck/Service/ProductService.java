@@ -39,13 +39,14 @@ public class ProductService {
     }
 
 
-    //TODO: change return to List
-    public ProductDto createProduct(int projectID, int productAreaID, ProductDto productDto){
+    //TODO: (done - needs review) change return to List
+    public List<ProductDto> createProduct(int projectID, int productAreaID, ProductDto productDto){
 
         if(projectRepository.existsById(projectID)
                 && productAreaRepository.existsById(productAreaID)){
             if(productDto.productName != null){
 
+                List<ProductDto> out = new ArrayList<>();
                 List<ProductEntity> entities = new ArrayList<>();
                 ProductEntity newProduct = new ProductEntity();
                 newProduct.name = productDto.productName;
@@ -55,18 +56,21 @@ public class ProductService {
 
                 if(productDto.productVariations != null){
                     for (ProductDto productVariation: productDto.productVariations) {
+                        ProductDto dto = new ProductDto();
                         ProductEntity entity = new ProductEntity();
                         entity.name = productVariation.productName;
                         entity.project = projectRepository.findById(projectID).get();
                         entity.productarea = productAreaRepository.getById(productAreaID);
                         entity.parentProduct = newProduct;
                         entities.add(entity);
+                        out.add(new ProductDto(entity.id, entity.name, entity.project.id, entity.productarea, entity.parentProduct));
                     }
                 }
 
                 repository.saveAll(entities);
-                return new ProductDto(newProduct.id, newProduct.name, newProduct.project.id,
-                        newProduct.productarea, newProduct.parentProduct);
+                out.add(new ProductDto(newProduct.id, newProduct.name, newProduct.project.id,
+                        newProduct.productarea, newProduct.parentProduct));
+                return out;
             }else{
                 return null;
             }
@@ -78,7 +82,7 @@ public class ProductService {
 
 
     public ProductDto updateById(ProductDto productDto, int productID) {
-        // TODO: soll update als Batch implementiert werden (d.h. auch für productvariations?)
+        // TODO: (ask frontend) soll update als Batch implementiert werden (d.h. auch für productvariations?)
         if (!repository.existsById(productID)) {
             throw new ResourceNotFound("productID " + productID + " not found");
         }else{
@@ -137,7 +141,7 @@ public class ProductService {
 
 
 //    public void deleteProduct(int productID) {
-//        // TODO: was soll mit ProductVarianten beim löschen passieren? sollen die auch mit gelöscht werden?
+//        // TODO: (ask PO) was soll mit ProductVarianten beim löschen passieren? sollen die auch mit gelöscht werden?
 //        Optional<ProductEntity> productEntity = repository.findById(productID);
 //
 //        if (productEntity.isEmpty()) {

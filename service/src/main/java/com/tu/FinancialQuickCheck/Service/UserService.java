@@ -74,7 +74,7 @@ public class UserService {
      * @return UserDto
      */
 
-    //TODO: check if String empty ore else
+    //TODO: (prio: low) add constraints for input --> check if String is empty else return Bad Request
     public UserDto createUser(UserDto userDto) {
 
         if (userDto.userName != null && userDto.userEmail != null && userDto.password != null
@@ -94,8 +94,8 @@ public class UserService {
 
 
 
-    //TDOD: Discuss Update By ID and Update By Email with Frontend, schuld it be possible to update userEmail
-    //TODO: check if String empty ore else
+    //TODO: (ask frontend) Discuss Update By ID and Update By Email with Frontend, schuld it be possible to update userEmail
+    //TODO: (prio: low) add constraints for input --> check if String is empty else return Bad Request
     public UserDto updateUserByEmail(UserDto userDto, String email) {
 
         Optional<UserEntity> entity = repository.findById(email);

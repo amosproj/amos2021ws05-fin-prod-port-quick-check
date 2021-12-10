@@ -11,36 +11,36 @@ import java.util.Objects;
 public class ProjectUserId implements Serializable {
 
 
-    //TODO: rename ...id declarations
+    //TODO: (done - need review) rename ...id declarations
     @ManyToOne(targetEntity = ProjectEntity.class, fetch = FetchType.EAGER)
-    @JoinColumn(name = "projectid")
-    private ProjectEntity projectid;
+    @JoinColumn(name = "project")
+    private ProjectEntity project;
 
     @ManyToOne(targetEntity = UserEntity.class, fetch = FetchType.EAGER)
-    @JoinColumn(name = "userid")
-    private UserEntity userid;
+    @JoinColumn(name = "user")
+    private UserEntity user;
 
     public ProjectUserId(){}
 
     public ProjectUserId(ProjectEntity project, UserEntity user){
-        this.projectid = project;
-        this.userid = user;
+        this.project = project;
+        this.user = user;
     }
 
-    public ProjectEntity getProjectid() {
-        return projectid;
+    public ProjectEntity getProject() {
+        return project;
     }
 
-    public void setProjectid(ProjectEntity projectid) {
-        this.projectid = projectid;
+    public void setProject(ProjectEntity project) {
+        this.project = project;
     }
 
-    public UserEntity getUserid() {
-        return userid;
+    public UserEntity getUser() {
+        return user;
     }
 
-    public void setUserid(UserEntity userid) {
-        this.userid = userid;
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 
     @Override
@@ -48,11 +48,11 @@ public class ProjectUserId implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProjectUserId that = (ProjectUserId) o;
-        return projectid.equals(that.projectid) && userid.equals(that.userid);
+        return project.equals(that.project) && user.equals(that.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(projectid, userid);
+        return Objects.hash(project, user);
     }
 }

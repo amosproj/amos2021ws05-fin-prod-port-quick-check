@@ -177,7 +177,7 @@ public class ProjectService {
             }
 
             // unassign existing users from project
-            projectUserRepository.deleteByProjectUserId_projectid(entity);
+            projectUserRepository.deleteByProjectUserId_project(entity);
             projectRepository.flush();
             // assign new users to project
             assignMembersToProject(projectDto.members, entity);

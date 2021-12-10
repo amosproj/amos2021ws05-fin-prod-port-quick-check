@@ -19,7 +19,7 @@ public class ProductRatingController {
         this.service = productRatingService;
     }
 
-    //TODO: return empty list or return Error if no ratings exist?
+    //TODO: (ask frontend) return empty list or return Error if no ratings exist?
     @GetMapping()
     public ProductDto getProductRatings(
             @PathVariable int productID,
@@ -35,16 +35,16 @@ public class ProductRatingController {
     }
 
 
-    //TODO: Secure that every entry inside the RatingEntity is existing
-    //TODO: add consumes and produces
-    @PostMapping()
+    //TODO: (prio: high) Secure that every entry inside the RatingEntity is existing
+    //TODO: (done - needs review) add consumes and produces
+    @PostMapping(consumes = "application/json", produces = "application/json")
     public void createProductRatings(@RequestBody ProductDto productDto, @PathVariable Integer productID) {
 
         service.createProductRatings(productDto, productID);
     }
 
-    //TODO: add consumes
-    @PutMapping()
+    //TODO: (done - needs review) add consumes
+    @PutMapping(consumes = "application/json")
     public void updateProductRatings(@RequestBody ProductDto productDto, @PathVariable Integer productID) {
 
         service.updateProductRatings(productDto, productID);

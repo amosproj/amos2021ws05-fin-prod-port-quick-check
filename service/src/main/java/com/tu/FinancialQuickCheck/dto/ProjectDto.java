@@ -98,8 +98,8 @@ public class ProjectDto {
         for (ProjectUserEntity member: projectUserEntities)
         {
             members.add(new UserDto(
-                            UUID.fromString(member.projectUserId.getUserid().id),
-                            member.projectUserId.getUserid().email,
+                            UUID.fromString(member.projectUserId.getUser().id),
+                            member.projectUserId.getUser().email,
                             member.role)
                     );
         }

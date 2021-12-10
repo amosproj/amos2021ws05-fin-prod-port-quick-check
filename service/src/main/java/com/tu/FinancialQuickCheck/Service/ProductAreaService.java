@@ -21,7 +21,7 @@ public class ProductAreaService {
     public List<ProductAreaDto> getAllProductAreas() {
 
         List<ProductAreaDto> productAreaDtos = new ArrayList<>() {
-        }; //TODO: check diferent definition
+        }; //TODO: (Alex) check diferent definition
         Iterable<ProductAreaEntity> productAreaEntities = repository.findAll();
 
         for(ProductAreaEntity tmp : productAreaEntities){

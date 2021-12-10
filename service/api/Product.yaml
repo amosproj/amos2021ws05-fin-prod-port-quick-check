@@ -192,7 +192,15 @@ components:
         parentID:
           type: integer
           example: 10
-          description: return value of -1 indicates that product does not have a parent
+          description: return value of 0 indicates that product does not have a parent
+        progressComplexity:
+          type: integer
+          example: 23
+          description: returns a value between 0 and 100, which indicates the progress of the complexity rating
+        progressEconomic:
+          type: integer
+          example: 89
+          description: returns a value between 0 and 100, which indicates the progress of the economic rating
     updateProduct:
       type: object
       properties:
