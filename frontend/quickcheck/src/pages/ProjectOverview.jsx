@@ -58,7 +58,7 @@ export default function ProjectOverview() {
   const postProject = () => {
     createProject(mocks.newProject);
     addProject(mocks.newProject);
-    console.log('updated project list:', {projectList})
+    console.log('updated project list:', { projectList });
   };
 
   return (
