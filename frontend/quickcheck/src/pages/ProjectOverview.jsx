@@ -58,6 +58,7 @@ export default function ProjectOverview() {
   const postProject = () => {
     createProject(mocks.newProject);
     addProject(mocks.newProject);
+    console.log('updated project list:', {projectList})
   };
 
   return (
@@ -70,7 +71,6 @@ export default function ProjectOverview() {
       <Button size="lg" onClick={postProject}>
         Add new
       </Button>
-      <p>{JSON.stringify(projectList)}</p>
     </Page>
   );
 }
