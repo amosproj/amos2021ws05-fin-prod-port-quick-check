@@ -31,24 +31,32 @@ export const Input = {
       _disabled: { bg: 'transparent' },
     },
   },
+  // Styles for the size variations
+  sizes: {
+    xl: { field: input_sizes.xl, addon: input_sizes.xl },
+    '2xl': { field: input_sizes.xxl, addon: input_sizes.xxl },
+    '3xl': { field: input_sizes.xxxl, addon: input_sizes.xxxl },
+  },
 
   // Styles for the visual style variations
   variants: {
-    foo: {
-      color: 'red',
-    },
-    heading: (props) => ({
+    autoColor: (props) => ({
+      field: {
+        bg: mode('gray.200', 'gray.600')(props),
+      },
+      addon: {
+        bg: mode('gray.200', 'gray.600')(props),
+      },
+    }),
+    bold: (props) => ({
       field: {
         fontWeight: 'bold',
-        py: 7,
-        w: 'wrap',
         bg: mode('gray.200', 'gray.600')(props),
-        _disabled: {
-          bg: 'transparent',
-        },
       },
     }),
   },
   // The default `size` or `variant` values
-  defaultProps: {},
+  defaultProps: {
+    variant: 'autoColor',
+  },
 };
