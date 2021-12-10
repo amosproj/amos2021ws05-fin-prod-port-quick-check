@@ -5,6 +5,8 @@ import com.tu.FinancialQuickCheck.Role;
 import java.util.Objects;
 import java.util.UUID;
 
+
+//TODO: (prio: low) create userPasswordDto to manage Password outside of userDto
 public class UserDto {
 
     public String userEmail;

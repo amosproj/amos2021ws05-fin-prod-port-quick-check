@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDto {
+
     // TODO: add value for progress bar of economic and complexity
     public int  productID;
     public String productName;
@@ -85,6 +86,7 @@ public class ProductDto {
         return new ProductAreaDto(productAreaEntity.id, productAreaEntity.name, productAreaEntity.category);
     }
 
+    //TODO: change returned parent-id to 0 if no parent exist
     private int convertParentEntity(ProductEntity parentEntity) {
         if(parentEntity != null){
             return parentEntity.id;

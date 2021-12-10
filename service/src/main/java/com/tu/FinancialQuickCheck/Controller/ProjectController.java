@@ -109,7 +109,8 @@ public class ProjectController {
     }
 
 
-    @PostMapping(value = "/{projectID}/productareas/{productAreaID}/products",
+    //TODO: change Path (see api def)
+    @PostMapping(value = "/{projectID}/products",
             consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public ProductDto createProduct(@PathVariable int projectID, @PathVariable int productAreaID,

@@ -88,6 +88,7 @@ public class ProductRatingService {
             for (ProductRatingDto tmp : productDto.ratings) {
                 ProductRatingId tmpId = new ProductRatingId(productRepository.getById(productID),
                         ratingRepository.getById(tmp.ratingID));
+
                 Optional<ProductRatingEntity> updateEntity = repository.findById(tmpId);
 
                 if(updateEntity.isPresent()){

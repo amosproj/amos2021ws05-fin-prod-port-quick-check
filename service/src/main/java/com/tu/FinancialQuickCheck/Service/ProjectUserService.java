@@ -14,6 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 
+
 /**
  * Underlying Service for User- aka. member-management.
  * Acts as connection between presentation Layer and persistence layer.
@@ -46,8 +47,7 @@ public class ProjectUserService {
 
             Iterable<ProjectUserEntity> entities = entity.get().projectUserEntities;
 
-            List<ProjectUserDto> projectUserDtos = new ArrayList<>() {
-            };
+            List<ProjectUserDto> projectUserDtos = new ArrayList<>() {};
 
             for (ProjectUserEntity tmp : entities) {
                 projectUserDtos.add(new ProjectUserDto(
@@ -64,6 +64,7 @@ public class ProjectUserService {
     }
 
 
+    //TODO: check for role -> if role dosent exsit send "BAD REQUEST"
     public void createProjectUser(int projectID, ProjectUserDto projectUserDto) {
 
         ProjectUserEntity entity = new ProjectUserEntity();

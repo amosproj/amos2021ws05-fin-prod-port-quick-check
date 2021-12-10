@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+//TODO: (prio: high) check if endpoints needet (ask frontend) -> endpoints definiton in projects.yaml
+
 
 @RestController
 @RequestMapping("/projects/{projectID}/users")

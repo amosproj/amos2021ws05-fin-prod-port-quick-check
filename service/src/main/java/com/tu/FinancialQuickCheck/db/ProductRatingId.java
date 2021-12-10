@@ -7,10 +7,13 @@ import java.util.Objects;
 @Embeddable
 public class ProductRatingId implements Serializable {
 
+
+    //TODO: remove ...id in Name declarations
     @ManyToOne(targetEntity = ProductEntity.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "productid", updatable = false)
     private ProductEntity productid;
 
+    //TODO: remove ...id in Name declarations
     @ManyToOne(targetEntity = RatingEntity.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "ratingid", updatable = false)
     private RatingEntity ratingid;

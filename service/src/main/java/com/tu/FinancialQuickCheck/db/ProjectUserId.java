@@ -10,6 +10,8 @@ import java.util.Objects;
 @Embeddable
 public class ProjectUserId implements Serializable {
 
+
+    //TODO: rename ...id declarations
     @ManyToOne(targetEntity = ProjectEntity.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "projectid")
     private ProjectEntity projectid;

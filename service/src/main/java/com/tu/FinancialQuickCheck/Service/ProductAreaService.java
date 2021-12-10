@@ -21,7 +21,7 @@ public class ProductAreaService {
     public List<ProductAreaDto> getAllProductAreas() {
 
         List<ProductAreaDto> productAreaDtos = new ArrayList<>() {
-        };
+        }; //TODO: check diferent definition
         Iterable<ProductAreaEntity> productAreaEntities = repository.findAll();
 
         for(ProductAreaEntity tmp : productAreaEntities){
@@ -31,7 +31,7 @@ public class ProductAreaService {
         return productAreaDtos;
     }
 
-    // TODO: check einbauen, ob Kombination aus Name und Category bereits besteht (wie geht man mit Rechtschreibfehlern um?)
+    // TODO: (prio: super low) check einbauen, ob Kombination aus Name und Category bereits besteht (wie geht man mit Rechtschreibfehlern um?)
     public ProductAreaDto createProductArea(ProductAreaDto productArea) {
 
         if(productArea.name != null && productArea.category != null ){

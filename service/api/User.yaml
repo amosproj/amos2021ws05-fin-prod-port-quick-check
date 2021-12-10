@@ -40,6 +40,7 @@ paths:
           $ref: '#/components/responses/403forbidden'
         '5XX':
           $ref: '#/components/responses/5XXserverError'
+
   /users/email/{email}:
     get:
       summary: retrieve user data based on email

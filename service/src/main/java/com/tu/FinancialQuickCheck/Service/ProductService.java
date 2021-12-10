@@ -39,7 +39,9 @@ public class ProductService {
     }
 
 
+    //TODO: change return to List
     public ProductDto createProduct(int projectID, int productAreaID, ProductDto productDto){
+
         if(projectRepository.existsById(projectID)
                 && productAreaRepository.existsById(productAreaID)){
             if(productDto.productName != null){
@@ -76,7 +78,7 @@ public class ProductService {
 
 
     public ProductDto updateById(ProductDto productDto, int productID) {
-        // TODO: soll update als Batch implementiert werden (d.h. auch für productvariations?
+        // TODO: soll update als Batch implementiert werden (d.h. auch für productvariations?)
         if (!repository.existsById(productID)) {
             throw new ResourceNotFound("productID " + productID + " not found");
         }else{
