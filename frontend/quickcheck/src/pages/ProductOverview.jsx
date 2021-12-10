@@ -3,7 +3,8 @@ import { useToast } from '@chakra-ui/react';
 import Page from '../components/Page';
 import {
   //Text,
-  Flex, Box,
+  Flex,
+  Box,
   Modal,
   ModalOverlay,
   ModalHeader,
@@ -207,28 +208,30 @@ export default function ProductOverview() {
         <List spacing={2} w="full">
           {getProducts(productsData).map((product) => (
             <>
-            <ProductRow
-              parentID={0}
-              product={product}
-              key={uuid4()}
-              editable={editMode}
-              removeButton={
-                editMode ? <RemoveButton onRemove={removeProduct} product={product} /> : undefined
-              }
-            ></ProductRow>
-            <Box w='95%'>
-            {getChildren(product).map((child) => (
               <ProductRow
-                parentID={2}
-                product={child}
+                parentID={0}
+                product={product}
                 key={uuid4()}
                 editable={editMode}
                 removeButton={
-                  editMode ? <RemoveButton onRemove={removeProduct} product={child} /> : undefined
+                  editMode ? <RemoveButton onRemove={removeProduct} product={product} /> : undefined
                 }
               ></ProductRow>
-            ))}
-            </Box>
+              <Box w="95%">
+                {getChildren(product).map((child) => (
+                  <ProductRow
+                    parentID={2}
+                    product={child}
+                    key={uuid4()}
+                    editable={editMode}
+                    removeButton={
+                      editMode ? (
+                        <RemoveButton onRemove={removeProduct} product={child} />
+                      ) : undefined
+                    }
+                  ></ProductRow>
+                ))}
+              </Box>
             </>
           ))}
           <Button>Generate Results</Button>
