@@ -17,7 +17,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/product'
+                $ref: '#/components/schemas/getProduct'
         401:
           $ref: '#/components/responses/401unauthorized'
         403:
@@ -64,6 +64,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/product'
+        400:
+          $ref: '#/components/responses/400badrequest'
         401:
           $ref: '#/components/responses/401unauthorized'
         403:
@@ -114,16 +116,29 @@ components:
       description: attribute to distinguish between data for complexity and economic rating
 
   schemas:
-    product:
+    ratings:
+      type: array
+      items:
+        $ref: '#/components/schemas/productRating'
+    overallEconomicRating:
+      type: boolean
+    getProduct:
       type: object
       properties:
         productName:
           type: string
           example: "Optionen"
+        overallEconomicRating:
+          $ref: '#/components/schemas/overallEconomicRating'
         ratings:
-          type: array
-          items:
-            $ref: '#/components/schemas/productRating'
+          $ref: '#/components/schemas/ratings'
+    product:
+      type: object
+      properties:
+        overallEconomicRating:
+          $ref: '#/components/schemas/overallEconomicRating'
+        ratings:
+          $ref: '#/components/schemas/ratings'
     productRating:
       type: object
       properties:
@@ -166,5 +181,7 @@ components:
       description: User is not authorized to access this resource
     401unauthorized:
       description: User not authenticated
+    400badrequest:
+      description: Input is missing/incorrect
     genericError:
       description: Error
