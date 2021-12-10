@@ -21,14 +21,6 @@ function ProductArea({ productArea }) {
   );
 }
 
-const RemoveButton = ({ handleRemove, ...buttonProps }) => {
-  return (
-    <ConfirmClick onConfirm={handleRemove} confirmPrompt="Remove this product area?">
-      <IconButton icon={<DeleteIcon />} {...buttonProps} />
-    </ConfirmClick>
-  );
-};
-
 const areaMock = {
   0: { id: 0, name: 'Kredit', category: 'Privat' },
   1: { id: 1, name: 'Kunden', category: 'Business' },

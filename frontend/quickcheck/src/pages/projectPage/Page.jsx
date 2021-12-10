@@ -1,4 +1,4 @@
-import { Heading, Button, HStack, Input, Spacer, Text } from '@chakra-ui/react';
+import { Heading, Button, HStack, Input, Spacer } from '@chakra-ui/react';
 import { React, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
