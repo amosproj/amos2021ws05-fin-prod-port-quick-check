@@ -1,16 +1,14 @@
 package com.tu.FinancialQuickCheck.db;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
-import java.util.UUID;
 
-// This will be AUTO IMPLEMENTED by Spring into a Bean called projectRepository
-// CRUD refers Create, Read, Update, Delete
+// This will be AUTO IMPLEMENTED by Spring into a Bean called userRepository
 
 @Repository
-public interface UserRepository extends CrudRepository<UserEntity, String> {
+public interface UserRepository extends JpaRepository<UserEntity, String> {
 
     Optional<UserEntity> findByEmail(String email);
 

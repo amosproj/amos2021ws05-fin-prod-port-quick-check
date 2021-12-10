@@ -10,11 +10,11 @@ export default function Card({ layerStyle, children, ...rest }) {
   //      (check out https://medium.com/@lainakarosic/getting-started-with-css-flexbox-basics-58d875a574ce)
   return (
     <Flex
-      {...rest}
       bg={bg}
       layerStyle={layerStyle || 'card'}
       borderColor={layerStyle === 'card_bar' ? barColor : 'transparent'}
       align="center"
+      {...rest}
     >
       {children}
     </Flex>

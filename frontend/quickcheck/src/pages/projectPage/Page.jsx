@@ -1,14 +1,12 @@
-import { Heading, Button, HStack } from '@chakra-ui/react';
-import MemberTable from '../components/MemberTable';
+import { Heading, Button, HStack, Input, Spacer } from '@chakra-ui/react';
 import { React, useState, useEffect } from 'react';
-
-import ProductAreaList from '../components/ProjectAreaCard';
-import ShowEditable from '../components/editable.jsx';
-
-import Page from '../components/Page';
 import { useParams } from 'react-router-dom';
-import { api } from '../utils/apiClient';
-import Card from '../components/Card';
+
+import Page from '../../components/Page';
+import Card from '../../components/Card';
+
+import MemberTable from './MemberTable';
+import ProductAreaList from './ProjectAreaList';
 
 const mockProject = {
   projectID: 1,
@@ -20,22 +18,6 @@ const mockProject = {
   ],
   productAreas: [1],
 };
-
-function CardHeader({ text, ...rest }) {
-  return (
-    <Heading
-      {...rest}
-      size="md"
-      align="center"
-      letterSpacing={1.5}
-      fontWeight={800}
-      color="gray.500"
-      py={2}
-    >
-      {text}
-    </Heading>
-  );
-}
 
 export default function Project(prop) {
   const [editMode, setEditMode] = useState(false);
@@ -67,7 +49,7 @@ export default function Project(prop) {
     if (editMode) {
       return (
         <HStack>
-          <Button variant="wisper" size="md" onClick={() => setEditMode(false)}>
+          <Button variant="whisper" size="md" onClick={() => setEditMode(false)}>
             Cancel
           </Button>
           <Button variant="primary" size="md" onClick={() => setEditMode(false)}>
@@ -77,7 +59,7 @@ export default function Project(prop) {
       );
     } else {
       return (
-        <Button variant="wisper" size="md" onClick={() => setEditMode(true)}>
+        <Button variant="whisper" size="md" onClick={() => setEditMode(true)}>
           Edit
         </Button>
       );
@@ -86,21 +68,32 @@ export default function Project(prop) {
 
   return (
     <Page title="Manage Project">
-      <Card barColor="primary" layerStyle="card_bar" justifyContent="center">
-        <CardHeader text="PROJECT:" mr={8} />
-
-        <Heading size="lg" fontFamily="body">
-          <ShowEditable text={projectData.projectName} editable={editMode}></ShowEditable>
+      <Card layerStyle="card_bar" justifyContent="center">
+        <Spacer />
+        <Heading variant="upper" size="md" mr={3}>
+          Project:
         </Heading>
+        <Input
+          align="center"
+          variant="heading"
+          isDisabled={!editMode}
+          onChange={(e) => handleChange('projectName')(e.target.value)}
+          value={projectData.projectName}
+        />
+        <Spacer />
       </Card>
 
       <Card direction="column">
-        <CardHeader text="MEMBERS" />
+        <Heading variant="upper" size="md">
+          Members
+        </Heading>
         <MemberTable editMode={editMode} members={projectData.members} handleChange={setMembers} />
       </Card>
 
       <Card direction="column">
-        <CardHeader text="PRODUCT AREAS" />
+        <Heading variant="upper" size="md">
+          Product Areas
+        </Heading>
         <ProductAreaList
           areaIDs={projectData.productAreas}
           handleChange={setProductAreas}

@@ -1,12 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link, Navigate } from 'react-router-dom';
-import { ChakraProvider, DarkMode } from '@chakra-ui/react';
+import { ChakraProvider } from '@chakra-ui/react';
 import { StoreProvider } from 'easy-peasy';
 
 import Login from './pages/Login';
 import ProjectOverview from './pages/ProjectOverview';
 import ProductOverview from './pages/ProductOverview';
-import Project from './pages/Project';
+import Project from './pages/projectPage/Page';
 import TestRange from './pages/TestRange';
 
 import store from './store';

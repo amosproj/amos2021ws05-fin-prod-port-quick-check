@@ -24,24 +24,22 @@ paths:
         404:
           $ref: '#/components/responses/404notfound'
         '5XX':
-          $ref: '#/components/responses/5XXserverError'  
-    put: 
+          $ref: '#/components/responses/5XXserverError'
+    put:
       summary: updates product with given productID
-      parameters: 
+      parameters:
         - $ref: '#/components/parameters/productID'
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/product'
+              $ref: '#/components/schemas/updateProduct'
       responses:
         200:
-          description: JSON containing updated product data
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/product'
+          description: Update successful
+        400:
+          $ref: '#/components/responses/400badrequest'
         401:
           $ref: '#/components/responses/401unauthorized'
         403:
@@ -50,49 +48,25 @@ paths:
           $ref: '#/components/responses/404notfound'
         '5XX':
           $ref: '#/components/responses/5XXserverError'
-    delete:
-      summary: deletes product with given productID
-      parameters: 
-        - $ref: '#/components/parameters/productID'
-      responses:
-        200:
-          description: product deleted successfully
-        401:
-          $ref: '#/components/responses/401unauthorized'
-        403:
-          $ref: '#/components/responses/403forbidden'
-        404:
-          $ref: '#/components/responses/404notfound'
-        '5XX':
-          $ref: '#/components/responses/5XXserverError'
-  
+#    delete:
+#      summary: deletes product with given productID
+#      parameters:
+#        - $ref: '#/components/parameters/productID'
+#      responses:
+#        200:
+#          description: product deleted successfully
+#        401:
+#          $ref: '#/components/responses/401unauthorized'
+#        403:
+#          $ref: '#/components/responses/403forbidden'
+#        404:
+#          $ref: '#/components/responses/404notfound'
+#        '5XX':
+#          $ref: '#/components/responses/5XXserverError'
+
   /projects/{projectID}/products:
     get:
       summary: retrieves all products of given projectID
-      parameters:
-        - $ref: '#/components/parameters/projectID'
-      responses:
-        200:
-          description: JSON containing list of products
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/product'
-        401:
-          $ref: '#/components/responses/401unauthorized'
-        403:
-          $ref: '#/components/responses/403forbidden'
-        404:
-          $ref: '#/components/responses/404notfound'
-        '5XX':
-          $ref: '#/components/responses/5XXserverError'
-
-    
-  /projects/{projectID}/productareas/{productAreaID}/products:
-    get:
-      summary: retrieves all products of given project and project area
       parameters:
         - $ref: '#/components/parameters/projectID'
         - $ref: '#/components/parameters/productAreaID'
@@ -114,10 +88,9 @@ paths:
         '5XX':
           $ref: '#/components/responses/5XXserverError'
     post:
-      summary: creates a new product for projectID within productAreaID
+      summary: creates a new product for projectID
       parameters:
         - $ref: '#/components/parameters/projectID'
-        - $ref: '#/components/parameters/productAreaID'
       requestBody:
         description: JSON containing product data
         content:
@@ -141,6 +114,13 @@ paths:
 
 components:
   parameters:
+    projectID:
+      name: projectID
+      in: path
+      description: unique project ID
+      required: true
+      schema:
+        type: integer
     productID:
       name: productID
       in: path
@@ -150,31 +130,27 @@ components:
         type: integer
     productAreaID:
       name: productAreaID
-      in: path
-      required: true
+      in: query
+      required: false
       description: unique product area ID
       schema:
         type: integer
-    projectID:
-      name: projectID
-      in: path
-      description: unique project ID
-      required: true
-      schema:
-        type: integer
+
 
   schemas:
     createProduct:
       type: object
       required:
         - productName
+        - productAreaID
       properties:
-        productID:
-          type: integer
-          example: 111
         productName:
           type: string
           example: "Optionen"
+        productAreaID:
+          type: integer
+          description: unique product area ID
+          example: "6"
         productVariations:
           type: array
           items:
@@ -184,6 +160,9 @@ components:
       required:
         - productName
       properties:
+        productID:
+          type: integer
+          example: "10"
         productName:
           type: string
           example: "Optionen"
@@ -196,13 +175,30 @@ components:
         productName:
           type: string
           example: "Optionen"
-        productAreaID:
-          type: integer
-          example: 2
+        productArea:
+          properties:
+            id:
+              type: integer
+              example: "1"
+            name:
+              type: string
+              example: "Kredit"
+            category:
+              type: string
+              example: "Privat"
         projectID:
           type: integer
           example: 1
-
+        parentID:
+          type: integer
+          example: 10
+          description: return value of -1 indicates that product does not have a parent
+    updateProduct:
+      type: object
+      properties:
+        productName:
+          type: string
+          example: "Optionen"
 
   responses:
     5XXserverError:
@@ -213,5 +209,7 @@ components:
       description: User is not authorized to access this resource
     401unauthorized:
       description: User not authenticated
+    400badrequest:
+      description: Input missing/incorrect
     genericError:
       description: Error

@@ -52,7 +52,7 @@ public class ProductRatingService {
         }
     }
 
-    // TODO: request mit gleichen IDs überschreibt vorhandene Daten, wollen wir das zulassen für ein HTTP POST Request?
+    // TODO: merge createProductRatings & updateProductRatings --> mit Max B. besprochen
     public ProductDto createProductRatings(ProductDto productDto, int productID) {
 
         if (!productRepository.existsById(productID)) {
@@ -79,19 +79,6 @@ public class ProductRatingService {
     }
 
 
-    private void assignAttributes(ProductRatingDto tmp, ProductRatingEntity newEntity) {
-        if(tmp.answer != null){
-            newEntity.answer = tmp.answer;
-        }
-        if(tmp.comment != null) {
-            newEntity.comment = tmp.comment;
-        }
-        if(tmp.score != null){
-            newEntity.score = tmp.score;
-        }
-    }
-
-    // TODO: implementierung mit Alex oder Max bequatschen
     public void updateProductRatings(ProductDto productDto, int productID) {
         if (!productRepository.existsById(productID)) {
             throw new ResourceNotFound("productID " + productID + " not found");
@@ -118,4 +105,16 @@ public class ProductRatingService {
         }
     }
 
+
+    private void assignAttributes(ProductRatingDto tmp, ProductRatingEntity newEntity) {
+        if(tmp.answer != null){
+            newEntity.answer = tmp.answer;
+        }
+        if(tmp.comment != null) {
+            newEntity.comment = tmp.comment;
+        }
+        if(tmp.score != null){
+            newEntity.score = tmp.score;
+        }
+    }
 }
