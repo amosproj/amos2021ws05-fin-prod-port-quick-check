@@ -6,7 +6,7 @@ import java.util.List;
 
 @Entity
 public class ProductEntity {
-    // TODO: (talk to frontend) add attribute for overall economic rating (what type is it?)
+    // TODO: (ask frontend) confirm attribute for overallEconomicRating?
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -14,6 +14,9 @@ public class ProductEntity {
 
     @Column(name = "name")
     public String name;
+
+    @Column(name = "overallRating")
+    public Boolean overallEconomicRating;
 
     @ManyToOne(targetEntity = ProjectEntity.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "project")
