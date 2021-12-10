@@ -1,9 +1,8 @@
 import {
-  HStack,
+  Flex,
   Box,
   Input,
   Heading,
-  IconButton,
   Editable,
   EditableInput,
   EditablePreview,
@@ -11,17 +10,17 @@ import {
   CircularProgress,
   CircularProgressLabel,
   Spacer,
+  Textarea,
 } from '@chakra-ui/react';
 import React from 'react';
-import { DeleteIcon } from '@chakra-ui/icons';
+import Card from './Card';
 // import { useEffect } from 'react';
+
 
 export default function ProductRow({
   product,
   editable,
   removeButton,
-  childToParent,
-  handleAddProduct,
 }) {
   /*const removeProduct = (product) => {
     const newProductsData = productsData.filter((p) => p.productName !== product.productName);
@@ -30,43 +29,35 @@ export default function ProductRow({
 
   return (
     <div>
-      <Box
-        w="full"
-        minW="15em"
-        p={3}
-        mb={6}
-        align="center"
-        rounded="md"
-        boxShadow="md"
-        overflow="hidden"
+      <Card
+        layerStyle='card_bordered' justifyContent='space-between'
+        // w={(parentID > 0) ? ' 90%' : 'full'}
         _hover={{ boxShadow: '2xl' }}
       >
-        <HStack spacing={5}>
-          <Heading as="h4" size="md">
-            {editable ? (
-              <Editable defaultValue={product.productName}>
-                <EditablePreview />
-                <EditableInput />
-              </Editable>
-            ) : (
-              product.productName
-            )}
-          </Heading>
+          <Input
+          align="center"
+          size='md'
+          w='25%'
+          isDisabled={!editable}
+          onChange={(e) => {console.log(e.target.value)}}
+          value={product.productName}
+        />
           <Spacer />
-          <Button> Economical Evaluation </Button>
+          <Button> Economical </Button>
           <CircularProgress value={40} color="green.400">
             <CircularProgressLabel>40%</CircularProgressLabel>
           </CircularProgress>
           <Spacer />
-          <Button> Complexity Evaluation </Button>
+          <Button> Complexity  </Button>
           <CircularProgress value={40} color="green.400">
             <CircularProgressLabel>40%</CircularProgressLabel>
           </CircularProgress>
           <Spacer />
-          <Input width={125} placeholder="Anmerkung" />
+          <Textarea width='30%' placeholder="Anmerkung" />
           {removeButton}
-        </HStack>
-      </Box>
+      </Card>
     </div>
   );
 }
+
+
