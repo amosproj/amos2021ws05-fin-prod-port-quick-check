@@ -41,7 +41,7 @@ paths:
         '5XX':
           $ref: '#/components/responses/5XXserverError'
 
-  /users/email/{email}:
+  /users/email/{userEmail}:
     get:
       summary: retrieve user data based on email
       parameters:

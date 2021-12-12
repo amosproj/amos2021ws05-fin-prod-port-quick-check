@@ -106,6 +106,8 @@ paths:
   /projects/{projectID}/users:
     post:
       summary: assigns users to projectID
+      parameters:
+        - $ref: '#/components/parameters/projectID'
       requestBody:
         description: JSON containing user data
         content:
@@ -133,6 +135,8 @@ paths:
           $ref: '#/components/responses/5XXserverError'
     put:
       summary: updates users for projectID
+      parameters:
+        - $ref: '#/components/parameters/projectID'
       requestBody:
         description: JSON containing user data
         content:
@@ -160,6 +164,8 @@ paths:
           $ref: '#/components/responses/5XXserverError'
     delete:
       summary: unassigns user from project
+      parameters:
+        - $ref: '#/components/parameters/projectID'
       requestBody:
         description: JSON containing user data
         content:
@@ -222,7 +228,6 @@ components:
         $ref: '#/components/schemas/productArea'
     role:
       type: string
-      required: true
       enum: [ CLIENT, PROJECT_MANAGER, ADMIN ]
     userID:
       type: string
@@ -292,7 +297,6 @@ components:
             $ref: '#/components/schemas/projectName'
           productAreas:
             type: array
-            required: true
             example: [ 1, 2, 3 ]
             items:
               type: integer
@@ -336,7 +340,6 @@ components:
           $ref: '#/components/schemas/projectName'
         productAreas:
           type: array
-          required: true
           example: [ 1, 2 ,3 ]
           items:
             type: integer
