@@ -104,28 +104,37 @@ components:
         format: uuid
 
   schemas:
+    userEmail:
+      type: string
+      example: "test@test.com"
+    userID:
+      type: string
+      format: uuid
+      description: unique identifier of user in form of a UUID
+      example: "0fef539d-69be-4013-9380-6a12c3534c67"
+
     user:
       type: object
       properties:
         userEmail:
-          type: string
+          $ref: '#/components/schemas/userEmail'
         userName:
           type: string
         userID:
-          type: string
-          format: uuid
+          $ref: '#/components/schemas/userID'
+
     createUser:
+      required:
+        - userEmail
+        - password
       type: object
       properties:
         userEmail:
-          type: string
-          required: true
+          $ref: '#/components/schemas/userEmail'
         userName:
           type: string
-          required: true
         password:
           type: string
-          required: true
 
 
 
