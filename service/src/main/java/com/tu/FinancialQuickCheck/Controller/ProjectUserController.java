@@ -7,9 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
-
-//TODO: (ask frontend)(prio: high) check if endpoints needet -> endpoints definiton in projects.yaml
 
 
 @RestController
@@ -19,30 +16,34 @@ public class ProjectUserController {
     @Autowired
     private ProjectUserService service;
 
+
+
     @GetMapping(produces = "application/json")
     public List<ProjectUserDto> findProjectUsersByProjectId(@PathVariable int projectID) {
         return service.getProjectUsersByProjectId(projectID);
     }
 
+    //TODO: (done - needs review) change according to API
     @PostMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createProjectUser(@RequestBody ProjectUserDto projectUserDto,
+    public List<ProjectUserDto> createProjectUser(@RequestBody List<ProjectUserDto> projectUsers,
                                             @PathVariable int projectID) {
-        service.createProjectUser(projectID, projectUserDto);
+        return service.wrapperCreateProjectUser(projectID, projectUsers);
     }
 
+    //TODO: (done - needs review) change according to API
     @PutMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public void updateProjectUser(@RequestBody ProjectUserDto projectUserDto,
+    public List<ProjectUserDto> updateProjectUser(@RequestBody List<ProjectUserDto> projectUsers,
                                   @PathVariable int projectID) {
-        service.updateProjectUser(projectID, projectUserDto);
+        return service.wrapperUpdateProjectUser(projectID, projectUsers);
     }
 
-
+     //TODO: (done - needs review) change according to API
      @DeleteMapping(produces = "application/json")
-     public void deleteProjectUser(@RequestBody ProjectUserDto projectUserDto,
+     public void deleteProjectUser(@RequestBody List<ProjectUserDto> projectUsers,
                                   @PathVariable int projectID) {
-        service.deleteProjectUser(projectID, projectUserDto);
+        service.wrapperDeleteProjectUser(projectID, projectUsers);
     }
 
 }

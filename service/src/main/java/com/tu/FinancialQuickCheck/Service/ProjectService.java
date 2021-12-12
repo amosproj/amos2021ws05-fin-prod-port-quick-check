@@ -65,7 +65,7 @@ public class ProjectService {
      *
      * @return ProjectDto projectDto including created projectID
      */
-    //TODO: (ask frontend) is the creator of the project included in the members list?
+    //TODO: (done - nothing changed) is the creator of the project included in the members list? --> answer: yes
     public ProjectDto createProject(ProjectDto projectDto) {
 
         // Step 0: Check if input contains required information
@@ -150,7 +150,8 @@ public class ProjectService {
 
         if (!projectRepository.existsById(projectID)) {
             throw new ResourceNotFound("projectID " + projectID + " not found");
-        } else if(projectDto.projectName == null && projectDto.productAreas == null) {
+        } else if(projectDto.projectName == null && projectDto.productAreas == null &&
+                projectDto.productAreas.isEmpty()) {
             throw new BadRequest("Input is missing/incorrect.");
         }else{
             ProjectEntity entity = projectRepository.findById(projectID).get();
@@ -187,13 +188,12 @@ public class ProjectService {
         }
     }
 
-
+    //TODO: (done - needs review) --> user_entity primary key changed
     private void assignMembersToProject(List<UserDto> members, ProjectEntity projectEntity){
-
         // check if members exist
         Set<UserDto> newUsers = new HashSet<>(members);
         for(UserDto member: newUsers){
-            Optional<UserEntity> u = userRepository.findById(member.userEmail);
+            Optional<UserEntity> u = userExists(member);
             if(u.isPresent()){
                 ProjectUserEntity newUserProject = new ProjectUserEntity();
                 newUserProject.projectUserId = new ProjectUserId(projectEntity, u.get());
@@ -203,7 +203,16 @@ public class ProjectService {
                 throw new ResourceNotFound("User does not exist.");
             }
         }
+    }
 
+    //TODO: (test)
+    private Optional<UserEntity> userExists(UserDto user){
+
+        if(user.userID != null && user.userID.toString().length() == 16){
+            return userRepository.findById(user.userID.toString());
+        }else{
+            return userRepository.findByEmail(user.userEmail);
+        }
     }
 
 // TODO: auskommentiert lassen bisher keine Anforderung dafür vorhanden

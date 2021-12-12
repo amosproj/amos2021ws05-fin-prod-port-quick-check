@@ -1,6 +1,7 @@
 package com.tu.FinancialQuickCheck.dto;
 
 import com.tu.FinancialQuickCheck.Role;
+import com.tu.FinancialQuickCheck.db.ProjectUserEntity;
 
 import java.util.UUID;
 
@@ -22,5 +23,14 @@ public class ProjectUserDto {
         this.userEmail = email;
         this.role = role;
     }
+
+
+    public ProjectUserDto(ProjectUserEntity entity)
+    {
+        this.userID = UUID.fromString(entity.projectUserId.getUser().id);
+        this.userEmail = entity.projectUserId.getUser().email;
+        this.role = entity.role;
+    }
+
 
 }

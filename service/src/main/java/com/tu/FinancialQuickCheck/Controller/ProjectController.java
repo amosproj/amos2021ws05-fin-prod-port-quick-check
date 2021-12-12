@@ -33,17 +33,11 @@ public class ProjectController {
         this.productService = productService;
     }
 
-    //TODO: (ask frontend) --> return empty list or resource not found, what do you prefer?
+    //TODO: (done - need review) --> return empty list or resource not found, what do you prefer?
     //TODO: (prio: medium) User Management - change output according to api or define new endpoint including role and list of projects for each user
     @GetMapping(produces = "application/json")
     public List<SmallProjectDto> findALL() {
-        List<SmallProjectDto> tmp = service.getAllProjects();
-
-        if(tmp.isEmpty()){
-            throw new ResourceNotFound("No projects found.");
-        }else{
-            return tmp;
-        }
+        return service.getAllProjects();
     }
 
 
@@ -78,8 +72,7 @@ public class ProjectController {
         if(projectDto.members == null && projectDto.members.isEmpty()){
             throw new BadRequest("Input is missing/incorrect.");
         }else{
-            ProjectDto out = service.updateProject(projectDto, projectID);
-            return out;
+            return service.updateProject(projectDto, projectID);
         }
     }
 
