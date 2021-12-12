@@ -26,8 +26,8 @@ public class ProductEntity {
     @JoinColumn(name = "productarea")
     public ProductAreaEntity productarea;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "product", insertable = false, updatable = false)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "product")
     public List<ProductRatingEntity> productRatingEntities;
 
     @ManyToOne(fetch = FetchType.LAZY)

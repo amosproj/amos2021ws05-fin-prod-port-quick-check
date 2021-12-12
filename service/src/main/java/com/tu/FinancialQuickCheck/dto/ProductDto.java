@@ -3,9 +3,11 @@ package com.tu.FinancialQuickCheck.dto;
 //import com.tu.FinancialQuickCheck.RatingArea;
 //import com.tu.FinancialQuickCheck.Score;
 
+import com.tu.FinancialQuickCheck.Score;
 import com.tu.FinancialQuickCheck.db.ProductAreaEntity;
 import com.tu.FinancialQuickCheck.db.ProductEntity;
 import com.tu.FinancialQuickCheck.db.ProductRatingEntity;
+import com.tu.FinancialQuickCheck.db.RatingEntity;
 //import com.tu.FinancialQuickCheck.db.ProductRatingEntity;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,10 +56,11 @@ public class ProductDto {
         this.parentID = convertParentEntity(parent);
     }
 
-    public ProductDto(String name, List<ProductRatingEntity> productRatingEntities)
+    public ProductDto(ProductEntity product, List<ProductRatingEntity> productRatingEntities, Boolean getOrPostPut)
     {
-        this.productName = name;
-        this.ratings = convertProductRatingEntities(productRatingEntities);
+        this.productName = product.name;
+        this.overallEconomicRating = product.overallEconomicRating;
+        this.ratings = convertProductRatingEntities(productRatingEntities, getOrPostPut);
     }
 
 
@@ -71,17 +74,28 @@ public class ProductDto {
 //    }
 
 
-    private List<ProductRatingDto> convertProductRatingEntities(List<ProductRatingEntity> productRatingEntities) {
+    private List<ProductRatingDto> convertProductRatingEntities(List<ProductRatingEntity> productRatingEntities,
+                                                                Boolean getOrPostPut) {
         List<ProductRatingDto> tmp = new ArrayList<>();
 
-        for(ProductRatingEntity entity : productRatingEntities){
-            ProductRatingDto p = new ProductRatingDto();
-            p.ratingID = entity.productRatingId.getRating().id;
-            p.score = entity.score;
-            p.answer = entity.answer;
-            p.comment = entity.comment;
-            tmp.add(p);
+        if(getOrPostPut){
+            for(ProductRatingEntity entity : productRatingEntities){
+                tmp.add(new ProductRatingDto(
+                            entity.answer,
+                            entity.comment,
+                            entity.score,
+                            entity.productRatingId.getRating()));
+            }
+        }else{
+            for(ProductRatingEntity entity : productRatingEntities){
+                tmp.add(new ProductRatingDto(
+                        entity.answer,
+                        entity.comment,
+                        entity.score,
+                        entity.productRatingId.getRating().id));
+            }
         }
+
 
         return tmp;
     }
