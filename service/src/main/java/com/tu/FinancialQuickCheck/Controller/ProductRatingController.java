@@ -19,35 +19,31 @@ public class ProductRatingController {
         this.service = productRatingService;
     }
 
-    //TODO: (ask frontend) return empty list or return Error if no ratings exist?
+    //TODO: (done - needs review) return empty list or return Error if no ratings exist?
     @GetMapping()
     public ProductDto getProductRatings(
             @PathVariable int productID,
             @RequestParam(required = false) RatingArea ratingArea) {
 
-        ProductDto p = service.getProductRatings(productID, ratingArea);
+        return service.getProductRatings(productID, ratingArea);
 
-        if(p.ratings.isEmpty()){
-            throw new ResourceNotFound("No ratings for productID" + productID + " found.");
-        }else{
-            return p;
-        }
     }
 
 
-    //TODO: (prio: high) Secure that every entry inside the RatingEntity is existing
     //TODO: (done - needs review) add consumes and produces
+    //TODO: (done - needs review) change output according to API
     @PostMapping(consumes = "application/json", produces = "application/json")
-    public void createProductRatings(@RequestBody ProductDto productDto, @PathVariable Integer productID) {
+    public ProductDto createProductRatings(@RequestBody ProductDto productDto, @PathVariable Integer productID) {
 
-        service.createProductRatings(productDto, productID);
+        return service.createProductRatings(productDto, productID);
     }
 
     //TODO: (done - needs review) add consumes
+    //TODO: (done - needs review) change output according to API
     @PutMapping(consumes = "application/json")
-    public void updateProductRatings(@RequestBody ProductDto productDto, @PathVariable Integer productID) {
+    public ProductDto updateProductRatings(@RequestBody ProductDto productDto, @PathVariable Integer productID) {
 
-        service.updateProductRatings(productDto, productID);
+        return service.updateProductRatings(productDto, productID);
     }
 
 }
