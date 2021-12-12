@@ -7,14 +7,14 @@ import {
   ModalContent,
   ModalFooter,
   ModalCloseButton,
-  FormControl,
-  FormLabel,
   Input,
   ModalBody,
   ModalHeader,
   IconButton,
+  InputGroup,
+  InputLeftElement,
 } from '@chakra-ui/react';
-import { AddIcon } from '@chakra-ui/icons';
+import { AddIcon, EmailIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
 
 import { roles } from '../../utils/const';
@@ -40,15 +40,17 @@ export default function AddMemberButton({ onAdd, ...buttonProps }) {
           <ModalHeader color="primary">{header}</ModalHeader>
           <ModalCloseButton />
           <ModalBody px={10}>
-            <FormControl>
-              <FormLabel pl={3}>Email</FormLabel>
+              <InputGroup aria-label='Email Input'>
               <Input
                 maxLength={60}
                 mb={6}
                 placeholder="Email"
                 onChange={(e) => setEmail(e.target.value)}
               />
-            </FormControl>
+              <InputLeftElement>
+                <EmailIcon/>
+              </InputLeftElement>
+              </InputGroup>
             <Selection
               options={Object.values(roles)}
               selected={roles.consultant}
