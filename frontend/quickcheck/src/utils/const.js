@@ -6,7 +6,7 @@ export const roles = {
 
 export const score = {
   gering: 'gering',
-  mittle: 'mittle',
+  mittel: 'mittel',
   hoch: 'hoch',
 };
 

@@ -22,7 +22,7 @@ import ProductAreaList from "../projectPage/ProjectAreaList";
 import AddMemberButton from "../projectPage/AddMemberButton";
 
 
-function RatingRow({editable})
+function RatingRow({rating,editable, onChangeScore})
 {
 
     return (
@@ -42,7 +42,7 @@ function RatingRow({editable})
                     onChange={(e) => {
                         console.log(e.target.value);
                     }}
-                    value={"Frage"}
+                    value={rating.rating.criterion}
                 />
             </Card>
             <Card
@@ -52,11 +52,11 @@ function RatingRow({editable})
                 _hover={{ boxShadow: '2xl' }}
             >
                 <Spacer />
-                <Textarea width="100%" placeholder="Antwort" />
+                <Textarea width="100%" placeholder={'Anwort'} value={rating.answer} />
                 <Spacer />
-                <Selection options={['gering', 'mittel', 'hoch']} selected={'gering'}></Selection>
+                <Selection options={['gering', 'mittel', 'hoch']} selected={rating.score} onChange={onChangeScore}></Selection>
                 <Spacer />
-                <Textarea width="100%" placeholder="Anmerkung" />
+                <Textarea width="100%" placeholder={'Anmerkungen'} value={rating.comment} />
                 <Spacer />
                 <Input
                     align="center"
@@ -77,18 +77,20 @@ export default function RatingTable({editMode,ratings, handleChange})
 {
     const handleScoreChange = (rating) => (newRating) => {
         // This is a curried function in JS
-        let index = ratings.map((r) => r.rating).indexOf(rating.rating);
-        ratings[index] = { ...ratings, score: newRating };
+        let index = ratings.map((r) => r.score).indexOf(rating.score);
+        rating.score = newRating.target.value
+        ratings[index] = rating
         handleChange(ratings);
     };
 
     return (
         <List spacing={2} direction="column" w="full" align="center" >
-            <RatingRow editable={editMode}></RatingRow>
             {ratings.map((rating) => (
                 <Flex gridGap={3}>
                     <RatingRow
+                        rating={rating}
                         editMode={editMode}
+                        onChangeScore={handleScoreChange(rating)}
                     ></RatingRow>
                 </Flex>
             ))}

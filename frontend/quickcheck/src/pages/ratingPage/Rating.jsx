@@ -5,8 +5,58 @@ import Page from "../../components/Page";
 import Card from "../../components/Card";
 import MemberTable from "../projectPage/MemberTable";
 import RatingTable from "./RatingTable";
+import {score} from "../../utils/const";
 
-export default function Rating(prop) {
+
+/*
+    ratingID:
+      type: integer
+      example: 111
+    answer:
+      type: string
+      example: "an answer to a question or the volume of an economic criterion"
+    comment:
+      type: string
+      example: "a comment to an answer or an economic criterion"
+    score:
+      type: string
+      enum: [ HOCH, MITTEL, GERING ]
+    rating:
+      type: object
+      properties:
+        ratingID:
+          $ref: '#/components/schemas/ratingID'
+        category:
+          type: string
+          example: "Komplexitätstreiber oder Gruppierung von Finanzkriterien"
+        criterion:
+          type: string
+          example: "question or criterion to be analysed"
+        ratingArea:
+          type: string
+          enum: [ ECONOMIC, COMPLEXITY ]
+ */
+
+const mockRatings = {
+    ratings: [
+        {   answer: 'test answer',
+            comment: 'test comment',
+            score:score.gering,
+            rating:{
+                criterion: 'test frage',
+            }
+        },
+        {   answer: '',
+            comment: '',
+            score:score.mittel,
+            rating:{
+                criterion: 'Wer bin ich',
+            }
+        },
+    ],
+};
+
+export default function Rating() {
     const [editMode, setEditMode] = useState(false);
     const [ratingsData, setRatingstData] = useState({ //TODO : Rating data structure
         ratings:[],
@@ -20,6 +70,11 @@ export default function Rating(prop) {
     };
 
     const setRatings = handleChange('ratings');
+
+    useEffect(() => {
+        // fetchProject();
+        setRatingstData(mockRatings);
+    }, []);
 
     const EditButtons = () => {
         if (editMode) {
@@ -45,9 +100,8 @@ export default function Rating(prop) {
     return (
         <Page title="Ratings">
             <Card direction="column">
-                <RatingTable editMode={editMode} ratings={ratingsData} handleChange={setRatings} />
+                <RatingTable editMode={editMode} ratings={ratingsData.ratings} handleChange={setRatings} />
             </Card>
-            <EditButtons />
         </Page>
     );
 }
