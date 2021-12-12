@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -49,8 +48,7 @@ public class ProjectService {
      */
     public List<SmallProjectDto> getAllProjects(){
 
-        List<SmallProjectDto> smallProjectDtos = new ArrayList<>() {
-        };
+        List<SmallProjectDto> smallProjectDtos = new ArrayList<>() {};
         Iterable<ProjectEntity> projectEntities = projectRepository.findAll();
         
         for(ProjectEntity tmp : projectEntities){
@@ -64,18 +62,19 @@ public class ProjectService {
     /**
      * adds a new ProjectEntity to DB
      * required information: see Project.yaml
-     * // TODO: wollen wir es zulassen, dass die productAreas und members Listen leer sein können?
+     *
      * @return ProjectDto projectDto including created projectID
      */
+    //TODO: (ask frontend) is the creator of the project included in the members list?
     public ProjectDto createProject(ProjectDto projectDto) {
 
         // Step 0: Check if input contains required information
-        if(projectDto.projectName != null && projectDto.productAreas != null && projectDto.creator != null
+        if(projectDto.projectName != null && projectDto.productAreas != null && projectDto.creatorID != null
                 && projectDto.members != null){
 
             // create db entry
             ProjectEntity newProject = new ProjectEntity();
-            newProject.creator = projectDto.creator;
+            newProject.creatorID = projectDto.creatorID;
             newProject.name = projectDto.projectName;
 
             // add product areas to project through DUMMY data in product_entity table
@@ -105,8 +104,8 @@ public class ProjectService {
             return new ProjectDto(
                     newProject.id,
                     newProject.name,
-                    newProject.creator,
-                    convertProductAreaEntities(newProject.productEntities),
+                    newProject.creatorID,
+                    newProject.productEntities,
                     newProject.projectUserEntities);
         }else{
             return null;
@@ -125,13 +124,13 @@ public class ProjectService {
         Optional<ProjectEntity> projectEntity = projectRepository.findById(projectID);
 
         if (projectEntity.isEmpty()) {
-            throw new ResourceNotFound("projectID " + projectID + " not found");
+            return null;
         }else{
             return new ProjectDto(
                     projectEntity.get().id,
                     projectEntity.get().name,
-                    projectEntity.get().creator,
-                    convertProductAreaEntities(projectEntity.get().productEntities),
+                    projectEntity.get().creatorID,
+                    projectEntity.get().productEntities,
                     projectEntity.get().projectUserEntities);
         }
 
@@ -142,7 +141,7 @@ public class ProjectService {
     /**
      * updates an existing ProjectEntity in DB
      * attributes/relations that can be updated: projectName, productAreas, members
-     * attributes that can not be updated: creator, projectID
+     * attributes that can not be updated: creatorID, projectID
      * @param projectID unique identifier for ProjectEntity
      * @param projectDto contains data that needs to be updated
      */
@@ -152,7 +151,7 @@ public class ProjectService {
         if (!projectRepository.existsById(projectID)) {
             throw new ResourceNotFound("projectID " + projectID + " not found");
         } else if(projectDto.projectName == null && projectDto.productAreas == null) {
-            throw new BadRequest("Nothing to update.");
+            throw new BadRequest("Input is missing/incorrect.");
         }else{
             ProjectEntity entity = projectRepository.findById(projectID).get();
             // update project name
@@ -183,25 +182,9 @@ public class ProjectService {
             assignMembersToProject(projectDto.members, entity);
 
             projectRepository.save(entity);
-            return new ProjectDto(entity.id, entity.name, entity.creator,
-                   convertProductAreaEntities(entity.productEntities) , entity.projectUserEntities);
+            return new ProjectDto(entity.id, entity.name, entity.creatorID,
+                   entity.productEntities , entity.projectUserEntities);
         }
-    }
-
-
-    private List<ProductAreaDto> convertProductAreaEntities(List<ProductEntity> productEntities) {
-        //TODO: greift alle Produktdaten für project ab, es würde ausreichen nur die DUMMY Daten abzugreifen
-        HashSet<ProductAreaDto> areas = new HashSet<>();
-
-        for (ProductEntity product: productEntities)
-        {
-            areas.add(new ProductAreaDto(
-                    product.productarea.id,
-                    product.productarea.name,
-                    product.productarea.category
-            ));
-        }
-        return new ArrayList<>(areas);
     }
 
 

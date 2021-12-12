@@ -93,7 +93,7 @@ public class ProjectServiceTest {
 
         projectID = entity.id;
         entity.name = projectName;
-        entity.creator = creator;
+        entity.creatorID = creator;
         entity.productEntities = productEntities;
         entity.projectUserEntities = projectUserEntities;
     }
@@ -165,7 +165,7 @@ public class ProjectServiceTest {
         for(int i = 0; i <= 10; i++){
             // Step 1: init test object
             ProjectDto projectIn = new ProjectDto();
-            projectIn.creator = creator;
+            projectIn.creatorID = creator;
             projectIn.projectName = projectName;
             //TODO: anpassen
 //            projectIn.productAreas = productAreas;
@@ -178,7 +178,7 @@ public class ProjectServiceTest {
             // Step 3: assert result
             assertAll("createProject",
                     () -> assertEquals(projectName, projectOut.projectName),
-                    () -> assertEquals(creator, projectOut.creator),
+                    () -> assertEquals(creator, projectOut.creatorID),
                     () -> assertEquals(productAreas, projectOut.productAreas),
                     () -> assertNotNull(projectOut)
             );
@@ -190,11 +190,11 @@ public class ProjectServiceTest {
     public void testCreateProject2() {
         // Step 1: init test object
         ProjectDto project1 = new ProjectDto();
-        project1.creator = creator;
+        project1.creatorID = creator;
         project1.projectName = projectName;
 
         ProjectDto project2 = new ProjectDto();
-        project2.creator = creator;
+        project2.creatorID = creator;
         //TODO: anpassen
 //        project2.productAreas = productAreas;
 
@@ -217,7 +217,7 @@ public class ProjectServiceTest {
         for(int i = 0; i <= 10; i++){
             // Step 1: init test object
             ProjectDto projectIn = new ProjectDto();
-            projectIn.creator = creator;
+            projectIn.creatorID = creator;
             projectIn.projectName = projectName;
             //TODO: anpassen
 //            projectIn.productAreas = productAreas;
@@ -233,7 +233,7 @@ public class ProjectServiceTest {
             // Step 3: assert result
             assertAll("createProject",
                     () -> assertEquals(projectName, projectOut.projectName),
-                    () -> assertEquals(creator, projectOut.creator),
+                    () -> assertEquals(creator, projectOut.creatorID),
                     () -> assertEquals(productAreas, projectOut.productAreas),
                     () -> assertNotEquals(projectIn.projectID, projectOut.projectID),
                     () -> assertNull(projectOut.members),
@@ -264,7 +264,7 @@ public class ProjectServiceTest {
 
         assertAll("get project",
                 () -> assertEquals(projectName, projectOut.projectName),
-                () -> assertEquals(creator, projectOut.creator),
+                () -> assertEquals(creator, projectOut.creatorID),
                 () -> assertEquals(productAreas, projectOut.productAreas),
                 () -> assertEquals(new HashSet<>(Collections.singletonList(creator)) , projectOut.members),
                 () -> assertEquals(projectID, projectOut.projectID)
@@ -371,7 +371,7 @@ public class ProjectServiceTest {
             // TODO: anpassen
 //            projectIn.productAreas = newProductAreas;
             // cannot be updated
-            projectIn.creator = "test@test.com";
+            projectIn.creatorID = "test@test.com";
             projectIn.projectID = 1000;
             // TODO: anpassen an neue dto
 //            projectIn.members = members;
@@ -392,7 +392,7 @@ public class ProjectServiceTest {
                     () -> assertEquals(projectIn.projectName, projectOut.projectName),
                     () -> projectIn.productAreas.forEach(
                             productArea -> assertTrue(projectOut.productAreas.contains(productArea))),
-                    () -> assertNotEquals(projectIn.creator, projectOut.creator),
+                    () -> assertNotEquals(projectIn.creatorID, projectOut.creatorID),
                     () -> assertNotEquals(projectIn.projectID, projectOut.projectID),
                     () -> assertNotEquals(projectIn.members, projectOut.members)
             );

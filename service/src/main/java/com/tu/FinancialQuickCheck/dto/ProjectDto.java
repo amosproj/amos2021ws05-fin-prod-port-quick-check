@@ -5,13 +5,14 @@ import com.tu.FinancialQuickCheck.db.ProductEntity;
 import com.tu.FinancialQuickCheck.db.ProjectUserEntity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
 
 public class ProjectDto {
     public int projectID;
-    public String creator;
+    public String creatorID;
     public String projectName;
     public List<UserDto> members;
     public List<ProductAreaDto> productAreas;
@@ -20,26 +21,14 @@ public class ProjectDto {
     //necessary for mapping
     public ProjectDto() {}
 
-    public ProjectDto(String creator, String projectName, List<Integer> productAreas){
-        this.creator = creator;
-        this.projectName = projectName;
-        this.productAreas = convertProductAreaSet(productAreas);
-    }
-
-    public ProjectDto(int projectID, String projectName, String creator, List<ProductAreaDto> productAreas){
-        this.projectID = projectID;
-        this.projectName = projectName;
-        this.creator = creator;
-        this.productAreas = productAreas;
-    }
 
     public ProjectDto(int projectID, String projectName, String creator,
-                      List<ProductAreaDto> productAreas, List<ProjectUserEntity> projectUserEntities){
+                      List<ProductEntity> productEntities, List<ProjectUserEntity> projectUserEntities){
         this.projectID = projectID;
-        this.creator = creator;
+        this.creatorID = creator;
         this.projectName = projectName;
         this.members = convertProjectUserEntities(projectUserEntities);
-        this.productAreas = productAreas;
+        this.productAreas = convertProductAreaEntities(productEntities);
     }
 
 
@@ -72,26 +61,6 @@ public class ProjectDto {
         return areas;
     }
 
-//    private List<ProductAreaDto> convertProductAreaEntities(List<ProductEntity> productEntities) {
-//        //TODO: lässt doppelte Werte zu, d.h. Datentyp anpassen
-//        List<ProductAreaDto> areas = new ArrayList<>();
-//        for (ProductEntity p: productEntities)
-//        {
-////            System.out.println(p.product_id + ": " + p.productareaid);
-//            ProductAreaEntity tmp = new ProductAreaEntity();
-//            tmp.id = p.productarea.id;
-//            tmp.name = p.productarea.name;
-//            tmp.category = p.productarea.category;
-//
-//            areas.add(new ProductAreaDto(
-//                    p.productarea.id,
-//                    p.productarea.name,
-//                    p.productarea.category
-//            ));
-//        }
-//        return areas;
-//    }
-
     private List<UserDto> convertProjectUserEntities(List<ProjectUserEntity> projectUserEntities) {
         List<UserDto> members = new ArrayList<>();
 
@@ -104,5 +73,20 @@ public class ProjectDto {
                     );
         }
         return members;
+    }
+
+    private List<ProductAreaDto> convertProductAreaEntities(List<ProductEntity> productEntities) {
+        //TODO: (prio: low) greift alle Produktdaten für project ab, es würde ausreichen nur die DUMMY Daten abzugreifen
+        HashSet<ProductAreaDto> areas = new HashSet<>();
+
+        for (ProductEntity product: productEntities)
+        {
+            areas.add(new ProductAreaDto(
+                    product.productarea.id,
+                    product.productarea.name,
+                    product.productarea.category
+            ));
+        }
+        return new ArrayList<>(areas);
     }
 }

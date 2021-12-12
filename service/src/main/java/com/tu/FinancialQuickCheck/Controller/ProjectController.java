@@ -33,7 +33,8 @@ public class ProjectController {
         this.productService = productService;
     }
 
-
+    //TODO: (ask frontend) --> return empty list or resource not found, what do you prefer?
+    //TODO: (prio: medium) User Management - change output according to api or define new endpoint including role and list of projects for each user
     @GetMapping(produces = "application/json")
     public List<SmallProjectDto> findALL() {
         List<SmallProjectDto> tmp = service.getAllProjects();
@@ -60,17 +61,25 @@ public class ProjectController {
 
     @GetMapping("/{projectID}")
     public ProjectDto findById(@PathVariable int projectID) {
-        return service.getProjectById(projectID);
+        ProjectDto tmp = service.getProjectById(projectID);
+
+        if (tmp == null){
+            throw new ResourceNotFound("projectID " + projectID + " not found");
+        }else{
+            return tmp;
+        }
+
     }
 
-    // TODO: Should we return the updated ProjectedDTO?
-    @PutMapping("/{projectID}")
-    public void updateById(@RequestBody ProjectDto projectDto, @PathVariable int projectID) {
 
-        if(projectDto.members == null){
+    @PutMapping("/{projectID}")
+    public ProjectDto updateById(@RequestBody ProjectDto projectDto, @PathVariable int projectID) {
+
+        if(projectDto.members == null && projectDto.members.isEmpty()){
             throw new BadRequest("Input is missing/incorrect.");
         }else{
             ProjectDto out = service.updateProject(projectDto, projectID);
+            return out;
         }
     }
 

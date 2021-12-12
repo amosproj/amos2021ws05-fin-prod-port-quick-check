@@ -14,7 +14,7 @@ public class ProjectEntity {
     public String name;
 
     @Column(name = "creator")
-    public String creator;
+    public String creatorID;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "project")
@@ -25,10 +25,6 @@ public class ProjectEntity {
     public List<ProjectUserEntity> projectUserEntities;
 
     public ProjectEntity(){
-    }
-
-    public void removeProjectUser(ProjectUserEntity projectUser){
-        this.projectUserEntities.remove(projectUser);
     }
 
 }
