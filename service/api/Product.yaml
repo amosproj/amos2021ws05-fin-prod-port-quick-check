@@ -16,7 +16,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/product'
+                $ref: '#/components/schemas/getProduct'
         401:
           $ref: '#/components/responses/401unauthorized'
         403:
@@ -78,7 +78,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/product'
+                  $ref: '#/components/schemas/getProduct'
         401:
           $ref: '#/components/responses/401unauthorized'
         403:
@@ -105,7 +105,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/product'
+                  $ref: '#/components/schemas/getProduct'
         400:
           $ref: '#/components/responses/400badrequest'
         401:
@@ -149,6 +149,27 @@ components:
       type: integer
       description: unique product area ID
       example: "6"
+    resource:
+      type: string
+    resources:
+      type: array
+      items:
+        $ref: '#/components/schemas/resource'
+    comment:
+      type: string
+
+    productVariation:
+      type: object
+      required:
+        - productName
+      properties:
+        productName:
+          $ref: '#/components/schemas/productName'
+        comment:
+          $ref: '#/components/schemas/comment'
+        resources:
+          $ref: '#/components/schemas/resources'
+
     createProduct:
       type: object
       required:
@@ -159,18 +180,15 @@ components:
           $ref: '#/components/schemas/productName'
         productAreaID:
           $ref: '#/components/schemas/productAreaID'
+        comments:
+          $ref: '#/components/schemas/comment'
+        resources:
+          $ref: '#/components/schemas/resources'
         productVariations:
           type: array
           items:
             $ref: '#/components/schemas/productVariation'
-    productVariation:
-      type: object
-      required:
-        - productName
-      properties:
-        productName:
-          $ref: '#/components/schemas/productName'
-    product:
+    getProduct:
       type: object
       properties:
         productID:
@@ -203,11 +221,19 @@ components:
           type: integer
           example: 89
           description: returns a value between 0 and 100, which indicates the progress of the economic rating
+        comment:
+          $ref: '#/components/schemas/comment'
+        resources:
+          $ref: '#/components/schemas/resources'
     updateProduct:
       type: object
       properties:
         productName:
           $ref: '#/components/schemas/productName'
+        comment:
+          $ref: '#/components/schemas/comment'
+        resources:
+          $ref: '#/components/schemas/resources'
 
   responses:
     5XXserverError:

@@ -19,8 +19,6 @@ paths:
                     '$ref': '#/components/schemas/smallProjects'
         401:
           $ref: '#/components/responses/401unauthorized'
-        404:
-          $ref: '#/components/responses/404notfound'
         '5XX':
           $ref: '#/components/responses/5XXserverError'
     post:
@@ -56,7 +54,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/project'
+                $ref: '#/components/schemas/getProject'
         401:
           $ref: '#/components/responses/401unauthorized'
         404:
@@ -76,7 +74,11 @@ paths:
               $ref: '#/components/schemas/updateProject'
       responses:
         200:
-          description: project updated successfully
+          description: JSON containing project meta data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getProject'
         400:
           $ref: '#/components/responses/400badrequest'
         401:
@@ -114,7 +116,11 @@ paths:
                 $ref: '#/components/schemas/assignUser'
       responses:
         201:
-          description: "users successfully assigned to project"
+          description: JSON containing assigned project members project meta data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/members'
         400:
           $ref: '#/components/responses/400badrequest'
         401:
@@ -134,10 +140,14 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/user'
+                $ref: '#/components/schemas/updateUserProject'
       responses:
         200:
-          $ref: '#/components/schemas/userProject'
+          description: JSON containing assigned project members project meta data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/members'
         400:
           $ref: '#/components/responses/400badrequest'
         401:
@@ -221,20 +231,47 @@ components:
     userEmail:
       type: string
       example: "test@test.com"
-    user:
+    userName:
+      type: string
+      example: "Max Mustermann"
+    getUsers:
       properties:
         userID:
           $ref: '#/components/schemas/userID'
         userEmail:
           $ref: '#/components/schemas/userEmail'
         userName:
-          type: string
+          $ref: '#/components/schemas/userName'
+        role:
+          $ref: '#/components/schemas/role'
+    assignUser:
+      required:
+        - role
+        - userEmail
+      properties:
+        userEmail:
+          $ref: '#/components/schemas/userEmail'
+        role:
+          $ref: '#/components/schemas/role'
+    updateAssignedUser:
+      properties:
+        userID:
+          $ref: '#/components/schemas/userID'
+        userEmail:
+          $ref: '#/components/schemas/userEmail'
+        role:
+          $ref: '#/components/schemas/role'
+    updateUserProject:
+      properties:
+        userID:
+          $ref: '#/components/schemas/userID'
         role:
           $ref: '#/components/schemas/role'
     members:
       type: array
       items:
-        $ref: '#/components/schemas/user'
+        $ref: '#/components/schemas/updateAssignedUser'
+
     smallProjects:
       type: object
       properties:
@@ -276,8 +313,21 @@ components:
           $ref: '#/components/schemas/productAreas'
         members:
           $ref: '#/components/schemas/members'
-
-
+    getProject:
+      type: object
+      properties:
+        projectID:
+          $ref: '#/components/schemas/projectID'
+        creatorID:
+          $ref: '#/components/schemas/creatorID'
+        projectName:
+          $ref: '#/components/schemas/projectName'
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/getUsers'
+        productAreas:
+          $ref: '#/components/schemas/productAreas'
     updateProject:
       required:
         - members
@@ -293,42 +343,6 @@ components:
             description: unique identifiers of product areas
         members:
           $ref: '#/components/schemas/members'
-    project:
-      type: object
-      properties:
-        projectID:
-          $ref: '#/components/schemas/projectID'
-        creatorID:
-          $ref: '#/components/schemas/creatorID'
-        projectName:
-          $ref: '#/components/schemas/projectName'
-        members:
-          $ref: '#/components/schemas/members'
-        productAreas:
-          $ref: '#/components/schemas/productAreas'
-    assignUser:
-      required:
-        - role
-        - userEmail
-      properties:
-        userEmail:
-          $ref: '#/components/schemas/userEmail'
-        userName:
-          type: string
-        role:
-          $ref: '#/components/schemas/role'
-    userProject:
-      type: object
-      required:
-        - role
-        - userEmail
-      properties:
-        userID:
-          $ref: '#/components/schemas/userID'
-        userEmail:
-          $ref: '#/components/schemas/userEmail'
-        role:
-          $ref: '#/components/schemas/role'
 
   responses:
     5XXserverError:

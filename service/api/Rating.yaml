@@ -17,7 +17,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/getProduct'
+                $ref: '#/components/schemas/getProductRating'
         401:
           $ref: '#/components/responses/401unauthorized'
         403:
@@ -35,10 +35,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/product'
+              $ref: '#/components/schemas/postProductRating'
       responses:
         201:
-          description: Rating successful created.
+          description: JSON containing all ratings for productID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/postProductRating'
         401:
           $ref: '#/components/responses/401unauthorized'
         403:
@@ -56,14 +60,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/product'
+              $ref: '#/components/schemas/postProductRating'
       responses:
         200:
           description: JSON containing all ratings for productID
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/product'
+                $ref: '#/components/schemas/postProductRating'
         400:
           $ref: '#/components/responses/400badrequest'
         401:
@@ -94,6 +98,8 @@ paths:
           $ref: '#/components/responses/401unauthorized'
         403:
           $ref: '#/components/responses/403forbidden'
+        404:
+          $ref: '#/components/responses/404notfound'
         '5XX':
           $ref: '#/components/responses/5XXserverError'
 
@@ -116,50 +122,23 @@ components:
       description: attribute to distinguish between data for complexity and economic rating
 
   schemas:
-    ratings:
-      type: array
-      items:
-        $ref: '#/components/schemas/productRating'
-    overallEconomicRating:
-      type: boolean
-    getProduct:
-      type: object
-      properties:
-        productName:
-          type: string
-          example: "Optionen"
-        overallEconomicRating:
-          $ref: '#/components/schemas/overallEconomicRating'
-        ratings:
-          $ref: '#/components/schemas/ratings'
-    product:
-      type: object
-      properties:
-        overallEconomicRating:
-          $ref: '#/components/schemas/overallEconomicRating'
-        ratings:
-          $ref: '#/components/schemas/ratings'
-    productRating:
-      type: object
-      properties:
-        ratingID:
-          type: integer
-          example: 111
-        answer:
-          type: string
-          example: "an answer to a question or the volume of an economic criterion"
-        comment:
-          type: string
-          example: "a comment to an answer or an economic criterion"
-        score:
-          type: string
-          enum: [HOCH, MITTEL, GERING]
+    ratingID:
+      type: integer
+      example: 111
+    answer:
+      type: string
+      example: "an answer to a question or the volume of an economic criterion"
+    comment:
+      type: string
+      example: "a comment to an answer or an economic criterion"
+    score:
+      type: string
+      enum: [ HOCH, MITTEL, GERING ]
     rating:
       type: object
       properties:
         ratingID:
-          type: integer
-          example: 111
+          $ref: '#/components/schemas/ratingID'
         category:
           type: string
           example: "Komplexitätstreiber oder Gruppierung von Finanzkriterien"
@@ -168,7 +147,56 @@ components:
           example: "question or criterion to be analysed"
         ratingArea:
           type: string
-          enum: [ECONOMIC, COMPLEXITY]
+          enum: [ ECONOMIC, COMPLEXITY ]
+    overallEconomicRating:
+      type: boolean
+    productRating:
+      type: object
+      properties:
+        rating:
+          $ref: '#/components/schemas/rating'
+        answer:
+          $ref: '#/components/schemas/answer'
+        comment:
+          $ref: '#/components/schemas/comment'
+        score:
+          $ref: '#/components/schemas/score'
+    reducedProductRating:
+      type: object
+      properties:
+        ratingID:
+          $ref: '#/components/schemas/ratingID'
+        answer:
+          $ref: '#/components/schemas/answer'
+        comment:
+          $ref: '#/components/schemas/comment'
+        score:
+          $ref: '#/components/schemas/score'
+    getProductRating:
+      type: object
+      properties:
+        productName:
+          type: string
+          example: "Optionen"
+        overallEconomicRating:
+          $ref: '#/components/schemas/overallEconomicRating'
+        ratings:
+          type: array
+          items:
+            $ref: '#/components/schemas/productRating'
+    postProductRating:
+      required:
+        - ratings
+      type: object
+      properties:
+        overallEconomicRating:
+          $ref: '#/components/schemas/overallEconomicRating'
+        ratings:
+          type: array
+          items:
+            $ref: '#/components/schemas/reducedProductRating'
+
+
     
     
 
