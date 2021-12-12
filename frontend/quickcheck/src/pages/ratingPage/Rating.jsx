@@ -4,11 +4,22 @@ import {Button, Heading, HStack, Input, List, Spacer} from "@chakra-ui/react";
 import Page from "../../components/Page";
 import Card from "../../components/Card";
 import MemberTable from "../projectPage/MemberTable";
-import RatingRow from "./RatingRow";
+import RatingTable from "./RatingTable";
 
 export default function Rating(prop) {
     const [editMode, setEditMode] = useState(false);
+    const [ratingsData, setRatingstData] = useState({ //TODO : Rating data structure
+        ratings:[],
+    });
 
+    const handleChange = (key) => (value) => {
+        setRatingstData({
+            ...ratingsData,
+            [key]: value,
+        });
+    };
+
+    const setRatings = handleChange('ratings');
 
     const EditButtons = () => {
         if (editMode) {
@@ -33,10 +44,9 @@ export default function Rating(prop) {
 
     return (
         <Page title="Ratings">
-            <List spacing={2} w="full">
-                <RatingRow editable={editMode}></RatingRow>
-                <RatingRow editable={editMode}></RatingRow>
-            </List>
+            <Card direction="column">
+                <RatingTable editMode={editMode} ratings={ratingsData} handleChange={setRatings} />
+            </Card>
             <EditButtons />
         </Page>
     );

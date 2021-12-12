@@ -10,13 +10,21 @@ import {
     CircularProgress,
     CircularProgressLabel,
     Spacer,
-    Textarea,
+    Textarea, List,
 } from '@chakra-ui/react';
 import React from 'react';
 import Card from '../../components/Card';
+import Selection from "../../components/Selection";
+import {score} from "../../utils/const";
+import Page from "../../components/Page";
+import MemberTable from "../projectPage/MemberTable";
+import ProductAreaList from "../projectPage/ProjectAreaList";
+import AddMemberButton from "../projectPage/AddMemberButton";
 
-export default function RatingRow({editable})
+
+function RatingRow({editable})
 {
+
     return (
         <div>
             <Card
@@ -44,20 +52,11 @@ export default function RatingRow({editable})
                 _hover={{ boxShadow: '2xl' }}
             >
                 <Spacer />
-                <Textarea width="30%" placeholder="Antwort" />
+                <Textarea width="100%" placeholder="Antwort" />
                 <Spacer />
-                <Input
-                    align="center"
-                    size="md"
-                    w="25%"
-                    isDisabled={!editable}
-                    onChange={(e) => {
-                        console.log(e.target.value);
-                    }}
-                    value={"Beurteilung"}
-                />
+                <Selection options={['gering', 'mittel', 'hoch']} selected={'gering'}></Selection>
                 <Spacer />
-                <Textarea width="30%" placeholder="Anmerkung" />
+                <Textarea width="100%" placeholder="Anmerkung" />
                 <Spacer />
                 <Input
                     align="center"
@@ -71,5 +70,28 @@ export default function RatingRow({editable})
                 />
             </Card>
         </div>
+    );
+}
+
+export default function RatingTable({editMode,ratings, handleChange})
+{
+    const handleScoreChange = (rating) => (newRating) => {
+        // This is a curried function in JS
+        let index = ratings.map((r) => r.rating).indexOf(rating.rating);
+        ratings[index] = { ...ratings, score: newRating };
+        handleChange(ratings);
+    };
+
+    return (
+        <List spacing={2} direction="column" w="full" align="center" >
+            <RatingRow editable={editMode}></RatingRow>
+            {ratings.map((rating) => (
+                <Flex gridGap={3}>
+                    <RatingRow
+                        editMode={editMode}
+                    ></RatingRow>
+                </Flex>
+            ))}
+        </List>
     );
 }
