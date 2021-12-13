@@ -31,7 +31,7 @@ const mock = [
 function SourceRow({ source, key }) {
     return (
 
-        <Card bg={"gray.600"} layerStyle={"card_bordered"}>
+        <Card layerStyle={"card_bordered"}>
             {console.log("aksjhkajshfkjash")}
             <Heading color="primary" size="md" align="center" w="40%" maxW="50%">
                 {source.name}
@@ -56,7 +56,7 @@ export default function ResultPage() {
             <Page title="Results">
                     <Flex flexDirection="row" w="full" gridGap={3} justifyContent="space-between" alignItems="stretch">
                         <Flex w="55%">
-                            <Card alignItems="center" bg="gray.600"><Heading>Pie Chart</Heading></Card>
+                            <Card alignItems="center"><Heading>Pie Chart</Heading></Card>
                         </Flex>
                         <Flex flexDirection="column" w="45%" justifyContent="space-between" alignItems="stretch"><VStack >
                         <Heading size="lg">Sources</Heading>
