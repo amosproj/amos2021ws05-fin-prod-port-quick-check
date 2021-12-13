@@ -12,6 +12,7 @@ import {
   IconButton,
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
+import { useStoreState, useStoreActions } from 'easy-peasy';
 
 import Selection from '../../components/Selection.jsx';
 
@@ -25,17 +26,17 @@ const fetchAllAreas = () => {
   return Object.values(areaMock);
 };
 
-export default function AddAreaButton({ onAdd, ...buttonProps }) {
+export default function AddAreaButton(buttonProps) {
+  const productAreas = useStoreState((state) => state.project.data.productAreas);
+  const addProductArea = useStoreActions((actions) => actions.project.addProductArea);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const allAreas = fetchAllAreas();
   const [selectedArea, setSelectedArea] = useState();
   const header = 'Add Product Area';
 
-  // TODO: replace this var with state management
-  const existingAreas = []; // mock
-
-  const getAreaFromName = (areaName) => {
-    return allAreas.filter((m) => m.name === areaName)[0];
+  const fetchArea = () => {
+    // todo: implement fetching possible Area choices
   };
 
   return (
@@ -57,8 +58,8 @@ export default function AddAreaButton({ onAdd, ...buttonProps }) {
             <Selection
               placeholder="Select Poduct Area..."
               options={allAreas
-                .filter((area) => !existingAreas.includes(area.id)) // filter out areas that already exist
-                .map((e) => e.name)}
+                .filter((area) => !productAreas.map((a) => a.id).includes(area.id)) // lookup if area already added
+                .map((e) => e.name)} // display name in selection field
               onChange={setSelectedArea}
             />
           </ModalBody>
@@ -69,7 +70,7 @@ export default function AddAreaButton({ onAdd, ...buttonProps }) {
               mr={3}
               disabled={selectedArea === undefined}
               onClick={(e) => {
-                onAdd(getAreaFromName(selectedArea).id);
+                addProductArea(fetchArea(selectedArea));
                 onClose();
               }}
             >

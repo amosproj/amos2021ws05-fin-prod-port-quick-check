@@ -58,9 +58,9 @@ const projectModel = {
   addProductArea: action((state, newArea) => {
     state.data.productAreas.push(newArea);
   }),
-  removeProductArea: action((state, areaID) => {
+  removeProductArea: action((state, remArea) => {
     // remove member with matching email from items
-    state.data.productAreas = state.data.productAreas.filter((aID) => aID !== areaID);
+    state.data.productAreas = state.data.productAreas.filter((a) => a.id !== remArea.id);
   }),
 
   // GET project by id

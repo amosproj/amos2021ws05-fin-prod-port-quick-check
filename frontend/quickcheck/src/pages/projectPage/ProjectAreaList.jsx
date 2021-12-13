@@ -21,30 +21,19 @@ function ProductArea({ productArea }) {
   );
 }
 
-const areaMock = {
-  0: { id: 0, name: 'Kredit', category: 'Privat' },
-  1: { id: 1, name: 'Kunden', category: 'Business' },
-  2: { id: 2, name: 'Payments', category: 'Privat' },
-};
-
-const fetchArea = (id) => {
-  return areaMock[id];
-};
-
 export default function ProductAreaList({ editMode }) {
   const productAreas = useStoreState((state) => state.project.data.productAreas);
-  const addProductArea = useStoreActions((actions) => actions.project.addProductArea);
   const removeProductArea = useStoreActions((actions) => actions.project.removeProductArea);
 
   return (
     <>
       <List w="full" maxW={500} align="center" spacing={4} pb={5}>
-        {productAreas.map((id) => (
-          <Flex gridGap={2} w="full" align="center" key={id}>
-            <ProductArea key={id} productArea={fetchArea(id)} />
+        {productAreas.map((area) => (
+          <Flex gridGap={2} w="full" align="center" key={area.id}>
+            <ProductArea productArea={area} />
             {editMode ? (
               <ConfirmClick
-                onConfirm={() => removeProductArea(id)}
+                onConfirm={() => removeProductArea(area)}
                 confirmPrompt="Remove this product area?"
               >
                 <IconButton icon={<DeleteIcon />} variant="whisper" size="lg" />
@@ -53,7 +42,7 @@ export default function ProductAreaList({ editMode }) {
           </Flex>
         ))}
         {editMode ? (
-          <AddAreaButton variant="primary" size="lg" w={32} onAdd={addProductArea}></AddAreaButton>
+          <AddAreaButton variant="primary" size="lg" w={32}></AddAreaButton>
         ) : (
           <div />
         )}
