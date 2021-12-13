@@ -1,5 +1,6 @@
 package com.tu.FinancialQuickCheck.Service;
 
+import com.tu.FinancialQuickCheck.Exceptions.BadRequest;
 import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.db.ProductAreaRepository;
 import com.tu.FinancialQuickCheck.db.ProductEntity;
@@ -109,19 +110,37 @@ public class ProductService {
 
 
     public ProductDto updateById(ProductDto productDto, int productID) {
-        // TODO: (ask frontend) soll update als Batch implementiert werden (d.h. auch für productvariations?)
+
         if (!repository.existsById(productID)) {
             throw new ResourceNotFound("productID " + productID + " not found");
         }else{
-            if(productDto.productName != null && productDto.productName.length() > 0){
-                repository.findById(productID).map(
-                        product -> {
-                            product.name = productDto.productName;
-                            return repository.save(product);
-                        });
-                return new ProductDto();
+            repository.findById(productID).map(
+                    product -> {
+                        updateProductName(product, productDto);
+                        updateProductComment(product, productDto);
+                        return repository.save(product);
+                    });
+            return new ProductDto();
+        }
+    }
+
+    private void updateProductComment(ProductEntity currentEntity, ProductDto updateDto) {
+        if (updateDto.comment != null) {
+            if (updateDto.comment.isBlank()) {
+                currentEntity.comment = null;
+            } else {
+                currentEntity.comment = updateDto.comment;
+            }
+        }
+    }
+
+
+    private void updateProductName(ProductEntity currentEntity, ProductDto updateDto) {
+        if (updateDto.productName != null){
+            if(updateDto.productName.isBlank()){
+                throw new BadRequest("Input is missing/incorrect");
             }else{
-                return null;
+                currentEntity.name = updateDto.productName;
             }
         }
     }
@@ -144,6 +163,7 @@ public class ProductService {
             throw new ResourceNotFound("project " + projectID + "does not exist.");
         }
     }
+
 
     //TODO: (discuss with Alex) return Resource not found if projectAreaID does not exist?
     public List<ProductDto> getProductsByProjectIdAndProductAreaId(int projectID, int projectAreaID){
