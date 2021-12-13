@@ -54,7 +54,6 @@ export default function ResultPage() {
     return (
         <div>
             <Page title="Results">
-                <Card>
                     <Flex flexDirection="row" w="full" gridGap={3} justifyContent="space-between" alignItems="stretch">
                         <Flex w="55%">
                             <Card alignItems="center" bg="gray.600"><Heading>Pie Chart</Heading></Card>
@@ -66,8 +65,6 @@ export default function ResultPage() {
                         ))}</VStack>
                         </Flex>
                     </Flex>
-
-                </Card>
                 <HStack>
                     <Button> Export Results </Button>
                     <Button> Back</Button>
