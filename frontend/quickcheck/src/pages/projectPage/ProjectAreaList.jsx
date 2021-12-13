@@ -41,11 +41,7 @@ export default function ProductAreaList({ editMode }) {
             ) : undefined}
           </Flex>
         ))}
-        {editMode ? (
-          <AddAreaButton variant="primary" size="lg" w={32}></AddAreaButton>
-        ) : (
-          <div />
-        )}
+        {editMode ? <AddAreaButton variant="primary" size="lg" w={32}></AddAreaButton> : <div />}
       </List>
     </>
   );
