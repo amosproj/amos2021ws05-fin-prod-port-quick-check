@@ -6,6 +6,7 @@ import { StoreProvider } from 'easy-peasy';
 import Login from './pages/Login';
 import ProjectOverview from './pages/ProjectOverview';
 import Project from './pages/projectPage/Page';
+import ResultPage from './pages/ResultPage';
 import TestRange from './pages/TestRange';
 
 import store from './store';
@@ -24,6 +25,7 @@ function App() {
               <Route path="login" element={<Login />} />
               <Route path="projects" element={<ProjectOverview />} />
               <Route path="projects/:id" element={<Project />} />
+              <Route path="ResultPage" element={<ResultPage />} />
             </Routes>
             <Link to="/login"> [Login] </Link>
             <Link to="projects"> [Projects] </Link>
