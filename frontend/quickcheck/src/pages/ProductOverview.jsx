@@ -135,7 +135,6 @@ function AddButton(props) {
   );
 }
 
-
 export default function ProductOverview() {
   const products_state = useStoreState((state) => state.productList.products);
   const addProduct_state = useStoreActions((actions) => actions.productList.addProduct);
@@ -164,9 +163,11 @@ export default function ProductOverview() {
 
   const set = () => {
     setProducts(products);
-  }
+  };
 
-  useEffect(() => {set()}, []);
+  useEffect(() => {
+    set();
+  }, []);
 
   const EditButtons = () => {
     if (editMode) {
@@ -209,8 +210,7 @@ export default function ProductOverview() {
           ))}
         </List>
 
-        
-        <EditButtons/>
+        <EditButtons />
         <p>{/*JSON.stringify(products_state)*/}</p>
         <p>{/*JSON.stringify(products)*/}</p>
       </Page>
