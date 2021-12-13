@@ -32,8 +32,6 @@ export default function AddMemberButton({ onAdd, ...buttonProps }) {
         {...buttonProps}
         aria-label="Add new Member"
         onClick={onOpen}
-        size="lg"
-        w={5}
       />
 
       <Modal isOpen={isOpen} onClose={onClose}>
