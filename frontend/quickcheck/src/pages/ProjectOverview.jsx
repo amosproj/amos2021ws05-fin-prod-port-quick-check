@@ -11,11 +11,13 @@ const mocks = {
     creator: 'alex@amose.de',
     projectName: 'Mock Project_' + new Date().getSeconds(),
     productAreas: [1],
-    members: [    {
-      "userEmail": "alex@amose.de",
-      "userName": "Alex Amos",
-      "role": "PROJECT_MANAGER"
-    }],
+    members: [
+      {
+        userEmail: 'alex@amose.de',
+        userName: 'Alex Amos',
+        role: 'PROJECT_MANAGER',
+      },
+    ],
   },
 };
 
@@ -28,7 +30,7 @@ function ProjectCard({ project }) {
       <Spacer />
       <VStack p={2}>
         <Text fontWeight="bolder" fontSize="md">
-          {"Mock Role"}
+          {'Mock Role'}
         </Text>
         <Text fontSize="sm" color="gray.400">
           Role
