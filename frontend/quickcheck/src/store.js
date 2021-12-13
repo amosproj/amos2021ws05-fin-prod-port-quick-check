@@ -8,18 +8,36 @@ import { api } from './utils/apiClient';
 
 
 const productAreaModel = {
-  products: 
-    {
+  products: [
+    /*{
       productID: 0,
       productName: 'asdfasdf',
       productArea: {
         "id": "1",
         "name": "Kredit",
-        "category": "Privat"},
+      "category": "Privat"},
       projectID: 1,
       parentID: 0,
-    }
-  ,
+    },*/
+    {
+      productID: 112,
+      productName: 'Optionen 2 State',
+      productArea: {},
+      projectID: 1,
+      parentID: 0,
+    },
+    {
+      productID: 113,
+      productName: 'Optionen child111',
+      productArea: {},
+      projectID: 1,
+      parentID: 111,
+    },
+  ],
+
+  addProduct: action((state, product) => {
+    state.products = {...state.products, product}
+  }),
   removeProduct: action((state, product) => {
     state.products = state.products.filter((p) => p.productName !== product.productName);
   })

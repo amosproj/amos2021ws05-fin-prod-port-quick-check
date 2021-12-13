@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useToast } from '@chakra-ui/react';
 import Page from '../components/Page';
-import { useStore, useStoreActions} from 'easy-peasy';
+import { useStoreState, useStoreActions } from 'easy-peasy';
 import {
   //Text,
   Flex,
@@ -157,7 +157,8 @@ function RemoveButton({ onRemove, product }) {
 }
 
 export default function ProductOverview() {
-  const products_state = useStore(state => state.productList.products)
+  const products_state = useStoreState(state => state.productList.products)
+  const addProduct = useStoreActions((actions) => actions.productList.addProduct);
   const [productsData, setProductsData] = useState(products);
   const [editMode, setEditMode] = useState(false);
   //const [input, setInput] = useState("");
@@ -183,7 +184,7 @@ export default function ProductOverview() {
     if (editMode) {
       return (
         <HStack>
-          {editMode ? <AddButton w={16} onAddProduct={handleAddProduct} /> : {}}
+          {editMode ? <AddButton w={16} onAddProduct={handleAddProduct} /> : undefined}
           <Button size="md" onClick={() => setEditMode(false)}>
             Cancel
           </Button>
@@ -206,44 +207,17 @@ export default function ProductOverview() {
   return (
     <div>
       <Page title="Product Overview">
-        {/* <Card barColor="cyan"> */}
         <List spacing={2} w="full">
-          {getProducts(productsData).map((product) => (
-            <>
-              <ProductRow
-                parentID={0}
-                product={product}
-                key={uuid4()}
-                editable={editMode}
-                removeButton={
-                  editMode ? <RemoveButton onRemove={removeProduct} product={product} /> : undefined
-                }
-              ></ProductRow>
-              <Box w="95%">
-                {getChildren(product).map((child) => (
-                  <ProductRow
-                    parentID={2}
-                    product={child}
-                    key={uuid4()}
-                    editable={editMode}
-                    removeButton={
-                      editMode ? (
-                        <RemoveButton onRemove={removeProduct} product={child} />
-                      ) : undefined
-                    }
-                  ></ProductRow>
-                ))}
-              </Box>
-            </>
-          ))}
-          <Button>Generate Results</Button>
+          {products_state.map((product) => (
+            <ProductRow
+              parentID={0}
+              product={product}
+              key={uuid4()}
+              editable={editMode}
+            ></ProductRow>))}
+          <Button />
         </List>
-        {/* </Card> */}
-        <EditButtons />
         <p>{JSON.stringify(products_state)}</p>
-        {/*<p>{JSON.stringify(products)}</p>
-        <p>{JSON.stringify(getProducts(products))}</p>
-                  <p>{JSON.stringify(getChildren(products[0]))}</p>*/}
       </Page>
     </div>
   );
