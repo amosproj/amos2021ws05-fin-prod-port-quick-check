@@ -174,13 +174,15 @@ components:
       type: object
       required:
         - productName
-        - productAreaID
+        - productArea
       properties:
         productName:
           $ref: '#/components/schemas/productName'
-        productAreaID:
-          $ref: '#/components/schemas/productAreaID'
-        comments:
+        productArea:
+          properties:
+            id:
+              $ref: '#/components/schemas/productAreaID'
+        comment:
           $ref: '#/components/schemas/comment'
         resources:
           $ref: '#/components/schemas/resources'
