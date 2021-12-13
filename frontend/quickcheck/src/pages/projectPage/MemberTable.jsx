@@ -57,8 +57,8 @@ export default function MemberTable({ editMode, members, handleChange }) {
   const handleRoleChange = (member) => (newRole) => {
     // This is a curried function in JS
     let index = members.map((m) => m.email).indexOf(member.email);
-    member.role = newRole.target.value//{ ...member, role: newRole };
-    members[index] = member
+    member.role = newRole.target.value; //{ ...member, role: newRole };
+    members[index] = member;
     handleChange(members);
   };
 
