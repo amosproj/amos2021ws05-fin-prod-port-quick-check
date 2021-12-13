@@ -1,0 +1,13 @@
+POST localhost:8080/projects/100/products
+Content-Type: application/json
+
+{
+  "productName": "Test",
+  "productArea": {
+    "id": "1"
+  },
+  "comment": "comment for product swaps",
+  "resources": [
+    "string"
+  ]
+}
