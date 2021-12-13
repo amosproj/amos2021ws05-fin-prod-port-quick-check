@@ -1,4 +1,4 @@
-import { Heading, Button, HStack, Input, Spacer, Text } from '@chakra-ui/react';
+import { Heading, Button, HStack, VStack, Input, Spacer, Text } from '@chakra-ui/react';
 import { React, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -56,9 +56,10 @@ export default function Project(props) {
 
   return (
     <Page title="Manage Project">
+    <VStack>
       <Card layerStyle="card_bar" justifyContent="center">
         <Spacer />
-        <Heading variant="upper" size="md" mr={3}>
+        <Heading variant="upper" size="md" mr={3} align= 'center'>
           Project:
         </Heading>
         <Input
@@ -69,10 +70,12 @@ export default function Project(props) {
           onChange={(e) => setName(e.target.value)}
           value={project.projectName}
         />
+                </Card>
         <Spacer />
-      </Card>
+
 
       <Card direction="column">
+
         <Heading variant="upper" size="md">
           Members
         </Heading>
@@ -86,7 +89,9 @@ export default function Project(props) {
         <ProductAreaList editMode={editMode} />
       </Card>
 
-      <EditButtons />
+
+              <EditButtons />
+        </VStack>
     </Page>
   );
 }

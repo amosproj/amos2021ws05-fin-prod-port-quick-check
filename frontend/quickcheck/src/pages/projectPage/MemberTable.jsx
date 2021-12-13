@@ -22,7 +22,7 @@ function MemberRow({ editMode, member, ...rest }) {
       <Text variant="cell" align="left" w="full">
         {member.email}
       </Text>
-      <Flex w={60}>
+      <Flex w={60} pt={0}>
         {editMode ? (
           <Selection
             bg={bg}
@@ -33,7 +33,7 @@ function MemberRow({ editMode, member, ...rest }) {
             w="full"
           />
         ) : (
-          <Text variant="cell" align="left" w="full">
+          <Text variant="cell" align="left" size="md" rounded="md"  w="full"  >
             {member.role}
           </Text>
         )}
@@ -60,10 +60,10 @@ export default function MemberTable({ editMode }) {
     <List spacing={2} direction="column" w="full" align="center" maxW={700}>
       <Flex gridGap={3} w="full">
         <Flex gridGap={3} h={12} w="full">
-          <Heading size="md" rounded="md" pt={2} bg={bgHeading} w="full">
+          <Heading size="md" rounded="md" pt={3} bg={bgHeading}  w="full">
             Email
           </Heading>
-          <Heading size="md" rounded="md" pt={2} bg={bgHeading} w={60}>
+          <Heading size="md" rounded="md" pt={3} bg={bgHeading} w={60}>
             Role
           </Heading>
         </Flex>
