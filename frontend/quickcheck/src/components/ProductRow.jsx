@@ -2,10 +2,7 @@ import {
   Flex,
   Box,
   Input,
-  Heading,
-  Editable,
-  EditableInput,
-  EditablePreview,
+  IconButton,
   Button,
   CircularProgress,
   CircularProgressLabel,
@@ -14,13 +11,42 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import Card from './Card';
+import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
+import { useStoreState, useStoreActions } from 'easy-peasy';
 // import { useEffect } from 'react';
 
-export default function ProductRow({ product, editable }) {
-  /*const removeProduct = (product) => {
-    const newProductsData = productsData.filter((p) => p.productName !== product.productName);
-    childToParent(newProductsData);
-  };*/
+
+function RemoveButton({ removeProdFct }) {
+  return (
+    <div>
+      <IconButton
+        icon={<DeleteIcon />}
+        onClick={() => {
+          removeProdFct();
+        }}
+        colorScheme="teal"
+        variant="outline"
+        size="md"
+        color="white"
+        bg="red.700"
+        w={10}
+      />
+    </div>
+  );
+}
+
+
+
+
+export default function ProductRow({ product, editMode }) {
+  const addProduct_state = useStoreActions((actions) => actions.productList.addProduct);
+  const removeProductState = useStoreActions((actions) => actions.productList.removeProduct);
+  const setProducts = useStoreActions((actions) => actions.productList.set);
+ 
+
+  const removeProduct = () => {
+    removeProductState(product);
+  }
 
   return (
     <div>
@@ -34,7 +60,7 @@ export default function ProductRow({ product, editable }) {
           align="center"
           size="md"
           w="25%"
-          isDisabled={!editable}
+          isDisabled={!editMode}
           onChange={(e) => {
             console.log(e.target.value);
           }}
@@ -52,7 +78,7 @@ export default function ProductRow({ product, editable }) {
         </CircularProgress>
         <Spacer />
         <Textarea width="30%" placeholder="Anmerkung" />
-        {/*removeButton*/}
+        {editMode ? <RemoveButton removeProdFct={removeProduct}/>: undefined}
       </Card>
     </div>
   );

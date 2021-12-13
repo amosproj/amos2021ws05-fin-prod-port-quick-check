@@ -135,25 +135,6 @@ function AddButton(props) {
   );
 }
 
-function RemoveButton({ onRemove, product }) {
-  return (
-    <div>
-      <IconButton
-        icon={<DeleteIcon />}
-        onClick={() => {
-          //onRemove();
-          onRemove(product);
-        }}
-        colorScheme="teal"
-        variant="outline"
-        size="md"
-        color="white"
-        bg="red.700"
-        w={10}
-      />
-    </div>
-  );
-}
 
 export default function ProductOverview() {
   const products_state = useStoreState((state) => state.productList.products);
@@ -183,17 +164,15 @@ export default function ProductOverview() {
 
   const set = () => {
     setProducts(products);
-  };
+  }
 
-  useEffect(() => {
-    set();
-  }, []);
+  useEffect(() => {set()}, []);
 
   const EditButtons = () => {
     if (editMode) {
       return (
         <HStack>
-          {editMode ? <AddButton w={16} onAddProduct={handleAddProduct} /> : undefined}
+          {editMode ? <AddButton w={16} onAddProduct={addProduct} /> : undefined}
           <Button size="md" onClick={() => setEditMode(false)}>
             Cancel
           </Button>
@@ -225,13 +204,13 @@ export default function ProductOverview() {
               parentID={0}
               product={product}
               key={uuid4()}
-              editable={editMode}
+              editMode={editMode}
             ></ProductRow>
           ))}
         </List>
 
-        <Button onClick={addProduct}>Add Mock </Button>
-
+        
+        <EditButtons/>
         <p>{/*JSON.stringify(products_state)*/}</p>
         <p>{/*JSON.stringify(products)*/}</p>
       </Page>
