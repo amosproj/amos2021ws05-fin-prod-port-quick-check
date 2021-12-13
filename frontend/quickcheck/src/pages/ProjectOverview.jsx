@@ -68,7 +68,7 @@ export default function ProjectOverview() {
     <Page title="Your Projects">
       <List spacing={3} mx={2} w="full">
         {projectList.map((project) => (
-          <ProjectCard project={project} key={project.projectName} />
+          <ProjectCard project={project} key={project.projectID} />
         ))}
       </List>
       <Button size="lg" onClick={postProject}>
