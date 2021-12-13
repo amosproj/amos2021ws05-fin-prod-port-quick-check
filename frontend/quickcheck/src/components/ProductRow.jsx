@@ -35,9 +35,7 @@ function RemoveButton({ removeProdFct }) {
 }
 
 export default function ProductRow({ product, editMode }) {
-  const addProduct_state = useStoreActions((actions) => actions.productList.addProduct);
   const removeProductState = useStoreActions((actions) => actions.productList.removeProduct);
-  const setProducts = useStoreActions((actions) => actions.productList.set);
 
   const removeProduct = () => {
     removeProductState(product);

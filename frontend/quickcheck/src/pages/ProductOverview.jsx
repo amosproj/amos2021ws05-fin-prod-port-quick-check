@@ -2,9 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import Page from '../components/Page';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import {
-  //Text,
-  Flex,
-  Box,
   Modal,
   ModalOverlay,
   ModalHeader,
@@ -12,17 +9,12 @@ import {
   ModalContent,
   ModalBody,
   FormControl,
-  FormLabel,
   ModalFooter,
   ModalCloseButton,
   Button,
   useDisclosure,
-  //List,
-  //Heading,
   HStack,
-  //Spacer,
   IconButton,
-  VStack,
   Input,
 } from '@chakra-ui/react';
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
@@ -49,7 +41,7 @@ const mock = {
 const products = [
   {
     productID: 111,
-    productName: 'Optionen',
+    productName: 'Optionen 1',
     productArea: {},
     projectID: 1,
     parentID: 0,
@@ -63,7 +55,7 @@ const products = [
   },
   {
     productID: 113,
-    productName: 'Optionen child',
+    productName: 'Optionen 1 child',
     productArea: {},
     projectID: 1,
     parentID: 111,
@@ -71,14 +63,14 @@ const products = [
 
   {
     productID: 114,
-    productName: 'Optionen child',
+    productName: 'Optionen 1 child',
     productArea: {},
     projectID: 1,
     parentID: 111,
   },
   {
     productID: 115,
-    productName: 'Optionen child',
+    productName: 'Optionen 2 child',
     productArea: {},
     projectID: 1,
     parentID: 112,
@@ -197,9 +189,9 @@ export default function ProductOverview() {
             ></ProductRow>
           ))}
         </List>
-
+        <Button>Generate Results</Button>
         <EditButtons />
-        <p>{/*JSON.stringify(products_state)*/}</p>
+        <p>{/*JSON.stringify(productsAction)*/}</p>
         <p>{/*JSON.stringify(products)*/}</p>
       </Page>
     </div>
