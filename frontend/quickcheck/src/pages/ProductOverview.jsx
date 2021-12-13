@@ -131,8 +131,6 @@ export default function ProductOverview() {
   const productsAction = useStoreState((state) => state.productList.products);
   const addProductAction = useStoreActions((actions) => actions.productList.addProduct);
   const setProducts = useStoreActions((actions) => actions.productList.set);
-  //const addProject = useStoreActions((actions) => actions.projectList.add);
-  const [productsData, setProductsData] = useState(products);
   const [editMode, setEditMode] = useState(false);
 
   const set = () => {
@@ -172,7 +170,7 @@ export default function ProductOverview() {
       productName: productName,
       productArea: {},
       projectID: uuid4(),
-      parentID: uuid4,
+      parentID: uuid4(),
     };
     addProductAction(prod);
   };

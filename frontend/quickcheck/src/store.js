@@ -26,7 +26,7 @@ const productAreaModel = {
     state.products.push(product);
   }),
   removeProduct: action((state, product) => {
-    state.products = state.products.filter((p) => p.productName !== product.productName);
+    state.products = state.products.filter((p) => p.productID !== product.productID);
   }),
 };
 
