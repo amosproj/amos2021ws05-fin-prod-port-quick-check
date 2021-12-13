@@ -53,6 +53,7 @@ public class ProjectController {
         }
     }
 
+
     @GetMapping("/{projectID}")
     public ProjectDto findById(@PathVariable int projectID) {
         ProjectDto tmp = service.getProjectById(projectID);
@@ -86,7 +87,7 @@ public class ProjectController {
 //
 //    }
 
-
+    //TODO (done - needs review) change output to empty list if no products exist
     @GetMapping("/{projectID}/products")
     public List<ProductDto> findProductsByProject(@PathVariable int projectID,
                                                   @RequestParam(required = false) Optional<String> productArea) {
@@ -103,26 +104,28 @@ public class ProjectController {
             }
         }
 
-        if(tmp.isEmpty()){
-            throw new ResourceNotFound("No products found");
-        }else{
-            return tmp;
-        }
+        return tmp;
 
     }
 
 
-    //TODO: (prio: high) change Path (see api def)
+    //TODO: (done: needs review) change Path (see api def)
+    //TODO: (prio: ???) fix output --> does not propagate values for productArea and projectID
     @PostMapping(value = "/{projectID}/products",
             consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public List<ProductDto> createProduct(@PathVariable int projectID, @PathVariable int productAreaID,
-                                    @RequestBody ProductDto productDto) {
-        List<ProductDto> tmp = productService.createProduct(projectID, productAreaID, productDto);
-        if(tmp == null){
-            throw new BadRequest("Incorrect Input.");
+    public List<ProductDto> createProduct(@PathVariable int projectID, @RequestBody ProductDto productDto) {
+
+        if(productDto.productArea != null && productDto.productName != null){
+            List<ProductDto> tmp = productService.wrapper_createProduct(projectID, productDto);
+            if(tmp == null){
+                throw new BadRequest("Input is incorrect/missing");
+            }else{
+
+                return tmp;
+            }
         }else{
-            return tmp;
+            throw new BadRequest("Input is incorrect/missing");
         }
     }
 

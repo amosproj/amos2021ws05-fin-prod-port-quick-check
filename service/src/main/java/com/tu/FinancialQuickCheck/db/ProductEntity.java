@@ -8,7 +8,7 @@ import java.util.List;
 public class ProductEntity {
     // TODO: (done: needs review) confirm attribute for overallEconomicRating? --> done, Boolean type passt laut Max B.
     //TODO: (done: needs review) add missing attribute: comment
-    //TODO: (prio: medium) (Topic: Dateien abspeichern) add missing attribute: list of resources
+    //TODO: (prio: medium) (Topic: Dateien abspeichern) add missing attribute: list of resources or something else (?)
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -23,7 +23,7 @@ public class ProductEntity {
     @Column(name = "comment")
     public String comment;
 
-    @ManyToOne(targetEntity = ProjectEntity.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = ProjectEntity.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "project")
     public ProjectEntity project;
 
@@ -35,7 +35,7 @@ public class ProductEntity {
     @JoinColumn(name = "product")
     public List<ProductRatingEntity> productRatingEntities;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     public ProductEntity parentProduct;
 
 //    @OneToMany(fetch = FetchType.LAZY, mappedBy="parentProduct")

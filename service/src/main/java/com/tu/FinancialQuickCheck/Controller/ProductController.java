@@ -18,7 +18,6 @@ public class ProductController {
         this.service = productService;
     }
 
-    //TODO: (ask frontend) if endpoint is needed
     @GetMapping("/{productID}")
     public ProductDto findById(@PathVariable int productID) {
         return service.findById(productID);

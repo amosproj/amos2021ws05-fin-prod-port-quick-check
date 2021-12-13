@@ -148,7 +148,7 @@ public class ProductServiceTest {
 
         // Step 2: execute and assert creaateProduct()
         Exception exception = assertThrows(ResourceNotFound.class,
-                () -> service.createProduct(1, 1, dto1));
+                () -> service.createProduct(1, dto1));
 
         String expectedMessage = "Resource not Found. ProjectID and/or ProjectAreaID does not exist.";
         String actualMessage = exception.getMessage();
@@ -165,7 +165,7 @@ public class ProductServiceTest {
 
         // Step 2: execute and assert creaateProduct()
         Exception exception = assertThrows(ResourceNotFound.class,
-                () -> service.createProduct(1, 1, dto1));
+                () -> service.createProduct(1, dto1));
 
         String expectedMessage = "Resource not Found. ProjectID and/or ProjectAreaID does not exist.";
         String actualMessage = exception.getMessage();
@@ -183,7 +183,7 @@ public class ProductServiceTest {
         when(productAreaRepository.existsById(1)).thenReturn(true);
 
         // Step 2: execute and assert creaateProduct()
-        assertNull(service.createProduct(1, 1, dto1));
+        assertNull(service.createProduct(1, dto1));
     }
 
     @Test
@@ -194,7 +194,7 @@ public class ProductServiceTest {
         when(projectRepository.findById(1)).thenReturn(Optional.of(projectEntity));
 
         // Step 2: execute and assert creaateProduct()
-        List<ProductDto> out = service.createProduct(1, 1, dto1);
+        List<ProductDto> out = service.wrapper_createProduct(1, dto1);
 
         //TODO: anpassen auf List output
 //        assertAll("create Product",
@@ -217,7 +217,7 @@ public class ProductServiceTest {
         when(projectRepository.findById(1)).thenReturn(Optional.of(projectEntity));
 
         // Step 2: execute and assert creaateProduct()
-        List<ProductDto> out = service.createProduct(1, 1, dto2);
+        List<ProductDto> out = service.wrapper_createProduct(1, dto2);
 
         //TODO: anpassen auf List output
 //        assertAll("create Product",

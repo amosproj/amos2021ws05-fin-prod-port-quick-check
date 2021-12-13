@@ -67,6 +67,19 @@ public class ProductDto {
         this.ratings = convertProductRatingEntities(productRatingEntities, getOrPostPut);
     }
 
+    public ProductDto(ProductEntity product){
+        this.productID = product.id;
+        this.productName = product.name;
+        this.productArea = convertProductAreaEntity(product.productarea);
+        this.projectID = product.project.id;
+        this.parentID = convertParentEntity(product.parentProduct);
+        //TODO: (prio: medium) replace 0 values with calculation for progress bars
+        this.progressComplexity = 0;
+        this.progressEconomic = 0;
+        this.comment = product.comment;
+        this.resources = new ArrayList<>();
+    }
+
 
 //    private Score computeRating(List<Rating> values)
 //    {

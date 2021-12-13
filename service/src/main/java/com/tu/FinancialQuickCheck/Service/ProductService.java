@@ -7,6 +7,7 @@ import com.tu.FinancialQuickCheck.db.ProductRepository;
 import com.tu.FinancialQuickCheck.db.ProjectRepository;
 import com.tu.FinancialQuickCheck.dto.ProductDto;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,51 +33,77 @@ public class ProductService {
         if (productEntity.isEmpty()) {
             throw new ResourceNotFound("productID " + productID + " not found");
         }else{
-            return new ProductDto(productEntity.get().id, productEntity.get().name,
-                    productEntity.get().project.id, productEntity.get().productarea,
-                    productEntity.get().parentProduct);
+            return new ProductDto(productEntity.get());
         }
     }
 
+    public List<ProductDto> wrapper_createProduct(int projectID, ProductDto productDto){
+        List<ProductDto> out = new ArrayList<>();
+        List<ProductDto> tmp = createProduct(projectID, productDto);
+        if(tmp != null){
+            for(ProductDto dto: tmp){
+                ProductDto dtoOut = findById(dto.productID);
+                out.add(dtoOut);
+            }
+
+            return out;
+        }else{
+            return null;
+        }
+
+    }
 
     //TODO: (done - needs review) change return to List
-    public List<ProductDto> createProduct(int projectID, int productAreaID, ProductDto productDto){
+    @Transactional
+    public List<ProductDto>  createProduct(int projectID, ProductDto productDto){
 
-        if(projectRepository.existsById(projectID)
-                && productAreaRepository.existsById(productAreaID)){
-            if(productDto.productName != null){
+        if(repository.existsByProjectAndProductarea(
+                projectRepository.getById(projectID),
+                productAreaRepository.getById(productDto.productArea.id)))
+        {
+            List<ProductEntity> entities = new ArrayList<>();
 
-                List<ProductDto> out = new ArrayList<>();
-                List<ProductEntity> entities = new ArrayList<>();
-                ProductEntity newProduct = new ProductEntity();
-                newProduct.name = productDto.productName;
-                newProduct.project = projectRepository.findById(projectID).get();
-                newProduct.productarea = productAreaRepository.getById(productAreaID);
+            ProductEntity newProduct = createProductEntity(projectID, productDto.productArea.id, productDto, false, null);
+            if(newProduct != null){
                 entities.add(newProduct);
-
-                if(productDto.productVariations != null){
-                    for (ProductDto productVariation: productDto.productVariations) {
-                        ProductDto dto = new ProductDto();
-                        ProductEntity entity = new ProductEntity();
-                        entity.name = productVariation.productName;
-                        entity.project = projectRepository.findById(projectID).get();
-                        entity.productarea = productAreaRepository.getById(productAreaID);
-                        entity.parentProduct = newProduct;
-                        entities.add(entity);
-                        out.add(new ProductDto(entity.id, entity.name, entity.project.id, entity.productarea, entity.parentProduct));
-                    }
-                }
-
-                repository.saveAll(entities);
-                out.add(new ProductDto(newProduct.id, newProduct.name, newProduct.project.id,
-                        newProduct.productarea, newProduct.parentProduct));
-                return out;
             }else{
                 return null;
             }
 
+            if(productDto.productVariations != null){
+                for (ProductDto productVariation: productDto.productVariations) {
+                    ProductEntity entity = createProductEntity(projectID, productDto.productArea.id, productVariation, true, newProduct);
+                    if(entity != null){
+                        entities.add(entity);
+                    }else{
+                        return null;
+                    }
+                }
+            }
+
+            entities = repository.saveAllAndFlush(entities);
+
+            List<ProductDto> createdProducts = new ArrayList<>();
+            entities.forEach(entity -> createdProducts.add(new ProductDto(entity)));
+            return createdProducts;
+
         }else {
             throw new ResourceNotFound("Resource not Found. ProjectID and/or ProjectAreaID does not exist.");
+        }
+    }
+
+    public ProductEntity createProductEntity(int projectID, int productAreaID, ProductDto dto, Boolean isProductVariant, ProductEntity parentEntity){
+
+        if(dto.productName != null && !dto.productName.isBlank()) {
+            ProductEntity newProduct = new ProductEntity();
+            newProduct.name = dto.productName;
+            newProduct.project = projectRepository.findById(projectID).get();
+            newProduct.productarea = productAreaRepository.getById(productAreaID);
+            if (dto.comment != null) {newProduct.comment = dto.comment;}
+            if(isProductVariant) {newProduct.parentProduct = parentEntity;}
+            return newProduct;
+        }else{
+            return null;
         }
     }
 
@@ -101,22 +128,24 @@ public class ProductService {
 
 
     public List<ProductDto> getProductsByProjectId(int projectID){
-        List<ProductDto> productsByProject = new ArrayList<>();
-        Iterable<ProductEntity> productEntities = repository.findByProject(projectRepository.findById(projectID).get());
 
-
-        for(ProductEntity tmp : productEntities){
-            if(!tmp.name.equals("DUMMY")){
-                ProductDto addProduct = new ProductDto(tmp.id, tmp.name, tmp.project.id, tmp.productarea,
-                        tmp.parentProduct);
-                productsByProject.add(addProduct);
+        if(projectRepository.existsById(projectID)){
+            List<ProductDto> productsByProject = new ArrayList<>();
+            Iterable<ProductEntity> productEntities = repository.findByProject(projectRepository.findById(projectID).get());
+            for(ProductEntity tmp : productEntities){
+                if(!tmp.name.equals("DUMMY")){
+                    ProductDto addProduct = new ProductDto(tmp);
+                    productsByProject.add(addProduct);
+                }
             }
-        }
 
-        return productsByProject;
+            return productsByProject;
+        }else{
+            throw new ResourceNotFound("project " + projectID + "does not exist.");
+        }
     }
 
-
+    //TODO: (discuss with Alex) return Resource not found if projectAreaID does not exist?
     public List<ProductDto> getProductsByProjectIdAndProductAreaId(int projectID, int projectAreaID){
 
         List<ProductDto> productsByProjectAndProductArea = new ArrayList<>();
@@ -126,18 +155,13 @@ public class ProductService {
 
         for(ProductEntity tmp : productEntities){
             if(!tmp.name.equals("DUMMY")) {
-                productsByProjectAndProductArea.add(
-                        new ProductDto(
-                            tmp.id,
-                            tmp.name,
-                            tmp.project.id,
-                            tmp.parentProduct
-                            ));
+                productsByProjectAndProductArea.add(new ProductDto(tmp));
             }
         }
 
         return productsByProjectAndProductArea;
     }
+
 
 
 //    public void deleteProduct(int productID) {
