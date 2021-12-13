@@ -32,10 +32,37 @@ const projectModel = {
     members: [],
     productAreas: [],
   },
-  // to change name pass {name: 'new name' } as payload
-  update: action((state, updatedProps) => {
-    state.project = { ...state.project, ...updatedProps };
+  // general actions
+  set: action((state, project) => {
+    state.data = project;
   }),
+  update: action((state, updatedProps) => {
+    state.data = { ...state.data, ...updatedProps };
+  }),
+
+  setProjectName: action((state, projectName) => {
+    state.data.projectName = projectName;
+  }),
+  addMember: action((state, newMember) => {
+    state.data.members.push(newMember);
+  }),
+  removeMember: action((state, member) => {
+    // remove member with matching email from items
+    state.data.members = state.data.members.filter((m) => m.email !== member.email);
+  }),
+  updateMember: action((state, member) => {
+    // overwrite member with same email
+    const index = state.data.members.map((m) => m.email).indexOf(member.email); // get index of member with same email. if not found, index=-1
+    state.data.members[index] = { ...state.data.members[index], ...member };
+  }),
+  addProductArea: action((state, newArea) => {
+    state.data.productAreas.push(newArea);
+  }),
+  removeProductArea: action((state, areaID) => {
+    // remove member with matching email from items
+    state.data.productAreas = state.data.productAreas.filter((aID) => aID !== areaID);
+  }),
+
   // GET project by id
   fetch: thunk(async (actions, id) => {
     await api
@@ -46,9 +73,13 @@ const projectModel = {
   }),
 
   // POST new Project
-  create: thunk(async (actions, newProject) => {
+  sendCreate: thunk(async (actions, newProject) => {
     console.log(newProject);
-    await api.url('/projects').post(newProject).res(console.log);
+    await api
+      .url('/projects')
+      .post(newProject)
+      .json((json) => actions.set(json))
+      .catch(console.error);
   }),
 };
 
