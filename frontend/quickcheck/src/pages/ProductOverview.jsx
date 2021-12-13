@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useToast } from '@chakra-ui/react';
 import Page from '../components/Page';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import {
@@ -159,6 +158,7 @@ function RemoveButton({ onRemove, product }) {
 export default function ProductOverview() {
   const products_state = useStoreState(state => state.productList.products)
   const addProduct = useStoreActions((actions) => actions.productList.addProduct);
+  //const addProject = useStoreActions((actions) => actions.projectList.add);
   const [productsData, setProductsData] = useState(products);
   const [editMode, setEditMode] = useState(false);
   //const [input, setInput] = useState("");
@@ -215,8 +215,10 @@ export default function ProductOverview() {
               key={uuid4()}
               editable={editMode}
             ></ProductRow>))}
-          <Button onClick={addProduct(mock.product)}>Add Me </Button>
+         
         </List>
+
+        <Button onClick={addProduct}>Add Mock </Button>
         <p>{JSON.stringify(products_state)}</p>
       </Page>
     </div>
