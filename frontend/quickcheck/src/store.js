@@ -24,7 +24,7 @@ const productAreaModel = {
   }),
   addProduct: action((state, product) => {
     state.products.push(product);
-    console.log("react schmitz");
+    console.log('react schmitz');
   }),
   removeProduct: action((state, product) => {
     state.products = state.products.filter((p) => p.productName !== product.productName);

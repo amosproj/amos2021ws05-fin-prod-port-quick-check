@@ -183,9 +183,11 @@ export default function ProductOverview() {
 
   const set = () => {
     setProducts(products);
-  }
+  };
 
-  useEffect(() => {set()}, []);
+  useEffect(() => {
+    set();
+  }, []);
 
   const EditButtons = () => {
     if (editMode) {
@@ -229,7 +231,7 @@ export default function ProductOverview() {
         </List>
 
         <Button onClick={addProduct}>Add Mock </Button>
-        
+
         <p>{/*JSON.stringify(products_state)*/}</p>
         <p>{/*JSON.stringify(products)*/}</p>
       </Page>
