@@ -87,7 +87,6 @@ export default function Project(props) {
       </Card>
 
       <EditButtons />
-      <p>{JSON.stringify(project)}</p>
     </Page>
   );
 }
