@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useToast } from '@chakra-ui/react';
 import Page from '../components/Page';
+import { useStore, useStoreActions} from 'easy-peasy';
 import {
   //Text,
   Flex,
@@ -156,6 +157,7 @@ function RemoveButton({ onRemove, product }) {
 }
 
 export default function ProductOverview() {
+  const products_state = useStore(state => state.productList.products)
   const [productsData, setProductsData] = useState(products);
   const [editMode, setEditMode] = useState(false);
   //const [input, setInput] = useState("");
@@ -175,7 +177,7 @@ export default function ProductOverview() {
     setProductsData(newProductsData);
   };
 
-  useEffect(() => {}, []);
+  // useEffect(() => {}, []);
 
   const EditButtons = () => {
     if (editMode) {
@@ -238,9 +240,10 @@ export default function ProductOverview() {
         </List>
         {/* </Card> */}
         <EditButtons />
-        <p>{JSON.stringify(products)}</p>
+        <p>{JSON.stringify(products_state)}</p>
+        {/*<p>{JSON.stringify(products)}</p>
         <p>{JSON.stringify(getProducts(products))}</p>
-        <p>{JSON.stringify(getChildren(products[0]))}</p>
+                  <p>{JSON.stringify(getChildren(products[0]))}</p>*/}
       </Page>
     </div>
   );
