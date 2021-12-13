@@ -70,8 +70,15 @@ export default function AddAreaButton(buttonProps) {
               mr={3}
               disabled={selectedArea === undefined}
               onClick={(e) => {
-                addProductArea(fetchArea(selectedArea));
+                addProductArea({
+                key: productAreas.length,
+                   id: productAreas.length,
+                   name: selectedArea,
+                   category:  'Private',
+               });
+                console.log(selectedArea)
                 onClose();
+                console.log(productAreas)
               }}
             >
               Save

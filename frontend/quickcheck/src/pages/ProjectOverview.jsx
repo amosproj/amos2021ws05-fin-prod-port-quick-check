@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import Card from '../components/Card';
 import Page from '../components/Page';
 import { List, Button, Heading, VStack, Text, Spacer } from '@chakra-ui/react';
-import { useStoreActions, useStoreState } from 'easy-peasy';
+import { useStoreActions, useStoreState , createStore} from 'easy-peasy';
 import { Link } from 'react-router-dom';
 
 const mocks = {
@@ -67,9 +67,11 @@ export default function ProjectOverview() {
           <ProjectCard project={project} key={project.projectID} />
         ))}
       </List>
-      <Button size="lg" onClick={postProject}>
+      <Link to={'' +"new"}>
+      <Button size="lg"  onClick={postProject}>
         Add new
       </Button>
+      </Link>
       <p>{JSON.stringify(projectList)}</p>
     </Page>
   );

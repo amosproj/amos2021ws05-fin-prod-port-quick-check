@@ -24,13 +24,15 @@ const mockProject = {
 export default function Project(props) {
   const project = useStoreState((state) => state.project.data);
   const setName = useStoreActions((actions) => actions.project.setProjectName);
-  // const updateProject = useStoreActions((actions) => actions.project.update);
+  const updateProject = useStoreActions((actions) => actions.project.update);
   const fetchProject = useStoreActions((actions) => actions.project.fetch);
   const [editMode, setEditMode] = useState(false);
 
   const { id } = useParams();
   useEffect(() => {
+     if (id != "new"){
     fetchProject(id);
+}
     // updateProject({ ...mockProject });
   }, []);
 
@@ -88,6 +90,7 @@ export default function Project(props) {
 
       <EditButtons />
       <p>{JSON.stringify(project)}</p>
+
     </Page>
   );
 }
