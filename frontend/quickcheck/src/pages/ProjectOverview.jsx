@@ -50,7 +50,7 @@ export default function ProjectOverview() {
   const projectList = useStoreState((state) => state.projectList.items);
   const addProject = useStoreActions((actions) => actions.projectList.add);
   const fetchProjects = useStoreActions((actions) => actions.projectList.fetch);
-  const createProject = useStoreActions((actions) => actions.project.create);
+  const createProject = useStoreActions((actions) => actions.project.sendCreate);
 
   // runs when rendering
   useEffect(() => {
