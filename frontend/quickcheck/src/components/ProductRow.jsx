@@ -15,7 +15,6 @@ import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 // import { useEffect } from 'react';
 
-
 function RemoveButton({ removeProdFct }) {
   return (
     <div>
@@ -35,18 +34,14 @@ function RemoveButton({ removeProdFct }) {
   );
 }
 
-
-
-
 export default function ProductRow({ product, editMode }) {
   const addProduct_state = useStoreActions((actions) => actions.productList.addProduct);
   const removeProductState = useStoreActions((actions) => actions.productList.removeProduct);
   const setProducts = useStoreActions((actions) => actions.productList.set);
- 
 
   const removeProduct = () => {
     removeProductState(product);
-  }
+  };
 
   return (
     <div>
@@ -78,7 +73,7 @@ export default function ProductRow({ product, editMode }) {
         </CircularProgress>
         <Spacer />
         <Textarea width="30%" placeholder="Anmerkung" />
-        {editMode ? <RemoveButton removeProdFct={removeProduct}/>: undefined}
+        {editMode ? <RemoveButton removeProdFct={removeProduct} /> : undefined}
       </Card>
     </div>
   );
