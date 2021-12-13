@@ -28,7 +28,7 @@ public class ProductRatingService {
         this.ratingRepository = ratingRepository;
     }
 
-    //TODO: (test) test output against api definition
+    //TODO: (done - needs review) test output against api definition
     public ProductDto getProductRatings(int productID, RatingArea ratingArea) {
 
         Optional<ProductEntity> productEntity = productRepository.findById(productID);
@@ -66,6 +66,7 @@ public class ProductRatingService {
 
             if(productDto.overallEconomicRating != null){
                 productEntity.overallEconomicRating = productDto.overallEconomicRating;
+                productRepository.saveAndFlush(productEntity);
             }
 
             List<ProductRatingEntity> newProductRatings = new ArrayList<>();
@@ -74,18 +75,18 @@ public class ProductRatingService {
                 if(ratingRepository.existsById(tmp.ratingID)){
                     ProductRatingEntity newEntity = new ProductRatingEntity();
                     assignAttributes(tmp, newEntity);
+                    RatingEntity ratingEntity = ratingRepository.findById(tmp.ratingID).get();
                     newEntity.productRatingId = new ProductRatingId(
-                            productRepository.getById(productID),
-                            ratingRepository.getById(tmp.ratingID));
+                            productRepository.getById(productID), ratingEntity);
                     newProductRatings.add(newEntity);
                 }else{
                     throw new ResourceNotFound("ratingID " + tmp.ratingID + " not found");
                 }
             }
 
-            productEntity.productRatingEntities = newProductRatings;
+//            productEntity.productRatingEntities = newProductRatings;
 
-            productRepository.save(productEntity);
+            repository.saveAll(newProductRatings);
 
             return new ProductDto(productEntity , newProductRatings, false);
         }

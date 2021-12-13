@@ -10,7 +10,7 @@ public class ProductRatingId implements Serializable {
 
     //TODO: (done - needs review) remove ...id in Name declarations
     @ManyToOne(targetEntity = ProductEntity.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "product", updatable = false)
+    @JoinColumn(name = "product")
     private ProductEntity product;
 
     //TODO: (done - needs review) remove ...id in Name declarations

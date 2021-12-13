@@ -19,13 +19,19 @@ public class ProductRatingController {
         this.service = productRatingService;
     }
 
-    //TODO: (done - needs review) return empty list or return Error if no ratings exist?
+    //TODO: (done - needs review) return empty list or return Error if no ratings exist? --> empty list
     @GetMapping()
     public ProductDto getProductRatings(
             @PathVariable int productID,
             @RequestParam(required = false) RatingArea ratingArea) {
 
-        return service.getProductRatings(productID, ratingArea);
+        ProductDto tmp = service.getProductRatings(productID, ratingArea);
+
+        if(tmp == null){
+            throw new ResourceNotFound("productID " + productID + " does not exist" );
+        }else{
+            return tmp;
+        }
 
     }
 
