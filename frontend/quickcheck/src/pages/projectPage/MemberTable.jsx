@@ -54,7 +54,6 @@ export default function MemberTable({ editMode }) {
   const members = useStoreState((state) => state.project.data.members);
   const addMember = useStoreActions((actions) => actions.project.addMember);
   const removeMember = useStoreActions((actions) => actions.project.removeMember);
-
   const bgHeading = useColorModeValue('gray.400', 'gray.500');
 
   return (

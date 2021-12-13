@@ -8,26 +8,9 @@
   
 Welcome to the Financial Portfolio Quick Check repository. This repository contains the source code and the documentation of the Quick Check project. The student team is to develop a software which is helping consultants by evaluating financial products in terms of complexity and by other economical factors. This project is created in cooperation with the [BearingPoint GmbH](https://www.bearingpoint.com/en/).
 
-
-
-<!-- TABLE OF CONTENTS -->
-<details open="open">
-  <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
-  <ol>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <!--<li><a href="#acknowledgements">Acknowledgements</a></li>-->
-  </ol>
-</details>
-
+## Mission
+Our project mission is to provide a web application which allows structured data entry for financial products, comparison and evaluation among products and product variants as well as with source documents annotated visualization.
+The core feature of the software is a calculation of benchmarks regarding complexity combined with annotated result charts. To meet the objectives mentioned above, we will maintain a helpful and friendly team atmosphere. 
 
 <!-- GETTING STARTED -->
 ## **Getting Started**
@@ -58,18 +41,25 @@ Welcome to the Financial Portfolio Quick Check repository. This repository conta
  ```
 --- 
 <!-- USAGE EXAMPLES -->
-## Usage
+## Usage/ Properties??
+TODO was soll hier hin? Properties (functional/nonfunctional?)
 ### Basics
 ### Configuration
 
+## Project Repository
 
+TODO: GitHUb Repository einzelne Ordner beschreiben
+----------------------------------------------------------------------- 
+
+## Bill of Materials
+TODO: Bill of Materials hinzufügen
 ----------------------------------------------------------------------- 
 
 
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License.
+Distributed under the MIT License. For further information please see the <a href="./LICENSE">LICENSE</a> file in the root directory. 
 
 ----------------------------------------------------------------------- 
 

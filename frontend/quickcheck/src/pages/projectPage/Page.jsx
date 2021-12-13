@@ -62,8 +62,9 @@ export default function Project(props) {
           Project:
         </Heading>
         <Input
-          align="center"
-          variant="heading"
+          variant="bold"
+          size="3xl"
+          w="auto"
           isDisabled={!editMode}
           onChange={(e) => setName(e.target.value)}
           value={project.projectName}
