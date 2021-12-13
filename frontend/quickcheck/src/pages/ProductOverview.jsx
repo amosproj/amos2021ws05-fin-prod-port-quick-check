@@ -17,16 +17,11 @@ import {
   IconButton,
   Input,
 } from '@chakra-ui/react';
-import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
-import Card from '../components/Card';
+import { AddIcon } from '@chakra-ui/icons';
+
 import ProductRow from '../components/ProductRow';
-import uuid4 from 'uuid';
-import { api } from '../utils/apiClient';
 
-// import { useToast } from '@chakra-ui/react';
 
-// import { api } from '../utils/apiClient';
-//import { Link } from 'react-router-dom';
 
 const mock = {
   product: {
@@ -166,11 +161,11 @@ export default function ProductOverview() {
   };
   const addProduct = (productName) => {
     const prod = {
-      productID: 0,
+      productID: new Date().getMilliseconds(),
       productName: productName,
       productArea: {},
-      projectID: uuid4(),
-      parentID: uuid4(),
+      projectID: new Date().getSeconds(),
+      parentID: 0,
     };
     addProductAction(prod);
   };
@@ -183,7 +178,7 @@ export default function ProductOverview() {
             <ProductRow
               parentID={0}
               product={product}
-              key={uuid4()}
+              key={product.productID}
               editMode={editMode}
             ></ProductRow>
           ))}
