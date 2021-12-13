@@ -25,10 +25,11 @@ function App() {
               <Route path="login" element={<Login />} />
               <Route path="projects" element={<ProjectOverview />} />
               <Route path="projects/:id" element={<Project />} />
-              <Route path="ResultPage" element={<ResultPage />} />
+              <Route path="results" element={<ResultPage />} />
             </Routes>
             <Link to="/login"> [Login] </Link>
             <Link to="projects"> [Projects] </Link>
+            <Link to="results"> [Results] </Link>
           </Router>
         </StoreProvider>
       </ChakraProvider>
