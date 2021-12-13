@@ -37,15 +37,15 @@ import { api } from '../utils/apiClient';
 // import { api } from '../utils/apiClient';
 //import { Link } from 'react-router-dom';
 
-/*const prod1mock = {
-  newProject: {
-    creatorID: 0,
-    projectName: 'Karl-Heinz Günther',
-    members: [],
-    productAreas: [],
-  },
-  area: 'Loan',
-};*/
+const mock= {
+  product: {
+    productID: 1131,
+    productName: 'Opti33333onen',
+    productArea: {},
+    projectID: 1,
+    parentID: 0,
+  }
+};
 
 const products = [
   {
@@ -215,7 +215,7 @@ export default function ProductOverview() {
               key={uuid4()}
               editable={editMode}
             ></ProductRow>))}
-          <Button />
+          <Button onClick={addProduct(mock.product)}>Add Me </Button>
         </List>
         <p>{JSON.stringify(products_state)}</p>
       </Page>

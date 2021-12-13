@@ -21,7 +21,7 @@ const productAreaModel = {
     },*/
     {
       productID: 112,
-      productName: 'Optionen 2 State',
+      productName: 'Optionen 2 State  ',
       productArea: {},
       projectID: 1,
       parentID: 0,
@@ -37,6 +37,7 @@ const productAreaModel = {
 
   addProduct: action((state, product) => {
     state.products = {...state.products, product}
+    console.log("Its working")
   }),
   removeProduct: action((state, product) => {
     state.products = state.products.filter((p) => p.productName !== product.productName);
