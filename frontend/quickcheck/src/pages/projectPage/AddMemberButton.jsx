@@ -40,7 +40,7 @@ export default function AddMemberButton({ onAdd, ...buttonProps }) {
           <ModalHeader color="primary">{header}</ModalHeader>
           <ModalCloseButton />
           <ModalBody px={10}>
-              <InputGroup aria-label='Email Input'>
+            <InputGroup aria-label="Email Input">
               <Input
                 maxLength={60}
                 mb={6}
@@ -48,9 +48,9 @@ export default function AddMemberButton({ onAdd, ...buttonProps }) {
                 onChange={(e) => setEmail(e.target.value)}
               />
               <InputLeftElement>
-                <EmailIcon/>
+                <EmailIcon />
               </InputLeftElement>
-              </InputGroup>
+            </InputGroup>
             <Selection
               options={Object.values(roles)}
               selected={roles.consultant}
