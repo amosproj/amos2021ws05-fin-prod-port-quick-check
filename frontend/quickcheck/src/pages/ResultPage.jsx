@@ -31,9 +31,9 @@ const mock = [
 function SourceRow({ source, key }) {
     return (
 
-        <Card bg={"gray.600"}>
+        <Card bg={"gray.600"} layerStyle={"card_bordered"}>
             {console.log("aksjhkajshfkjash")}
-            <Heading color="primary" size="lg" align="center" w="40%" maxW="50%">
+            <Heading color="primary" size="md" align="center" w="40%" maxW="50%">
                 {source.name}
             </Heading>
             <Spacer />
@@ -41,7 +41,7 @@ function SourceRow({ source, key }) {
                 <Text fontWeight="bolder" fontSize="md">
                     {source.author}
                 </Text>
-                <Text fontSize="sm" color="gray.400">
+                <Text fontSize="small" color="gray.400">
                     Author
                 </Text>
             </VStack>
@@ -57,9 +57,11 @@ export default function ResultPage() {
                 <Card>
                     <Flex flexDirection="row" w="full" gridGap={3} justifyContent="space-between" alignItems="stretch">
                         <Flex w="55%">
-                            <Card alignItems="center"><Heading>Pie Chart</Heading></Card>
+                            <Card alignItems="center" bg="gray.600"><Heading>Pie Chart</Heading></Card>
                         </Flex>
-                        <Flex flexDirection="column" w="45%" justifyContent="space-between" alignItems="stretch"><VStack >{sources.map((source) => (
+                        <Flex flexDirection="column" w="45%" justifyContent="space-between" alignItems="stretch"><VStack >
+                        <Heading size="lg">Sources</Heading>
+                            {sources.map((source) => (
                             <SourceRow source={source} key={source.ID} />
                         ))}</VStack>
                         </Flex>
@@ -70,7 +72,7 @@ export default function ResultPage() {
                     <Button> Export Results </Button>
                     <Button> Back</Button>
                 </HStack>
-                <p>{JSON.stringify(sources)}</p>
+                <p>{/*JSON.stringify(sources)*/}</p>
             </Page>
         </div>
     )
