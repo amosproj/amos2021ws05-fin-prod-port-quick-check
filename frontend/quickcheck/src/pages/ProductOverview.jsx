@@ -21,8 +21,6 @@ import { AddIcon } from '@chakra-ui/icons';
 
 import ProductRow from '../components/ProductRow';
 
-
-
 const mock = {
   product: {
     productID: 151,
