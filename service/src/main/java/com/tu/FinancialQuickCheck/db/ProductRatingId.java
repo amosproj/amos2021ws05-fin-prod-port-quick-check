@@ -14,6 +14,7 @@ public class ProductRatingId implements Serializable {
     private ProductEntity product;
 
     //TODO: (done - needs review) remove ...id in Name declarations
+    //comment: do not change fetchType
     @ManyToOne(targetEntity = RatingEntity.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "rating", updatable = false)
     private RatingEntity rating;
