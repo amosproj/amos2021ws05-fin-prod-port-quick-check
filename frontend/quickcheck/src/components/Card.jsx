@@ -14,7 +14,6 @@ export default function Card({ layerStyle, children, ...rest }) {
       layerStyle={layerStyle || 'card'}
       borderColor={layerStyle === 'card_bar' ? barColor : 'transparent'}
       align="center"
-      
       {...rest}
     >
       {children}

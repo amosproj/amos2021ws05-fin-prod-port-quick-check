@@ -10,9 +10,9 @@ import AddAreaButton from './AddAreaButton.jsx';
 function ProductArea({ productArea }) {
   return (
     <>
-      <Button as="a" variant="secondary" rounded="md"  href="/projects" w="full" py={5}>
+      <Button as="a" variant="secondary" rounded="md" href="/projects" w="full" py={5}>
         <Spacer />
-        <Heading size="md" align="center" >
+        <Heading size="md" align="center">
           {productArea.name}
         </Heading>
         <Spacer />
@@ -48,15 +48,14 @@ export default function ProductAreaList({ editMode }) {
     <>
       <List w="full" maxW={500} align="center" spacing={4} pb={5}>
         {productAreas.map((id) => (
-          <Flex gridGap={4} w="full"   align="center">
+          <Flex gridGap={4} w="full" align="center">
             <ProductArea key={id} productArea={fetchArea(id)} />
             {editMode ? (
               <ConfirmClick
                 onConfirm={() => removeProductArea(id)}
                 confirmPrompt="Remove this product area?"
               >
-                <IconButton icon={<DeleteIcon />} variant="whisper"
-                    size="lg" w={20}/>
+                <IconButton icon={<DeleteIcon />} variant="whisper" size="lg" w={20} />
               </ConfirmClick>
             ) : undefined}
           </Flex>

@@ -56,42 +56,39 @@ export default function Project(props) {
 
   return (
     <Page title="Manage Project">
-    <VStack>
-      <Card layerStyle="card_bar" justifyContent="center">
+      <VStack>
+        <Card layerStyle="card_bar" justifyContent="center">
+          <Spacer />
+          <Heading variant="upper" size="md" mr={3} align="center">
+            Project:
+          </Heading>
+          <Input
+            variant="bold"
+            size="3xl"
+            w="auto"
+            isDisabled={!editMode}
+            onChange={(e) => setName(e.target.value)}
+            value={project.projectName}
+          />
+        </Card>
         <Spacer />
-        <Heading variant="upper" size="md" mr={3} align= 'center'>
-          Project:
-        </Heading>
-        <Input
-          variant="bold"
-          size="3xl"
-          w="auto"
-          isDisabled={!editMode}
-          onChange={(e) => setName(e.target.value)}
-          value={project.projectName}
-        />
-                </Card>
-        <Spacer />
 
+        <Card direction="column">
+          <Heading variant="upper" size="md">
+            Members
+          </Heading>
+          <MemberTable editMode={editMode} />
+        </Card>
 
-      <Card direction="column">
+        <Card direction="column">
+          <Heading variant="upper" size="md">
+            Product Areas
+          </Heading>
+          <ProductAreaList editMode={editMode} />
+        </Card>
 
-        <Heading variant="upper" size="md">
-          Members
-        </Heading>
-        <MemberTable editMode={editMode} />
-      </Card>
-
-      <Card direction="column">
-        <Heading variant="upper" size="md">
-          Product Areas
-        </Heading>
-        <ProductAreaList editMode={editMode} />
-      </Card>
-
-
-              <EditButtons />
-        </VStack>
+        <EditButtons />
+      </VStack>
     </Page>
   );
 }
