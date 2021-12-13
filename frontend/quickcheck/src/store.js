@@ -35,8 +35,8 @@ const productAreaModel = {
     },
   ],
 
-  addProduct: action((state) => {
-    //state.products = {...state.products, product}
+  addProduct: action((state, product) => {
+    state.products = {...state.products, product}
     console.log("Its working")
   }),
   removeProduct: action((state, product) => {

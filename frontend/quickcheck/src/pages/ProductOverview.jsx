@@ -157,7 +157,7 @@ function RemoveButton({ onRemove, product }) {
 
 export default function ProductOverview() {
   const products_state = useStoreState(state => state.productList.products)
-  const addProduct = useStoreActions((actions) => actions.productList.addProduct);
+  const addProduct_state = useStoreActions((actions) => actions.productList.addProduct);
   //const addProject = useStoreActions((actions) => actions.projectList.add);
   const [productsData, setProductsData] = useState(products);
   const [editMode, setEditMode] = useState(false);
@@ -203,6 +203,10 @@ export default function ProductOverview() {
       );
     }
   };
+  const addProduct = () => {
+    addProduct_state(mock.product);
+  };
+
 
   return (
     <div>
