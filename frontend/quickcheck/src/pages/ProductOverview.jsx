@@ -38,8 +38,8 @@ import { api } from '../utils/apiClient';
 
 const mock = {
   product: {
-    productID: 1131,
-    productName: 'Opti33333onen',
+    productID: 151,
+    productName: 'Added Prod',
     productArea: {},
     projectID: 1,
     parentID: 0,
@@ -158,6 +158,7 @@ function RemoveButton({ onRemove, product }) {
 export default function ProductOverview() {
   const products_state = useStoreState((state) => state.productList.products);
   const addProduct_state = useStoreActions((actions) => actions.productList.addProduct);
+  const setProducts = useStoreActions((actions) => actions.productList.set);
   //const addProject = useStoreActions((actions) => actions.projectList.add);
   const [productsData, setProductsData] = useState(products);
   const [editMode, setEditMode] = useState(false);
@@ -178,7 +179,13 @@ export default function ProductOverview() {
     setProductsData(newProductsData);
   };
 
-  // useEffect(() => {}, []);
+  //
+
+  const set = () => {
+    setProducts(products);
+  }
+
+  useEffect(() => {set()}, []);
 
   const EditButtons = () => {
     if (editMode) {
@@ -222,7 +229,9 @@ export default function ProductOverview() {
         </List>
 
         <Button onClick={addProduct}>Add Mock </Button>
-        <p>{JSON.stringify(products_state)}</p>
+        
+        <p>{/*JSON.stringify(products_state)*/}</p>
+        <p>{/*JSON.stringify(products)*/}</p>
       </Page>
     </div>
   );

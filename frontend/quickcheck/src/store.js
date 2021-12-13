@@ -10,33 +10,21 @@ const productAreaModel = {
   products: [
     /*{
       productID: 0,
-      productName: 'asdfasdf',
+      productName: '',
       productArea: {
         "id": "1",
         "name": "Kredit",
       "category": "Privat"},
       projectID: 1,
       parentID: 0,
-    },*/
-    {
-      productID: 112,
-      productName: 'Optionen 2 State  ',
-      productArea: {},
-      projectID: 1,
-      parentID: 0,
-    },
-    {
-      productID: 113,
-      productName: 'Optionen child111',
-      productArea: {},
-      projectID: 1,
-      parentID: 111,
-    },
+    }*/
   ],
-
+  set: action((state, products) => {
+    state.products = products;
+  }),
   addProduct: action((state, product) => {
-    state.products = { ...state.products, product };
-    console.log('Its working');
+    state.products.push(product);
+    console.log("react schmitz");
   }),
   removeProduct: action((state, product) => {
     state.products = state.products.filter((p) => p.productName !== product.productName);
