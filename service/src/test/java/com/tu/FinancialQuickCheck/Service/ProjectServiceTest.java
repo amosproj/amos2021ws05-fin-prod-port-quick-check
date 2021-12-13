@@ -41,7 +41,7 @@ public class ProjectServiceTest {
     private ProjectDto emptyProject;
     private String projectName;
     private String projectName1;
-    private String creator;
+    private UUID creatorID;
     private HashSet<Integer> productAreas;
     private HashSet<Integer> newProductAreas;
     private HashSet<Integer> productAreasDoNotExist;
@@ -59,7 +59,7 @@ public class ProjectServiceTest {
         // init empty test object
         emptyProject = new ProjectDto();
         // init necessary information for test objects
-        creator = "test@test.com";
+        creatorID = UUID.fromString("2375e026-d348-4fb6-b42b-891a76758d5d");
         projectName = "DKB";
         projectName1 = "Sparkasse";
         productAreas = new HashSet<>(Arrays.asList(1,2,3));
@@ -84,7 +84,7 @@ public class ProjectServiceTest {
         for(int i = 0; i < 1; i++){
             ProjectEntity p = new ProjectEntity();
             UserEntity u = new UserEntity();
-            u.id = creator;
+            u.id = creatorID.toString();
             ProjectUserEntity tmp = new ProjectUserEntity();
             tmp.projectUserId = new ProjectUserId(p, u);
             tmp.role = PROJECT_MANAGER;
@@ -93,7 +93,7 @@ public class ProjectServiceTest {
 
         projectID = entity.id;
         entity.name = projectName;
-        entity.creatorID = creator;
+        entity.creatorID = creatorID.toString();
         entity.productEntities = productEntities;
         entity.projectUserEntities = projectUserEntities;
     }
@@ -165,7 +165,7 @@ public class ProjectServiceTest {
         for(int i = 0; i <= 10; i++){
             // Step 1: init test object
             ProjectDto projectIn = new ProjectDto();
-            projectIn.creatorID = creator;
+            projectIn.creatorID = creatorID;
             projectIn.projectName = projectName;
             //TODO: anpassen
 //            projectIn.productAreas = productAreas;
@@ -178,7 +178,7 @@ public class ProjectServiceTest {
             // Step 3: assert result
             assertAll("createProject",
                     () -> assertEquals(projectName, projectOut.projectName),
-                    () -> assertEquals(creator, projectOut.creatorID),
+                    () -> assertEquals(creatorID, projectOut.creatorID),
                     () -> assertEquals(productAreas, projectOut.productAreas),
                     () -> assertNotNull(projectOut)
             );
@@ -190,11 +190,11 @@ public class ProjectServiceTest {
     public void testCreateProject2() {
         // Step 1: init test object
         ProjectDto project1 = new ProjectDto();
-        project1.creatorID = creator;
+        project1.creatorID = creatorID;
         project1.projectName = projectName;
 
         ProjectDto project2 = new ProjectDto();
-        project2.creatorID = creator;
+        project2.creatorID = creatorID;
         //TODO: anpassen
 //        project2.productAreas = productAreas;
 
@@ -217,7 +217,7 @@ public class ProjectServiceTest {
         for(int i = 0; i <= 10; i++){
             // Step 1: init test object
             ProjectDto projectIn = new ProjectDto();
-            projectIn.creatorID = creator;
+            projectIn.creatorID = creatorID;
             projectIn.projectName = projectName;
             //TODO: anpassen
 //            projectIn.productAreas = productAreas;
@@ -233,7 +233,7 @@ public class ProjectServiceTest {
             // Step 3: assert result
             assertAll("createProject",
                     () -> assertEquals(projectName, projectOut.projectName),
-                    () -> assertEquals(creator, projectOut.creatorID),
+                    () -> assertEquals(creatorID, projectOut.creatorID),
                     () -> assertEquals(productAreas, projectOut.productAreas),
                     () -> assertNotEquals(projectIn.projectID, projectOut.projectID),
                     () -> assertNull(projectOut.members),
@@ -264,9 +264,9 @@ public class ProjectServiceTest {
 
         assertAll("get project",
                 () -> assertEquals(projectName, projectOut.projectName),
-                () -> assertEquals(creator, projectOut.creatorID),
+                () -> assertEquals(creatorID, projectOut.creatorID),
                 () -> assertEquals(productAreas, projectOut.productAreas),
-                () -> assertEquals(new HashSet<>(Collections.singletonList(creator)) , projectOut.members),
+                () -> assertEquals(new HashSet<>(Collections.singletonList(creatorID)) , projectOut.members),
                 () -> assertEquals(projectID, projectOut.projectID)
         );
     }
@@ -371,7 +371,7 @@ public class ProjectServiceTest {
             // TODO: anpassen
 //            projectIn.productAreas = newProductAreas;
             // cannot be updated
-            projectIn.creatorID = "test@test.com";
+            projectIn.creatorID = UUID.fromString("0fef539d-69be-4013-9380-6a12c3534c67");
             projectIn.projectID = 1000;
             // TODO: anpassen an neue dto
 //            projectIn.members = members;

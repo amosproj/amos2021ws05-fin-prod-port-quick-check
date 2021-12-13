@@ -6,7 +6,9 @@ import java.util.List;
 
 @Entity
 public class ProductEntity {
-    // TODO: (ask frontend) confirm attribute for overallEconomicRating?
+    // TODO: (done: needs review) confirm attribute for overallEconomicRating? --> done, Boolean type passt laut Max B.
+    //TODO: (done: needs review) add missing attribute: comment
+    //TODO: (prio: medium) (Topic: Dateien abspeichern) add missing attribute: list of resources
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -17,6 +19,9 @@ public class ProductEntity {
 
     @Column(name = "overallRating")
     public Boolean overallEconomicRating;
+
+    @Column(name = "comment")
+    public String comment;
 
     @ManyToOne(targetEntity = ProjectEntity.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "project")

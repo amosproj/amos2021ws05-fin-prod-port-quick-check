@@ -47,7 +47,7 @@ public class ProjectController {
         ProjectDto tmp = service.createProject(projectDto);
 
         if (tmp == null) {
-            throw new BadRequest("Project cannot be created due to missing information.");
+            throw new BadRequest("Input is missing/incorrect");
         }else {
             return tmp;
         }
@@ -69,7 +69,8 @@ public class ProjectController {
     @PutMapping("/{projectID}")
     public ProjectDto updateById(@RequestBody ProjectDto projectDto, @PathVariable int projectID) {
 
-        if(projectDto.members == null && projectDto.members.isEmpty()){
+        if(projectDto.members == null ||
+                (projectDto.members != null && projectDto.members.isEmpty())){
             throw new BadRequest("Input is missing/incorrect.");
         }else{
             return service.updateProject(projectDto, projectID);

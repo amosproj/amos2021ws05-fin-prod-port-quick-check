@@ -4,6 +4,7 @@ import com.tu.FinancialQuickCheck.Role;
 
 import java.util.Objects;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 
 //TODO: (prio: low) create userPasswordDto to manage Password outside of userDto
@@ -43,6 +44,22 @@ public class UserDto {
         this.role = role;
     }
 
+    public UserDto(UUID userID, String userName, String email, Role role)
+    {
+        this.userID = userID;
+        this.userEmail = email;
+        this.userName = userName;
+        this.role = role;
+    }
+
+
+    public boolean validateEmail(String emailAddress){
+        // regexPattern from RFC 5322 for Email Validation
+        String regexPattern = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
+        return Pattern.compile(regexPattern)
+                .matcher(emailAddress)
+                .matches();
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -56,4 +73,7 @@ public class UserDto {
     public int hashCode() {
         return Objects.hash(userEmail);
     }
+
+
+
 }

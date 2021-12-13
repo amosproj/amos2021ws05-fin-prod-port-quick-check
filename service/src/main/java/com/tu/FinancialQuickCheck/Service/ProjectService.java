@@ -66,15 +66,16 @@ public class ProjectService {
      * @return ProjectDto projectDto including created projectID
      */
     //TODO: (done - nothing changed) is the creator of the project included in the members list? --> answer: yes
+    @Transactional
     public ProjectDto createProject(ProjectDto projectDto) {
 
         // Step 0: Check if input contains required information
         if(projectDto.projectName != null && projectDto.productAreas != null && projectDto.creatorID != null
-                && projectDto.members != null){
+                && projectDto.members != null && !projectDto.members.isEmpty() && !projectDto.productAreas.isEmpty()){
 
             // create db entry
             ProjectEntity newProject = new ProjectEntity();
-            newProject.creatorID = projectDto.creatorID;
+            newProject.creatorID = projectDto.creatorID.toString();
             newProject.name = projectDto.projectName;
 
             // add product areas to project through DUMMY data in product_entity table
@@ -104,7 +105,7 @@ public class ProjectService {
             return new ProjectDto(
                     newProject.id,
                     newProject.name,
-                    newProject.creatorID,
+                    UUID.fromString(newProject.creatorID),
                     newProject.productEntities,
                     newProject.projectUserEntities);
         }else{
@@ -129,13 +130,12 @@ public class ProjectService {
             return new ProjectDto(
                     projectEntity.get().id,
                     projectEntity.get().name,
-                    projectEntity.get().creatorID,
+                    UUID.fromString(projectEntity.get().creatorID),
                     projectEntity.get().productEntities,
                     projectEntity.get().projectUserEntities);
         }
 
     }
-
 
 
     /**
@@ -150,9 +150,6 @@ public class ProjectService {
 
         if (!projectRepository.existsById(projectID)) {
             throw new ResourceNotFound("projectID " + projectID + " not found");
-        } else if(projectDto.projectName == null && projectDto.productAreas == null &&
-                projectDto.productAreas.isEmpty()) {
-            throw new BadRequest("Input is missing/incorrect.");
         }else{
             ProjectEntity entity = projectRepository.findById(projectID).get();
             // update project name
@@ -171,7 +168,7 @@ public class ProjectService {
                             entity.productEntities.add(product);
                         }
                     }else{
-                        throw new ResourceNotFound("productArea " + productArea + " does not exist");
+                        throw new ResourceNotFound("productArea " + productArea.id + " does not exist");
                     }
                 }
             }
@@ -183,10 +180,11 @@ public class ProjectService {
             assignMembersToProject(projectDto.members, entity);
 
             projectRepository.save(entity);
-            return new ProjectDto(entity.id, entity.name, entity.creatorID,
+            return new ProjectDto(entity.id, entity.name, UUID.fromString(entity.creatorID),
                    entity.productEntities , entity.projectUserEntities);
         }
     }
+
 
     //TODO: (done - needs review) --> user_entity primary key changed
     private void assignMembersToProject(List<UserDto> members, ProjectEntity projectEntity){
@@ -205,15 +203,20 @@ public class ProjectService {
         }
     }
 
+
     //TODO: (test)
     private Optional<UserEntity> userExists(UserDto user){
 
+
         if(user.userID != null && user.userID.toString().length() == 16){
             return userRepository.findById(user.userID.toString());
+        }else if(!user.validateEmail(user.userEmail)){
+            throw new BadRequest("Input is missing/incorrect");
         }else{
             return userRepository.findByEmail(user.userEmail);
         }
     }
+
 
 // TODO: auskommentiert lassen bisher keine Anforderung dafür vorhanden
 //    public void deleteProject(int projectID) {

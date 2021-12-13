@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public class ProjectDto {
     public int projectID;
-    public String creatorID;
+    public UUID creatorID;
     public String projectName;
     public List<UserDto> members;
     public List<ProductAreaDto> productAreas;
@@ -22,7 +22,7 @@ public class ProjectDto {
     public ProjectDto() {}
 
 
-    public ProjectDto(int projectID, String projectName, String creator,
+    public ProjectDto(int projectID, String projectName, UUID creator,
                       List<ProductEntity> productEntities, List<ProjectUserEntity> projectUserEntities){
         this.projectID = projectID;
         this.creatorID = creator;
@@ -68,6 +68,7 @@ public class ProjectDto {
         {
             members.add(new UserDto(
                             UUID.fromString(member.projectUserId.getUser().id),
+                            member.projectUserId.getUser().username,
                             member.projectUserId.getUser().email,
                             member.role)
                     );

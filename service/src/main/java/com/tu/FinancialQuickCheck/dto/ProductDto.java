@@ -16,6 +16,8 @@ public class ProductDto {
 
     // TODO: (prio: high) add progressComplexity and progressEconomic to necessary constructors
     // TODO: (prio: high) add overallEconomicRating to necessary constructors
+    // TODO: (prio: high) add comment to necessary constructors
+    // TODO: (prio: high) add List of resources to necessary constructors
     public int  productID;
     public String productName;
     public ProductAreaDto productArea;
@@ -26,6 +28,8 @@ public class ProductDto {
     public Boolean overallEconomicRating;
     public List<ProductRatingDto> ratings;
     public List<ProductDto> productVariations;
+    public String comment;
+    public List<String> resources;
 
 
     public ProductDto(){}
