@@ -135,7 +135,6 @@ export default function ProductOverview() {
   const [productsData, setProductsData] = useState(products);
   const [editMode, setEditMode] = useState(false);
 
-
   const set = () => {
     setProducts(products);
   };
@@ -168,11 +167,13 @@ export default function ProductOverview() {
     }
   };
   const addProduct = (productName) => {
-    const prod = {productID: 0,
+    const prod = {
+      productID: 0,
       productName: productName,
       productArea: {},
       projectID: uuid4(),
-      parentID: uuid4}
+      parentID: uuid4,
+    };
     addProductAction(prod);
   };
 
