@@ -35,14 +35,13 @@ const productAreaModel = {
   ],
 
   addProduct: action((state, product) => {
-    state.products = {...state.products, product}
-    console.log("Its working")
+    state.products = { ...state.products, product };
+    console.log('Its working');
   }),
   removeProduct: action((state, product) => {
     state.products = state.products.filter((p) => p.productName !== product.productName);
-  })
-}
-
+  }),
+};
 
 const projectListModel = {
   items: [], // list of: {"projectID": 2,"projectName": "Mock Project" }
@@ -99,7 +98,7 @@ const projectModel = {
   removeProductArea: action((state, areaID) => {
     // remove member with matching email from items
     state.data.productAreas = state.data.productAreas.filter((aID) => aID !== areaID);
- }),
+  }),
 
   // GET project by id
   fetch: thunk(async (actions, id) => {
@@ -121,11 +120,10 @@ const projectModel = {
   }),
 };
 
-
 const store = createStore({
   projectList: projectListModel,
   project: projectModel,
-  productList: productAreaModel
+  productList: productAreaModel,
 });
 
 export default store;

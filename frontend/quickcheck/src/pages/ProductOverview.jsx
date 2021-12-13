@@ -36,14 +36,14 @@ import { api } from '../utils/apiClient';
 // import { api } from '../utils/apiClient';
 //import { Link } from 'react-router-dom';
 
-const mock= {
+const mock = {
   product: {
     productID: 1131,
     productName: 'Opti33333onen',
     productArea: {},
     projectID: 1,
     parentID: 0,
-  }
+  },
 };
 
 const products = [
@@ -156,7 +156,7 @@ function RemoveButton({ onRemove, product }) {
 }
 
 export default function ProductOverview() {
-  const products_state = useStoreState(state => state.productList.products)
+  const products_state = useStoreState((state) => state.productList.products);
   const addProduct_state = useStoreActions((actions) => actions.productList.addProduct);
   //const addProject = useStoreActions((actions) => actions.projectList.add);
   const [productsData, setProductsData] = useState(products);
@@ -207,7 +207,6 @@ export default function ProductOverview() {
     addProduct_state(mock.product);
   };
 
-
   return (
     <div>
       <Page title="Product Overview">
@@ -218,8 +217,8 @@ export default function ProductOverview() {
               product={product}
               key={uuid4()}
               editable={editMode}
-            ></ProductRow>))}
-         
+            ></ProductRow>
+          ))}
         </List>
 
         <Button onClick={addProduct}>Add Mock </Button>

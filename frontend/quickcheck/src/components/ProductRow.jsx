@@ -16,7 +16,7 @@ import React from 'react';
 import Card from './Card';
 // import { useEffect } from 'react';
 
-export default function ProductRow({ product, editable}) {
+export default function ProductRow({ product, editable }) {
   /*const removeProduct = (product) => {
     const newProductsData = productsData.filter((p) => p.productName !== product.productName);
     childToParent(newProductsData);
