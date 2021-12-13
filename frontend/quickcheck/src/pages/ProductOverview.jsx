@@ -137,30 +137,13 @@ function AddButton(props) {
 
 
 export default function ProductOverview() {
-  const products_state = useStoreState((state) => state.productList.products);
-  const addProduct_state = useStoreActions((actions) => actions.productList.addProduct);
+  const productsAction = useStoreState((state) => state.productList.products);
+  const addProductAction = useStoreActions((actions) => actions.productList.addProduct);
   const setProducts = useStoreActions((actions) => actions.productList.set);
   //const addProject = useStoreActions((actions) => actions.projectList.add);
   const [productsData, setProductsData] = useState(products);
   const [editMode, setEditMode] = useState(false);
-  //const [input, setInput] = useState("");
 
-  const handleAddProduct = (productName) => {
-    const newProduct = {
-      productName: productName,
-      productID: uuid4(),
-      projectID: 1, // Abfragen
-      productAreaID: 2, //Abfragen wo man sich befindet
-    };
-    setProductsData([...productsData, newProduct]);
-  };
-
-  const removeProduct = (product) => {
-    const newProductsData = productsData.filter((p) => p.productName !== product.productName);
-    setProductsData(newProductsData);
-  };
-
-  //
 
   const set = () => {
     setProducts(products);
@@ -191,15 +174,20 @@ export default function ProductOverview() {
       );
     }
   };
-  const addProduct = () => {
-    addProduct_state(mock.product);
+  const addProduct = (productName) => {
+    const prod = {productID: 0,
+      productName: productName,
+      productArea: {},
+      projectID: uuid4(),
+      parentID: uuid4}
+    addProductAction(prod);
   };
 
   return (
     <div>
       <Page title="Product Overview">
         <List spacing={2} w="full">
-          {products_state.map((product) => (
+          {productsAction.map((product) => (
             <ProductRow
               parentID={0}
               product={product}
