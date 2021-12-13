@@ -59,7 +59,7 @@ export default function AddAreaButton({ onAdd, ...buttonProps }) {
               options={allAreas
                 .filter((area) => !existingAreas.includes(area.id)) // filter out areas that already exist
                 .map((e) => e.name)}
-              onChange={(e) => setSelectedArea(e.target.value)}
+              onChange={setSelectedArea}
             />
           </ModalBody>
 
