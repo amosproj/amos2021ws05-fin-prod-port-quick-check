@@ -54,7 +54,6 @@ export default function Project(props) {
     }
   }
 
-
     if (editMode) {
       return (
         <HStack>
