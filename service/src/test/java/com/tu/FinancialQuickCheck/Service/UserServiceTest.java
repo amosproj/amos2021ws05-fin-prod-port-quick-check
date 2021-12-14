@@ -114,7 +114,7 @@ public class UserServiceTest {
     @Test
     public void testGetAllUsers1_noUsersExist() {
         //TODO: anpassen
-//        // Step 1: init test object
+        // Step 1: init test object
 //        Iterable<UserEntity> userEntities = Collections.EMPTY_LIST;
 //
 //        // Step 2: provide knowledge

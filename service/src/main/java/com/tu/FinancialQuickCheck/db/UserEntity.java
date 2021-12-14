@@ -5,7 +5,7 @@ import javax.persistence.*;
 
 @Entity // This tells Hibernate to make a table out of this class
 public class UserEntity {
-    //TODO: (prio: high) change primary key to id 
+    //TODO: (done --needs review) change primary key to id
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)

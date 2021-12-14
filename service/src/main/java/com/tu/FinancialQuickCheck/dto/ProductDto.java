@@ -14,10 +14,10 @@ import java.util.List;
 
 public class ProductDto {
 
-    // TODO: (prio: high) add progressComplexity and progressEconomic to necessary constructors
-    // TODO: (prio: high) add overallEconomicRating to necessary constructors
-    // TODO: (prio: high) add comment to necessary constructors
-    // TODO: (prio: high) add List of resources to necessary constructors
+    // TODO: (done - needs review) add progressComplexity and progressEconomic to necessary constructors
+    // TODO: (done - needs review) add overallEconomicRating to necessary constructors
+    // TODO: (done - needs review) add comment to necessary constructors
+    // TODO: (done - needs review) add List of resources to necessary constructors
     public int  productID;
     public String productName;
     public ProductAreaDto productArea;
@@ -73,9 +73,9 @@ public class ProductDto {
         this.productArea = convertProductAreaEntity(product.productarea);
         this.projectID = product.project.id;
         this.parentID = convertParentEntity(product.parentProduct);
-        //TODO: (prio: medium) replace 0 values with calculation for progress bars
-        this.progressComplexity = 0;
-        this.progressEconomic = 0;
+        //TODO: (prio: medium) replace 42 values with calculation for progress bars
+        this.progressComplexity = 42;
+        this.progressEconomic = 42;
         this.comment = product.comment;
         this.resources = new ArrayList<>();
     }

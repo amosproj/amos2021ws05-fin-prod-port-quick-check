@@ -94,7 +94,7 @@ public class UserService {
 
 
 
-    //TODO: (ask frontend) Discuss Update By ID and Update By Email with Frontend, schuld it be possible to update userEmail
+    //TODO: (prio: medium) Discuss Update By ID and Update By Email with Frontend, should it be possible to update userEmail --> yes
     //TODO: (prio: low) add constraints for input --> check if String is empty else return Bad Request
     public UserDto updateUserByEmail(UserDto userDto, String email) {
 
