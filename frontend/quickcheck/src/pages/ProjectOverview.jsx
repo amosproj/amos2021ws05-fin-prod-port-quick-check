@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import Card from '../components/Card';
 import Page from '../components/Page';
 import { List, Button, Heading, VStack, Text, Spacer } from '@chakra-ui/react';
-import { useStoreActions, useStoreState , createStore} from 'easy-peasy';
+import { useStoreActions, useStoreState , createStore, sendCreate} from 'easy-peasy';
 import { Link } from 'react-router-dom';
 
 const mocks = {

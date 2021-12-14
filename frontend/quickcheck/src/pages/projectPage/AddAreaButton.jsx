@@ -58,7 +58,7 @@ export default function AddAreaButton(buttonProps) {
             <Selection
               placeholder="Select Poduct Area..."
               options={allAreas
-                .filter((area) => !productAreas.map((a) => a.id).includes(area.id)) // lookup if area already added
+                .filter((area) => !productAreas.map((a) => a.id).includes(area.id)) // lookup if area already added // This removes the wrong product area
                 .map((e) => e.name)} // display name in selection field
               onChange={setSelectedArea}
             />
@@ -72,7 +72,7 @@ export default function AddAreaButton(buttonProps) {
               onClick={(e) => {
                 addProductArea({
                 key: productAreas.length,
-                   id: productAreas.length,
+                   id: selectedArea.id,
                    name: selectedArea,
                    category:  'Private',
                });

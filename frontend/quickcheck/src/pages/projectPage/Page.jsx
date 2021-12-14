@@ -1,8 +1,8 @@
 import { Heading, Button, HStack, Input, Spacer } from '@chakra-ui/react';
-import { React, useState, useEffect } from 'react';
+import { React, useState, useEffect, Redirect } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useStoreActions, useStoreState } from 'easy-peasy';
+import { useStoreActions, useStoreState, sendCreate } from 'easy-peasy';
 
 import Page from '../../components/Page';
 import Card from '../../components/Card';
@@ -33,17 +33,35 @@ export default function Project(props) {
      if (id != "new"){
     fetchProject(id);
 }
+    else{
+        setEditMode(true)
+    }
     // updateProject({ ...mockProject });
   }, []);
 
   const EditButtons = () => {
+      const confirm = () => {
+        setEditMode(false);
+        updateProject({ ...project });
+    }
+    const cancel = () => {
+      setEditMode(false);
+      if (id != "new"){
+     fetchProject(id);
+    }
+    else{
+        window.location.href = "../projects";
+    }
+  }
+
+
     if (editMode) {
       return (
         <HStack>
-          <Button variant="whisper" size="md" onClick={() => setEditMode(false)}>
+          <Button variant="whisper" size="md" onClick={() => cancel()}>
             Cancel
           </Button>
-          <Button variant="primary" size="md" onClick={() => setEditMode(false)}>
+          <Button variant="primary" size="md" onClick={() => confirm()}>
             Confirm
           </Button>
         </HStack>
