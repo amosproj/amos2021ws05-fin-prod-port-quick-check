@@ -33,11 +33,11 @@ public class ProjectService {
 
     public ProjectService(ProjectRepository projectRepository, ProductRepository productRepository,
                           ProductAreaRepository productAreaRepository, UserRepository userRepository, ProjectUserRepository projectUserRepository) {
-//        this.projectRepository = projectRepository;
-//        this.productRepository = productRepository;
-//        this.productAreaRepository = productAreaRepository;
-//        this.userRepository = userRepository;
-//        this.projectUserRepository = projectUserRepository;
+        this.projectRepository = projectRepository;
+        this.productRepository = productRepository;
+        this.productAreaRepository = productAreaRepository;
+        this.userRepository = userRepository;
+        this.projectUserRepository = projectUserRepository;
     }
 
 
@@ -62,7 +62,7 @@ public class ProjectService {
     /**
      * adds a new ProjectEntity to DB
      * required information: see Project.yaml
-     *
+     * creator of project needs to be included in projectDto.members
      * @return ProjectDto projectDto including created projectID
      */
     //TODO: (done - nothing changed) is the creator of the project included in the members list? --> answer: yes
@@ -187,7 +187,7 @@ public class ProjectService {
 
 
     //TODO: (done - needs review) --> user_entity primary key changed
-    private void assignMembersToProject(List<UserDto> members, ProjectEntity projectEntity){
+    public void assignMembersToProject(List<UserDto> members, ProjectEntity projectEntity){
         // check if members exist
         Set<UserDto> newUsers = new HashSet<>(members);
         for(UserDto member: newUsers){
@@ -205,12 +205,11 @@ public class ProjectService {
 
 
     //TODO: (test)
-    private Optional<UserEntity> userExists(UserDto user){
-
+    public Optional<UserEntity> userExists(UserDto user){
 
         if(user.userID != null && user.userID.toString().length() == 16){
             return userRepository.findById(user.userID.toString());
-        }else if(!user.validateEmail(user.userEmail)){
+        }else if(user.userEmail != null && !user.validateEmail(user.userEmail)){
             throw new BadRequest("Input is missing/incorrect");
         }else{
             return userRepository.findByEmail(user.userEmail);
