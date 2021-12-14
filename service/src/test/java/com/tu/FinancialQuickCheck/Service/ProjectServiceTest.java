@@ -7,7 +7,6 @@ import com.tu.FinancialQuickCheck.db.*;
 import com.tu.FinancialQuickCheck.dto.ProductAreaDto;
 import com.tu.FinancialQuickCheck.dto.SmallProjectDto;
 import com.tu.FinancialQuickCheck.dto.UserDto;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -15,6 +14,7 @@ import com.tu.FinancialQuickCheck.dto.ProjectDto;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -51,7 +51,7 @@ public class ProjectServiceTest {
     private String notAnEmail;
     private List<ProductAreaDto> productAreas;
     private List<ProductAreaDto> newProductAreas;
-    private List<ProductAreaDto> productAreasDoNotExist;
+    private ProductAreaDto productAreaDoesNotExist;
     private List<UserDto> members;
 
     private ProjectEntity entity;
@@ -86,8 +86,8 @@ public class ProjectServiceTest {
             newProductAreas.add(new ProductAreaDto(i));
         }
 
-        productAreasDoNotExist = new ArrayList<>();
-        productAreasDoNotExist.add(new ProductAreaDto(7));
+        productAreaDoesNotExist = new ProductAreaDto(7);
+
 
         members = new ArrayList<>();
         members.add(new UserDto(userEmail1, Role.CLIENT));
@@ -118,7 +118,7 @@ public class ProjectServiceTest {
 
         userEntities = new ArrayList<>();
         UserEntity user1 = new UserEntity();
-        user1.id = "65119d5f-039e-404e-973e-f12c35fe9fef";
+        user1.id = creatorID.toString();
         user1.email = userEmail1;
         userEntities.add(user1);
 
@@ -192,7 +192,7 @@ public class ProjectServiceTest {
         projectsOut.forEach(
                 project -> assertAll("get Projects",
                         () -> assertNotNull(project.projectName),
-                        () -> assertNotNull(project.projectID)
+                        () -> assertEquals(0, project.projectID)
                     )
                 );
 
@@ -239,7 +239,7 @@ public class ProjectServiceTest {
             assertAll("createProject",
                     () -> assertEquals(projectIn.projectName, projectOut.projectName),
                     () -> assertEquals(projectIn.creatorID, projectOut.creatorID),
-                    () -> assertNotNull(projectOut.projectID),
+                    () -> assertEquals(0, projectOut.projectID),
                     () -> assertNotNull(projectOut.productAreas),
                     () -> assertNotNull(projectOut.members),
                     () -> assertNotNull(projectOut)
@@ -281,9 +281,9 @@ public class ProjectServiceTest {
             assertAll("createProject",
                     () -> assertEquals(projectIn.projectName, projectOut.projectName),
                     () -> assertEquals(projectIn.creatorID, projectOut.creatorID),
-                    () -> assertThat(projectOut.productAreas.get(0).equals(projectIn.productAreas.get(0))),
-                    () -> assertThat(projectOut.members.get(0).equals(projectIn.members.get(0))),
-                    () -> assertNotNull(projectOut.projectID),
+                    () -> assertNotNull(projectOut.productAreas),
+                    () -> assertNotNull(projectOut.members),
+                    () -> assertEquals(0, projectOut.projectID),
                     () -> assertNotNull(projectOut)
             );
 
@@ -422,7 +422,7 @@ public class ProjectServiceTest {
      *                  --> return null
      */
     @Test
-    public void testFindById1_projectIdExists() {
+    public void testFindById_projectIdExists() {
         // Step 1: init test object
         // refer to @BeforeEach
 
@@ -443,7 +443,7 @@ public class ProjectServiceTest {
 
 
     @Test
-    public void testFindById2_projectIdNotFound() {
+    public void testFindById_projectIdNotFound() {
 
         assertNull(service.getProjectById(1));
 
@@ -453,123 +453,82 @@ public class ProjectServiceTest {
 
     /**
      * tests for updateProject()
-     *
-     * testUpdateProject1: input contains required information
-     *                      --> ProjectEntity attributes are updated accordingly
-     * testUpdateProject2: input missing required information
+     * //TODO: (add testcase) once mocking repository.delete is clear
+     * testUpdateProject: updates all attributes
+     *                    --> ProjectEntity attributes are updated accordingly
+     * //TODO: (add testcase) once mocking repository.delete is clear
+     * testUpdateProject: partial update: only add new ProductAreas
+     *                    --> ProjectEntity attributes are updated accordingly
+     * //TODO: (finalize testcase) once mocking repository.delete is clear
+     * testUpdateProject: partial update: replace existing project members with new ones
+     *                    --> ProjectEntity attributes are updated accordingly
+     * testUpdateProject: input missing required information: members
      *                      --> throw Exception BadRequest
-     * testUpdateProject3: input contains more than required information
-     *                      --> ProjectEntity attributes are updated accordingly and additional information is ignored
-     * testUpdateProject4: projectID does not exists
-     *                     --> throw Exception ResourceNotFound
-     * testUpdateProject5: productArea does not exist
+     * testUpdateProject: projectID, member or productArea does not exists
      *                     --> throw Exception ResourceNotFound
      */
 
     @Test
-    public void testUpdateProject1(){
+    public void testUpdateProject_partialUpdate_replaceAllExistingProjectMembers(){
         // Step 0: init test object
-        ProjectDto project1 = new ProjectDto();
-        project1.projectName = projectName1;
+        ProjectDto projectIn = emptyProject;
+        emptyProject.members = new ArrayList<>();
+        emptyProject.members.add(new UserDto(userEmail2, Role.CLIENT));
+        emptyProject.members.add(new UserDto(userEmail3, Role.CLIENT));
+        UserEntity userEntity2 = new UserEntity();
+        userEntity2.id = creatorID.toString();
+        userEntity2.email = userEmail2;
+        UserEntity userEntity3 = new UserEntity();
+        userEntity3.id = creatorID.toString();
+        userEntity3.email = userEmail3;
 
-        ProjectDto project2 = new ProjectDto();
-        //TODO: anpassen
-//        project2.productAreas = newProductAreas;
+//        ProjectEntity mockedDeleteProjectMembers = new ProjectEntity();
+//        mockedDeleteProjectMembers.projectUserEntities = new ArrayList<>();
 
-        ProjectDto project3 = new ProjectDto();
-        project3.projectName = projectName1;
-//      TODO: anpassen
-//        project3.productAreas = newProductAreas;
 
-        // Step 1: provide knowledge
+        // Step 0: provide knowledge
         when(repository.existsById(entity.id)).thenReturn(true);
         when(repository.findById(entity.id)).thenReturn(Optional.of(entity));
-        when(productAreaRepository.existsById(4)).thenReturn(true);
-        when(productAreaRepository.existsById(5)).thenReturn(true);
+        when(userRepository.findByEmail(userEmail2)).thenReturn(Optional.of(userEntity2));
+        when(userRepository.findByEmail(userEmail3)).thenReturn(Optional.of(userEntity3));
+        //TODO: (prio: low) how to mock delete and flush operation because mocked entity currently does not delete old members
+//        when(projectUserRepository.deleteByProjectUserId_project(entity)).thenAnswer()
+        when(projectUserRepository.deleteByProjectUserId_project(entity)).thenReturn((long) entity.projectUserEntities.size());
 
         // Step 2: execute updateProject()
-        ProjectDto projectOut1 = service.updateProject(project1, entity.id);
-        ProjectDto projectOut2 = service.updateProject(project2, entity.id);
-        ProjectDto projectOut3 = service.updateProject(project3, entity.id);
+        ProjectDto out = service.updateProject(projectIn, entity.id);
 
         // Step 3: assert result
-        assertAll("updateProject",
-                () -> assertEquals(project1.projectName, projectOut1.projectName),
-                () -> assertNotNull(projectOut1.productAreas),
-                () -> project2.productAreas.forEach(
-                        productArea -> assertTrue(projectOut2.productAreas.contains(productArea))),
-                () -> assertNotNull(projectOut2.projectName),
-                () -> assertEquals(project3.projectName, projectOut3.projectName),
-                () -> project3.productAreas.forEach(
-                        productArea -> assertTrue(projectOut3.productAreas.contains(productArea)))
-        );
-
+        assertEquals(3, out.members.size() - projectIn.members.size());
 
     }
 
 
     @Test
-    public void testUpdateProject2() {
-        // Step 0: init test object
-        // see @BeforeEach
+    public void testUpdateProject_missingMembers() {
 
-        // Step 1: provide knowledge
-        when(repository.existsById(entity.id)).thenReturn(true);
+        assertNull(service.updateProject(emptyProject, entity.id));
 
-        // Step 2: Execute updateProject()
-        Exception exception = assertThrows(BadRequest.class, () -> service.updateProject(emptyProject, entity.id));
-
-        // Step 3: assert exception
-        String expectedMessage = "Nothing to update.";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));
     }
 
 
     @Test
-    public void testUpdateProject3() {
-        for(int i = 0; i <= 10; i++){
-            // Step 1: init test object
-            ProjectDto projectIn = new ProjectDto();
-            // can be updated
-            projectIn.projectName = projectName1;
-            // TODO: anpassen
-//            projectIn.productAreas = newProductAreas;
-            // cannot be updated
-            projectIn.creatorID = UUID.fromString("0fef539d-69be-4013-9380-6a12c3534c67");
-            projectIn.projectID = 1000;
-            // TODO: anpassen an neue dto
-//            projectIn.members = members;
+    public void testUpdateProject_emptyMembers() {
+        emptyProject.members = new ArrayList<>();
 
-            // Step 2: provide knowledge
-            when(repository.existsById(entity.id)).thenReturn(true);
-            when(repository.findById(entity.id)).thenReturn(Optional.of(entity));
-            when(productAreaRepository.existsById(4)).thenReturn(true);
-            when(productAreaRepository.existsById(5)).thenReturn(true);
+        assertNull(service.updateProject(emptyProject, entity.id));
 
-
-            // Step 3: execute createProject()
-            ProjectDto projectOut = service.updateProject(projectIn, entity.id);
-
-
-            // Step 4: assert result
-            assertAll("updateProject",
-                    () -> assertEquals(projectIn.projectName, projectOut.projectName),
-                    () -> projectIn.productAreas.forEach(
-                            productArea -> assertTrue(projectOut.productAreas.contains(productArea))),
-                    () -> assertNotEquals(projectIn.creatorID, projectOut.creatorID),
-                    () -> assertNotEquals(projectIn.projectID, projectOut.projectID),
-                    () -> assertNotEquals(projectIn.members, projectOut.members)
-            );
-        }
     }
 
 
     @Test
-    public void testUpdateProject4() {
+    public void testUpdateProject_resourceNotFound_projectId() {
+        //Step 0: init test object
+        emptyProject.members = members;
+
+        //Step 1: run test
         Exception exception = assertThrows(ResourceNotFound.class, ()
-                -> service.updateProject(new ProjectDto(),1));
+                -> service.updateProject(emptyProject,1));
 
         String expectedMessage = "projectID 1 not found";
         String actualMessage = exception.getMessage();
@@ -578,24 +537,267 @@ public class ProjectServiceTest {
 
     }
 
+
     @Test
-    public void testUpdateProject5() {
+    public void testUpdateProject_resourceNotFound_productAreas_singleProductArea() {
+        //Step 0: init test object
+        ProjectDto projectIn = new ProjectDto();
+        projectIn.members = members;
+        projectIn.productAreas = new ArrayList<>();
+        projectIn.productAreas.add(productAreaDoesNotExist);
+
+        //Step 1: provide knowledge
+        when(repository.existsById(projectID)).thenReturn(true);
+        when(repository.findById(projectID)).thenReturn(Optional.of(new ProjectEntity()));
+        when(productAreaRepository.existsById(productAreaDoesNotExist.id)).thenReturn(false);
+
+        //Step 2: execute updateProject()
+        Exception exception;
+        exception = assertThrows(ResourceNotFound.class,
+                () -> service.updateProject(projectIn, projectID));
+
+        String expectedMessage = "productArea " + productAreaDoesNotExist.id + " does not exist";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+
+
+    }
+
+
+    @Test
+    public void testUpdateProject_resourceNotFound_productAreas_multilpeProductAreas() {
+        //Step 0: init test object
+        ProjectDto projectIn = new ProjectDto();
+        projectIn.members = members;
+        projectIn.productAreas = productAreas;
+        projectIn.productAreas.add(productAreaDoesNotExist);
+
+        //Step 1: provide knowledge
+        when(repository.existsById(projectID)).thenReturn(true);
+        when(repository.findById(projectID)).thenReturn(Optional.of(entity));
+        when(productAreaRepository.existsById(productAreas.get(0).id)).thenReturn(true);
+        when(productAreaRepository.existsById(productAreas.get(1).id)).thenReturn(true);
+        when(productAreaRepository.existsById(productAreas.get(2).id)).thenReturn(true);
+        when(productAreaRepository.existsById(productAreaDoesNotExist.id)).thenReturn(false);
+
+        //Step 2: execute updateProject()
+        Exception exception;
+        exception = assertThrows(ResourceNotFound.class,
+                () -> service.updateProject(projectIn, projectID));
+
+        String expectedMessage = "productArea " + productAreaDoesNotExist.id + " does not exist";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+
+
+    }
+
+
+    @Test
+    public void testUpdateProject_resourceNotFound_members_singleUsers() {
+        //Step 0: init test object
+        ProjectDto projectIn = new ProjectDto();
+        projectIn.productAreas = productAreas;
+        projectIn.members = new ArrayList<>();
+        UserDto userDoesNotExist = new UserDto();
+        userDoesNotExist.userID = UUID.fromString("2375e026-d348-4fb6-b42b-891a76758d5d");
+        projectIn.members.add(userDoesNotExist);
+
+        //Step 1: provide knowledge
+        when(repository.existsById(projectID)).thenReturn(true);
+        when(repository.findById(projectID)).thenReturn(Optional.of(entity));
+        when(productAreaRepository.existsById(productAreas.get(0).id)).thenReturn(true);
+        when(productAreaRepository.existsById(productAreas.get(1).id)).thenReturn(true);
+        when(productAreaRepository.existsById(productAreas.get(2).id)).thenReturn(true);
+        when(userRepository.findById(userDoesNotExist.userID.toString())).thenReturn(Optional.empty());
+
+        //Step 2: execute updateProject()
+        Exception exception;
+        exception = assertThrows(ResourceNotFound.class,
+                () -> service.updateProject(projectIn, projectID));
+
+        String expectedMessage = "User does not exist.";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+
+
+    }
+
+
+    @Test
+    public void testUpdateProject_resourceNotFound_members_multipleUsers() {
+        //Step 0: init test object
+        ProjectDto projectIn = new ProjectDto();
+        projectIn.productAreas = productAreas;
+        projectIn.members = members;
+        projectIn.members.get(0).userID = creatorID;
+        projectIn.members.get(1).userID = creatorID;
+        projectIn.members.get(2).userID = creatorID;
+        UserDto userDoesNotExist = new UserDto();
+        userDoesNotExist.userID = UUID.fromString("2375e026-d348-4fb6-b42b-891a76758d5d");
+        projectIn.members.add(userDoesNotExist);
+
+        //Step 1: provide knowledge
+        when(repository.existsById(projectID)).thenReturn(true);
+        when(repository.findById(projectID)).thenReturn(Optional.of(entity));
+        when(productAreaRepository.existsById(productAreas.get(0).id)).thenReturn(true);
+        when(productAreaRepository.existsById(productAreas.get(1).id)).thenReturn(true);
+        when(productAreaRepository.existsById(productAreas.get(2).id)).thenReturn(true);
+        when(userRepository.findById(projectIn.members.get(0).userID.toString())).thenReturn(Optional.of(userEntities.get(0)));
+        when(userRepository.findById(projectIn.members.get(1).userID.toString())).thenReturn(Optional.of(userEntities.get(1)));
+        when(userRepository.findById(projectIn.members.get(2).userID.toString())).thenReturn(Optional.of(userEntities.get(2)));
+        when(userRepository.findById(userDoesNotExist.userID.toString())).thenReturn(Optional.empty());
+
+        //Step 2: execute updateProject()
+        Exception exception;
+        exception = assertThrows(ResourceNotFound.class,
+                () -> service.updateProject(projectIn, projectID));
+
+        String expectedMessage = "User does not exist.";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+
+
+    }
+
+
+
+
+    /**
+     * tests for assignMembersToProject()
+     *
+     * testAssignMembersToProject: input contains required information
+     *                              --> ProjectEntity contains assigned members
+     * testAssignMembersToProject: invalid Email
+     *                              --> throw Exception BadRequest
+     * testAssignMembersToProject: userEmail/userID does not exist
+     *                             --> throw Exception ResourceNotFound
+     * testAssignMembersToProject: input contains same member twice
+     *                             --> ProjectEntity contains member only once
+     */
+
+    @Test
+    public void testAssignMembersToProject_successWithUserId_singleUser() {
         // Step 1: init test object
-        ProjectDto project = new ProjectDto();
-        project.projectName = projectName;
-        // TODO: anpassen
-//        project.productAreas = productAreasDoNotExist;
+        UserDto newMember = new UserDto();
+        newMember.userID = creatorID;
+        newMember.role = Role.PROJECT_MANAGER;
+        List<UserDto> membersIn = new ArrayList<>();
+        membersIn.add(newMember);
+        ProjectEntity projectEntity = new ProjectEntity();
+        projectEntity.projectUserEntities = new ArrayList<>();
 
         //Step 2: provide knowledge
-        when(repository.existsById(1)).thenReturn(true);
-        when(repository.findById(1)).thenReturn(Optional.of(entity));
-        when(productAreaRepository.existsById(7)).thenReturn(false);
+        when(userRepository.findById(newMember.userID.toString())).thenReturn(Optional.of(userEntities.get(0)));
 
-        //Step 3: execute updateProject()
-        Exception exception = assertThrows(ResourceNotFound.class, ()
-                -> service.updateProject(project,1));
+        //Step 3: execute assignMembersToProject()
+        service.assignMembersToProject(membersIn, projectEntity);
 
-        String expectedMessage = "productArea 7 does not exist";
+
+        assertThat(projectEntity.projectUserEntities.size()).isEqualTo(membersIn.size());
+
+        assertAll("assign single user to project",
+                () -> assertEquals(newMember.userID.toString(), projectEntity.projectUserEntities.get(0).projectUserId.getUser().id),
+                () -> assertEquals(newMember.role, projectEntity.projectUserEntities.get(0).role));
+    }
+
+
+    @Test
+    public void testAssignMembersToProject_successWithUserId_multipleUser() {
+        // Step 1: init test object
+        List<UserDto> membersIn = members;
+        membersIn.get(0).userID = creatorID;
+        membersIn.get(1).userID = creatorID;
+        membersIn.get(2).userID = creatorID;
+
+        ProjectEntity projectEntity = new ProjectEntity();
+        projectEntity.projectUserEntities = new ArrayList<>();
+
+        //Step 2: provide knowledge
+        when(userRepository.findById(membersIn.get(0).userID.toString())).thenReturn(Optional.of(userEntities.get(0)));
+        when(userRepository.findById(membersIn.get(1).userID.toString())).thenReturn(Optional.of(userEntities.get(1)));
+
+        //Step 3: execute assignMembersToProject()
+        service.assignMembersToProject(membersIn, projectEntity);
+
+        assertThat(projectEntity.projectUserEntities.size()).isEqualTo(membersIn.size());
+
+        projectEntity.projectUserEntities.forEach( projectUser -> assertAll("assign multiple user to project",
+                () -> assertNotNull(projectUser.projectUserId.getUser().email),
+                () -> assertNotNull(projectUser.role)));
+    }
+
+
+    @Test
+    public void testAssignMembersToProject_successWithEmail_singleUser() {
+        // Step 1: init test object
+        UserDto newMember = new UserDto();
+        newMember.userEmail = userEmail1;
+        newMember.role = Role.CLIENT;
+        List<UserDto> membersIn = new ArrayList<>();
+        membersIn.add(newMember);
+        ProjectEntity projectEntity = new ProjectEntity();
+        projectEntity.projectUserEntities = new ArrayList<>();
+
+        //Step 2: provide knowledge
+        when(userRepository.findByEmail(newMember.userEmail)).thenReturn(Optional.of(userEntities.get(0)));
+
+        //Step 3: execute assignMembersToProject()
+        service.assignMembersToProject(membersIn, projectEntity);
+
+
+        assertThat(projectEntity.projectUserEntities.size()).isEqualTo(membersIn.size());
+
+        assertAll("assign single user to project",
+                () -> assertEquals(newMember.userEmail, projectEntity.projectUserEntities.get(0).projectUserId.getUser().email),
+                () -> assertEquals(newMember.role, projectEntity.projectUserEntities.get(0).role));
+    }
+
+
+    @Test
+    public void testAssignMembersToProject_successWithEmail_multipleUser() {
+        // Step 1: init test object
+        List<UserDto> membersIn = members;
+        ProjectEntity projectEntity = new ProjectEntity();
+        projectEntity.projectUserEntities = new ArrayList<>();
+
+        //Step 2: provide knowledge
+        when(userRepository.findByEmail(membersIn.get(0).userEmail)).thenReturn(Optional.of(userEntities.get(0)));
+        when(userRepository.findByEmail(membersIn.get(1).userEmail)).thenReturn(Optional.of(userEntities.get(1)));
+        when(userRepository.findByEmail(membersIn.get(2).userEmail)).thenReturn(Optional.of(userEntities.get(2)));
+
+        //Step 3: execute assignMembersToProject()
+        service.assignMembersToProject(membersIn, projectEntity);
+
+        assertThat(projectEntity.projectUserEntities.size()).isEqualTo(membersIn.size());
+
+        projectEntity.projectUserEntities.forEach( projectUser -> assertAll("assign multiple user to project",
+                () -> assertNotNull(projectUser.projectUserId.getUser().email),
+                () -> assertNotNull(projectUser.role)));
+    }
+
+
+    @Test
+    public void testAssignMembersToProject_invalidEmail_singleUser() {
+        // Step 1: init test object
+        List<UserDto> membersIn = new ArrayList<>();
+        UserDto invalidEmail = new UserDto();
+        invalidEmail.userEmail = notAnEmail;
+        membersIn.add(invalidEmail);
+        int numMembersIn = membersIn.size();
+        ProjectEntity projectEntity = new ProjectEntity();
+        projectEntity.projectUserEntities = new ArrayList<>();
+
+
+        //Step 3: execute assignMembersToProject()
+        Exception exception = assertThrows(BadRequest.class,
+                () -> service.assignMembersToProject(membersIn, projectEntity));
+
+        String expectedMessage = "Input is missing/incorrect";
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
@@ -603,9 +805,136 @@ public class ProjectServiceTest {
     }
 
 
+    @Test
+    public void testAssignMembersToProject_invalidEmail_multipleUsers() {
+        // Step 1: init test object
+        List<UserDto> membersIn = members;
+        UserDto invalidEmail = new UserDto();
+        invalidEmail.userEmail = notAnEmail;
+        membersIn.add(invalidEmail);
+        int numMembersIn = membersIn.size();
+        ProjectEntity projectEntity = new ProjectEntity();
+        projectEntity.projectUserEntities = new ArrayList<>();
+
+        //Step 2: provide knowledge
+        when(userRepository.findByEmail(membersIn.get(0).userEmail)).thenReturn(Optional.of(userEntities.get(0)));
+        when(userRepository.findByEmail(membersIn.get(2).userEmail)).thenReturn(Optional.of(userEntities.get(2)));
+
+
+
+        //Step 3: execute assignMembersToProject()
+        Exception exception = assertThrows(BadRequest.class,
+                () -> service.assignMembersToProject(membersIn, projectEntity));
+
+        String expectedMessage = "Input is missing/incorrect";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+
+    }
+
 
     @Test
-    public void testAssignMembersToProject_userEmailDoesNotExist() {
+    public void testAssignMembersToProject_userEmailAndIdMissing_singleUser() {
+        // Step 1: init test object
+        List<UserDto> membersIn = new ArrayList<>();
+        UserDto emptyUser = new UserDto();
+        membersIn.add(emptyUser);
+        int numMembersIn = membersIn.size();
+        ProjectEntity projectEntity = new ProjectEntity();
+        projectEntity.projectUserEntities = new ArrayList<>();
+
+
+        //Step 3: execute assignMembersToProject()
+        Exception exception = assertThrows(ResourceNotFound.class,
+                () -> service.assignMembersToProject(membersIn, projectEntity));
+
+        String expectedMessage = "User does not exist.";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+
+    }
+
+
+    @Test
+    public void testAssignMembersToProject_userIdDoesNotExist_singleUser() {
+        // Step 1: init test object
+        List<UserDto> membersIn = new ArrayList<>();
+        UserDto userDoesNotExist = new UserDto();
+        userDoesNotExist.userID = UUID.fromString("2375e026-d348-4fb6-b42b-891a76758d5d");
+        membersIn.add(userDoesNotExist);
+        int numMembersIn = membersIn.size();
+        ProjectEntity projectEntity = new ProjectEntity();
+        projectEntity.projectUserEntities = new ArrayList<>();
+
+
+        //Step 3: execute assignMembersToProject()
+        Exception exception = assertThrows(ResourceNotFound.class,
+                () -> service.assignMembersToProject(membersIn, projectEntity));
+
+        String expectedMessage = "User does not exist.";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+
+    }
+
+
+    @Test
+    public void testAssignMembersToProject_userIdDoesNotExist_mulitpleUsers() {
+        // Step 1: init test object
+        List<UserDto> membersIn = members;
+        int numMembersIn = membersIn.size();
+        for(UserDto userIn: membersIn){
+            userIn.userID = UUID.fromString("2375e026-d348-4fb6-b42b-891a76758d5d");
+        }
+        ProjectEntity projectEntity = new ProjectEntity();
+        projectEntity.projectUserEntities = new ArrayList<>();
+
+        //Step 2: provide knowledge
+        when(userRepository.findById(membersIn.get(0).userID.toString())).thenReturn(Optional.of(userEntities.get(0)));
+        when(userRepository.findById(membersIn.get(2).userID.toString())).thenReturn(Optional.empty());
+
+
+        //Step 3: execute assignMembersToProject()
+        Exception exception = assertThrows(ResourceNotFound.class,
+                () -> service.assignMembersToProject(membersIn, projectEntity));
+
+        String expectedMessage = "User does not exist.";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+
+    }
+
+
+    @Test
+    public void testAssignMembersToProject_userEmailDoesNotExist_singleUser() {
+        // Step 1: init test object
+        List<UserDto> membersIn = new ArrayList<>();
+        UserDto userDoesNotExist = new UserDto();
+        userDoesNotExist.userEmail = "test@test.com";
+        membersIn.add(userDoesNotExist);
+        int numMembersIn = membersIn.size();
+        ProjectEntity projectEntity = new ProjectEntity();
+        projectEntity.projectUserEntities = new ArrayList<>();
+
+
+        //Step 3: execute assignMembersToProject()
+        Exception exception = assertThrows(ResourceNotFound.class,
+                () -> service.assignMembersToProject(membersIn, projectEntity));
+
+        String expectedMessage = "User does not exist.";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+
+    }
+
+
+    @Test
+    public void testAssignMembersToProject_userEmailDoesNotExist_multipleUsers() {
         // Step 1: init test object
         List<UserDto> membersIn = members;
         int numMembersIn = membersIn.size();
@@ -615,71 +944,6 @@ public class ProjectServiceTest {
         //Step 2: provide knowledge
         when(userRepository.findByEmail(membersIn.get(0).userEmail)).thenReturn(Optional.of(userEntities.get(0)));
         when(userRepository.findByEmail(membersIn.get(2).userEmail)).thenReturn(Optional.empty());
-
-
-        //Step 3: execute assignMembersToProject()
-        Exception exception = assertThrows(ResourceNotFound.class,
-                () -> service.assignMembersToProject(membersIn, projectEntity));
-
-        String expectedMessage = "User does not exist.";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));
-
-    }
-
-    /**
-     * tests for assignMembersToProject()
-     *
-     * testAssignMembersToProject: input contains required information
-     *                              --> ProjectEntity contains assigned members
-     * testAssignMembersToProject: input missing required information
-     *                              --> throw Exception BadRequest
-     * testAssignMembersToProject: userEmail does not exists
-     *                             --> throw Exception ResourceNotFound
-     * testAssignMembersToProject: input contains same member twice
-     *                             --> ProjectEntity contains member only once
-     */
-
-    @Test
-    public void testAssignMembersToProject_userEmailMissing() {
-        // Step 1: init test object
-        List<UserDto> membersIn = new ArrayList<>();
-        UserDto emptyUser = new UserDto();
-        membersIn.add(emptyUser);
-        int numMembersIn = membersIn.size();
-        ProjectEntity projectEntity = new ProjectEntity();
-        projectEntity.projectUserEntities = new ArrayList<>();
-
-        //Step 2: provide knowledge
-        when(userRepository.findByEmail(emptyUser.userEmail)).thenReturn(Optional.empty());
-
-
-        //Step 3: execute assignMembersToProject()
-        Exception exception = assertThrows(ResourceNotFound.class,
-                () -> service.assignMembersToProject(membersIn, projectEntity));
-
-        String expectedMessage = "User does not exist.";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));
-
-    }
-
-
-    @Test
-    @Disabled
-    public void testAssignMembersToProject_userEmailAndIdMissing() {
-        // Step 1: init test object
-        List<UserDto> membersIn = new ArrayList<>();
-        UserDto emptyUser = new UserDto();
-        membersIn.add(emptyUser);
-        int numMembersIn = membersIn.size();
-        ProjectEntity projectEntity = new ProjectEntity();
-        projectEntity.projectUserEntities = new ArrayList<>();
-
-        //Step 2: provide knowledge
-        when(userRepository.findByEmail(emptyUser.userEmail)).thenReturn(Optional.empty());
 
 
         //Step 3: execute assignMembersToProject()

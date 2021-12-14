@@ -148,40 +148,45 @@ public class ProjectService {
     @Transactional
     public ProjectDto updateProject(ProjectDto projectDto, int projectID) {
 
-        if (!projectRepository.existsById(projectID)) {
-            throw new ResourceNotFound("projectID " + projectID + " not found");
+        if(projectDto.members == null || projectDto.members.isEmpty()) {
+            return null;
         }else{
-            ProjectEntity entity = projectRepository.findById(projectID).get();
-            // update project name
-            if(projectDto.projectName != null){entity.name = projectDto.projectName;}
+            if (!projectRepository.existsById(projectID)) {
+                throw new ResourceNotFound("projectID " + projectID + " not found");
+            }else{
+                ProjectEntity entity = projectRepository.findById(projectID).get();
+                // update project name
+                if(projectDto.projectName != null){entity.name = projectDto.projectName;}
 
-            // add none existing product areas
-            if(projectDto.productAreas != null){
-                for (ProductAreaDto productArea : projectDto.productAreas){
-                    if(productAreaRepository.existsById(productArea.id)){
-                        if(!productRepository.existsByProjectAndProductarea(entity,
-                                productAreaRepository.getById(productArea.id))){
-                            ProductEntity product = new ProductEntity();
-                            product.project = entity;
-                            product.productarea = productAreaRepository.getById(productArea.id);
-                            product.name = "DUMMY";
-                            entity.productEntities.add(product);
+                // add none existing product areas
+                if(projectDto.productAreas != null){
+                    for (ProductAreaDto productArea : projectDto.productAreas){
+                        if(productAreaRepository.existsById(productArea.id)){
+                            if(!productRepository.existsByProjectAndProductarea(entity,
+                                    productAreaRepository.getById(productArea.id))){
+                                ProductEntity product = new ProductEntity();
+                                product.project = entity;
+                                product.productarea = productAreaRepository.getById(productArea.id);
+                                product.name = "DUMMY";
+                                entity.productEntities.add(product);
+                            }
+                        }else{
+                            throw new ResourceNotFound("productArea " + productArea.id + " does not exist");
                         }
-                    }else{
-                        throw new ResourceNotFound("productArea " + productArea.id + " does not exist");
                     }
                 }
+
+                // unassign existing users from project
+                long numDeletedRecords = projectUserRepository.deleteByProjectUserId_project(entity);
+                projectRepository.flush();
+
+                // assign new users to project
+                assignMembersToProject(projectDto.members, entity);
+
+                projectRepository.save(entity);
+                return new ProjectDto(entity.id, entity.name, UUID.fromString(entity.creatorID),
+                        entity.productEntities , entity.projectUserEntities);
             }
-
-            // unassign existing users from project
-            projectUserRepository.deleteByProjectUserId_project(entity);
-            projectRepository.flush();
-            // assign new users to project
-            assignMembersToProject(projectDto.members, entity);
-
-            projectRepository.save(entity);
-            return new ProjectDto(entity.id, entity.name, UUID.fromString(entity.creatorID),
-                   entity.productEntities , entity.projectUserEntities);
         }
     }
 
@@ -204,10 +209,10 @@ public class ProjectService {
     }
 
 
-    //TODO: (test)
+    //TODO: (done - needs review)
     public Optional<UserEntity> userExists(UserDto user){
 
-        if(user.userID != null && user.userID.toString().length() == 16){
+        if(user.userID != null){
             return userRepository.findById(user.userID.toString());
         }else if(user.userEmail != null && !user.validateEmail(user.userEmail)){
             throw new BadRequest("Input is missing/incorrect");

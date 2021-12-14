@@ -69,12 +69,12 @@ public class ProjectController {
 
     @PutMapping("/{projectID}")
     public ProjectDto updateById(@RequestBody ProjectDto projectDto, @PathVariable int projectID) {
+        ProjectDto tmp = service.updateProject(projectDto, projectID);
 
-        if(projectDto.members == null ||
-                (projectDto.members != null && projectDto.members.isEmpty())){
+        if(tmp == null){
             throw new BadRequest("Input is missing/incorrect.");
         }else{
-            return service.updateProject(projectDto, projectID);
+            return tmp;
         }
     }
 
