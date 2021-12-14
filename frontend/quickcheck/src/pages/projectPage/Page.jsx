@@ -26,6 +26,7 @@ export default function Project(props) {
   const setName = useStoreActions((actions) => actions.project.setProjectName);
   const updateProject = useStoreActions((actions) => actions.project.update);
   const fetchProject = useStoreActions((actions) => actions.project.fetch);
+  const createProject = useStoreActions((actions) => actions.project.sendCreate);
   const [editMode, setEditMode] = useState(false);
 
   const { id } = useParams();
@@ -42,7 +43,14 @@ export default function Project(props) {
   const EditButtons = () => {
       const confirm = () => {
         setEditMode(false);
-        updateProject({ ...project });
+        if (id != "new"){
+       updateProject({ project });
+        }
+        else{
+            project.projectID=0;
+            createProject({project});
+        }
+
     }
     const cancel = () => {
       setEditMode(false);

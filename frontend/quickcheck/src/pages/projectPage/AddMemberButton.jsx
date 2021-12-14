@@ -16,12 +16,15 @@ import {
 } from '@chakra-ui/react';
 import { AddIcon, EmailIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
+import { useStoreActions, useStoreState, sendCreate } from 'easy-peasy';
 
 import { roles } from '../../utils/const';
 import Selection from '../../components/Selection.jsx';
 
 export default function AddMemberButton({ onAdd, ...buttonProps }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const addMember = useStoreActions((actions) => actions.project.sendCreate);
+
   const [email, setEmail] = useState('');
   const [role, setRole] = useState('Client');
   const header = 'Add new Member';
