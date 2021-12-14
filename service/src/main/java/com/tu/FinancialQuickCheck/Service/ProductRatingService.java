@@ -133,7 +133,7 @@ public class ProductRatingService {
     }
 
 
-    private void assignAttributes(ProductRatingDto tmp, ProductRatingEntity newEntity) {
+    public void assignAttributes(ProductRatingDto tmp, ProductRatingEntity newEntity) {
         if(tmp.answer != null){
             newEntity.answer = tmp.answer;
         }
