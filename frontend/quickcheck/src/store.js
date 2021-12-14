@@ -96,7 +96,7 @@ const projectModel = {
     console.log('send POST', { id, projectData });
     if (id!="new"){
         await api
-          .url(`/projects/${id}`)
+          .url(`/projects/`+{id})
           .put(projectData)
           .json((json) => actions.set(json))
           .catch(console.error);

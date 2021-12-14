@@ -2,7 +2,7 @@ import { Heading, Button, HStack, Input, Spacer } from '@chakra-ui/react';
 import { React, useState, useEffect, Redirect } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useStoreActions, useStoreState, sendCreate } from 'easy-peasy';
+import { useStoreActions, useStoreState, sendCreate, sendUpdate } from 'easy-peasy';
 
 import Page from '../../components/Page';
 import Card from '../../components/Card';
@@ -24,18 +24,18 @@ const mockProject = {
 export default function Project(props) {
   const project = useStoreState((state) => state.project.data);
   const setName = useStoreActions((actions) => actions.project.setProjectName);
-  const updateProject = useStoreActions((actions) => actions.project.update);
+  const updateProject = useStoreActions((actions) => actions.project.sendUpdate);
   const fetchProject = useStoreActions((actions) => actions.project.fetch);
   const createProject = useStoreActions((actions) => actions.project.sendCreate);
   const [editMode, setEditMode] = useState(false);
 
   const { id } = useParams();
   useEffect(() => {
-     if (id != "new"){
-    fetchProject(id);
-}
-    else{
+    if (id === "new"){
         setEditMode(true)
+    }
+    else{
+       fetchProject(id);
     }
     // updateProject({ ...mockProject });
   }, []);
@@ -43,18 +43,23 @@ export default function Project(props) {
   const EditButtons = () => {
       const confirm = () => {
         setEditMode(false);
-        if (id != "new"){
-       updateProject({ project });
+
+        if (id === "new"){
+            createProject({
+                "creator": "consultant@amos.de", // todo change to current user
+                "projectName": project.projectName,
+                "productAreas": project.productAreas,
+                "members": project.members
+            });
         }
         else{
-            project.projectID=0;
-            createProject({project});
+            updateProject(  id, project );
         }
 
     }
     const cancel = () => {
       setEditMode(false);
-      if (id != "new"){
+      if (id !== "new"){
      fetchProject(id);
     }
     else{
