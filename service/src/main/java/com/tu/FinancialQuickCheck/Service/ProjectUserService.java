@@ -38,66 +38,81 @@ public class ProjectUserService {
     }
 
 
-    public List<ProjectUserDto> getProjectUsersByProjectId(int projectID) {
+//    public List<ProjectUserDto> getProjectUsersByProjectId(int projectID) {
+//
+//        Optional<ProjectEntity> entity = projectRepository.findById(projectID);
+//
+//        if (entity.isEmpty()) {
+//            throw new ResourceNotFound("projectID " + projectID + " not found");
+//        } else {
+//
+//            Iterable<ProjectUserEntity> entities = entity.get().projectUserEntities;
+//
+//            List<ProjectUserDto> projectUserDtos = new ArrayList<>() {
+//            };
+//
+//            for (ProjectUserEntity tmp : entities) {
+//                projectUserDtos.add(new ProjectUserDto(
+//                        UUID.fromString(tmp.projectUserId.getUser().id),
+//                        tmp.role,
+//                        tmp.projectUserId.getUser().email,
+//                        tmp.projectUserId.getProject().id,
+//                        tmp.projectUserId.getUser().username
+//                ));
+//            }
+//
+//            return projectUserDtos;
+//        }
+//    }
 
-        Optional<ProjectEntity> entity = projectRepository.findById(projectID);
-
-        if (entity.isEmpty()) {
-            throw new ResourceNotFound("projectID " + projectID + " not found");
-        } else {
-
-            Iterable<ProjectUserEntity> entities = entity.get().projectUserEntities;
-
-            List<ProjectUserDto> projectUserDtos = new ArrayList<>() {
-            };
-
-            for (ProjectUserEntity tmp : entities) {
-                projectUserDtos.add(new ProjectUserDto(
-                        UUID.fromString(tmp.projectUserId.getUser().id),
-                        tmp.role,
-                        tmp.projectUserId.getUser().email,
-                        tmp.projectUserId.getProject().id,
-                        tmp.projectUserId.getUser().username
-                ));
-            }
-
-            return projectUserDtos;
-        }
-    }
 
 
     //TODO: (test)
-    public List<ProjectUserDto> wrapperUpdateProjectUser(int projectID, List<ProjectUserDto> projectUsers) {
-        List<ProjectUserEntity> entities = new ArrayList<>();
-        List<ProjectUserDto> out = new ArrayList<>();
+    public List<ProjectUserDto> updateProjectUsers(int projectID, List<ProjectUserDto> projectUsers) {
 
-        for (ProjectUserDto projectUserDto : projectUsers) {
-            if (!repository.existsById(new ProjectUserId(projectRepository.findById(projectID).get(),
-                    userRepository.findById(projectUserDto.userEmail).get()))) {
-                throw new ResourceNotFound("User is not assigned to project.");
+        if(projectRepository.existsById(projectID)){
+            List<ProjectUserEntity> entities = new ArrayList<>();
+            List<ProjectUserDto> out = new ArrayList<>();
+
+            for (ProjectUserDto projectUser: projectUsers) {
+                ProjectUserEntity update = updateProjectUser(projectID, projectUser);
+                if(update != null){
+                    entities.add(update);
+                    out.add(new ProjectUserDto(update));
+                }else{
+                    return null;
+                }
+            }
+
+            repository.saveAll(entities);
+            return out;
+        }else{
+            return null;
+        }
+    }
+
+    //TODO: (test)
+    public ProjectUserEntity updateProjectUser(int projectID, ProjectUserDto u) {
+
+        if (userRepository.existsById(u.userID.toString())) {
+            Optional<ProjectUserEntity> update = repository.findById(
+                    new ProjectUserId(
+                            projectRepository.findById(projectID).get(),
+                            userRepository.findById(u.userID.toString()).get()));
+            if (update.isEmpty()) {
+                throw new BadRequest("User is not assigned to project.");
             } else {
-                ProjectUserEntity update = repository.findById(new ProjectUserId(
-                        projectRepository.findById(projectID).get(),
-                        userRepository.findById(projectUserDto.userEmail).get())).get();
-                updateProjectUser(projectUserDto,update);
-                entities.add(update);
-                out.add(new ProjectUserDto(update));
+
+                if (u.role != null) {update.get().role = u.role;}
+                return update.get();
             }
+        } else {
+            return null;
         }
-
-        repository.saveAll(entities);
-
-        return out;
     }
 
-    //TODO: (test)
-    public void updateProjectUser(ProjectUserDto projectUserDto,ProjectUserEntity projectUserEntity) {
 
-        if (projectUserDto.role != null) {
-            projectUserEntity.role = projectUserDto.role;
-        }
 
-    }
 
 
     //TODO: (test)

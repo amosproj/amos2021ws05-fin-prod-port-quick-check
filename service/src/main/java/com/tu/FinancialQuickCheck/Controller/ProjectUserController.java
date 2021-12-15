@@ -1,5 +1,6 @@
 package com.tu.FinancialQuickCheck.Controller;
 
+import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.Service.ProjectUserService;
 import com.tu.FinancialQuickCheck.dto.ProjectUserDto;
 import com.tu.FinancialQuickCheck.dto.UserDto;
@@ -18,11 +19,10 @@ public class ProjectUserController {
     private ProjectUserService service;
 
 
-
-    @GetMapping(produces = "application/json")
-    public List<ProjectUserDto> findProjectUsersByProjectId(@PathVariable int projectID) {
-        return service.getProjectUsersByProjectId(projectID);
-    }
+//    @GetMapping(produces = "application/json")
+//    public List<ProjectUserDto> findProjectUsersByProjectId(@PathVariable int projectID) {
+//        return service.getProjectUsersByProjectId(projectID);
+//    }
 
 
     //TODO: (done - needs review) change according to API
@@ -30,10 +30,19 @@ public class ProjectUserController {
     @ResponseStatus(HttpStatus.CREATED)
     public List<ProjectUserDto> updateProjectUser(@RequestBody List<ProjectUserDto> projectUsers,
                                   @PathVariable int projectID) {
-        return service.wrapperUpdateProjectUser(projectID, projectUsers);
+
+        List<ProjectUserDto> tmp = service.updateProjectUsers(projectID, projectUsers);
+
+        if(tmp != null){
+            return tmp;
+        }else{
+            throw new ResourceNotFound("Project or User not Found.");
+        }
+
     }
 
-     //TODO: (done - needs review) change according to API
+
+    //TODO: (done - needs review) change according to API
      @DeleteMapping(produces = "application/json")
      public void deleteProjectUser(@RequestBody List<ProjectUserDto> projectUsers,
                                   @PathVariable int projectID) {
