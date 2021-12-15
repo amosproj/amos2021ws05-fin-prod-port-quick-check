@@ -98,14 +98,14 @@ export default function Rating() {
     };
 
     return (
-        <Page title="Wirtschaftliche Bewertung">
+        <Page title="Komplexitätsewertung">
             <Tabs>
                 <TabList>
                     <Tab>
-                        Produkt
+                        Treiber 1:
                     </Tab>
                     <Tab>
-                        Produktvariante
+                        Treiber 2:
                     </Tab>
                 </TabList>
                 <TabPanels>
