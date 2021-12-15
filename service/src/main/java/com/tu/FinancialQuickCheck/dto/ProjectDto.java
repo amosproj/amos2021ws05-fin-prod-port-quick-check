@@ -2,6 +2,7 @@ package com.tu.FinancialQuickCheck.dto;
 
 import com.tu.FinancialQuickCheck.db.ProductAreaEntity;
 import com.tu.FinancialQuickCheck.db.ProductEntity;
+import com.tu.FinancialQuickCheck.db.ProjectEntity;
 import com.tu.FinancialQuickCheck.db.ProjectUserEntity;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public class ProjectDto {
     public int projectID;
     public UUID creatorID;
     public String projectName;
-    public List<UserDto> members;
+    public List<ProjectUserDto> members;
     public List<ProductAreaDto> productAreas;
 //    public List<Product> products;
 
@@ -29,6 +30,14 @@ public class ProjectDto {
         this.projectName = projectName;
         this.members = convertProjectUserEntities(projectUserEntities);
         this.productAreas = convertProductAreaEntities(productEntities);
+    }
+
+    public ProjectDto(ProjectEntity project){
+        this.projectID = project.id;
+        this.projectName = project.name;
+        this.creatorID = UUID.fromString(project.creatorID);
+        this.members = convertProjectUserEntities(project.projectUserEntities);
+        this.productAreas = convertProductAreaEntities(project.productEntities);
     }
 
 
@@ -61,17 +70,12 @@ public class ProjectDto {
         return areas;
     }
 
-    private List<UserDto> convertProjectUserEntities(List<ProjectUserEntity> projectUserEntities) {
-        List<UserDto> members = new ArrayList<>();
+    private List<ProjectUserDto> convertProjectUserEntities(List<ProjectUserEntity> projectUserEntities) {
+        List<ProjectUserDto> members = new ArrayList<>();
 
         for (ProjectUserEntity member: projectUserEntities)
         {
-            members.add(new UserDto(
-                            UUID.fromString(member.projectUserId.getUser().id),
-                            member.projectUserId.getUser().username,
-                            member.projectUserId.getUser().email,
-                            member.role)
-                    );
+            members.add(new ProjectUserDto(member));
         }
         return members;
     }

@@ -21,7 +21,9 @@ import java.util.OptionalInt;
 @RequestMapping("projects")
 public class ProjectController {
 
+    @Autowired
     private ProjectService service;
+    @Autowired
     private ProductService productService;
 
     public ProjectController(ProjectService projectService, ProductService productService){
@@ -130,7 +132,7 @@ public class ProjectController {
 //    TODO: (done - needs review) change according to API
     @PostMapping( value = "/{projectID}/users", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public List<ProjectUserDto> createProjectUser(@RequestBody List<UserDto> members,
+    public List<ProjectUserDto> createProjectUser(@RequestBody List<ProjectUserDto> members,
                                                   @PathVariable int projectID) {
 
         return service.createProjectUsers(projectID, members);

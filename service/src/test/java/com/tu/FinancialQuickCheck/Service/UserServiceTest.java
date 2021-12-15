@@ -195,8 +195,7 @@ public class UserServiceTest {
                 () -> assertEquals(dto1.userName, out.userName),
                 () -> assertEquals(dto1.userEmail, out.userEmail),
                 () -> assertNotNull(out.userID),
-                () -> assertNull(out.password),
-                () -> assertNull(out.role));
+                () -> assertNull(out.password));
 
     }
 
