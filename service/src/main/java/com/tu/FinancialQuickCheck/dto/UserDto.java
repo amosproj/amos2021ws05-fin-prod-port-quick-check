@@ -7,15 +7,13 @@ import java.util.UUID;
 import java.util.regex.Pattern;
 
 
-//TODO: (prio: low) create userPasswordDto to manage Password outside of userDto
+//TODO: (done - already had it) create userPasswordDto to manage Password outside of userDto --> ProjectUserDto
 public class UserDto {
 
+    public UUID userID;
     public String userEmail;
     public String userName;
-    public UUID userID;
-    public Role role;
     public String password;
-
 
     public UserDto(){}
 
@@ -24,32 +22,12 @@ public class UserDto {
         this.userEmail = email;
     }
 
-    public UserDto(String email, Role role)
-    {
-        this.userEmail = email;
-        this.role = role;
-    }
 
     public UserDto(UUID userID, String email, String username)
     {
         this.userID = userID;
         this.userEmail = email;
         this.userName = username;
-    }
-
-    public UserDto(UUID userID, String email, Role role)
-    {
-        this.userID = userID;
-        this.userEmail =email;
-        this.role = role;
-    }
-
-    public UserDto(UUID userID, String userName, String email, Role role)
-    {
-        this.userID = userID;
-        this.userEmail = email;
-        this.userName = userName;
-        this.role = role;
     }
 
 
