@@ -38,7 +38,6 @@ function RatingRow({rating,editable, onChangeScore})
                     align="center"
                     size="md"
                     w="100%"
-                    isDisabled={!editable}
                     onChange={(e) => {
                         console.log(e.target.value);
                     }}
@@ -62,7 +61,6 @@ function RatingRow({rating,editable, onChangeScore})
                     align="center"
                     size="md"
                     w="25%"
-                    isDisabled={!editable}
                     onChange={(e) => {
                         console.log(e.target.value);
                     }}
