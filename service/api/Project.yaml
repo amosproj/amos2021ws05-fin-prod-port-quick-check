@@ -173,7 +173,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/userID'
+                $ref: '#/components/schemas/deleteProjetctUser'
       responses:
         200:
           description: "users successfully unassigned from project"
@@ -272,6 +272,10 @@ components:
           $ref: '#/components/schemas/userID'
         role:
           $ref: '#/components/schemas/role'
+    deleteProjetctUser:
+      properties:
+        userID:
+          $ref: '#/components/schemas/userID'
     members:
       type: array
       items:
@@ -346,6 +350,8 @@ components:
             description: unique identifiers of product areas
         members:
           $ref: '#/components/schemas/members'
+
+
 
   responses:
     5XXserverError:
