@@ -11,7 +11,7 @@ import TestRange from './pages/TestRange';
 
 import store from './store';
 import theme from './styles/theme';
-import Rating from "./pages/ratingPage/Rating";
+import Rating from './pages/ratingPage/Rating';
 
 function App() {
   return (
