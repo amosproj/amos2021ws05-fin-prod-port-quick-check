@@ -1,6 +1,7 @@
 import { React } from 'react';
 import { Button, Heading, IconButton, Spacer, List, Flex } from '@chakra-ui/react';
 import { DeleteIcon } from '@chakra-ui/icons';
+import { useStoreActions, useStoreState } from 'easy-peasy';
 
 import ConfirmClick from '../../components/ConfirmClick.jsx';
 
@@ -9,9 +10,9 @@ import AddAreaButton from './AddAreaButton.jsx';
 function ProductArea({ productArea }) {
   return (
     <>
-      <Button as="a" variant="secondary" rounded="3xl" href="/projects" w="full" py={9}>
+      <Button as="a" variant="secondary" rounded="md" href="/projects" w="full" py={5}>
         <Spacer />
-        <Heading size="lg" align="center">
+        <Heading size="md" align="center">
           {productArea.name}
         </Heading>
         <Spacer />
@@ -34,33 +35,33 @@ const areaMock = {
   2: { id: 2, name: 'Payments', category: 'Privat' },
 };
 
-export default function ProductAreaList({ editMode, areaIDs, handleChange }) {
-  const fetchArea = (areaID) => {
-    return areaMock[areaID];
-  };
+const fetchArea = (id) => {
+  return areaMock[id];
+};
 
-  const handleAddArea = (newID) => {
-    handleChange([...areaIDs, newID]);
-  };
-
-  const handleRemoveArea = (removeID) => () => {
-    const updatedAreaIDs = areaIDs.filter((m) => m !== removeID);
-    handleChange(updatedAreaIDs);
-  };
+export default function ProductAreaList({ editMode }) {
+  const productAreas = useStoreState((state) => state.project.data.productAreas);
+  const addProductArea = useStoreActions((actions) => actions.project.addProductArea);
+  const removeProductArea = useStoreActions((actions) => actions.project.removeProductArea);
 
   return (
     <>
       <List w="full" maxW={500} align="center" spacing={4} pb={5}>
-        {areaIDs.map((id) => (
-          <Flex gridGap={2} w="full" align="center">
+        {productAreas.map((id) => (
+          <Flex gridGap={4} w="full" align="center">
             <ProductArea key={id} productArea={fetchArea(id)} />
             {editMode ? (
-              <RemoveButton variant="whisper" size="lg" handleRemove={handleRemoveArea(id)} />
+              <ConfirmClick
+                onConfirm={() => removeProductArea(id)}
+                confirmPrompt="Remove this product area?"
+              >
+                <IconButton icon={<DeleteIcon />} variant="whisper" size="lg" w={20} />
+              </ConfirmClick>
             ) : undefined}
           </Flex>
         ))}
         {editMode ? (
-          <AddAreaButton variant="primary" size="lg" w={32} onAdd={handleAddArea}></AddAreaButton>
+          <AddAreaButton variant="primary" size="lg" w={20} onAdd={addProductArea}></AddAreaButton>
         ) : (
           <div />
         )}
