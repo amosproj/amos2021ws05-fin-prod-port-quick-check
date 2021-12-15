@@ -1,6 +1,6 @@
 import {React, useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
-import {Button, Heading, HStack, Input, List, Spacer} from "@chakra-ui/react";
+import {Button, Heading, HStack, Input, List, Spacer, Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import Page from "../../components/Page";
 import Card from "../../components/Card";
 import MemberTable from "../projectPage/MemberTable";
@@ -98,10 +98,29 @@ export default function Rating() {
     };
 
     return (
-        <Page title="Ratings">
-            <Card direction="column">
-                <RatingTable editMode={editMode} ratings={ratingsData.ratings} handleChange={setRatings} />
-            </Card>
+        <Page title="Wirtschaftliche Bewertung">
+            <Tabs>
+                <TabList>
+                    <Tab>
+                        Produkt
+                    </Tab>
+                    <Tab>
+                        Produktvariante
+                    </Tab>
+                </TabList>
+                <TabPanels>
+                    <TabPanel>
+                        <Card direction="column">
+                            <RatingTable editMode={editMode} ratings={ratingsData.ratings} handleChange={setRatings} />
+                        </Card>
+                    </TabPanel>
+                    <TabPanel>
+                        <Card direction="column">
+                            <RatingTable editMode={editMode} ratings={ratingsData.ratings} handleChange={setRatings} />
+                        </Card>
+                    </TabPanel>
+                </TabPanels>
+            </Tabs>
         </Page>
     );
 }

@@ -77,7 +77,7 @@ export default function RatingTable({editMode,ratings, handleChange})
 {
     const handleScoreChange = (rating) => (newRating) => {
         // This is a curried function in JS
-        let index = ratings.map((r) => r.score).indexOf(rating.score);
+        let index = ratings.map((r) => r.rating.criterion).indexOf(rating.rating.criterion);
         rating.score = newRating.target.value
         ratings[index] = rating
         handleChange(ratings);
