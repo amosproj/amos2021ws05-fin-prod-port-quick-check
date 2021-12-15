@@ -98,7 +98,7 @@ export default function Rating() {
     };
 
     return (
-        <Page title="Komplexitätsewertung">
+        <Page title="Komplexitätsbewertung">
             <Tabs>
                 <TabList>
                     <Tab>
