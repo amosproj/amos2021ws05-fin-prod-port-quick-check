@@ -22,22 +22,22 @@ import { useState } from 'react';
 const mock = [
   {
     name: 'Interview 1',
-    author: 'Theodor Schabicki',
+    author: 'Franz Kafka',
     id: 0,
   },
   {
     name: 'Interview 2',
-    author: 'Theodor Schabicki',
+    author: 'Heinrich Heine',
     id: 1,
   },
   {
     name: 'Analysis 1',
-    author: 'Theodor Schabicki',
+    author: 'Günther Netzer',
     id: 2,
   },
   {
     name: 'Paper 1',
-    author: 'Theodor Schabicki',
+    author: 'Olaf Scholz',
     id: 3,
   },
 ];
