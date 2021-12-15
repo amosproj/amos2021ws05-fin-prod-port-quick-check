@@ -7,6 +7,7 @@ import com.tu.FinancialQuickCheck.db.*;
 import com.tu.FinancialQuickCheck.dto.ProductAreaDto;
 import com.tu.FinancialQuickCheck.dto.SmallProjectDto;
 import com.tu.FinancialQuickCheck.dto.UserDto;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -980,4 +981,71 @@ public class ProjectServiceTest {
         assertThat(projectEntity.projectUserEntities.size()).isEqualTo(numMembersIn-1);
         assertNotEquals(projectEntity.projectUserEntities.size(), numMembersIn);
     }
+
+
+    /**
+     * tests for createProjectUsers()
+     *
+     * testCreateProjectUser1: one or both of the necessary IDs do not exist --> throw ResourceNotFound Exception
+     * testCreateProjectUser2: IDs exist, Role is missing --> throw BadRequest Exception
+     * testCreateProjectUser3: IDs exist, Role does not exist --> throw BadRequest Exception
+     * testCreateProjectUser4: Input correct --> tbd
+     */
+    @Test
+    @Disabled
+    public void testCreateProjectUser1() {
+        // Step 0: init test object
+
+
+        // Step 1: provide knowledge
+
+
+        // Step 2: Execute test method()
+
+        // Step 3: assert result
+//        String expectedMessage = ;
+//        String actualMessage = exception.getMessage();
+//
+//        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    @Disabled
+    public void testCreateProjectUser2() {
+        // Step 0: init test object
+
+        // Step 1: provide knowledge
+
+        // Step 2: Execute test method()
+
+        // Step 3: assert result
+
+    }
+
+    @Test
+    @Disabled
+    public void testCreateProjectUser3() {
+        // Step 0: init test object
+
+        // Step 1: provide knowledge
+
+        // Step 2: Execute test method()
+
+        // Step 3: assert result
+
+    }
+
+    @Test
+    @Disabled
+    public void testCreateProjectUser4() {
+        // Step 0: init test object
+
+        // Step 1: provide knowledge
+
+        // Step 2: Execute test method()
+
+        // Step 3: assert result
+
+    }
+
 }

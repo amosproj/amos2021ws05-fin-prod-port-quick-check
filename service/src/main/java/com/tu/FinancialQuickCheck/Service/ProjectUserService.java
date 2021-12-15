@@ -15,15 +15,17 @@ import java.util.UUID;
 
 
 /**
- * Underlying Service for User- aka. member-management.
+ * Underlying Service for (un)assigning users to projects.
  * Acts as connection between presentation Layer and persistence layer.
  */
 
 @Service
 public class ProjectUserService {
-
+    @Autowired
     private final UserRepository userRepository;
+    @Autowired
     private final ProjectRepository projectRepository;
+    @Autowired
     private final ProjectUserRepository repository;
 
     @Autowired
@@ -60,43 +62,6 @@ public class ProjectUserService {
             }
 
             return projectUserDtos;
-        }
-    }
-
-    //TODO: (test)
-    public List<ProjectUserDto> wrapperCreateProjectUser(int projectID, List<ProjectUserDto> projectUsers) {
-        List<ProjectUserEntity> entities = new ArrayList<>();
-        List<ProjectUserDto> out = new ArrayList<>();
-
-        for (ProjectUserDto projectUserDto : projectUsers) {
-                ProjectUserEntity entity = createProjectUser(projectID, projectUserDto);
-                entities.add(entity);
-                out.add(new ProjectUserDto(entity));
-        }
-
-        repository.saveAll(entities);
-
-        return out;
-    }
-
-
-    //TODO: (done - needs review) check for role -> if role dosent exist send "BAD REQUEST"
-    private ProjectUserEntity createProjectUser(int projectID, ProjectUserDto projectUserDto){
-        if (projectUserDto.role == null) {
-            throw new BadRequest("Input is missing/incorrect.");
-        } else if (!userRepository.existsByEmail(projectUserDto.userEmail)) {
-            throw new ResourceNotFound("User does not exist.");
-        } else if (!projectRepository.existsById(projectID)) {
-            throw new ResourceNotFound("Project does not exist.");
-        } else {
-            ProjectUserEntity entity = new ProjectUserEntity();
-
-            UserEntity u = userRepository.findById(projectUserDto.userID.toString()).get();
-            entity.projectUserId = new ProjectUserId(
-                    projectRepository.findById(projectID).get(), u);
-            entity.role = projectUserDto.role;
-
-            return entity;
         }
     }
 

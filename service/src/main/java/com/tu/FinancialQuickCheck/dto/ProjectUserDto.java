@@ -13,6 +13,7 @@ public class ProjectUserDto {
     public String userEmail;
     public Role role;
 
+
     public ProjectUserDto(){}
 
     public ProjectUserDto(UUID userID, Role role, String email, int projectID, String username)

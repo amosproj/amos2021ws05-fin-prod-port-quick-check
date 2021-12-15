@@ -2,6 +2,7 @@ package com.tu.FinancialQuickCheck.Controller;
 
 import com.tu.FinancialQuickCheck.Service.ProjectUserService;
 import com.tu.FinancialQuickCheck.dto.ProjectUserDto;
+import com.tu.FinancialQuickCheck.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -23,13 +24,6 @@ public class ProjectUserController {
         return service.getProjectUsersByProjectId(projectID);
     }
 
-    //TODO: (done - needs review) change according to API
-    @PostMapping(produces = "application/json")
-    @ResponseStatus(HttpStatus.CREATED)
-    public List<ProjectUserDto> createProjectUser(@RequestBody List<ProjectUserDto> projectUsers,
-                                            @PathVariable int projectID) {
-        return service.wrapperCreateProjectUser(projectID, projectUsers);
-    }
 
     //TODO: (done - needs review) change according to API
     @PutMapping(produces = "application/json")

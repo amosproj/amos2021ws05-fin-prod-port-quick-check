@@ -5,10 +5,7 @@ import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.RatingArea;
 import com.tu.FinancialQuickCheck.Service.ProductService;
 import com.tu.FinancialQuickCheck.Service.ProjectService;
-import com.tu.FinancialQuickCheck.dto.ProductAreaDto;
-import com.tu.FinancialQuickCheck.dto.ProductDto;
-import com.tu.FinancialQuickCheck.dto.ProjectDto;
-import com.tu.FinancialQuickCheck.dto.SmallProjectDto;
+import com.tu.FinancialQuickCheck.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -127,6 +124,16 @@ public class ProjectController {
         }else{
             throw new BadRequest("Input is incorrect/missing");
         }
+    }
+
+
+//    TODO: (done - needs review) change according to API
+    @PostMapping( value = "/{projectID}/users", produces = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public List<ProjectUserDto> createProjectUser(@RequestBody List<UserDto> members,
+                                                  @PathVariable int projectID) {
+
+        return service.createProjectUsers(projectID, members);
     }
 
 }
