@@ -1,0 +1,25 @@
+POST http://localhost:8080/projects/100/users
+Content-Type: application/json
+
+[
+  {
+    "userEmail": "maxr@amos.de",
+    "role": "CLIENT"
+  },
+  {
+    "userEmail": "maxb@amos.de",
+    "role": "CLIENT"
+  },
+  {
+    "role": "CLIENT"
+  }
+]
+
+<> 2021-12-15T113604.400.json
+<> 2021-12-15T113400.400.json
+<> 2021-12-15T113230.400.json
+<> 2021-12-15T113143.400.json
+<> 2021-12-15T113033.400.json
+<> 2021-12-15T112739.404.json
+<> 2021-12-15T112638.201.json
+<> 2021-12-15T112504.201.json

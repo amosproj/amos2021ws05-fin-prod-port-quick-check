@@ -1,0 +1,12 @@
+POST http://localhost:8080/projects/100/users
+Content-Type: application/json
+
+[
+  {
+    "userEmail": "ines@amos.de",
+    "role": "CLIENT"
+  }
+]
+
+<> 2021-12-15T112638.201.json
+<> 2021-12-15T112504.201.json
