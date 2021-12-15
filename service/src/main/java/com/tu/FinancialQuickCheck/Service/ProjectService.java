@@ -68,7 +68,6 @@ public class ProjectService {
     //TODO: (done - nothing changed) is the creator of the project included in the members list? --> answer: yes
     @Transactional
     public ProjectDto createProject(ProjectDto projectDto) {
-
         // Step 0: Check if input contains required information
         if(projectDto.projectName != null && projectDto.productAreas != null && projectDto.creatorID != null
                 && projectDto.members != null && !projectDto.members.isEmpty() && !projectDto.productAreas.isEmpty()){
@@ -78,22 +77,8 @@ public class ProjectService {
             newProject.creatorID = projectDto.creatorID.toString();
             newProject.name = projectDto.projectName;
 
-            // add product areas to project through DUMMY data in product_entity table
-            newProject.productEntities = new ArrayList<>();
-            Set<ProductAreaDto> newProductAreas = new HashSet<>(projectDto.productAreas);
-            for (ProductAreaDto productArea : newProductAreas){
-                Optional<ProductAreaEntity> tmp = productAreaRepository.findById(productArea.id);
-                if(tmp.isPresent()){
-//                    System.out.println("Create DUMMY data for productArea: " + productArea.id);
-                    ProductEntity product = new ProductEntity();
-                    product.project = newProject;
-                    product.productarea = tmp.get();
-                    product.name = "DUMMY";
-                    newProject.productEntities.add(product);
-                }else{
-                    throw new ResourceNotFound("productArea " + productArea.id + " does not exist" );
-                }
-            }
+            // assign productAreas to project through DUMMY data in product_entity table
+            newProject.productEntities = assignProductAreasToProject(projectDto, newProject, false);
 
             // assign members to projects
             newProject.projectUserEntities = new ArrayList<>();
@@ -102,12 +87,7 @@ public class ProjectService {
             repository.save(newProject);
 
             // return created projectID
-            return new ProjectDto(
-                    newProject.id,
-                    newProject.name,
-                    UUID.fromString(newProject.creatorID),
-                    newProject.productEntities,
-                    newProject.projectUserEntities);
+            return new ProjectDto(newProject);
         }else{
             return null;
         }
@@ -127,12 +107,7 @@ public class ProjectService {
         if (projectEntity.isEmpty()) {
             return null;
         }else{
-            return new ProjectDto(
-                    projectEntity.get().id,
-                    projectEntity.get().name,
-                    UUID.fromString(projectEntity.get().creatorID),
-                    projectEntity.get().productEntities,
-                    projectEntity.get().projectUserEntities);
+            return new ProjectDto(projectEntity.get());
         }
 
     }
@@ -159,39 +134,26 @@ public class ProjectService {
                 if(projectDto.projectName != null){entity.name = projectDto.projectName;}
 
                 // add none existing product areas
-                if(projectDto.productAreas != null){
-                    for (ProductAreaDto productArea : projectDto.productAreas){
-                        if(productAreaRepository.existsById(productArea.id)){
-                            if(!productRepository.existsByProjectAndProductarea(entity,
-                                    productAreaRepository.getById(productArea.id))){
-                                ProductEntity product = new ProductEntity();
-                                product.project = entity;
-                                product.productarea = productAreaRepository.getById(productArea.id);
-                                product.name = "DUMMY";
-                                entity.productEntities.add(product);
-                            }
-                        }else{
-                            throw new ResourceNotFound("productArea " + productArea.id + " does not exist");
-                        }
-                    }
-                }
+                List<ProductEntity> newProductEntities = assignProductAreasToProject(projectDto, entity, true);
+                entity.productEntities.addAll(newProductEntities);
+                productRepository.saveAllAndFlush(newProductEntities);
 
                 // unassign existing users from project
                 long numDeletedRecords = projectUserRepository.deleteByProjectUserId_project(entity);
                 repository.flush();
 
                 // assign new users to project
-                assignMembersToProject(projectDto.members, entity);
+                List<ProjectUserDto> newUsers = createProjectUsers(projectID, projectDto.members);
 
-                repository.save(entity);
-                return new ProjectDto(entity.id, entity.name, UUID.fromString(entity.creatorID),
-                        entity.productEntities , entity.projectUserEntities);
+                repository.saveAndFlush(entity);
+                return new ProjectDto(entity);
             }
         }
     }
 
+
     //TODO: (done - needs review) --> write automated tests
-    public List<ProjectUserDto> createProjectUsers(int projectID, List<UserDto> members) {
+    public List<ProjectUserDto> createProjectUsers(int projectID, List<ProjectUserDto> members) {
 
         if(!repository.existsById(projectID)){
             throw new ResourceNotFound("Project does not exist.");
@@ -212,12 +174,12 @@ public class ProjectService {
 
 
     //TODO: (done - needs review) --> user_entity primary key changed
-    public List<ProjectUserEntity> assignMembersToProject(List<UserDto> members, ProjectEntity projectEntity){
+    public List<ProjectUserEntity> assignMembersToProject(List<ProjectUserDto> members, ProjectEntity projectEntity){
         List<ProjectUserEntity> assignedMembers = new ArrayList<>();
 
         // check if members exist
-        Set<UserDto> newUsers = new HashSet<>(members);
-        for(UserDto member: newUsers){
+        Set<ProjectUserDto> newUsers = new HashSet<>(members);
+        for(ProjectUserDto member: newUsers){
             if((member.userID == null && member.userEmail == null) || member.role == null){
                 throw new BadRequest("Input is missing/incorrect");
             }else{
@@ -231,15 +193,13 @@ public class ProjectService {
                     throw new ResourceNotFound("User does not exist.");
                 }
             }
-
         }
-
         return assignedMembers;
     }
 
 
     //TODO: (done - needs review)
-    public Optional<UserEntity> userExists(UserDto user){
+    public Optional<UserEntity> userExists(ProjectUserDto user){
 
         if(user.userID != null){
             return userRepository.findById(user.userID.toString());
@@ -250,6 +210,30 @@ public class ProjectService {
         }
     }
 
+
+    public List<ProductEntity> assignProductAreasToProject(ProjectDto projectDto, ProjectEntity project, Boolean isPut){
+
+        List<ProductEntity> productEntities = new ArrayList<>();
+        Set<ProductAreaDto> newProductAreas = new HashSet<>(projectDto.productAreas);
+        for (ProductAreaDto productArea : newProductAreas){
+            Optional<ProductAreaEntity> tmp = productAreaRepository.findById(productArea.id);
+            if(tmp.isPresent()){
+                if(isPut && productRepository.existsByProjectAndProductarea(project, tmp.get())){
+                    continue;
+                }else{
+                    ProductEntity product = new ProductEntity();
+                    product.project = project;
+                    product.productarea = tmp.get();
+                    product.name = "DUMMY";
+                    productEntities.add(product);
+                }
+            }else{
+                throw new ResourceNotFound("productArea " + productArea.id + " does not exist" );
+            }
+        }
+
+        return productEntities;
+    }
 
 // TODO: auskommentiert lassen bisher keine Anforderung dafür vorhanden
 //    public void deleteProject(int projectID) {
