@@ -1,6 +1,5 @@
 package com.tu.FinancialQuickCheck.dto;
 
-import com.tu.FinancialQuickCheck.Score;
 import org.junit.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

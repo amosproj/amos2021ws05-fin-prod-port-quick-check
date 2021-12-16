@@ -19,10 +19,11 @@ public class ProjectUserController {
     private ProjectUserService service;
 
 
-//    @GetMapping(produces = "application/json")
-//    public List<ProjectUserDto> findProjectUsersByProjectId(@PathVariable int projectID) {
-//        return service.getProjectUsersByProjectId(projectID);
-//    }
+    @GetMapping(produces = "application/json")
+    public List<ProjectUserDto> findProjectUsersByProjectId(@PathVariable int projectID) {
+
+        return service.getProjectUsersByProjectId(projectID);
+    }
 
 
     //TODO: (done - needs review) change according to API

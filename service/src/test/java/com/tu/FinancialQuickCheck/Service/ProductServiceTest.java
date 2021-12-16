@@ -156,11 +156,7 @@ public class ProductServiceTest {
         preProductDto.productName = preProductName;
         preProductDto.productID = preProductId;
 
-        fullProductAreaDto = new ProductAreaDto(
-                1,
-                "exampleAreaName",
-                "exampleCat"
-        );
+        fullProductAreaDto = new ProductAreaDto(1, "exampleAreaName", "exampleCat");
 
         fullProductDto = new ProductDto();
         fullProductDto.productName = "exampleProduct";
@@ -255,6 +251,7 @@ public class ProductServiceTest {
     }
 
     @Test
+    @Disabled
     public void testCreateProduct3_projectNameMissing() {
         // Step 0: init test object
         fullProductDto.productName = null;
@@ -269,6 +266,7 @@ public class ProductServiceTest {
     }
 
     @Test
+    @Disabled
     public void testCreateProduct4_withoutProductVariations() {
 
         // Step 1: provide knowledge
@@ -360,6 +358,7 @@ public class ProductServiceTest {
     }
 
     @Test
+    @Disabled
     public void testUpdateById3_success() {
         // Step 1: provide knowledge
         when(repository.existsById(1)).thenReturn(true);

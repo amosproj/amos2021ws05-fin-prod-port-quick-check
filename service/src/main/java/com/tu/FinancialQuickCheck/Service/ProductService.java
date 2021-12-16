@@ -157,7 +157,6 @@ public class ProductService {
                     productsByProject.add(addProduct);
                 }
             }
-
             return productsByProject;
         }else{
             throw new ResourceNotFound("project " + projectID + "does not exist.");

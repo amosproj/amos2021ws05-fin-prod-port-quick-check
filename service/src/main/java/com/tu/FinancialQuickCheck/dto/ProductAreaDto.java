@@ -1,6 +1,8 @@
 package com.tu.FinancialQuickCheck.dto;
 
 
+import com.tu.FinancialQuickCheck.db.ProductAreaEntity;
+
 import java.util.Objects;
 
 public class ProductAreaDto {
@@ -19,6 +21,12 @@ public class ProductAreaDto {
         this.id = id;
         this.name = name;
         this.category = category;
+    }
+
+    public ProductAreaDto(ProductAreaEntity productAreaEntity){
+        this.id = productAreaEntity.id;
+        this.name = productAreaEntity.name;
+        this.category = productAreaEntity.category;
     }
 
     @Override

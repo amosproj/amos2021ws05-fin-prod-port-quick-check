@@ -1,6 +1,7 @@
 package com.tu.FinancialQuickCheck.dto;
 
 import com.tu.FinancialQuickCheck.RatingArea;
+import com.tu.FinancialQuickCheck.db.RatingEntity;
 
 
 public class RatingDto {
@@ -15,11 +16,11 @@ public class RatingDto {
 
     public RatingDto(){}
 
-    public RatingDto(int id, String criterion, String category, RatingArea ratingArea)
+    public RatingDto(RatingEntity ratingEntity)
     {
-        this.id = id;
-        this.criterion = criterion;
-        this.category = category;
-        this.ratingArea = ratingArea;
+        this.id = ratingEntity.id;
+        this.criterion = ratingEntity.criterion;
+        this.category = ratingEntity.category;
+        this.ratingArea = ratingEntity.ratingarea;
     }
 }

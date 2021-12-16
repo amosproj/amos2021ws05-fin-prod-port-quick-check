@@ -3,6 +3,7 @@ package com.tu.FinancialQuickCheck.Service;
 import com.tu.FinancialQuickCheck.Exceptions.BadRequest;
 import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.db.*;
+import com.tu.FinancialQuickCheck.dto.ListOfProjectUserDto;
 import com.tu.FinancialQuickCheck.dto.ProjectUserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,34 +38,17 @@ public class ProjectUserService {
         this.repository = projectUserRepository;
     }
 
+    //TODO: (prio: high) include in API documentation (Project.yaml)
+    public List<ProjectUserDto> getProjectUsersByProjectId(int projectID) {
 
-//    public List<ProjectUserDto> getProjectUsersByProjectId(int projectID) {
-//
-//        Optional<ProjectEntity> entity = projectRepository.findById(projectID);
-//
-//        if (entity.isEmpty()) {
-//            throw new ResourceNotFound("projectID " + projectID + " not found");
-//        } else {
-//
-//            Iterable<ProjectUserEntity> entities = entity.get().projectUserEntities;
-//
-//            List<ProjectUserDto> projectUserDtos = new ArrayList<>() {
-//            };
-//
-//            for (ProjectUserEntity tmp : entities) {
-//                projectUserDtos.add(new ProjectUserDto(
-//                        UUID.fromString(tmp.projectUserId.getUser().id),
-//                        tmp.role,
-//                        tmp.projectUserId.getUser().email,
-//                        tmp.projectUserId.getProject().id,
-//                        tmp.projectUserId.getUser().username
-//                ));
-//            }
-//
-//            return projectUserDtos;
-//        }
-//    }
+        Optional<ProjectEntity> entity = projectRepository.findById(projectID);
 
+        if (entity.isEmpty()) {
+            throw new ResourceNotFound("projectID " + projectID + " not found");
+        } else {
+            return new ListOfProjectUserDto(entity.get().projectUserEntities).projectUsers;
+        }
+    }
 
 
     //TODO: (test)
@@ -91,6 +75,7 @@ public class ProjectUserService {
         }
     }
 
+
     //TODO: (test)
     public ProjectUserEntity updateProjectUser(int projectID, ProjectUserDto u) {
 
@@ -112,9 +97,6 @@ public class ProjectUserService {
     }
 
 
-
-
-
     //TODO: (test)
     public void wrapperDeleteProjectUser(int projectID, List<ProjectUserDto> projectUsers){
 
@@ -124,7 +106,7 @@ public class ProjectUserService {
     }
 
 
-    // TODO: (Max) implement testcases
+    // TODO: (test)
     public void deleteProjectUser(int projectID, ProjectUserDto projectUserDto) {
 
         if (projectUserDto.userID != null) {

@@ -23,21 +23,12 @@ public class ProjectDto {
     public ProjectDto() {}
 
 
-    public ProjectDto(int projectID, String projectName, UUID creator,
-                      List<ProductEntity> productEntities, List<ProjectUserEntity> projectUserEntities){
-        this.projectID = projectID;
-        this.creatorID = creator;
-        this.projectName = projectName;
-        this.members = convertProjectUserEntities(projectUserEntities);
-        this.productAreas = convertProductAreaEntities(productEntities);
-    }
-
     public ProjectDto(ProjectEntity project){
         this.projectID = project.id;
         this.projectName = project.name;
         this.creatorID = UUID.fromString(project.creatorID);
         this.members = convertProjectUserEntities(project.projectUserEntities);
-        this.productAreas = convertProductAreaEntities(project.productEntities);
+        this.productAreas = new ListOfProductAreaDto(project).productAreas;
     }
 
 
@@ -61,15 +52,6 @@ public class ProjectDto {
 //        return products;
 //    }
 
-    private List<ProductAreaDto> convertProductAreaSet(List<Integer> productAreas) {
-        List<ProductAreaDto> areas = new ArrayList<>();
-        for (Integer productAreaId: productAreas)
-        {
-            areas.add(new ProductAreaDto(productAreaId));
-        }
-        return areas;
-    }
-
     private List<ProjectUserDto> convertProjectUserEntities(List<ProjectUserEntity> projectUserEntities) {
         List<ProjectUserDto> members = new ArrayList<>();
 
@@ -78,20 +60,5 @@ public class ProjectDto {
             members.add(new ProjectUserDto(member));
         }
         return members;
-    }
-
-    private List<ProductAreaDto> convertProductAreaEntities(List<ProductEntity> productEntities) {
-        //TODO: (prio: low) greift alle Produktdaten für project ab, es würde ausreichen nur die DUMMY Daten abzugreifen
-        HashSet<ProductAreaDto> areas = new HashSet<>();
-
-        for (ProductEntity product: productEntities)
-        {
-            areas.add(new ProductAreaDto(
-                    product.productarea.id,
-                    product.productarea.name,
-                    product.productarea.category
-            ));
-        }
-        return new ArrayList<>(areas);
     }
 }

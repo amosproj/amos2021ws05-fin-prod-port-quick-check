@@ -21,6 +21,8 @@ import static org.mockito.Mockito.when;
 import java.util.*;
 import java.util.logging.Logger;
 
+//TODO: möglicher Ansatz --> AfterEach implementieren
+
 @ExtendWith(MockitoExtension.class)
 public class ProjectServiceTest {
 
