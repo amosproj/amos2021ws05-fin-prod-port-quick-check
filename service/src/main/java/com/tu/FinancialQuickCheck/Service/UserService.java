@@ -98,7 +98,7 @@ public class UserService {
     //TODO: (prio: low) add constraints for input --> check if String is empty else return Bad Request
     public UserDto updateUserByEmail(UserDto userDto, String email) {
 
-        Optional<UserEntity> entity = repository.findById(email);
+        Optional<UserEntity> entity = repository.findByEmail(email);
 
         if (entity.isEmpty()) {
             throw new ResourceNotFound("User not found");
