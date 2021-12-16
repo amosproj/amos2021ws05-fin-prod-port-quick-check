@@ -17,7 +17,7 @@ public class ProductAreaEntity {
     @Column(name = "category")
     public String category;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "productarea")
     public List<ProductEntity> productEntities;
 

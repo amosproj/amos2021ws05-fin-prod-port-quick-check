@@ -23,11 +23,18 @@ public class ProductController {
         return service.findById(productID);
     }
 
+    //TODO: (done - needs review) add attribute comment
+    //TODO: (prio: ??) change output --> waiting for API review to finilize
     @PutMapping("/{productID}")
     public void updateProduct(@RequestBody ProductDto productDto, @PathVariable Integer productID) {
-        ProductDto tmp = service.updateById(productDto, productID);
-        if(tmp == null){
-            throw new BadRequest("Input missing/incorrect");
+
+        if(productDto.productName == null && productDto.comment == null && productDto.resources == null){
+            throw new BadRequest("Input is missing/incorrect");
+        }else{
+            ProductDto tmp = service.updateById(productDto, productID);
+            if(tmp == null){
+                throw new BadRequest("Input missing/incorrect");
+            }
         }
     }
 

@@ -58,7 +58,7 @@ public class UserService {
                 return new UserDto(UUID.fromString(entity.get().id), entity.get().email, entity.get().username);
 
             }else{
-                throw new ResourceNotFound("User Email " + email + " not found");
+                throw new ResourceNotFound("User not found");
             }
 
         }else{
@@ -69,12 +69,12 @@ public class UserService {
 
     /**
      * create new User and saves in (user)repository
-     * TODO: attribut email ist anders benannt in API, muss angepasst werden
-     * TODO: check input: email sollte in form einer email sein
      *
      * @param userDto
      * @return UserDto
      */
+
+    //TODO: (prio: low) add constraints for input --> check if String is empty else return Bad Request
     public UserDto createUser(UserDto userDto) {
 
         if (userDto.userName != null && userDto.userEmail != null && userDto.password != null
@@ -85,6 +85,7 @@ public class UserService {
             newUser.email = userDto.userEmail;
             newUser.password = userDto.password;
             repository.save(newUser);
+
             return new UserDto(UUID.fromString(newUser.id), newUser.email, newUser.username);
         }else{
             return null;
@@ -92,18 +93,15 @@ public class UserService {
     }
 
 
-    /**
-     * search for ID in repository and updates if found
-     *
-     * @param userDto
-     * @param userID
-     */
-    /**public UserDto updateByUserID(UserDto userDto, UUID userID) {
 
-        Optional<UserEntity> entity = repository.findById(userID.toString());
+    //TODO: (prio: medium) Discuss Update By ID and Update By Email with Frontend, should it be possible to update userEmail --> yes
+    //TODO: (prio: low) add constraints for input --> check if String is empty else return Bad Request
+    public UserDto updateUserByEmail(UserDto userDto, String email) {
+
+        Optional<UserEntity> entity = repository.findByEmail(email);
 
         if (entity.isEmpty()) {
-            throw new ResourceNotFound("userID " + userID + " not found");
+            throw new ResourceNotFound("User not found");
         } else if ((userDto.userEmail == null && userDto.userName == null
                 && userDto.password == null) || (userDto.userEmail != null && !validateEmail(userDto.userEmail))){
             return null;
@@ -128,36 +126,6 @@ public class UserService {
             return new UserDto(UUID.fromString(entity.get().id), entity.get().email, entity.get().username);
 
         }
-    }**/
-
-    public UserDto updateUserByEmail(UserDto userDto, String email) {
-
-        Optional<UserEntity> entity = repository.findById(email);
-
-        if (entity.isEmpty()) {
-            throw new ResourceNotFound("user email: " + email + " not found");
-        } else if ((userDto.userEmail == null && userDto.userName == null
-                && userDto.password == null) || (userDto.userEmail != null && !validateEmail(userDto.userEmail))){
-            return null;
-        } else {
-            entity.map(
-                    user -> {
-                        if (userDto.password != null) {
-                            user.password = userDto.password;
-                        }
-
-                        if (userDto.userName != null) {
-                            user.username = userDto.userName;
-                        }
-
-                        return repository.save(user);
-                    });
-
-            return new UserDto(UUID.fromString(entity.get().id), entity.get().email, entity.get().username);
-
-        }
-
-
     }
 
 
@@ -166,6 +134,7 @@ public class UserService {
      *
      * @param userID
      */
+    //TODO: (prio low) discuss Admin accsess with frontend
     public void deleteUserById(UUID userID) {
 
         if (!repository.existsById(userID.toString())) {
@@ -183,5 +152,44 @@ public class UserService {
                 .matcher(emailAddress)
                 .matches();
     }
+
+    /**
+     * search for ID in repository and updates if found
+     *
+     * @param userDto
+     * @param userID
+     */
+
+    /**public UserDto updateByUserID(UserDto userDto, UUID userID) {
+
+     Optional<UserEntity> entity = repository.findById(userID.toString());
+
+     if (entity.isEmpty()) {
+     throw new ResourceNotFound("userID " + userID + " not found");
+     } else if ((userDto.userEmail == null && userDto.userName == null
+     && userDto.password == null) || (userDto.userEmail != null && !validateEmail(userDto.userEmail))){
+     return null;
+     } else {
+     entity.map(
+     user -> {
+     if (userDto.userEmail != null) {
+     user.email = userDto.userEmail;
+     }
+
+     if (userDto.password != null) {
+     user.password = userDto.password;
+     }
+
+     if (userDto.userName != null) {
+     user.username = userDto.userName;
+     }
+
+     return repository.save(user);
+     });
+
+     return new UserDto(UUID.fromString(entity.get().id), entity.get().email, entity.get().username);
+
+     }
+     }**/
 
 }

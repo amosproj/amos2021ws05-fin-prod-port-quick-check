@@ -19,31 +19,37 @@ public class ProductRatingController {
         this.service = productRatingService;
     }
 
+    //TODO: (done - needs review) return empty list or return Error if no ratings exist? --> empty list
     @GetMapping()
     public ProductDto getProductRatings(
             @PathVariable int productID,
             @RequestParam(required = false) RatingArea ratingArea) {
 
-        ProductDto p = service.getProductRatings(productID, ratingArea);
+        ProductDto tmp = service.getProductRatings(productID, ratingArea);
 
-        if(p.ratings.isEmpty()){
-            throw new ResourceNotFound("No ratings for productID" + productID + " found.");
+        if(tmp == null){
+            throw new ResourceNotFound("productID " + productID + " does not exist" );
         }else{
-            return p;
+            return tmp;
         }
 
     }
 
-    @PostMapping()
-    public void createProductRatings(@RequestBody ProductDto productDto, @PathVariable Integer productID) {
 
-        service.createProductRatings(productDto, productID);
+    //TODO: (done - needs review) add consumes and produces
+    //TODO: (done - needs review) change output according to API
+    @PostMapping(consumes = "application/json", produces = "application/json")
+    public ProductDto createProductRatings(@RequestBody ProductDto productDto, @PathVariable Integer productID) {
+
+        return service.createProductRatings(productDto, productID);
     }
 
-    @PutMapping()
-    public void updateProductRatings(@RequestBody ProductDto productDto, @PathVariable Integer productID) {
+    //TODO: (done - needs review) add consumes
+    //TODO: (done - needs review) change output according to API
+    @PutMapping(consumes = "application/json")
+    public ProductDto updateProductRatings(@RequestBody ProductDto productDto, @PathVariable Integer productID) {
 
-        service.updateProductRatings(productDto, productID);
+        return service.updateProductRatings(productDto, productID);
     }
 
 }

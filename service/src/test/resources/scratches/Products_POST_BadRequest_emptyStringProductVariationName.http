@@ -1,0 +1,27 @@
+POST localhost:8080/projects/100/products
+Content-Type: application/json
+
+{
+  "productName": "Swaps",
+  "productArea": {
+    "id": "1"
+  },
+  "comment": "comment for product swaps",
+  "resources": [
+    "string"
+  ],
+  "productVariations": [
+    {
+      "productName": "     ",
+      "comment": "comment for product optionen",
+      "resources": [
+        "string"
+      ]
+    }
+  ]
+}
+
+<> 2021-12-13T143335.400.json
+<> 2021-12-13T142821.500.json
+<> 2021-12-13T141302.400.json
+<> 2021-12-13T141219.201.json

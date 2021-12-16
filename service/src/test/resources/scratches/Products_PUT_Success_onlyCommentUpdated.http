@@ -1,0 +1,12 @@
+PUT localhost:8080/products/3
+Content-Type: application/json
+
+{
+  "comment": "Kommentar 123"
+
+}
+
+<> 2021-12-13T154713.400.json
+<> 2021-12-13T154350.400.json
+<> 2021-12-13T154052.400.json
+<> 2021-12-13T154020.400.json

@@ -1,0 +1,19 @@
+PUT localhost:8080/products/103/ratings
+Content-Type: application/json
+
+{
+  "ratings": [
+    {
+      "ratingID": 9,
+      "answer": "lets try this again"},
+    {
+      "ratingID": 100,
+      "comment": "new comment 2",
+      "score": "HOCH"}
+  ]
+}
+
+<> 2021-12-13T180310.404.json
+<> 2021-12-13T180114.404.json
+
+

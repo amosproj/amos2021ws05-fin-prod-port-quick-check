@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 public class ProductRatingEntity {
-    // TODO: überlegen wie Dateien gespeicht werden, und ob hier ein Verweis notwendig ist
+    // TODO: (tbd) überlegen wie Dateien gespeicht werden, und ob hier ein Verweis notwendig ist
 
     @EmbeddedId
     public ProductRatingId productRatingId;
@@ -14,7 +14,7 @@ public class ProductRatingEntity {
     @Column(name = "answer")
     public String answer;
 
-    // TODO: wie gehen wir mit anderen Scalenwerten um?
+    // TODO: (prio: low) wie gehen wir mit anderen Scalenwerten um?
     @Column(name = "score")
     public Score score;
 
