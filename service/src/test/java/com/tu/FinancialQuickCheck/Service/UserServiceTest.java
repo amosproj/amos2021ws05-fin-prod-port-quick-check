@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -91,7 +92,7 @@ public class UserServiceTest {
         entity1 = new UserEntity();
         entity1.id = userID1.toString();
         entity1.username = username1;
-//        entity1.password = pw1;
+        entity1.password = pw1;
         entity1.email = email1;
 
         entity2 = new UserEntity();
@@ -113,18 +114,17 @@ public class UserServiceTest {
      */
     @Test
     public void testGetAllUsers1_noUsersExist() {
-        //TODO: anpassen
         // Step 1: init test object
-//        Iterable<UserEntity> userEntities = Collections.EMPTY_LIST;
-//
-//        // Step 2: provide knowledge
-//        when(repository.findAll()).thenReturn(userEntities);
-//
-//        // Step 3: execute getProjectById()
-//        List<UserDto> out = service.getAllUsers();
-//        List<UserDto> expected = new ArrayList<>();
-//
-//        assertEquals(expected, out);
+        List<UserEntity> userEntities = Collections.EMPTY_LIST;
+
+        // Step 2: provide knowledge
+        when(repository.findAll()).thenReturn(userEntities);
+
+        // Step 3: execute getProjectById()
+        List<UserDto> out = service.getAllUsers();
+        List<UserDto> expected = new ArrayList<>();
+
+        assertEquals(expected, out);
     }
 
     @Test
@@ -297,7 +297,7 @@ public class UserServiceTest {
     }
 
     @Test
-    @Disabled
+    @Disabled("implement after requirements for pw are clear")
     public void testCreateUser3b_invalidPassword() {
         // TODO: define requirements for input attribute pw, e.g. pw length
         // Test: attribute password
@@ -316,9 +316,7 @@ public class UserServiceTest {
      * UUID.fromString("5710db7c-e875-4e63-9e03-7f6ad85cc429")
      */
     @Test
-    @Disabled
     public void testUpdateUser1_userMailNotFound() {
-        //TODO: (fix)
         // Step 1: provide knowledge
         when(repository.findByEmail(email404)).thenReturn(Optional.empty());
 
@@ -326,7 +324,7 @@ public class UserServiceTest {
         Exception exception = assertThrows(ResourceNotFound.class, ()
                 -> service.updateUserByEmail(dto1, email404));
 
-        String expectedMessage = "user email: " + email404 + " not found";
+        String expectedMessage = "User not found";
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
@@ -354,9 +352,7 @@ public class UserServiceTest {
     }**/
 
     @Test
-    @Disabled
     public void testUpdateUser4_fullValidUpdate() {
-        //TODO: (fix)
         // Step 2: provide knowledge
         when(repository.findByEmail(email1)).thenReturn(Optional.of(entity1));
 
@@ -366,14 +362,12 @@ public class UserServiceTest {
         assertAll("update User",
                 () -> assertNull(out.password),
                 () -> assertEquals(dto2.userName, out.userName),
-                () -> assertEquals(email1, out.userEmail)
+                () -> assertEquals(dto2.userEmail, out.userEmail)
         );
     }
 
     @Test
-    @Disabled
     public void testUpdateUser5a_partialUpdate_email() {
-        //TODO: (fix)
         // Step 1: init test object
         dto2.userName = null;
         dto2.password = null;
@@ -387,7 +381,7 @@ public class UserServiceTest {
         assertAll("update User",
                 () -> assertNull(out.password),
                 () -> assertEquals(entity1.username, out.userName),
-                () -> assertEquals(email1, out.userEmail)
+                () -> assertEquals(dto2.userEmail, out.userEmail)
         );
     }
 
