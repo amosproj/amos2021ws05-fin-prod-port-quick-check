@@ -178,7 +178,7 @@ public class ProjectService {
         List<ProjectUserEntity> assignedMembers = new ArrayList<>();
 
         // check if members exist
-        Set<ProjectUserDto> newUsers = new HashSet<>(members);
+        Set<ProjectUserDto> newUsers = new LinkedHashSet<>(members);
         for(ProjectUserDto member: newUsers){
             if((member.userID == null && member.userEmail == null) || member.role == null){
                 throw new BadRequest("Input is missing/incorrect");
