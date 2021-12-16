@@ -5,10 +5,7 @@ import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.RatingArea;
 import com.tu.FinancialQuickCheck.Service.ProductService;
 import com.tu.FinancialQuickCheck.Service.ProjectService;
-import com.tu.FinancialQuickCheck.dto.ProductAreaDto;
-import com.tu.FinancialQuickCheck.dto.ProductDto;
-import com.tu.FinancialQuickCheck.dto.ProjectDto;
-import com.tu.FinancialQuickCheck.dto.SmallProjectDto;
+import com.tu.FinancialQuickCheck.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +21,9 @@ import java.util.OptionalInt;
 @RequestMapping("projects")
 public class ProjectController {
 
+    @Autowired
     private ProjectService service;
+    @Autowired
     private ProductService productService;
 
     public ProjectController(ProjectService projectService, ProductService productService){
@@ -33,16 +32,11 @@ public class ProjectController {
         this.productService = productService;
     }
 
-
+    //TODO: (done - need review) --> return empty list or resource not found, what do you prefer?
+    //TODO: (prio: medium) User Management - change output according to api or define new endpoint including role and list of projects for each user
     @GetMapping(produces = "application/json")
     public List<SmallProjectDto> findALL() {
-        List<SmallProjectDto> tmp = service.getAllProjects();
-
-        if(tmp.isEmpty()){
-            throw new ResourceNotFound("No projects found.");
-        }else{
-            return tmp;
-        }
+        return service.getAllProjects();
     }
 
 
@@ -52,25 +46,34 @@ public class ProjectController {
         ProjectDto tmp = service.createProject(projectDto);
 
         if (tmp == null) {
-            throw new BadRequest("Project cannot be created due to missing information.");
+            throw new BadRequest("Input is missing/incorrect");
         }else {
             return tmp;
         }
     }
 
+
     @GetMapping("/{projectID}")
     public ProjectDto findById(@PathVariable int projectID) {
-        return service.getProjectById(projectID);
+        ProjectDto tmp = service.getProjectById(projectID);
+
+        if (tmp == null){
+            throw new ResourceNotFound("projectID " + projectID + " not found");
+        }else{
+            return tmp;
+        }
+
     }
 
-    // TODO: Should we return the updated ProjectedDTO?
-    @PutMapping("/{projectID}")
-    public void updateById(@RequestBody ProjectDto projectDto, @PathVariable int projectID) {
 
-        if(projectDto.members == null){
+    @PutMapping("/{projectID}")
+    public ProjectDto updateById(@RequestBody ProjectDto projectDto, @PathVariable int projectID) {
+        ProjectDto tmp = service.updateProject(projectDto, projectID);
+
+        if(tmp == null){
             throw new BadRequest("Input is missing/incorrect.");
         }else{
-            ProjectDto out = service.updateProject(projectDto, projectID);
+            return tmp;
         }
     }
 
@@ -83,7 +86,7 @@ public class ProjectController {
 //
 //    }
 
-
+    //TODO (done - needs review) change output to empty list if no products exist
     @GetMapping("/{projectID}/products")
     public List<ProductDto> findProductsByProject(@PathVariable int projectID,
                                                   @RequestParam(required = false) Optional<String> productArea) {
@@ -100,26 +103,39 @@ public class ProjectController {
             }
         }
 
-        if(tmp.isEmpty()){
-            throw new ResourceNotFound("No products found");
-        }else{
-            return tmp;
-        }
+        return tmp;
 
     }
 
 
-    @PostMapping(value = "/{projectID}/productareas/{productAreaID}/products",
+    //TODO: (done: needs review) change Path (see api def)
+    //TODO: (prio: ???) fix output --> does not propagate values for productArea and projectID
+    @PostMapping(value = "/{projectID}/products",
             consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public ProductDto createProduct(@PathVariable int projectID, @PathVariable int productAreaID,
-                                    @RequestBody ProductDto productDto) {
-        ProductDto tmp = productService.createProduct(projectID, productAreaID, productDto);
-        if(tmp == null){
-            throw new BadRequest("Incorrect Input.");
+    public List<ProductDto> createProduct(@PathVariable int projectID, @RequestBody ProductDto productDto) {
+
+        if(productDto.productArea != null && productDto.productName != null){
+            List<ProductDto> tmp = productService.wrapper_createProduct(projectID, productDto);
+            if(tmp == null){
+                throw new BadRequest("Input is incorrect/missing");
+            }else{
+
+                return tmp;
+            }
         }else{
-            return tmp;
+            throw new BadRequest("Input is incorrect/missing");
         }
+    }
+
+
+//    TODO: (done - needs review) change according to API
+    @PostMapping( value = "/{projectID}/users", produces = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public List<ProjectUserDto> createProjectUser(@RequestBody List<ProjectUserDto> members,
+                                                  @PathVariable int projectID) {
+
+        return service.createProjectUsers(projectID, members);
     }
 
 }

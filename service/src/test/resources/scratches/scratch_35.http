@@ -1,6 +1,0 @@
-PUT localhost:8080/users/email/neueEmail
-Content-Type: application/json
-
-{
-  "username": "Max"
-}

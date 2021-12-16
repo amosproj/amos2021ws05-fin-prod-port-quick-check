@@ -55,6 +55,7 @@ public class ProductRatingServiceTest {
 
         String name = "Produkt";
 
+        productRatingEntity = new ProductRatingEntity();
         entity = new ProductEntity();
         entity.name = name;
         //TODO: anpassen
@@ -104,9 +105,9 @@ public class ProductRatingServiceTest {
         for(int i = 1; i < 4; i++){
             ProductRatingDto tmp = new ProductRatingDto();
             tmp.ratingID = i;
-            tmp.answer = "answer" + i;
-            tmp.score = Score.HOCH;
-            tmp.comment = "comment" + i;
+            tmp.answer = "update answer" + i;
+            tmp.score = Score.GERING;
+            tmp.comment = "update comment" + i;
             updateDto.ratings.add(tmp);
         }
     }
@@ -114,35 +115,23 @@ public class ProductRatingServiceTest {
     /**
      * tests for getProductRatings()
      *
-     * testGetProductRatings1: productID does not exist --> throw ResourceNotFound Exception
-     * testGetProductRatings2: productID exist, no rating exists --> return empty ProductDto.ratings
-     * testGetProductRatings3: no ratings exist for ratingArea.COMPLEXITY --> return empty ProductDto.ratings
-     * testGetProductRatings4: no ratings exist for ratingArea.ECONOMIC --> return empty ProductDto.ratings
-     * testGetProductRatings5: ratings exist for ratingArea.COMPLEXITY --> return ProductDto with exisitng ratings
-     * testGetProductRatings6: ratings exist for ratingArea.ECONOMIC --> return ProductDto with exisitng ratings
-     * testGetProductRatings7: productID and ratings exist --> return ProductDto with exisitng ratings
+     * testGetProductRatings: productID does not exist --> return  null
+     * testGetProductRatings: productID exist, no rating exists --> return empty ProductDto.ratings
+     * testGetProductRatings: no ratings exist for ratingArea.COMPLEXITY --> return empty ProductDto.ratings
+     * testGetProductRatings: no ratings exist for ratingArea.ECONOMIC --> return empty ProductDto.ratings
+     * testGetProductRatings: ratings exist for ratingArea.COMPLEXITY --> return ProductDto with exisitng ratings
+     * testGetProductRatings: ratings exist for ratingArea.ECONOMIC --> return ProductDto with exisitng ratings
+     * testGetProductRatings: productID and ratings exist --> return ProductDto with exisitng ratings
      */
     @Test
-    public void testGetProductRatings1() {
-        // Step 0: init test object
-        Optional<ProductEntity>  entities = Optional.empty();
+    public void testGetProductRatings_resourceNotFound_productID() {
 
-        // Step 1: provide knowledge
-        when(productRepository.findById(entity.id)).thenReturn(entities);
+        assertNull(service.getProductRatings(entity.id, null));
 
-        // Step 2: Execute updateProject()
-        Exception exception = assertThrows(ResourceNotFound.class, ()
-                -> service.getProductRatings(entity.id, null));
-
-        // Step 3: assert exception
-        String expectedMessage = "productID " + entity.id + " not found";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));
     }
 
     @Test
-    public void testGetProductRatings2() {
+    public void testGetProductRatings_noRatingsExist() {
         // Step 0: init test object
         entity.productRatingEntities = new ArrayList<>(){};
 
@@ -154,10 +143,10 @@ public class ProductRatingServiceTest {
     }
 
     @Test
-    public void testGetProductRatings3() {
+    public void testGetProductRatings_noComplexityRatingsExist() {
         // Step 0: init test object
         entity.productRatingEntities.removeIf(productRatingEntity ->
-                productRatingEntity.productRatingId.getRatingid().ratingarea == RatingArea.COMPLEXITY);
+                productRatingEntity.productRatingId.getRating().ratingarea == RatingArea.COMPLEXITY);
 
         // Step 1: provide knowledge
         when(productRepository.findById(entity.id)).thenReturn(Optional.of(entity));
@@ -167,10 +156,10 @@ public class ProductRatingServiceTest {
     }
 
     @Test
-    public void testGetProductRatings4() {
+    public void testGetProductRatings_noEconomicRatingsExist() {
         // Step 0: init test object
         entity.productRatingEntities.removeIf(productRatingEntity ->
-                productRatingEntity.productRatingId.getRatingid().ratingarea == RatingArea.ECONOMIC);
+                productRatingEntity.productRatingId.getRating().ratingarea == RatingArea.ECONOMIC);
 
         // Step 1: provide knowledge
         when(productRepository.findById(entity.id)).thenReturn(Optional.of(entity));
@@ -180,7 +169,7 @@ public class ProductRatingServiceTest {
     }
 
     @Test
-    public void testGetProductRatings5() {
+    public void testGetProductRatings_ComplexityRatingsExist() {
         // Step 1: provide knowledge
         when(productRepository.findById(entity.id)).thenReturn(Optional.of(entity));
 
@@ -193,7 +182,7 @@ public class ProductRatingServiceTest {
     }
 
     @Test
-    public void testGetProductRatings6() {
+    public void testGetProductRatings_EconomicRatingsExist() {
         // Step 1: provide knowledge
         when(productRepository.findById(entity.id)).thenReturn(Optional.of(entity));
 
@@ -206,7 +195,7 @@ public class ProductRatingServiceTest {
     }
 
     @Test
-    public void testGetProductRatings7() {
+    public void testGetProductRatings_returnAllExistingRatings() {
         // Step 1: provide knowledge
         when(productRepository.findById(entity.id)).thenReturn(Optional.of(entity));
 
@@ -216,7 +205,7 @@ public class ProductRatingServiceTest {
         assertNotNull(out.ratings);
         out.ratings.forEach(rating ->
                 assertAll("get product ratings",
-//                        () -> assertNotNull(rating.ratingID),
+                        () -> assertThat(rating.rating.id).isGreaterThan(0),
                         () -> assertNotNull(rating.answer),
                         () -> assertNotNull(rating.score),
                         () -> assertNotNull(rating.comment)
@@ -228,24 +217,23 @@ public class ProductRatingServiceTest {
     /**
      * tests for createProductRatings()
      *
-     * testCreateProductRatings1: input contains required information (projectId, ratingID and NO data)
+     * testCreateProductRatings: input contains required information (projectId, ratingID and NO data)
      *                            --> return ProductDto with created empty ratings
-     * testCreateProductRatings2: input contains required information (projectId, ratingID and data)
+     * testCreateProductRatings: input contains required information (projectId, ratingID and data)
      *                            --> return ProductDto with created ratings
-     * testCreateProductRatings3: input projectID does not exist
+     * testCreateProductRatings: input projectID does not exist
      *                            --> throw ResourceNotFound Exception
-     * testCreateProductRatings4: input ratingID does not exist
+     * testCreateProductRatings: input ratingID does not exist
      *                            --> throw ResourceNotFound Exception
-     * testCreateProductRatings5: input contains more than required information
-     *                            --> return ProductDto with exisitng ratings and ignore addtional information
      */
     @Test
-    public void testCreateProductRatings1() {
+    public void testCreateProductRatings_createRatingsWithoutData() {
         // Step 0: init test object
         int productID = 1;
 
         // Step 1: provide knowledge
         when(productRepository.existsById(productID)).thenReturn(true);
+        when(productRepository.findById(productID)).thenReturn(Optional.of(entity));
         when(ratingRepository.existsById(1)).thenReturn(true);
         when(ratingRepository.existsById(2)).thenReturn(true);
         when(ratingRepository.existsById(3)).thenReturn(true);
@@ -256,16 +244,26 @@ public class ProductRatingServiceTest {
         when(ratingRepository.existsById(8)).thenReturn(true);
         when(ratingRepository.existsById(9)).thenReturn(true);
         when(ratingRepository.existsById(10)).thenReturn(true);
-        when(ratingRepository.getById(1)).thenReturn(ratingEntities.get(0));
-        when(ratingRepository.getById(2)).thenReturn(ratingEntities.get(1));
-        when(ratingRepository.getById(3)).thenReturn(ratingEntities.get(2));
-        when(ratingRepository.getById(4)).thenReturn(ratingEntities.get(3));
-        when(ratingRepository.getById(5)).thenReturn(ratingEntities.get(4));
-        when(ratingRepository.getById(6)).thenReturn(ratingEntities.get(5));
-        when(ratingRepository.getById(7)).thenReturn(ratingEntities.get(6));
-        when(ratingRepository.getById(8)).thenReturn(ratingEntities.get(7));
-        when(ratingRepository.getById(9)).thenReturn(ratingEntities.get(8));
-        when(ratingRepository.getById(10)).thenReturn(ratingEntities.get(9));
+//        when(ratingRepository.getById(1)).thenReturn(ratingEntities.get(0));
+//        when(ratingRepository.getById(2)).thenReturn(ratingEntities.get(1));
+//        when(ratingRepository.getById(3)).thenReturn(ratingEntities.get(2));
+//        when(ratingRepository.getById(4)).thenReturn(ratingEntities.get(3));
+//        when(ratingRepository.getById(5)).thenReturn(ratingEntities.get(4));
+//        when(ratingRepository.getById(6)).thenReturn(ratingEntities.get(5));
+//        when(ratingRepository.getById(7)).thenReturn(ratingEntities.get(6));
+//        when(ratingRepository.getById(8)).thenReturn(ratingEntities.get(7));
+//        when(ratingRepository.getById(9)).thenReturn(ratingEntities.get(8));
+//        when(ratingRepository.getById(10)).thenReturn(ratingEntities.get(9));
+        when(ratingRepository.findById(1)).thenReturn(Optional.of(ratingEntities.get(0)));
+        when(ratingRepository.findById(2)).thenReturn(Optional.of(ratingEntities.get(1)));
+        when(ratingRepository.findById(3)).thenReturn(Optional.of(ratingEntities.get(2)));
+        when(ratingRepository.findById(4)).thenReturn(Optional.of(ratingEntities.get(3)));
+        when(ratingRepository.findById(5)).thenReturn(Optional.of(ratingEntities.get(4)));
+        when(ratingRepository.findById(6)).thenReturn(Optional.of(ratingEntities.get(5)));
+        when(ratingRepository.findById(7)).thenReturn(Optional.of(ratingEntities.get(6)));
+        when(ratingRepository.findById(8)).thenReturn(Optional.of(ratingEntities.get(7)));
+        when(ratingRepository.findById(9)).thenReturn(Optional.of(ratingEntities.get(8)));
+        when(ratingRepository.findById(10)).thenReturn(Optional.of(ratingEntities.get(9)));
 
         // Step 2: Execute updateProject()
         ProductDto out = service.createProductRatings(createEmptyDto, productID);
@@ -274,7 +272,7 @@ public class ProductRatingServiceTest {
         assertEquals(createDto.productName , out.productName);
         out.ratings.forEach(rating ->
                 assertAll(
-//                        () -> assertNotNull(rating.ratingID),
+                        () -> assertThat(rating.ratingID).isGreaterThan(0),
                         () -> assertNull(rating.answer),
                         () -> assertNull(rating.comment),
                         () -> assertNull(rating.score)
@@ -282,14 +280,16 @@ public class ProductRatingServiceTest {
         );
     }
 
+
     @Test
-    public void testCreateProductRatings2() {
+    public void testCreateProductRatings_createRatingsWithData() {
         // Step 0: init test object
         int productID = 1;
 
         // Step 1: provide knowledge
         when(productRepository.existsById(productID)).thenReturn(true);
-        when(productRepository.getById(productID)).thenReturn(entity);
+        when(productRepository.findById(productID)).thenReturn(Optional.of(entity));
+//        when(productRepository.getById(productID)).thenReturn(entity);
         when(ratingRepository.existsById(1)).thenReturn(true);
         when(ratingRepository.existsById(2)).thenReturn(true);
         when(ratingRepository.existsById(3)).thenReturn(true);
@@ -300,16 +300,26 @@ public class ProductRatingServiceTest {
         when(ratingRepository.existsById(8)).thenReturn(true);
         when(ratingRepository.existsById(9)).thenReturn(true);
         when(ratingRepository.existsById(10)).thenReturn(true);
-        when(ratingRepository.getById(1)).thenReturn(ratingEntities.get(0));
-        when(ratingRepository.getById(2)).thenReturn(ratingEntities.get(1));
-        when(ratingRepository.getById(3)).thenReturn(ratingEntities.get(2));
-        when(ratingRepository.getById(4)).thenReturn(ratingEntities.get(3));
-        when(ratingRepository.getById(5)).thenReturn(ratingEntities.get(4));
-        when(ratingRepository.getById(6)).thenReturn(ratingEntities.get(5));
-        when(ratingRepository.getById(7)).thenReturn(ratingEntities.get(6));
-        when(ratingRepository.getById(8)).thenReturn(ratingEntities.get(7));
-        when(ratingRepository.getById(9)).thenReturn(ratingEntities.get(8));
-        when(ratingRepository.getById(10)).thenReturn(ratingEntities.get(9));
+//        when(ratingRepository.getById(1)).thenReturn(ratingEntities.get(0));
+//        when(ratingRepository.getById(2)).thenReturn(ratingEntities.get(1));
+//        when(ratingRepository.getById(3)).thenReturn(ratingEntities.get(2));
+//        when(ratingRepository.getById(4)).thenReturn(ratingEntities.get(3));
+//        when(ratingRepository.getById(5)).thenReturn(ratingEntities.get(4));
+//        when(ratingRepository.getById(6)).thenReturn(ratingEntities.get(5));
+//        when(ratingRepository.getById(7)).thenReturn(ratingEntities.get(6));
+//        when(ratingRepository.getById(8)).thenReturn(ratingEntities.get(7));
+//        when(ratingRepository.getById(9)).thenReturn(ratingEntities.get(8));
+//        when(ratingRepository.getById(10)).thenReturn(ratingEntities.get(9));
+        when(ratingRepository.findById(1)).thenReturn(Optional.of(ratingEntities.get(0)));
+        when(ratingRepository.findById(2)).thenReturn(Optional.of(ratingEntities.get(1)));
+        when(ratingRepository.findById(3)).thenReturn(Optional.of(ratingEntities.get(2)));
+        when(ratingRepository.findById(4)).thenReturn(Optional.of(ratingEntities.get(3)));
+        when(ratingRepository.findById(5)).thenReturn(Optional.of(ratingEntities.get(4)));
+        when(ratingRepository.findById(6)).thenReturn(Optional.of(ratingEntities.get(5)));
+        when(ratingRepository.findById(7)).thenReturn(Optional.of(ratingEntities.get(6)));
+        when(ratingRepository.findById(8)).thenReturn(Optional.of(ratingEntities.get(7)));
+        when(ratingRepository.findById(9)).thenReturn(Optional.of(ratingEntities.get(8)));
+        when(ratingRepository.findById(10)).thenReturn(Optional.of(ratingEntities.get(9)));
 
 
         // Step 2: Execute updateProject()
@@ -318,17 +328,17 @@ public class ProductRatingServiceTest {
         // Step 3: assert exception
         assertEquals(createDto.productName , out.productName);
 
-//        assertEquals(createDto.ratings, out.ratings);
         for (ProductRatingDto rating : out.ratings) {
-//            assertNotNull(rating.ratingID);
-            assertNotNull(rating.answer);
-            assertNotNull(rating.comment);
-            assertNotNull(rating.score);
+            assertThat(rating.ratingID).isGreaterThan(0);
+            assertThat(rating.answer.length()).isBetween(7,8);
+            assertThat(rating.comment.length()).isBetween(8,9);
+            assertThat(rating.score).isEqualTo(Score.HOCH);
         }
     }
 
+
     @Test
-    public void testCreateProductRatings3() {
+    public void testCreateProductRatings_resourceNotFound_projectID() {
         // Step 0: init test object
         int productID = 1;
 
@@ -346,16 +356,42 @@ public class ProductRatingServiceTest {
         assertTrue(actualMessage.contains(expectedMessage));
     }
 
+
     @Test
-    public void testCreateProductRatings4() {
+    public void testCreateProductRatings_resourceNotFound_ratingID_single() {
         // Step 0: init test object
         int productID = 1;
 
         // Step 1: provide knowledge
         when(productRepository.existsById(productID)).thenReturn(true);
+        when(productRepository.findById(productID)).thenReturn(Optional.of(entity));
+        when(ratingRepository.existsById(1)).thenReturn(false);
+
+        // Step 2: Execute updateProject()
+        Exception exception = assertThrows(ResourceNotFound.class,
+                () -> service.createProductRatings(createDto, productID));
+
+        // Step 3: assert exception
+        String expectedMessage = "ratingID " + 1 + " not found";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+
+    @Test
+    public void testCreateProductRatings_resourceNotFound_ratingID_multiple() {
+        // Step 0: init test object
+        int productID = 1;
+
+        // Step 1: provide knowledge
+        when(productRepository.existsById(productID)).thenReturn(true);
+        when(productRepository.findById(productID)).thenReturn(Optional.of(entity));
         when(ratingRepository.existsById(1)).thenReturn(true);
         when(ratingRepository.existsById(2)).thenReturn(true);
         when(ratingRepository.existsById(3)).thenReturn(false);
+        when(ratingRepository.findById(1)).thenReturn(Optional.of(ratingEntities.get(0)));
+        when(ratingRepository.findById(2)).thenReturn(Optional.of(ratingEntities.get(1)));
 
         // Step 2: Execute updateProject()
         Exception exception = assertThrows(ResourceNotFound.class,
@@ -369,14 +405,16 @@ public class ProductRatingServiceTest {
     }
 
 
+
+
     /**
      * tests for updateProductRatings()
      *
-     * testUpdateProductRatings1: input contains required information (projectId, ratingID and NO data)
-     *                            --> ???? TODO: sollen die vorhanden Daten mit nichts überschrieben werden
+     * testUpdateProductRatings: input contains required information (projectId, ratingID and NO data)
+     *                            --> nothing changes
      * testUpdateProductRatings2: input contains required information (projectId, ratingID and data)
      *                            --> update existing data with provided data
-     * testUpdateProductRatings3: input projectID does not exist
+     * testUpdateProductRatings: input productID does not exist
      *                            --> throw ResourceNotFound Exception
      * testUpdateProductRatings4: input ratingID does not exist
      *                            --> throw ResourceNotFound Exception
@@ -384,23 +422,14 @@ public class ProductRatingServiceTest {
      *                            --> return ProductDto with exisitng ratings and ignore addtional information
      */
     @Test
-    @Disabled
-    public void testUpdateProductRatings1() {
+    public void testUpdateProductRatings_withoutData_nothingChanges() {
         // Step 0: init test object
         int productID = 1;
 
         // Step 1: provide knowledge
         when(productRepository.existsById(productID)).thenReturn(true);
-        when(ratingRepository.existsById(1)).thenReturn(true);
-        when(ratingRepository.existsById(2)).thenReturn(true);
-        when(ratingRepository.existsById(3)).thenReturn(true);
-        when(ratingRepository.existsById(4)).thenReturn(true);
-        when(ratingRepository.existsById(5)).thenReturn(true);
-        when(ratingRepository.existsById(6)).thenReturn(true);
-        when(ratingRepository.existsById(7)).thenReturn(true);
-        when(ratingRepository.existsById(8)).thenReturn(true);
-        when(ratingRepository.existsById(9)).thenReturn(true);
-        when(ratingRepository.existsById(10)).thenReturn(true);
+        when(productRepository.findById(productID)).thenReturn(Optional.of(entity));
+        when(productRepository.getById(productID)).thenReturn(entity);
         when(ratingRepository.getById(1)).thenReturn(ratingEntities.get(0));
         when(ratingRepository.getById(2)).thenReturn(ratingEntities.get(1));
         when(ratingRepository.getById(3)).thenReturn(ratingEntities.get(2));
@@ -412,20 +441,42 @@ public class ProductRatingServiceTest {
         when(ratingRepository.getById(9)).thenReturn(ratingEntities.get(8));
         when(ratingRepository.getById(10)).thenReturn(ratingEntities.get(9));
 
+        when(repository.findById(new ProductRatingId(entity, ratingEntities.get(0))))
+                .thenReturn(Optional.of(entity.productRatingEntities.get(0)));
+        when(repository.findById(new ProductRatingId(entity, ratingEntities.get(1))))
+                .thenReturn(Optional.of(entity.productRatingEntities.get(1)));
+        when(repository.findById(new ProductRatingId(entity, ratingEntities.get(2))))
+                .thenReturn(Optional.of(entity.productRatingEntities.get(2)));
+        when(repository.findById(new ProductRatingId(entity, ratingEntities.get(3))))
+                .thenReturn(Optional.of(entity.productRatingEntities.get(3)));
+        when(repository.findById(new ProductRatingId(entity, ratingEntities.get(4))))
+                .thenReturn(Optional.of(entity.productRatingEntities.get(4)));
+        when(repository.findById(new ProductRatingId(entity, ratingEntities.get(5))))
+                .thenReturn(Optional.of(entity.productRatingEntities.get(5)));
+        when(repository.findById(new ProductRatingId(entity, ratingEntities.get(6))))
+                .thenReturn(Optional.of(entity.productRatingEntities.get(6)));
+        when(repository.findById(new ProductRatingId(entity, ratingEntities.get(7))))
+                .thenReturn(Optional.of(entity.productRatingEntities.get(7)));
+        when(repository.findById(new ProductRatingId(entity, ratingEntities.get(8))))
+                .thenReturn(Optional.of(entity.productRatingEntities.get(8)));
+        when(repository.findById(new ProductRatingId(entity, ratingEntities.get(9))))
+                .thenReturn(Optional.of(entity.productRatingEntities.get(9)));
+
         // Step 2: Execute updateProject()
-        ProductDto out = service.createProductRatings(createEmptyDto, productID);
+        ProductDto out = service.updateProductRatings(createEmptyDto, productID);
 
         // Step 3: assert exception
         assertEquals(createDto.productName , out.productName);
         out.ratings.forEach(rating ->
                         assertAll(
-//                        () -> assertNotNull(rating.ratingID),
-                                () -> assertNull(rating.answer),
-                                () -> assertNull(rating.comment),
-                                () -> assertNull(rating.score)
+                                () -> assertThat(rating.ratingID).isGreaterThan(0),
+                                () -> assertThat(rating.answer.length()).isBetween(7,8),
+                                () -> assertThat(rating.comment.length()).isBetween(8,9),
+                                () -> assertEquals(Score.HOCH, rating.score)
                         )
         );
     }
+
 
     @Test
     public void testUpdateProductRatings2() {
@@ -434,10 +485,11 @@ public class ProductRatingServiceTest {
 
         // Step 1: provide knowledge
         when(productRepository.existsById(productID)).thenReturn(true);
+        when(productRepository.findById(productID)).thenReturn(Optional.of(entity));
         when(productRepository.getById(productID)).thenReturn(entity);
-        when(ratingRepository.getById(entity.productRatingEntities.get(0).productRatingId.getRatingid().id)).thenReturn(ratingEntities.get(0));
-        when(ratingRepository.getById(entity.productRatingEntities.get(1).productRatingId.getRatingid().id)).thenReturn(ratingEntities.get(1));
-        when(ratingRepository.getById(entity.productRatingEntities.get(2).productRatingId.getRatingid().id)).thenReturn(ratingEntities.get(2));
+        when(ratingRepository.getById(entity.productRatingEntities.get(0).productRatingId.getRating().id)).thenReturn(ratingEntities.get(0));
+        when(ratingRepository.getById(entity.productRatingEntities.get(1).productRatingId.getRating().id)).thenReturn(ratingEntities.get(1));
+        when(ratingRepository.getById(entity.productRatingEntities.get(2).productRatingId.getRating().id)).thenReturn(ratingEntities.get(2));
         when(repository.findById(entity.productRatingEntities.get(0).productRatingId))
                 .thenReturn(Optional.of(entity.productRatingEntities.get(0)));
         when(repository.findById(entity.productRatingEntities.get(1).productRatingId))
@@ -448,11 +500,14 @@ public class ProductRatingServiceTest {
         // Step 2: Execute updateProject()
         service.updateProductRatings(updateDto, productID);
 
+        //Step 3:
+        //TODO: add assert
 
     }
 
+
     @Test
-    public void testUpdateProductRatings3_projectIdNotFound() {
+    public void testUpdateProductRatings_productIdNotFound() {
         // Step 0: init test object
         int productID = 1;
 
@@ -470,17 +525,19 @@ public class ProductRatingServiceTest {
         assertTrue(actualMessage.contains(expectedMessage));
     }
 
+
     @Test
-    public void testUpdateProductRatings4_ratingIdNotFound() {
+    public void testUpdateProductRatings4_resourcesNotFound_ratingIdNotFound() {
         // Step 0: init test object
         int productID = 1;
 
         // Step 1: provide knowledge
         when(productRepository.existsById(productID)).thenReturn(true);
+        when(productRepository.findById(productID)).thenReturn(Optional.of(entity));
         when(productRepository.getById(productID)).thenReturn(entity);
-        when(ratingRepository.getById(entity.productRatingEntities.get(0).productRatingId.getRatingid().id)).thenReturn(ratingEntities.get(0));
-        when(ratingRepository.getById(entity.productRatingEntities.get(1).productRatingId.getRatingid().id)).thenReturn(ratingEntities.get(1));
-        when(ratingRepository.getById(entity.productRatingEntities.get(2).productRatingId.getRatingid().id)).thenReturn(ratingEntities.get(2));
+        when(ratingRepository.getById(entity.productRatingEntities.get(0).productRatingId.getRating().id)).thenReturn(ratingEntities.get(0));
+        when(ratingRepository.getById(entity.productRatingEntities.get(1).productRatingId.getRating().id)).thenReturn(ratingEntities.get(1));
+        when(ratingRepository.getById(entity.productRatingEntities.get(2).productRatingId.getRating().id)).thenReturn(ratingEntities.get(2));
         when(repository.findById(entity.productRatingEntities.get(0).productRatingId))
                 .thenReturn(Optional.of(entity.productRatingEntities.get(0)));
         when(repository.findById(entity.productRatingEntities.get(1).productRatingId))
@@ -497,6 +554,243 @@ public class ProductRatingServiceTest {
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+
+
+    /**
+     * tests for assignAttributes():
+     * attributes: answer, comment, score
+     * //TODO: (discuss) what should happen if input is null or can this even happen?
+     * testAssignAttributes: input is empty
+     *                       --> ???
+     * testAssignAttributes: assign any combination of attributes
+     *                       --> entity is updated according to input and
+     */
+    @Test
+    public void testAssignAttributes_emptyDto(){
+        //Step 0: init test object
+        ProductRatingDto dtoIn = new ProductRatingDto();
+        String answer = "answer 1";
+        String comment = "comment 1";
+        Score score = Score.HOCH;
+        productRatingEntity.answer = answer;
+        productRatingEntity.comment = comment;
+        productRatingEntity.score = score;
+
+        //Step 1: Execute assignAttributes()
+        service.assignAttributes(dtoIn, productRatingEntity);
+
+        //Step 2: Assert result
+        assertEquals(answer, productRatingEntity.answer);
+        assertEquals(comment, productRatingEntity.comment);
+        assertEquals(score, productRatingEntity.score);
+    }
+
+
+    @Test
+    public void testAssignAttributes_emptyDtoAndEntity(){
+        //Step 0: init test object
+        ProductRatingDto dtoIn = new ProductRatingDto();
+        ProductRatingEntity emptyEntity = new ProductRatingEntity();
+
+        //Step 1: Execute assignAttributes()
+        service.assignAttributes(dtoIn, emptyEntity);
+
+        //Step 2: Assert result
+        assertNull(emptyEntity.answer);
+        assertNull(emptyEntity.comment);
+        assertNull(emptyEntity.score);
+    }
+
+
+    @Test
+    public void testAssignAttributes_assignAllAttributeToEmptyEntity(){
+        //Step 0: init test object
+        String answer = "answer 1";
+        String comment = "comment 1";
+        Score score = Score.HOCH;
+        ProductRatingDto dtoIn = new ProductRatingDto();
+        dtoIn.answer = answer;
+        dtoIn.comment = comment;
+        dtoIn.score = score;
+
+        ProductRatingEntity emptyEntity = new ProductRatingEntity();
+
+
+        //Step 1: Execute assignAttributes()
+        service.assignAttributes(dtoIn, emptyEntity);
+
+        //Step 2: Assert result
+        assertEquals(answer, emptyEntity.answer);
+        assertEquals(comment, emptyEntity.comment);
+        assertEquals(score, emptyEntity.score);
+    }
+
+
+    @Test
+    public void testAssignAttributes_assignSingleAttributeToEmptyEntity(){
+        //Step 0: init test object
+        String answer = "answer 1";
+        String comment = "comment 1";
+        Score score = Score.HOCH;
+
+        ProductRatingDto dtoIn1 = new ProductRatingDto();
+        ProductRatingDto dtoIn2 = new ProductRatingDto();
+        ProductRatingDto dtoIn3 = new ProductRatingDto();
+
+        dtoIn1.answer = answer;
+        dtoIn2.comment = comment;
+        dtoIn3.score = score;
+
+        ProductRatingEntity entity1 = new ProductRatingEntity();
+        ProductRatingEntity entity2 = new ProductRatingEntity();
+        ProductRatingEntity entity3 = new ProductRatingEntity();
+
+
+        //Step 1: Execute assignAttributes()
+        service.assignAttributes(dtoIn1, entity1);
+        service.assignAttributes(dtoIn2, entity2);
+        service.assignAttributes(dtoIn3, entity3);
+
+        //Step 2: Assert result
+        assertAll("assign answer",
+                () -> assertNull(entity1.score),
+                () -> assertNull(entity1.comment),
+                () -> assertEquals(answer, entity1.answer));
+
+        assertAll("assign comment",
+                () -> assertNull(entity2.score),
+                () -> assertNull(entity2.answer),
+                () -> assertEquals(comment, entity2.comment));
+
+        assertAll("assign score",
+                () -> assertNull(entity3.answer),
+                () -> assertNull(entity3.answer),
+                () -> assertEquals(score, entity3.score));
+
+    }
+
+
+    @Test
+    public void testAssignAttributes_assignTwoAttributeToEmptyEntity(){
+        //Step 0: init test object
+        String answer = "answer 1";
+        String comment = "comment 1";
+        Score score = Score.HOCH;
+
+        ProductRatingDto dtoIn1 = new ProductRatingDto();
+        ProductRatingDto dtoIn2 = new ProductRatingDto();
+        ProductRatingDto dtoIn3 = new ProductRatingDto();
+
+        dtoIn1.answer = answer;
+        dtoIn1.comment = comment;
+
+        dtoIn2.comment = comment;
+        dtoIn2.score = score;
+
+        dtoIn3.answer = answer;
+        dtoIn3.score = score;
+
+        ProductRatingEntity entity1 = new ProductRatingEntity();
+        ProductRatingEntity entity2 = new ProductRatingEntity();
+        ProductRatingEntity entity3 = new ProductRatingEntity();
+
+        //Step 1: Execute assignAttributes()
+        service.assignAttributes(dtoIn1, entity1);
+        service.assignAttributes(dtoIn2, entity2);
+        service.assignAttributes(dtoIn3, entity3);
+
+        //Step 2: Assert result
+        assertAll("assign answer and comment",
+                () -> assertNull(entity1.score),
+                () -> assertEquals(comment, entity1.comment),
+                () -> assertEquals(answer, entity1.answer));
+
+        assertAll("assign comment and score",
+                () -> assertEquals(score, entity2.score),
+                () -> assertNull(entity2.answer),
+                () -> assertEquals(comment, entity2.comment));
+
+        assertAll("assign answer and score",
+                () -> assertEquals(answer, entity3.answer),
+                () -> assertNull(entity3.comment),
+                () -> assertEquals(score, entity3.score));
+
+    }
+
+
+    @Test
+    public void testAssignAttributes_assignAllAttributeToNonEmptyEntity(){
+        //Step 0: init test object
+        String answer = "answer 1";
+        String comment = "comment 1";
+        Score score = Score.HOCH;
+        ProductRatingDto dtoIn = new ProductRatingDto();
+        dtoIn.answer = answer;
+        dtoIn.comment = comment;
+        dtoIn.score = score;
+
+        ProductRatingEntity entity = new ProductRatingEntity();
+        String previousAnswer = "previous answer";
+        String previousComment = "previous comment";
+        Score previousScore = Score.GERING;
+        entity.answer = previousAnswer;
+        entity.comment = previousComment;
+        entity.score = previousScore;
+
+        //Step 1: Execute assignAttributes()
+        service.assignAttributes(dtoIn, entity);
+
+        //Step 2: Assert result
+        assertEquals(answer, entity.answer);
+        assertEquals(comment, entity.comment);
+        assertEquals(score, entity.score);
+    }
+
+
+    @Test
+    public void testAssignAttributes_multipleUpdatesOnSameEntity(){
+        //Step 0: init test object
+        String answer = "answer 1";
+        String comment = "comment 1";
+        Score score = Score.HOCH;
+
+        ProductRatingDto dtoIn1 = new ProductRatingDto();
+        ProductRatingDto dtoIn2 = new ProductRatingDto();
+        ProductRatingDto dtoIn3 = new ProductRatingDto();
+
+        dtoIn1.answer = answer;
+        dtoIn2.comment = comment;
+        dtoIn3.score = score;
+
+        ProductRatingEntity entity = new ProductRatingEntity();
+        String previousAnswer = "previous answer";
+        String previousComment = "previous comment";
+        Score previousScore = Score.GERING;
+        entity.answer = previousAnswer;
+        entity.comment = previousComment;
+        entity.score = previousScore;
+
+
+        //Step 1: Execute assignAttributes()
+        service.assignAttributes(dtoIn1, entity);
+        assertAll("assign answer",
+                () -> assertEquals(previousScore, entity.score),
+                () -> assertEquals(previousComment, entity.comment),
+                () -> assertEquals(answer, entity.answer));
+
+        service.assignAttributes(dtoIn2, entity);
+        assertAll("assign comment",
+                () -> assertEquals(previousScore, entity.score),
+                () -> assertEquals(answer, entity.answer),
+                () -> assertEquals(comment, entity.comment));
+
+        service.assignAttributes(dtoIn3, entity);
+        assertAll("assign score",
+                () -> assertEquals(score, entity.score),
+                () -> assertEquals(answer, entity.answer),
+                () -> assertEquals(comment, entity.comment));
     }
 
 }

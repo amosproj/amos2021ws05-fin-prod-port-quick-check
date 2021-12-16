@@ -1,0 +1,62 @@
+POST localhost:8080/products/103/ratings
+Content-Type: application/json
+
+{
+  "ratings": [
+    {
+      "ratingID": 9,
+      "answer": "answer 1",
+      "comment": "comment 1",
+      "score": "GERING"},
+    {
+      "ratingID": 10,
+      "answer": "answer 2",
+      "comment": "comment 2",
+      "score": "MITTEL"},
+    {
+      "ratingID": 11,
+      "answer": "answer 3",
+      "comment": "comment 3",
+      "score": "HOCH"},
+    {
+      "ratingID": 12,
+      "answer": "answer 4",
+      "comment": "comment 4",
+      "score": "MITTEL"},
+    {
+      "ratingID": 13,
+      "answer": "answer 5",
+      "comment": "comment 5",
+      "score": "HOCH"},
+    {
+      "ratingID": 14,
+      "answer": "answer 6",
+      "comment": "comment 6",
+      "score": "GERING"},
+    {
+      "ratingID": 15,
+      "answer": "answer 7",
+      "comment": "comment 7",
+      "score": "MITTEL"},
+    {
+      "ratingID": 16,
+      "answer": "answer 8",
+      "comment": "comment 8",
+      "score": "HOCH"}
+  ]
+}
+
+<> 2021-12-13T173557.200.json
+<> 2021-12-13T173222.200.json
+<> 2021-12-13T172826.200.json
+<> 2021-12-13T171950.200.json
+<> 2021-12-13T170826.200.json
+<> 2021-12-13T170404.404.json
+<> 2021-12-13T170312.200.json
+<> 2021-12-13T165835.200.json
+<> 2021-12-13T165307.200.json
+<> 2021-12-13T165107.500.json
+<> 2021-12-13T164845.500.json
+<> 2021-12-13T163930.500.json
+<> 2021-12-13T163648.500.json
+<> 2021-12-13T163444.500.json
