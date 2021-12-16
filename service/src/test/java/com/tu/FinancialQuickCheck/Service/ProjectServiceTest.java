@@ -387,8 +387,7 @@ public class ProjectServiceTest {
     @Test
     @Disabled
     public void testCreateProject_memberDoesNotExist() {
-        //TODO: fix test
-
+        //TODO: (fix) stubbing problem
         for(int i = 0; i <= 10; i++){
             // Step 0: init test object
             ProjectDto projectIn = new ProjectDto();
@@ -401,8 +400,9 @@ public class ProjectServiceTest {
             when(productAreaRepository.findById(1)).thenReturn(Optional.of(productAreaEntities.get(0)));
             when(productAreaRepository.findById(2)).thenReturn(Optional.of(productAreaEntities.get(1)));
             when(productAreaRepository.findById(3)).thenReturn(Optional.of(productAreaEntities.get(2)));
-            when(userRepository.findByEmail(userEmail1)).thenReturn(Optional.of(userEntities.get(0)));
-            when(userRepository.findByEmail(userEmail3)).thenReturn(Optional.empty());
+//            when(userRepository.findByEmail(projectIn.members.get(0).userEmail)).thenReturn(Optional.of(userEntities.get(0)));
+//            when(userRepository.findByEmail(projectIn.members.get(1).userEmail)).thenReturn(Optional.of(userEntities.get(1)));
+            when(userRepository.findByEmail(projectIn.members.get(2).userEmail)).thenReturn(Optional.empty());
 
             // Step 2: execute createProject()
             Exception exception = assertThrows(ResourceNotFound.class, () -> service.createProject(projectIn));
@@ -468,38 +468,29 @@ public class ProjectServiceTest {
      *                     --> throw Exception ResourceNotFound
      */
 
+    @Test
+    @Disabled("implement")
+    public void testUpdateProject_success_updateAllAttributes(){
+
+
+    }
 
     @Test
-    @Disabled
+    @Disabled("implement")
     public void testUpdateProject_partialUpdate_onlyAddNewProductAreas(){
-        // Step 0: init test object
-        ProjectDto projectIn = emptyProject;
-        emptyProject.members = members;
-//        emptyProject.productAreas = [ ]
 
-
-        // Step 0: provide knowledge
-        when(repository.existsById(entity.id)).thenReturn(true);
-        when(repository.findById(entity.id)).thenReturn(Optional.of(entity));
-        when(userRepository.findByEmail(userEmail1)).thenReturn(Optional.of(userEntities.get(0)));
-        when(userRepository.findByEmail(userEmail2)).thenReturn(Optional.of(userEntities.get(1)));
-        when(userRepository.findByEmail(userEmail3)).thenReturn(Optional.of(userEntities.get(2)));
-        when(projectUserRepository.deleteByProjectUserId_project(entity)).thenReturn((long) entity.projectUserEntities.size());
-
-        // Step 2: execute updateProject()
-        ProjectDto out = service.updateProject(projectIn, entity.id);
-
-        // Step 3: assert result
-        assertEquals(projectIn.members.size(), out.members.size());
-        assertNotEquals(3, out.members.size());
 
     }
 
 
     @Test
+    @Disabled
     public void testUpdateProject_partialUpdate_replaceAllExistingProjectMembers(){
+        //TODO: (discuss with Alex) Is this test necessary? Because it tests if delete works correctly, which is a SpringBoot method
+        //TODO: (discuss with Alex) If we need the testcase, how to mock delete method?
         // Step 0: init test object
         ProjectDto projectIn = emptyProject;
+        projectIn.productAreas = productAreas;
         emptyProject.members = new ArrayList<>();
         emptyProject.members.add(new ProjectUserDto(userEmail2, Role.CLIENT));
         emptyProject.members.add(new ProjectUserDto(userEmail3, Role.CLIENT));
@@ -513,6 +504,9 @@ public class ProjectServiceTest {
         // Step 0: provide knowledge
         when(repository.existsById(entity.id)).thenReturn(true);
         when(repository.findById(entity.id)).thenReturn(Optional.of(entity));
+        when(productAreaRepository.findById(productAreas.get(0).id)).thenReturn(Optional.of(productAreaEntities.get(0)));
+        when(productAreaRepository.findById(productAreas.get(1).id)).thenReturn(Optional.of(productAreaEntities.get(1)));
+        when(productAreaRepository.findById(productAreas.get(2).id)).thenReturn(Optional.of(productAreaEntities.get(2)));
         when(userRepository.findByEmail(userEmail2)).thenReturn(Optional.of(userEntity2));
         when(userRepository.findByEmail(userEmail3)).thenReturn(Optional.of(userEntity3));
         when(projectUserRepository.deleteByProjectUserId_project(entity)).thenReturn((long) entity.projectUserEntities.size());
@@ -572,7 +566,7 @@ public class ProjectServiceTest {
         //Step 1: provide knowledge
         when(repository.existsById(projectID)).thenReturn(true);
         when(repository.findById(projectID)).thenReturn(Optional.of(new ProjectEntity()));
-        when(productAreaRepository.existsById(productAreaDoesNotExist.id)).thenReturn(false);
+        when(productAreaRepository.findById(productAreaDoesNotExist.id)).thenReturn(Optional.empty());
 
         //Step 2: execute updateProject()
         Exception exception;
@@ -599,10 +593,10 @@ public class ProjectServiceTest {
         //Step 1: provide knowledge
         when(repository.existsById(projectID)).thenReturn(true);
         when(repository.findById(projectID)).thenReturn(Optional.of(entity));
-        when(productAreaRepository.existsById(productAreas.get(0).id)).thenReturn(true);
-        when(productAreaRepository.existsById(productAreas.get(1).id)).thenReturn(true);
-        when(productAreaRepository.existsById(productAreas.get(2).id)).thenReturn(true);
-        when(productAreaRepository.existsById(productAreaDoesNotExist.id)).thenReturn(false);
+        when(productAreaRepository.findById(productAreas.get(0).id)).thenReturn(Optional.of(productAreaEntities.get(0)));
+        when(productAreaRepository.findById(productAreas.get(1).id)).thenReturn(Optional.of(productAreaEntities.get(1)));
+        when(productAreaRepository.findById(productAreas.get(2).id)).thenReturn(Optional.of(productAreaEntities.get(2)));
+        when(productAreaRepository.findById(productAreaDoesNotExist.id)).thenReturn(Optional.empty());
 
         //Step 2: execute updateProject()
         Exception exception;
@@ -613,7 +607,6 @@ public class ProjectServiceTest {
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
-
 
     }
 
@@ -632,9 +625,9 @@ public class ProjectServiceTest {
         //Step 1: provide knowledge
         when(repository.existsById(projectID)).thenReturn(true);
         when(repository.findById(projectID)).thenReturn(Optional.of(entity));
-        when(productAreaRepository.existsById(productAreas.get(0).id)).thenReturn(true);
-        when(productAreaRepository.existsById(productAreas.get(1).id)).thenReturn(true);
-        when(productAreaRepository.existsById(productAreas.get(2).id)).thenReturn(true);
+        when(productAreaRepository.findById(productAreas.get(0).id)).thenReturn(Optional.of(productAreaEntities.get(0)));
+        when(productAreaRepository.findById(productAreas.get(1).id)).thenReturn(Optional.of(productAreaEntities.get(1)));
+        when(productAreaRepository.findById(productAreas.get(2).id)).thenReturn(Optional.of(productAreaEntities.get(2)));
         when(userRepository.findById(userDoesNotExist.userID.toString())).thenReturn(Optional.empty());
 
         //Step 2: execute updateProject()
@@ -662,14 +655,15 @@ public class ProjectServiceTest {
         projectIn.members.get(2).userID = creatorID;
         ProjectUserDto userDoesNotExist = new ProjectUserDto();
         userDoesNotExist.userID = UUID.fromString("2375e026-d348-4fb6-b42b-891a76758d5d");
+        userDoesNotExist.role = Role.CLIENT;
         projectIn.members.add(userDoesNotExist);
 
         //Step 1: provide knowledge
         when(repository.existsById(projectID)).thenReturn(true);
         when(repository.findById(projectID)).thenReturn(Optional.of(entity));
-        when(productAreaRepository.existsById(productAreas.get(0).id)).thenReturn(true);
-        when(productAreaRepository.existsById(productAreas.get(1).id)).thenReturn(true);
-        when(productAreaRepository.existsById(productAreas.get(2).id)).thenReturn(true);
+        when(productAreaRepository.findById(productAreas.get(0).id)).thenReturn(Optional.of(productAreaEntities.get(0)));
+        when(productAreaRepository.findById(productAreas.get(1).id)).thenReturn(Optional.of(productAreaEntities.get(1)));
+        when(productAreaRepository.findById(productAreas.get(2).id)).thenReturn(Optional.of(productAreaEntities.get(2)));
         when(userRepository.findById(projectIn.members.get(0).userID.toString())).thenReturn(Optional.of(userEntities.get(0)));
         when(userRepository.findById(projectIn.members.get(1).userID.toString())).thenReturn(Optional.of(userEntities.get(1)));
         when(userRepository.findById(projectIn.members.get(2).userID.toString())).thenReturn(Optional.of(userEntities.get(2)));
@@ -831,18 +825,19 @@ public class ProjectServiceTest {
     @Test
     @Disabled
     public void testAssignMembersToProject_invalidEmail_multipleUsers() {
-        //TODO: fix test
+        //TODO: (figure out) why does the test not work when all test in this class are running but it does work when it is run by itself?
         // Step 1: init test object
         List<ProjectUserDto> membersIn = members;
         ProjectUserDto invalidEmail = new ProjectUserDto();
         invalidEmail.userEmail = notAnEmail;
+        invalidEmail.role = Role.CLIENT;
         membersIn.add(invalidEmail);
-        int numMembersIn = membersIn.size();
         ProjectEntity projectEntity = new ProjectEntity();
         projectEntity.projectUserEntities = new ArrayList<>();
 
         //Step 2: provide knowledge
         when(userRepository.findByEmail(membersIn.get(0).userEmail)).thenReturn(Optional.of(userEntities.get(0)));
+        when(userRepository.findByEmail(membersIn.get(1).userEmail)).thenReturn(Optional.of(userEntities.get(1)));
         when(userRepository.findByEmail(membersIn.get(2).userEmail)).thenReturn(Optional.of(userEntities.get(2)));
 
 
@@ -961,7 +956,6 @@ public class ProjectServiceTest {
         userDoesNotExist.role = Role.CLIENT;
         membersIn.add(userDoesNotExist);
         ProjectEntity projectEntity = new ProjectEntity();
-        projectEntity.projectUserEntities = new ArrayList<>();
 
 
         //Step 3: execute assignMembersToProject()
@@ -979,15 +973,20 @@ public class ProjectServiceTest {
     @Test
     @Disabled
     public void testAssignMembersToProject_userEmailDoesNotExist_multipleUsers() {
-        //TODO: fix test
+        //TODO: (figure out) why does the test not work when all test in this class are running but it does work when it is run by itself?
         // Step 1: init test object
         List<ProjectUserDto> membersIn = members;
+        ProjectUserDto userDoesNotExist = new ProjectUserDto();
+        userDoesNotExist.userEmail = "test@test.com";
+        userDoesNotExist.role = Role.CLIENT;
+        membersIn.add(userDoesNotExist);
         ProjectEntity projectEntity = new ProjectEntity();
-        projectEntity.projectUserEntities = new ArrayList<>();
 
         //Step 2: provide knowledge
         when(userRepository.findByEmail(membersIn.get(0).userEmail)).thenReturn(Optional.of(userEntities.get(0)));
-        when(userRepository.findByEmail(membersIn.get(2).userEmail)).thenReturn(Optional.empty());
+        when(userRepository.findByEmail(membersIn.get(1).userEmail)).thenReturn(Optional.of(userEntities.get(1)));
+        when(userRepository.findByEmail(membersIn.get(2).userEmail)).thenReturn(Optional.of(userEntities.get(2)));
+        when(userRepository.findByEmail(userDoesNotExist.userEmail)).thenReturn(Optional.empty());
 
 
         //Step 3: execute assignMembersToProject()
@@ -1029,57 +1028,198 @@ public class ProjectServiceTest {
     /**
      * tests for createProjectUsers()
      *
-     * testCreateProjectUser1: one or both of the necessary IDs do not exist --> throw ResourceNotFound Exception
+     * testCreateProjectUser: projectID does not exist --> throw ResourceNotFound Exception
      * testCreateProjectUser2: IDs exist, Role is missing --> throw BadRequest Exception
-     * testCreateProjectUser3: IDs exist, Role does not exist --> throw BadRequest Exception
      * testCreateProjectUser4: Input correct --> tbd
      */
     @Test
-    @Disabled
-    public void testCreateProjectUser1() {
-        // Step 0: init test object
+    public void testCreateProjectUser_resourceNotFound_projectID() {
+        //Step 1: run test
+        Exception exception = assertThrows(ResourceNotFound.class, ()
+                -> service.createProjectUsers(1, new ArrayList<>()));
 
+        String expectedMessage = "projectID 1 not found";
+        String actualMessage = exception.getMessage();
 
-        // Step 1: provide knowledge
-
-
-        // Step 2: Execute test method()
-
-        // Step 3: assert result
-//        String expectedMessage = ;
-//        String actualMessage = exception.getMessage();
-//
-//        assertTrue(actualMessage.contains(expectedMessage));
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 
-    @Test
-    @Disabled
-    public void testCreateProjectUser2() {
-        // Step 0: init test object
-
-        // Step 1: provide knowledge
-
-        // Step 2: Execute test method()
-
-        // Step 3: assert result
-
-    }
 
     @Test
-    @Disabled
-    public void testCreateProjectUser3() {
+    public void testCreateProjectUser_resourceNotFound_userEmail_singleUser() {
         // Step 0: init test object
+        List<ProjectUserDto> membersIn = new ArrayList<>();
+        ProjectUserDto userDoesNotExist = new ProjectUserDto();
+        userDoesNotExist.userEmail = "test@test.com";
+        userDoesNotExist.role = Role.CLIENT;
+        membersIn.add(userDoesNotExist);
 
         // Step 1: provide knowledge
+        when(repository.existsById(1)).thenReturn(true);
+        when(repository.findById(1)).thenReturn(Optional.of(entity));
 
         // Step 2: Execute test method()
+        Exception exception = assertThrows(ResourceNotFound.class, ()
+                -> service.createProjectUsers(1, membersIn));
+
+        String expectedMessage = "User does not exist.";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
 
         // Step 3: assert result
 
     }
 
+
+    @Test
+    public void testCreateProjectUser_resourceNotFound_userEmail_multipleUser() {
+        // Step 0: init test object
+        List<ProjectUserDto> membersIn = members;
+        membersIn.get(2).userEmail = "test@test.com";
+
+        // Step 1: provide knowledge
+        when(repository.existsById(1)).thenReturn(true);
+        when(repository.findById(1)).thenReturn(Optional.of(entity));
+
+        // Step 2: Execute test method()
+        Exception exception = assertThrows(ResourceNotFound.class, ()
+                -> service.createProjectUsers(1, membersIn));
+
+        String expectedMessage = "User does not exist.";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+
+        // Step 3: assert result
+
+    }
+
+
+    @Test
+    public void testCreateProjectUser_badRequest_missingProjectUserRole_singleUser() {
+        // Step 0: init test object
+        List<ProjectUserDto> membersIn = new ArrayList<>();
+        members.get(0).role = null;
+        membersIn.add(members.get(0));
+
+        // Step 1: provide knowledge
+        when(repository.existsById(1)).thenReturn(true);
+        when(repository.findById(1)).thenReturn(Optional.of(entity));
+
+        // Step 2: Execute test method()
+        Exception exception = assertThrows(BadRequest.class, ()
+                -> service.createProjectUsers(1, membersIn));
+
+        String expectedMessage = "Input is missing/incorrect";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+
+        // Step 3: assert result
+
+    }
+
+
     @Test
     @Disabled
+    public void testCreateProjectUser_badRequest_missingProjectUserRole_multipleUser() {
+        //TODO: (figure out) why does the test not work when all test in this class are running but it does work when it is run by itself?
+        // Step 0: init test object
+        List<ProjectUserDto> membersIn = members;
+        membersIn.get(2).role = null;
+
+        // Step 1: provide knowledge
+        when(repository.existsById(1)).thenReturn(true);
+        when(repository.findById(1)).thenReturn(Optional.of(entity));
+        when(userRepository.findByEmail(membersIn.get(0).userEmail)).thenReturn(Optional.of(userEntities.get(0)));
+        when(userRepository.findByEmail(membersIn.get(1).userEmail)).thenReturn(Optional.of(userEntities.get(1)));
+
+        // Step 2: Execute test method()
+        Exception exception = assertThrows(BadRequest.class, ()
+                -> service.createProjectUsers(1, membersIn));
+
+        String expectedMessage = "Input is missing/incorrect";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+
+    }
+
+
+    @Test
+    public void testCreateProjectUser_badRequest_missingUserEmail_singleUser() {
+        // Step 0: init test object
+        List<ProjectUserDto> membersIn = new ArrayList<>();
+        members.get(0).userEmail = null;
+        membersIn.add(members.get(0));
+
+        // Step 1: provide knowledge
+        when(repository.existsById(1)).thenReturn(true);
+        when(repository.findById(1)).thenReturn(Optional.of(entity));
+
+        // Step 2: Execute test method()
+        Exception exception = assertThrows(BadRequest.class, ()
+                -> service.createProjectUsers(1, membersIn));
+
+        String expectedMessage = "Input is missing/incorrect";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+
+
+    }
+
+
+    @Test
+    @Disabled
+    public void testCreateProjectUser_badRequest_missingUserEmail_multipleUser() {
+        //TODO: (fix) stubbing problem
+        // Step 0: init test object
+        List<ProjectUserDto> membersIn = members;
+        membersIn.get(2).userEmail = null;
+
+        // Step 1: provide knowledge
+        when(repository.existsById(1)).thenReturn(true);
+        when(repository.findById(1)).thenReturn(Optional.of(entity));
+        when(userRepository.findByEmail(membersIn.get(0).userEmail)).thenReturn(Optional.of(userEntities.get(0)));
+//        when(userRepository.findByEmail(membersIn.get(1).userEmail)).thenReturn(Optional.of(userEntities.get(1)));
+
+        // Step 2: Execute test method()
+        Exception exception = assertThrows(BadRequest.class, ()
+                -> service.createProjectUsers(1, membersIn));
+
+        String expectedMessage = "Input is missing/incorrect";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+
+    }
+
+
+    @Test
+    public void testCreateProjectUser_success_singleUser() {
+        // Step 0: init test object
+        List<ProjectUserDto> membersIn = new ArrayList<>();
+        membersIn.add(members.get(0));
+
+        // Step 1: provide knowledge
+        when(repository.existsById(1)).thenReturn(true);
+        when(repository.findById(1)).thenReturn(Optional.of(entity));
+        when(userRepository.findByEmail(membersIn.get(0).userEmail)).thenReturn(Optional.of(userEntities.get(0)));
+
+        // Step 2: run test method
+        List<ProjectUserDto> out = service.createProjectUsers(1, membersIn);
+
+        assertThat(out.size()).isEqualTo(membersIn.size());
+        assertAll("assign single User to project",
+                () -> assertEquals(membersIn.get(0).userEmail, out.get(0).userEmail),
+                () -> assertEquals(membersIn.get(0).role, out.get(0).role),
+                () -> assertNotNull(out.get(0).userID));
+    }
+
+    @Test
+    @Disabled("implement")
     public void testCreateProjectUser4() {
         // Step 0: init test object
 

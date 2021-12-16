@@ -156,7 +156,7 @@ public class ProjectService {
     public List<ProjectUserDto> createProjectUsers(int projectID, List<ProjectUserDto> members) {
 
         if(!repository.existsById(projectID)){
-            throw new ResourceNotFound("Project does not exist.");
+            throw new ResourceNotFound("projectID " + projectID + " not found");
         }else{
             List<ProjectUserDto> out = new ArrayList<>();
             ProjectEntity project = repository.findById(projectID).get();
