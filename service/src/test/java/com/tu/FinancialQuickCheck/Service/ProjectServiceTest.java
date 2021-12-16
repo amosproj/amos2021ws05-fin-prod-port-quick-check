@@ -21,7 +21,6 @@ import static org.mockito.Mockito.when;
 import java.util.*;
 import java.util.logging.Logger;
 
-//TODO: möglicher Ansatz --> AfterEach implementieren
 
 @ExtendWith(MockitoExtension.class)
 public class ProjectServiceTest {
@@ -387,30 +386,27 @@ public class ProjectServiceTest {
 
 
     @Test
-    @Disabled
     public void testCreateProject_memberDoesNotExist() {
-        //TODO: (fix) stubbing problem
+        // Step 0: init test object
+        ProjectDto projectIn = new ProjectDto();
+        projectIn.creatorID = creatorID;
+        projectIn.projectName = projectName;
+        projectIn.productAreas = productAreas;
+        projectIn.members = members;
+
+        //Step 1: provide knowledge
+        when(productAreaRepository.findById(1)).thenReturn(Optional.of(productAreaEntities.get(0)));
+        when(productAreaRepository.findById(2)).thenReturn(Optional.of(productAreaEntities.get(1)));
+        when(productAreaRepository.findById(3)).thenReturn(Optional.of(productAreaEntities.get(2)));
+        when(userRepository.findByEmail(projectIn.members.get(0).userEmail)).thenReturn(Optional.of(userEntities.get(0)));
+        when(userRepository.findByEmail(projectIn.members.get(1).userEmail)).thenReturn(Optional.of(userEntities.get(1)));
+        when(userRepository.findByEmail(projectIn.members.get(2).userEmail)).thenReturn(Optional.empty());
+
         for(int i = 0; i <= 10; i++){
-            // Step 0: init test object
-            ProjectDto projectIn = new ProjectDto();
-            projectIn.creatorID = creatorID;
-            projectIn.projectName = projectName;
-            projectIn.productAreas = productAreas;
-            projectIn.members = members;
-
-            //Step 1: provide knowledge
-            when(productAreaRepository.findById(1)).thenReturn(Optional.of(productAreaEntities.get(0)));
-            when(productAreaRepository.findById(2)).thenReturn(Optional.of(productAreaEntities.get(1)));
-            when(productAreaRepository.findById(3)).thenReturn(Optional.of(productAreaEntities.get(2)));
-//            when(userRepository.findByEmail(projectIn.members.get(0).userEmail)).thenReturn(Optional.of(userEntities.get(0)));
-//            when(userRepository.findByEmail(projectIn.members.get(1).userEmail)).thenReturn(Optional.of(userEntities.get(1)));
-            when(userRepository.findByEmail(projectIn.members.get(2).userEmail)).thenReturn(Optional.empty());
-
             // Step 2: execute createProject()
             Exception exception = assertThrows(ResourceNotFound.class, () -> service.createProject(projectIn));
             String expectedMessage = "User does not exist.";
             String actualMessage = exception.getMessage();
-
             assertTrue(actualMessage.contains(expectedMessage));
         }
     }
@@ -486,7 +482,7 @@ public class ProjectServiceTest {
 
 
     @Test
-    @Disabled
+    @Disabled("Discuss with Alex")
     public void testUpdateProject_partialUpdate_replaceAllExistingProjectMembers(){
         //TODO: (discuss with Alex) Is this test necessary? Because it tests if delete works correctly, which is a SpringBoot method
         //TODO: (discuss with Alex) If we need the testcase, how to mock delete method?
@@ -825,9 +821,7 @@ public class ProjectServiceTest {
 
 
     @Test
-    @Disabled
     public void testAssignMembersToProject_invalidEmail_multipleUsers() {
-        //TODO: (figure out) why does the test not work when all test in this class are running but it does work when it is run by itself?
         // Step 1: init test object
         List<ProjectUserDto> membersIn = members;
         ProjectUserDto invalidEmail = new ProjectUserDto();
@@ -973,9 +967,7 @@ public class ProjectServiceTest {
 
 
     @Test
-    @Disabled
     public void testAssignMembersToProject_userEmailDoesNotExist_multipleUsers() {
-        //TODO: (figure out) why does the test not work when all test in this class are running but it does work when it is run by itself?
         // Step 1: init test object
         List<ProjectUserDto> membersIn = members;
         ProjectUserDto userDoesNotExist = new ProjectUserDto();
@@ -1124,9 +1116,7 @@ public class ProjectServiceTest {
 
 
     @Test
-    @Disabled
     public void testCreateProjectUser_badRequest_missingProjectUserRole_multipleUser() {
-        //TODO: (figure out) why does the test not work when all test in this class are running but it does work when it is run by itself?
         // Step 0: init test object
         List<ProjectUserDto> membersIn = members;
         membersIn.get(2).role = null;
@@ -1174,9 +1164,7 @@ public class ProjectServiceTest {
 
 
     @Test
-    @Disabled
     public void testCreateProjectUser_badRequest_missingUserEmail_multipleUser() {
-        //TODO: (fix) stubbing problem
         // Step 0: init test object
         List<ProjectUserDto> membersIn = members;
         membersIn.get(2).userEmail = null;
@@ -1185,7 +1173,7 @@ public class ProjectServiceTest {
         when(repository.existsById(1)).thenReturn(true);
         when(repository.findById(1)).thenReturn(Optional.of(entity));
         when(userRepository.findByEmail(membersIn.get(0).userEmail)).thenReturn(Optional.of(userEntities.get(0)));
-//        when(userRepository.findByEmail(membersIn.get(1).userEmail)).thenReturn(Optional.of(userEntities.get(1)));
+        when(userRepository.findByEmail(membersIn.get(1).userEmail)).thenReturn(Optional.of(userEntities.get(1)));
 
         // Step 2: Execute test method()
         Exception exception = assertThrows(BadRequest.class, ()
