@@ -12,7 +12,7 @@ public class ListOfRatingDto {
 
     public ListOfRatingDto(){}
 
-    public ListOfRatingDto(Iterable<RatingEntity> ratingEntities)
+    public ListOfRatingDto(List<RatingEntity> ratingEntities)
     {
         this.ratings = new ArrayList<>();
 

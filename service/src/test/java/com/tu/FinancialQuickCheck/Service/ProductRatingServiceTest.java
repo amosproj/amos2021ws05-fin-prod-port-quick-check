@@ -39,6 +39,8 @@ public class ProductRatingServiceTest {
     private ProductEntity entity;
     private ProductRatingEntity productRatingEntity;
     private List<RatingEntity> ratingEntities;
+    private List<RatingEntity> econimicRatingEntities;
+    private List<RatingEntity> complexityRatingEntities;
 
     private ProductDto createDto;
     private ProductDto createEmptyDto;
@@ -47,7 +49,7 @@ public class ProductRatingServiceTest {
     @BeforeEach
     public void init() {
         log.info("@BeforeEach - setup for Tests in ProductRatingServiceTest.class");
-        // init ProjectService
+        // init ProductRatingService
         service = new ProductRatingService(repository, productRepository, ratingRepository);
 
         projectEntity = new ProjectEntity();
@@ -63,6 +65,8 @@ public class ProductRatingServiceTest {
         entity.project = projectEntity;
         entity.productRatingEntities = new ArrayList<>();
         ratingEntities = new ArrayList<>();
+        econimicRatingEntities = new ArrayList<>();
+        complexityRatingEntities = new ArrayList<>();
         for(int i = 1; i < 20; i++){
             ProductRatingEntity tmp = new ProductRatingEntity();
             tmp.answer = "answer" + i;
@@ -74,6 +78,11 @@ public class ProductRatingServiceTest {
             ratingEntity.category = (i % 2 == 0) ? null : "category" + i;
             ratingEntity.ratingarea = (i < 9) ? RatingArea.ECONOMIC : RatingArea.COMPLEXITY;
             ratingEntities.add(ratingEntity);
+            if(i < 9){
+                econimicRatingEntities.add(ratingEntity);
+            }else{
+                complexityRatingEntities.add(ratingEntity);
+            }
             tmp.productRatingId = new ProductRatingId(entity, ratingEntity);
             entity.productRatingEntities.add(tmp);
         }
@@ -81,7 +90,7 @@ public class ProductRatingServiceTest {
         createDto = new ProductDto();
         createDto.productName = name;
         createDto.ratings = new ArrayList<>();
-        for(int i = 1; i < 11; i++){
+        for(int i = 1; i < 8; i++){
             ProductRatingDto tmp = new ProductRatingDto();
             tmp.ratingID = i;
             tmp.answer = "answer" + i;
@@ -93,7 +102,7 @@ public class ProductRatingServiceTest {
         createEmptyDto = new ProductDto();
         createEmptyDto.productName = name;
         createEmptyDto.ratings = new ArrayList<>();
-        for(int i = 1; i < 11; i++){
+        for(int i = 1; i < 8; i++){
             ProductRatingDto tmp = new ProductRatingDto();
             tmp.ratingID = i;
             createEmptyDto.ratings.add(tmp);
@@ -233,7 +242,7 @@ public class ProductRatingServiceTest {
 
         // Step 1: provide knowledge
         when(productRepository.existsById(productID)).thenReturn(true);
-        when(productRepository.findById(productID)).thenReturn(Optional.of(entity));
+        when(productRepository.getById(productID)).thenReturn(entity);
         when(ratingRepository.existsById(1)).thenReturn(true);
         when(ratingRepository.existsById(2)).thenReturn(true);
         when(ratingRepository.existsById(3)).thenReturn(true);
@@ -241,29 +250,9 @@ public class ProductRatingServiceTest {
         when(ratingRepository.existsById(5)).thenReturn(true);
         when(ratingRepository.existsById(6)).thenReturn(true);
         when(ratingRepository.existsById(7)).thenReturn(true);
-        when(ratingRepository.existsById(8)).thenReturn(true);
-        when(ratingRepository.existsById(9)).thenReturn(true);
-        when(ratingRepository.existsById(10)).thenReturn(true);
-//        when(ratingRepository.getById(1)).thenReturn(ratingEntities.get(0));
-//        when(ratingRepository.getById(2)).thenReturn(ratingEntities.get(1));
-//        when(ratingRepository.getById(3)).thenReturn(ratingEntities.get(2));
-//        when(ratingRepository.getById(4)).thenReturn(ratingEntities.get(3));
-//        when(ratingRepository.getById(5)).thenReturn(ratingEntities.get(4));
-//        when(ratingRepository.getById(6)).thenReturn(ratingEntities.get(5));
-//        when(ratingRepository.getById(7)).thenReturn(ratingEntities.get(6));
-//        when(ratingRepository.getById(8)).thenReturn(ratingEntities.get(7));
-//        when(ratingRepository.getById(9)).thenReturn(ratingEntities.get(8));
-//        when(ratingRepository.getById(10)).thenReturn(ratingEntities.get(9));
         when(ratingRepository.findById(1)).thenReturn(Optional.of(ratingEntities.get(0)));
-        when(ratingRepository.findById(2)).thenReturn(Optional.of(ratingEntities.get(1)));
-        when(ratingRepository.findById(3)).thenReturn(Optional.of(ratingEntities.get(2)));
-        when(ratingRepository.findById(4)).thenReturn(Optional.of(ratingEntities.get(3)));
-        when(ratingRepository.findById(5)).thenReturn(Optional.of(ratingEntities.get(4)));
-        when(ratingRepository.findById(6)).thenReturn(Optional.of(ratingEntities.get(5)));
-        when(ratingRepository.findById(7)).thenReturn(Optional.of(ratingEntities.get(6)));
-        when(ratingRepository.findById(8)).thenReturn(Optional.of(ratingEntities.get(7)));
-        when(ratingRepository.findById(9)).thenReturn(Optional.of(ratingEntities.get(8)));
-        when(ratingRepository.findById(10)).thenReturn(Optional.of(ratingEntities.get(9)));
+
+        when(ratingRepository.findByRatingarea(RatingArea.ECONOMIC)).thenReturn(econimicRatingEntities);
 
         // Step 2: Execute updateProject()
         ProductDto out = service.createProductRatings(createEmptyDto, productID);
@@ -288,8 +277,7 @@ public class ProductRatingServiceTest {
 
         // Step 1: provide knowledge
         when(productRepository.existsById(productID)).thenReturn(true);
-        when(productRepository.findById(productID)).thenReturn(Optional.of(entity));
-//        when(productRepository.getById(productID)).thenReturn(entity);
+        when(productRepository.getById(productID)).thenReturn(entity);
         when(ratingRepository.existsById(1)).thenReturn(true);
         when(ratingRepository.existsById(2)).thenReturn(true);
         when(ratingRepository.existsById(3)).thenReturn(true);
@@ -297,29 +285,9 @@ public class ProductRatingServiceTest {
         when(ratingRepository.existsById(5)).thenReturn(true);
         when(ratingRepository.existsById(6)).thenReturn(true);
         when(ratingRepository.existsById(7)).thenReturn(true);
-        when(ratingRepository.existsById(8)).thenReturn(true);
-        when(ratingRepository.existsById(9)).thenReturn(true);
-        when(ratingRepository.existsById(10)).thenReturn(true);
-//        when(ratingRepository.getById(1)).thenReturn(ratingEntities.get(0));
-//        when(ratingRepository.getById(2)).thenReturn(ratingEntities.get(1));
-//        when(ratingRepository.getById(3)).thenReturn(ratingEntities.get(2));
-//        when(ratingRepository.getById(4)).thenReturn(ratingEntities.get(3));
-//        when(ratingRepository.getById(5)).thenReturn(ratingEntities.get(4));
-//        when(ratingRepository.getById(6)).thenReturn(ratingEntities.get(5));
-//        when(ratingRepository.getById(7)).thenReturn(ratingEntities.get(6));
-//        when(ratingRepository.getById(8)).thenReturn(ratingEntities.get(7));
-//        when(ratingRepository.getById(9)).thenReturn(ratingEntities.get(8));
-//        when(ratingRepository.getById(10)).thenReturn(ratingEntities.get(9));
         when(ratingRepository.findById(1)).thenReturn(Optional.of(ratingEntities.get(0)));
-        when(ratingRepository.findById(2)).thenReturn(Optional.of(ratingEntities.get(1)));
-        when(ratingRepository.findById(3)).thenReturn(Optional.of(ratingEntities.get(2)));
-        when(ratingRepository.findById(4)).thenReturn(Optional.of(ratingEntities.get(3)));
-        when(ratingRepository.findById(5)).thenReturn(Optional.of(ratingEntities.get(4)));
-        when(ratingRepository.findById(6)).thenReturn(Optional.of(ratingEntities.get(5)));
-        when(ratingRepository.findById(7)).thenReturn(Optional.of(ratingEntities.get(6)));
-        when(ratingRepository.findById(8)).thenReturn(Optional.of(ratingEntities.get(7)));
-        when(ratingRepository.findById(9)).thenReturn(Optional.of(ratingEntities.get(8)));
-        when(ratingRepository.findById(10)).thenReturn(Optional.of(ratingEntities.get(9)));
+
+        when(ratingRepository.findByRatingarea(RatingArea.ECONOMIC)).thenReturn(econimicRatingEntities);
 
 
         // Step 2: Execute updateProject()
@@ -327,12 +295,10 @@ public class ProductRatingServiceTest {
 
         // Step 3: assert exception
         assertEquals(createDto.productName , out.productName);
+        assertThat(out.ratings.size()).isEqualTo(econimicRatingEntities.size());
 
         for (ProductRatingDto rating : out.ratings) {
-            assertThat(rating.ratingID).isGreaterThan(0);
-            assertThat(rating.answer.length()).isBetween(7,8);
-            assertThat(rating.comment.length()).isBetween(8,9);
-            assertThat(rating.score).isEqualTo(Score.HOCH);
+            assertThat(rating.ratingID).isBetween(1,8);
         }
     }
 
@@ -364,7 +330,6 @@ public class ProductRatingServiceTest {
 
         // Step 1: provide knowledge
         when(productRepository.existsById(productID)).thenReturn(true);
-        when(productRepository.findById(productID)).thenReturn(Optional.of(entity));
         when(ratingRepository.existsById(1)).thenReturn(false);
 
         // Step 2: Execute updateProject()
@@ -386,12 +351,13 @@ public class ProductRatingServiceTest {
 
         // Step 1: provide knowledge
         when(productRepository.existsById(productID)).thenReturn(true);
-        when(productRepository.findById(productID)).thenReturn(Optional.of(entity));
+        when(productRepository.getById(productID)).thenReturn(entity);
         when(ratingRepository.existsById(1)).thenReturn(true);
         when(ratingRepository.existsById(2)).thenReturn(true);
         when(ratingRepository.existsById(3)).thenReturn(false);
         when(ratingRepository.findById(1)).thenReturn(Optional.of(ratingEntities.get(0)));
-        when(ratingRepository.findById(2)).thenReturn(Optional.of(ratingEntities.get(1)));
+
+        when(ratingRepository.findByRatingarea(RatingArea.ECONOMIC)).thenReturn(econimicRatingEntities);
 
         // Step 2: Execute updateProject()
         Exception exception = assertThrows(ResourceNotFound.class,
@@ -437,9 +403,6 @@ public class ProductRatingServiceTest {
         when(ratingRepository.getById(5)).thenReturn(ratingEntities.get(4));
         when(ratingRepository.getById(6)).thenReturn(ratingEntities.get(5));
         when(ratingRepository.getById(7)).thenReturn(ratingEntities.get(6));
-        when(ratingRepository.getById(8)).thenReturn(ratingEntities.get(7));
-        when(ratingRepository.getById(9)).thenReturn(ratingEntities.get(8));
-        when(ratingRepository.getById(10)).thenReturn(ratingEntities.get(9));
 
         when(repository.findById(new ProductRatingId(entity, ratingEntities.get(0))))
                 .thenReturn(Optional.of(entity.productRatingEntities.get(0)));
@@ -455,12 +418,6 @@ public class ProductRatingServiceTest {
                 .thenReturn(Optional.of(entity.productRatingEntities.get(5)));
         when(repository.findById(new ProductRatingId(entity, ratingEntities.get(6))))
                 .thenReturn(Optional.of(entity.productRatingEntities.get(6)));
-        when(repository.findById(new ProductRatingId(entity, ratingEntities.get(7))))
-                .thenReturn(Optional.of(entity.productRatingEntities.get(7)));
-        when(repository.findById(new ProductRatingId(entity, ratingEntities.get(8))))
-                .thenReturn(Optional.of(entity.productRatingEntities.get(8)));
-        when(repository.findById(new ProductRatingId(entity, ratingEntities.get(9))))
-                .thenReturn(Optional.of(entity.productRatingEntities.get(9)));
 
         // Step 2: Execute updateProject()
         ProductDto out = service.updateProductRatings(createEmptyDto, productID);

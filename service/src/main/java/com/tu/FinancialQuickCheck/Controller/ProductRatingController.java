@@ -41,6 +41,7 @@ public class ProductRatingController {
     @PostMapping(consumes = "application/json", produces = "application/json")
     public ProductDto createProductRatings(@RequestBody ProductDto productDto, @PathVariable Integer productID) {
 
+//        return service.createProductRatings(productDto, productID);
         return service.createProductRatings(productDto, productID);
     }
 
