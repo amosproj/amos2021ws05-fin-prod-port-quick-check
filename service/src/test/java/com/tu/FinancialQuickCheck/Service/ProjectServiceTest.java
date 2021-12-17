@@ -5,7 +5,6 @@ import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.Role;
 import com.tu.FinancialQuickCheck.db.*;
 import com.tu.FinancialQuickCheck.dto.*;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -13,10 +12,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -94,14 +92,11 @@ public class ProjectServiceTest {
         members.add(new ProjectUserDto(userEmail3, Role.ADMIN));
 
 
-//        UUID.fromString("2375e026-d348-4fb6-b42b-891a76758d5d")
-//        UUID.fromString("0fef539d-69be-4013-9380-6a12c3534c67")
-
         // init ProjectEntity
         entity = new ProjectEntity();
 
         productAreaEntities = new ArrayList<>();
-        for(int i = 1; i <= 3; i++){
+        for(int i = 1; i <= 6; i++){
             ProductAreaEntity tmp = new ProductAreaEntity();
             tmp.id = i;
             productAreaEntities.add(tmp);
@@ -455,7 +450,6 @@ public class ProjectServiceTest {
      * //TODO: (add testcase)
      * testUpdateProject: updates all attributes
      *                    --> ProjectEntity attributes are updated accordingly
-     * //TODO: (add testcase)
      * testUpdateProject: partial update: only add new ProductAreas
      *                    --> ProjectEntity attributes are updated accordingly
      * testUpdateProject: partial update: replace existing project members with new ones
@@ -467,47 +461,177 @@ public class ProjectServiceTest {
      */
 
     @Test
-    @Disabled("implement")
     public void testUpdateProject_success_updateAllAttributes(){
-
-
-    }
-
-    @Test
-    @Disabled("implement")
-    public void testUpdateProject_partialUpdate_onlyAddNewProductAreas(){
-
-
-    }
-
-
-    @Test
-    @Disabled("Discuss with Alex")
-    public void testUpdateProject_partialUpdate_replaceAllExistingProjectMembers(){
-        //TODO: (discuss with Alex) Is this test necessary? Because it tests if delete works correctly, which is a SpringBoot method
-        //TODO: (discuss with Alex) If we need the testcase, how to mock delete method?
+        //TODO: (implement missing case) -> done
         // Step 0: init test object
+        int numProductAreasOld = entity.productEntities.size();
         ProjectDto projectIn = emptyProject;
-        projectIn.productAreas = productAreas;
-        emptyProject.members = new ArrayList<>();
-        emptyProject.members.add(new ProjectUserDto(userEmail2, Role.CLIENT));
-        emptyProject.members.add(new ProjectUserDto(userEmail3, Role.CLIENT));
-        UserEntity userEntity2 = new UserEntity();
-        userEntity2.id = creatorID.toString();
-        userEntity2.email = userEmail2;
-        UserEntity userEntity3 = new UserEntity();
-        userEntity3.id = creatorID.toString();
-        userEntity3.email = userEmail3;
+        projectIn.projectName = "Neuer Name";
+        projectIn.productAreas = new ArrayList<>();
+        int idNewProductArea = newProductAreas.get(0).id;
+        projectIn.productAreas.add(newProductAreas.get(0));
+
+
+        int numOldMembers = entity.projectUserEntities.size();
+        String newUserEmail = "newUser@test.de";
+        String newUserEmail1 = "newUser1@test.de";
+
+        projectIn.members = new ArrayList<>();
+        projectIn.members.add(new ProjectUserDto(newUserEmail, Role.CLIENT));
+        projectIn.members.add(new ProjectUserDto(newUserEmail1, Role.CLIENT));
+
+        UserEntity userEntity = new UserEntity();
+        userEntity.id = creatorID.toString();
+        userEntity.email = newUserEmail;
+
+        UserEntity userEntity1 = new UserEntity();
+        userEntity1.id = creatorID.toString();
+        userEntity1.email = newUserEmail1;
 
         // Step 0: provide knowledge
         when(repository.existsById(entity.id)).thenReturn(true);
         when(repository.findById(entity.id)).thenReturn(Optional.of(entity));
-        when(productAreaRepository.findById(productAreas.get(0).id)).thenReturn(Optional.of(productAreaEntities.get(0)));
-        when(productAreaRepository.findById(productAreas.get(1).id)).thenReturn(Optional.of(productAreaEntities.get(1)));
-        when(productAreaRepository.findById(productAreas.get(2).id)).thenReturn(Optional.of(productAreaEntities.get(2)));
-        when(userRepository.findByEmail(userEmail2)).thenReturn(Optional.of(userEntity2));
-        when(userRepository.findByEmail(userEmail3)).thenReturn(Optional.of(userEntity3));
-        when(projectUserRepository.deleteByProjectUserId_project(entity)).thenReturn((long) entity.projectUserEntities.size());
+        when(productAreaRepository.findById(idNewProductArea)).thenReturn(Optional.of(productAreaEntities.get(idNewProductArea-1)));
+        ProductAreaEntity tmp = productAreaEntities.get(idNewProductArea-1);
+        when(productRepository.existsByProjectAndProductarea(entity, tmp)).thenReturn(false);
+        when(userRepository.findByEmail(newUserEmail)).thenReturn(Optional.of(userEntity));
+        when(userRepository.findByEmail(newUserEmail1)).thenReturn(Optional.of(userEntity1));
+        doAnswer(invocation -> {
+            Object arg0 = invocation.getArgument(0);
+            assertEquals(entity, arg0);
+            return null;
+        }).when(projectUserRepository).deleteByProjectUserId_project(entity);
+
+
+        // Step 2: execute updateProject()
+        ProjectDto out = service.updateProject(projectIn, entity.id);
+
+        // Step 3: assert result
+        assertAll(
+                () -> assertEquals(projectIn.productAreas.get(0).id, out.productAreas.get(2).id),
+                () -> assertEquals(projectIn.projectName, out.projectName),
+                () -> assertEquals(projectIn.members.size(), out.members.size()),
+                () -> assertEquals(numProductAreasOld, out.productAreas.size()-1),
+                () -> assertNotEquals(out.members.size(), numOldMembers),
+                () -> assertEquals(out.members.size(), numOldMembers-1)
+        );
+
+        out.productAreas.forEach(
+                area -> assertThat(area.id).isBetween(1,6)
+        );
+
+    }
+
+    @Test
+    public void testUpdateProject_partialUpdate_onlyAddNewProductAreas_SingleProductArea(){
+        //TODO: (implement missing case) --> done
+        // Step 0: init test object
+        int numProductAreasOld = entity.productEntities.size();
+        ProjectDto projectIn = emptyProject;
+        emptyProject.members = members;
+        emptyProject.productAreas = new ArrayList<>();
+        int idNewProductArea = newProductAreas.get(0).id;
+        emptyProject.productAreas.add(newProductAreas.get(0));
+
+        // Step 0: provide knowledge
+        when(repository.existsById(entity.id)).thenReturn(true);
+        when(repository.findById(entity.id)).thenReturn(Optional.of(entity));
+        when(userRepository.findByEmail(members.get(0).userEmail)).thenReturn(Optional.of(userEntities.get(0)));
+        when(userRepository.findByEmail(members.get(1).userEmail)).thenReturn(Optional.of(userEntities.get(1)));
+        when(userRepository.findByEmail(members.get(2).userEmail)).thenReturn(Optional.of(userEntities.get(2)));
+        when(productAreaRepository.findById(idNewProductArea)).thenReturn(Optional.of(productAreaEntities.get(idNewProductArea-1)));
+        ProductAreaEntity tmp = productAreaEntities.get(idNewProductArea-1);
+        when(productRepository.existsByProjectAndProductarea(entity, tmp)).thenReturn(false);
+        doAnswer(invocation -> {
+            Object arg0 = invocation.getArgument(0);
+            assertEquals(entity, arg0);
+            return null;
+        }).when(projectUserRepository).deleteByProjectUserId_project(entity);
+
+
+        // Step 2: execute updateProject()
+        ProjectDto out = service.updateProject(projectIn, entity.id);
+
+        // Step 3: assert result
+        assertEquals(projectIn.members.size(), out.members.size());
+        assertEquals(numProductAreasOld, out.productAreas.size()-1);
+        assertAll(
+                () -> assertEquals(projectIn.productAreas.get(0).id, out.productAreas.get(2).id)
+        );
+
+        out.productAreas.forEach(
+                area -> assertThat(area.id).isBetween(1,6)
+        );
+    }
+
+
+    @Test
+    public void testUpdateProject_partialUpdate_onlyAddNewProductAreas_MultipleProductArea(){
+        //TODO: (implement missing case)
+        // Step 0: init test object
+        int numProductAreasOld = entity.productEntities.size();
+        ProjectDto projectIn = emptyProject;
+        emptyProject.members = members;
+        emptyProject.productAreas = newProductAreas;
+        int idNewProductArea = newProductAreas.get(0).id;
+        int idNewProductArea1 = newProductAreas.get(1).id;
+
+
+        // Step 0: provide knowledge
+        when(repository.existsById(entity.id)).thenReturn(true);
+        when(repository.findById(entity.id)).thenReturn(Optional.of(entity));
+        when(userRepository.findByEmail(members.get(0).userEmail)).thenReturn(Optional.of(userEntities.get(0)));
+        when(userRepository.findByEmail(members.get(1).userEmail)).thenReturn(Optional.of(userEntities.get(1)));
+        when(userRepository.findByEmail(members.get(2).userEmail)).thenReturn(Optional.of(userEntities.get(2)));
+        when(productAreaRepository.findById(idNewProductArea)).thenReturn(Optional.of(productAreaEntities.get(idNewProductArea-1)));
+        when(productAreaRepository.findById(idNewProductArea1)).thenReturn(Optional.of(productAreaEntities.get(idNewProductArea1-1)));
+        ProductAreaEntity tmp = productAreaEntities.get(idNewProductArea-1);
+        ProductAreaEntity tmp1 = productAreaEntities.get(idNewProductArea1-1);
+        when(productRepository.existsByProjectAndProductarea(entity, tmp)).thenReturn(false);
+        when(productRepository.existsByProjectAndProductarea(entity, tmp1)).thenReturn(false);
+        doAnswer(invocation -> {
+            Object arg0 = invocation.getArgument(0);
+            assertEquals(entity, arg0);
+            return null;
+        }).when(projectUserRepository).deleteByProjectUserId_project(entity);
+
+
+        // Step 2: execute updateProject()
+        ProjectDto out = service.updateProject(projectIn, entity.id);
+
+        // Step 3: assert result
+        assertEquals(projectIn.members.size(), out.members.size());
+        assertEquals(numProductAreasOld, out.productAreas.size()-2);
+        out.productAreas.forEach(
+                area -> assertThat(area.id).isBetween(1,6)
+        );
+
+    }
+
+
+    @Test
+    public void testUpdateProject_partialUpdate_replaceAllExistingProjectMembersWithSingleNewMember(){
+        //TODO: (figure out) --> stubbing delete action --> done
+        // Step 0: init test object
+        String newUserEmail = "newUser3@test.de";
+        ProjectDto projectIn = emptyProject;
+        emptyProject.members = new ArrayList<>();
+        emptyProject.members.add(new ProjectUserDto(newUserEmail, Role.CLIENT));
+        UserEntity userEntity = new UserEntity();
+        userEntity.id = creatorID.toString();
+        userEntity.email = newUserEmail;
+
+        // Step 0: provide knowledge
+        when(repository.existsById(entity.id)).thenReturn(true);
+        when(repository.findById(entity.id)).thenReturn(Optional.of(entity));
+        when(userRepository.findByEmail(newUserEmail)).thenReturn(Optional.of(userEntity));
+
+        doAnswer(invocation -> {
+            Object arg0 = invocation.getArgument(0);
+            assertEquals(entity, arg0);
+            return null;
+        }).when(projectUserRepository).deleteByProjectUserId_project(entity);
+
 
         // Step 2: execute updateProject()
         ProjectDto out = service.updateProject(projectIn, entity.id);
@@ -515,6 +639,62 @@ public class ProjectServiceTest {
         // Step 3: assert result
         assertEquals(projectIn.members.size(), out.members.size());
         assertNotEquals(3, out.members.size());
+        assertAll(
+                () -> assertEquals(newUserEmail, out.members.get(0).userEmail),
+                () -> assertEquals(Role.CLIENT, out.members.get(0).role),
+                () -> assertNotNull(out.members.get(0).userID)
+        );
+
+
+    }
+
+
+    @Test
+    public void testUpdateProject_partialUpdate_replaceAllExistingProjectMembersWithMultipleNewMembers(){
+        //TODO: (figure out) --> done
+        // Step 0: init test object
+        int numOldMembers = entity.projectUserEntities.size();
+        String newUserEmail = "newUser@test.de";
+        String newUserEmail1 = "newUser1@test.de";
+        String newUserEmail2 = "newUser2@test.de";
+
+        ProjectDto projectIn = emptyProject;
+        emptyProject.members = new ArrayList<>();
+        emptyProject.members.add(new ProjectUserDto(newUserEmail, Role.CLIENT));
+        emptyProject.members.add(new ProjectUserDto(newUserEmail1, Role.CLIENT));
+        emptyProject.members.add(new ProjectUserDto(newUserEmail2, Role.CLIENT));
+
+        UserEntity userEntity = new UserEntity();
+        userEntity.id = creatorID.toString();
+        userEntity.email = newUserEmail;
+
+        UserEntity userEntity1 = new UserEntity();
+        userEntity1.id = creatorID.toString();
+        userEntity1.email = newUserEmail1;
+
+        UserEntity userEntity2 = new UserEntity();
+        userEntity2.id = creatorID.toString();
+        userEntity2.email = newUserEmail2;
+
+        // Step 0: provide knowledge
+        when(repository.existsById(entity.id)).thenReturn(true);
+        when(repository.findById(entity.id)).thenReturn(Optional.of(entity));
+        when(userRepository.findByEmail(newUserEmail)).thenReturn(Optional.of(userEntity));
+        when(userRepository.findByEmail(newUserEmail1)).thenReturn(Optional.of(userEntity1));
+        when(userRepository.findByEmail(newUserEmail2)).thenReturn(Optional.of(userEntity2));
+
+        doAnswer(invocation -> {
+            Object arg0 = invocation.getArgument(0);
+            assertEquals(entity, arg0);
+            return null;
+        }).when(projectUserRepository).deleteByProjectUserId_project(entity);
+
+        // Step 2: execute updateProject()
+        ProjectDto out = service.updateProject(projectIn, entity.id);
+
+        // Step 3: assert result
+        assertEquals(projectIn.members.size(), out.members.size());
+        assertEquals(out.members.size(), numOldMembers);
 
     }
 
@@ -798,7 +978,7 @@ public class ProjectServiceTest {
 
 
     @Test
-    public void testAssignMembersToProject_invalidEmail_singleUser() {
+    public void testAssignMembersToProject_badrequest_invalidEmail_singleUser() {
         // Step 1: init test object
         List<ProjectUserDto> membersIn = new ArrayList<>();
         ProjectUserDto invalidEmail = new ProjectUserDto();
@@ -821,7 +1001,7 @@ public class ProjectServiceTest {
 
 
     @Test
-    public void testAssignMembersToProject_invalidEmail_multipleUsers() {
+    public void testAssignMembersToProject_badrequest_invalidEmail_multipleUsers() {
         // Step 1: init test object
         List<ProjectUserDto> membersIn = members;
         ProjectUserDto invalidEmail = new ProjectUserDto();
@@ -944,7 +1124,7 @@ public class ProjectServiceTest {
 
 
     @Test
-    public void testAssignMembersToProject_userEmailDoesNotExist_singleUser() {
+    public void testAssignMembersToProject_resourceNotFound_serEmailDoesNotExist_singleUser() {
         // Step 1: init test object
         List<ProjectUserDto> membersIn = new ArrayList<>();
         ProjectUserDto userDoesNotExist = new ProjectUserDto();
@@ -967,7 +1147,7 @@ public class ProjectServiceTest {
 
 
     @Test
-    public void testAssignMembersToProject_userEmailDoesNotExist_multipleUsers() {
+    public void testAssignMembersToProject_resourceNotFound_userEmailDoesNotExist_multipleUsers() {
         // Step 1: init test object
         List<ProjectUserDto> membersIn = members;
         ProjectUserDto userDoesNotExist = new ProjectUserDto();
@@ -996,7 +1176,7 @@ public class ProjectServiceTest {
 
 
     @Test
-    public void testAssignMembersToProject_duplicateMember() {
+    public void testAssignMembersToProject_success_duplicateMember() {
         // Step 1: init test object
         List<ProjectUserDto> membersIn = members;
         membersIn.add(members.get(0));
@@ -1208,17 +1388,265 @@ public class ProjectServiceTest {
                 () -> assertNotNull(out.get(0).userID));
     }
 
+
     @Test
-    @Disabled("implement")
-    public void testCreateProjectUser4() {
+    public void testCreateProjectUser_success_multiple() {
+        //TODO: (implement) --> done
         // Step 0: init test object
+        List<ProjectUserDto> membersIn = members;
 
         // Step 1: provide knowledge
+        when(repository.existsById(1)).thenReturn(true);
+        when(repository.findById(1)).thenReturn(Optional.of(entity));
+        when(userRepository.findByEmail(membersIn.get(0).userEmail)).thenReturn(Optional.of(userEntities.get(0)));
+        when(userRepository.findByEmail(membersIn.get(1).userEmail)).thenReturn(Optional.of(userEntities.get(1)));
+        when(userRepository.findByEmail(membersIn.get(2).userEmail)).thenReturn(Optional.of(userEntities.get(2)));
 
-        // Step 2: Execute test method()
+        // Step 2: run test method
+        List<ProjectUserDto> out = service.createProjectUsers(1, membersIn);
 
-        // Step 3: assert result
+        assertThat(out.size()).isEqualTo(membersIn.size());
+        out.forEach(
+                projectUser -> assertAll("assign multiple users to project",
+                        () -> assertThat(projectUser.userEmail.length()).isBetween(11,29),
+                        () -> assertNotNull(projectUser.role),
+                        () -> assertNotNull(projectUser.userID)
+                )
+        );
 
     }
 
+
+    /**
+     * tests for assignProductAreasToProject()
+     *
+     * testAssignProductAreasToProject: input contains required information
+     *                                  --> ProjectEntity contains assigned productAreas only once
+     * testAssignProductAreasToProject: productArea does not exist
+     *                                  --> throw Exception ResourceNotFound
+     * testAssignProductAreasToProject: productArea is already assigned to project
+     *                                  --> ProjectEntity does not change
+     * testAssignProductAreasToProject: input contains duplicate new productAreas
+     *                                  --> ProjectEntity contains only one entry for duplicates
+     */
+
+    @Test
+    public void testAssignProductAreasToProject_success_singleProductArea() {
+        //TODO: (implement missing case) -> done
+        // Step 0: init test object
+        ProjectDto projectIn = emptyProject;
+        int idNewProductArea = newProductAreas.get(0).id;
+        projectIn.productAreas = new ArrayList<>();
+        projectIn.productAreas.add(newProductAreas.get(0));
+
+        // Step 1: provide knowledge
+        when(productAreaRepository.findById(idNewProductArea)).thenReturn(Optional.of(productAreaEntities.get(idNewProductArea-1)));
+        ProductAreaEntity tmp = productAreaEntities.get(idNewProductArea-1);
+        when(productRepository.existsByProjectAndProductarea(entity, tmp)).thenReturn(false);
+
+
+        // Step 2: execute updateProject()
+        List<ProductEntity> out = service.assignProductAreasToProject(projectIn, entity, true);
+
+        // Step 3: assert result
+        assertEquals(projectIn.productAreas.size(), out.size());
+        assertAll(
+                () -> assertEquals(projectIn.productAreas.get(0).id, out.get(0).productarea.id),
+                () -> assertEquals("DUMMY", out.get(0).name),
+                () -> assertEquals(entity, out.get(0).project)
+        );
+    }
+
+
+    @Test
+    public void testAssignProductAreasToProject_success_multipleProductArea() {
+        //TODO: (implement missing case) -> done
+        // Step 0: init test object
+        ProjectDto projectIn = emptyProject;
+        emptyProject.productAreas = newProductAreas;
+        int idNewProductArea = newProductAreas.get(0).id;
+        int idNewProductArea1 = newProductAreas.get(1).id;
+
+        // Step 1: provide knowledge
+        when(productAreaRepository.findById(idNewProductArea)).thenReturn(Optional.of(productAreaEntities.get(idNewProductArea-1)));
+        when(productAreaRepository.findById(idNewProductArea1)).thenReturn(Optional.of(productAreaEntities.get(idNewProductArea1-1)));
+        ProductAreaEntity tmp = productAreaEntities.get(idNewProductArea-1);
+        ProductAreaEntity tmp1 = productAreaEntities.get(idNewProductArea1-1);
+        when(productRepository.existsByProjectAndProductarea(entity, tmp)).thenReturn(false);
+        when(productRepository.existsByProjectAndProductarea(entity, tmp1)).thenReturn(false);
+
+
+        // Step 2: execute updateProject()
+        List<ProductEntity> out = service.assignProductAreasToProject(projectIn, entity, true);
+
+        // Step 3: assert result
+        assertEquals(projectIn.productAreas.size(), out.size());
+        out.forEach(product ->
+                assertAll(
+                        () -> assertThat(product.productarea.id).isBetween(1,6),
+                        () -> assertEquals("DUMMY", product.name),
+                        () -> assertEquals(entity, product.project)
+                )
+        );
+
+    }
+
+
+    @Test
+    public void testAssignProductAreasToProject_resourceNotFound_productAreaIdDoesNotExist_singleProductArea() {
+        //TODO (implement missing case) -> done
+        // Step 1: init test object
+        ProjectDto projectDtoIn = emptyProject;
+        projectDtoIn.productAreas = new ArrayList<>();
+        projectDtoIn.productAreas.add(productAreaDoesNotExist);
+
+        //Step 2: provide knowledge
+        when(productAreaRepository.findById(productAreaDoesNotExist.id)).thenReturn(Optional.empty());
+
+
+        //Step 3: execute assignMembersToProject()
+        Exception exception;
+        exception = assertThrows(ResourceNotFound.class,
+                () -> service.assignProductAreasToProject(projectDtoIn, new ProjectEntity(), false));
+
+        String expectedMessage = "productArea " + productAreaDoesNotExist.id + " does not exist";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+
+    @Test
+    public void testAssignProductAreasToProject_resourceNotFound_productAreaIdDoesNotExist_multipleProductAreas() {
+        //TODO (implement missing case) -> done
+        //Step 0: init test object
+        ProjectDto projectIn = new ProjectDto();
+        projectIn.productAreas = productAreas;
+        projectIn.productAreas.add(productAreaDoesNotExist);
+
+        //Step 1: provide knowledge
+        when(productAreaRepository.findById(productAreas.get(0).id)).thenReturn(Optional.of(productAreaEntities.get(0)));
+        when(productAreaRepository.findById(productAreas.get(1).id)).thenReturn(Optional.of(productAreaEntities.get(1)));
+        when(productAreaRepository.findById(productAreas.get(2).id)).thenReturn(Optional.of(productAreaEntities.get(2)));
+        when(productAreaRepository.findById(productAreaDoesNotExist.id)).thenReturn(Optional.empty());
+
+        //Step 2: execute updateProject()
+        Exception exception;
+        exception = assertThrows(ResourceNotFound.class,
+                () -> service.assignProductAreasToProject(projectIn, new ProjectEntity(), false));
+
+        String expectedMessage = "productArea " + productAreaDoesNotExist.id + " does not exist";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+
+    }
+
+
+    @Test
+    public void testAssignProductAreasToProject_success_inputContainsDuplicateProductAreas_update() {
+        //TODO: (implement missing case) -> done
+        ProjectDto projectIn = emptyProject;
+        projectIn.productAreas = productAreas;
+        projectIn.productAreas.add(productAreas.get(2));
+        int idOldProductArea = projectIn.productAreas.get(0).id;
+        int idOldProductArea1 = projectIn.productAreas.get(1).id;
+        int idNewProductArea = projectIn.productAreas.get(2).id;
+        int idNewProductArea1 = projectIn.productAreas.get(3).id;
+
+        // Step 1: provide knowledge
+        when(productAreaRepository.findById(idOldProductArea)).thenReturn(Optional.of(productAreaEntities.get(idOldProductArea-1)));
+        when(productAreaRepository.findById(idOldProductArea1)).thenReturn(Optional.of(productAreaEntities.get(idOldProductArea1-1)));
+        when(productAreaRepository.findById(idNewProductArea)).thenReturn(Optional.of(productAreaEntities.get(idNewProductArea-1)));
+        when(productAreaRepository.findById(idNewProductArea1)).thenReturn(Optional.of(productAreaEntities.get(idNewProductArea1-1)));
+        ProductAreaEntity tmp = productAreaEntities.get(idOldProductArea-1);
+        when(productRepository.existsByProjectAndProductarea(entity, tmp)).thenReturn(true);
+        ProductAreaEntity tmp1 = productAreaEntities.get(idOldProductArea1-1);
+        when(productRepository.existsByProjectAndProductarea(entity, tmp1)).thenReturn(true);
+        ProductAreaEntity tmp2 = productAreaEntities.get(idNewProductArea-1);
+        when(productRepository.existsByProjectAndProductarea(entity, tmp2)).thenReturn(false);
+        ProductAreaEntity tmp3 = productAreaEntities.get(idNewProductArea1-1);
+        when(productRepository.existsByProjectAndProductarea(entity, tmp3)).thenReturn(false);
+
+        // Step 2: execute updateProject()
+        List<ProductEntity> out = service.assignProductAreasToProject(projectIn, entity, true);
+
+        // Step 3: assert result
+        assertNotEquals(projectIn.productAreas.size(), out.size());
+        assertEquals(1, out.size());
+        out.forEach(product ->
+                assertAll(
+                        () -> assertThat(product.productarea.id).isBetween(1,6),
+                        () -> assertEquals("DUMMY", product.name),
+                        () -> assertEquals(entity, product.project)
+                )
+        );
+    }
+
+
+    @Test
+    public void testAssignProductAreasToProject_success_inputContainsDuplicateProductAreas_create() {
+        //TODO: (implement missing case) -> done
+        ProjectDto projectIn = emptyProject;
+        projectIn.productAreas = new ArrayList<>();
+        projectIn.productAreas.add(productAreas.get(2));
+        projectIn.productAreas.add(productAreas.get(2));
+        int idNewProductArea = projectIn.productAreas.get(0).id;
+        int idNewProductArea1 = projectIn.productAreas.get(1).id;
+
+        // Step 1: provide knowledge
+        when(productAreaRepository.findById(idNewProductArea)).thenReturn(Optional.of(productAreaEntities.get(idNewProductArea-1)));
+        when(productAreaRepository.findById(idNewProductArea1)).thenReturn(Optional.of(productAreaEntities.get(idNewProductArea1-1)));
+
+        // Step 2: execute updateProject()
+        List<ProductEntity> out = service.assignProductAreasToProject(projectIn, entity, false);
+
+        // Step 3: assert result
+        assertNotEquals(projectIn.productAreas.size(), out.size());
+        assertEquals(1, out.size());
+        out.forEach(product ->
+                assertAll(
+                        () -> assertThat(product.productarea.id).isBetween(1,6),
+                        () -> assertEquals("DUMMY", product.name),
+                        () -> assertEquals(entity, product.project)
+                )
+        );
+    }
+
+
+    @Test
+    public void testAssignProductAreasToProject_returnEmptyList_productAreasAlreadyAssignedToProject() {
+        //TODO (implement missing case) -> done
+        //Step 0: init test object
+        ProjectDto projectIn = emptyProject;
+        projectIn.productAreas = productAreas;
+        int idOldProductArea = projectIn.productAreas.get(0).id;
+        int idOldProductArea1 = projectIn.productAreas.get(1).id;
+        int idNewProductArea = projectIn.productAreas.get(2).id;
+
+        // Step 1: provide knowledge
+        when(productAreaRepository.findById(idOldProductArea)).thenReturn(Optional.of(productAreaEntities.get(idOldProductArea-1)));
+        when(productAreaRepository.findById(idOldProductArea1)).thenReturn(Optional.of(productAreaEntities.get(idOldProductArea1-1)));
+        when(productAreaRepository.findById(idNewProductArea)).thenReturn(Optional.of(productAreaEntities.get(idNewProductArea-1)));
+        ProductAreaEntity tmp = productAreaEntities.get(idOldProductArea-1);
+        when(productRepository.existsByProjectAndProductarea(entity, tmp)).thenReturn(true);
+        ProductAreaEntity tmp1 = productAreaEntities.get(idOldProductArea1-1);
+        when(productRepository.existsByProjectAndProductarea(entity, tmp1)).thenReturn(true);
+        ProductAreaEntity tmp2 = productAreaEntities.get(idNewProductArea-1);
+        when(productRepository.existsByProjectAndProductarea(entity, tmp2)).thenReturn(false);
+
+        // Step 2: execute updateProject()
+        List<ProductEntity> out = service.assignProductAreasToProject(projectIn, entity, true);
+
+        // Step 3: assert result
+        assertNotEquals(projectIn.productAreas.size(), out.size());
+        assertEquals(1, out.size());
+        out.forEach(product ->
+                assertAll(
+                        () -> assertThat(product.productarea.id).isBetween(1,6),
+                        () -> assertEquals("DUMMY", product.name),
+                        () -> assertEquals(entity, product.project)
+                )
+        );
+    }
 }
