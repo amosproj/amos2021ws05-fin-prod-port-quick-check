@@ -71,18 +71,11 @@ public class ProductRatingService {
             //Step 2: ensure for each ratingEntity is a productRatingEntity created
             HashMap<Integer, ProductRatingEntity> newProductRatings = initProductRatings(product, productDto);
 
-
             //Step 3: assign input to values
-            for (ProductRatingDto tmp : productDto.ratings) {
-                if(ratingRepository.existsById(tmp.ratingID)){
-                    assignAttributes(tmp, newProductRatings.get(tmp.ratingID));
-                }else{
-                    throw new ResourceNotFound("ratingID " + tmp.ratingID + " not found");
-                }
-            }
+            assignInputToAttributes(productDto.ratings, newProductRatings);
 
             //Step 4: persist to db
-            List<ProductRatingEntity> tmp = new ArrayList<ProductRatingEntity>(newProductRatings.values());
+            List<ProductRatingEntity> tmp = new ArrayList<>(newProductRatings.values());
             repository.saveAll(tmp);
 
             return new ProductDto(product, tmp, false);
@@ -131,6 +124,18 @@ public class ProductRatingService {
     }
 
 
+    public void assignInputToAttributes(List<ProductRatingDto> productRatingsIn,
+                                        HashMap<Integer, ProductRatingEntity> existingProductRatings){
+
+        for (ProductRatingDto tmp : productRatingsIn) {
+            if(ratingRepository.existsById(tmp.ratingID)){
+                assignAttributes(tmp, existingProductRatings.get(tmp.ratingID));
+            }else{
+                throw new ResourceNotFound("ratingID " + tmp.ratingID + " not found");
+            }
+        }
+    }
+
     public void assignAttributes(ProductRatingDto tmp, ProductRatingEntity newEntity) {
         if(tmp.answer != null){
             newEntity.answer = tmp.answer;
@@ -147,7 +152,7 @@ public class ProductRatingService {
     public HashMap<Integer, ProductRatingEntity> initProductRatings(ProductEntity product, ProductDto productIn){
         HashMap<Integer, ProductRatingEntity> newProductRatings = new HashMap<>();
         RatingArea ratingArea;
-        List<RatingEntity> ratings = new ArrayList<>();
+        List<RatingEntity> ratings;
 
         if(ratingRepository.existsById(productIn.ratings.get(0).ratingID)){
             ratingArea = ratingRepository.findById(productIn.ratings.get(0).ratingID).get().ratingarea;
