@@ -1,21 +1,15 @@
 package com.tu.FinancialQuickCheck.dto;
 
-//import com.tu.FinancialQuickCheck.RatingArea;
-//import com.tu.FinancialQuickCheck.Score;
 
-import com.tu.FinancialQuickCheck.Score;
 import com.tu.FinancialQuickCheck.db.ProductAreaEntity;
 import com.tu.FinancialQuickCheck.db.ProductEntity;
 import com.tu.FinancialQuickCheck.db.ProductRatingEntity;
-import com.tu.FinancialQuickCheck.db.RatingEntity;
-//import com.tu.FinancialQuickCheck.db.ProductRatingEntity;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDto {
 
     // TODO: (done - needs review) add progressComplexity and progressEconomic to necessary constructors
-    // TODO: (done - needs review) add overallEconomicRating to necessary constructors
     // TODO: (done - needs review) add comment to necessary constructors
     // TODO: (done - needs review) add List of resources to necessary constructors
     public int  productID;
@@ -25,7 +19,6 @@ public class ProductDto {
     public int parentID;
     public int progressComplexity;
     public int progressEconomic;
-    public Boolean overallEconomicRating;
     public List<ProductRatingDto> ratings;
     public List<ProductDto> productVariations;
     public String comment;
@@ -68,7 +61,6 @@ public class ProductDto {
     public ProductDto(ProductEntity product, List<ProductRatingEntity> productRatingEntities, Boolean getOrPostPut)
     {
         this.productName = product.name;
-        this.overallEconomicRating = product.overallEconomicRating;
         this.ratings = convertProductRatingEntities(productRatingEntities, getOrPostPut);
     }
 
