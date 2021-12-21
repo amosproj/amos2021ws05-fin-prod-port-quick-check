@@ -40,16 +40,26 @@ public class ProductRatingController {
     //TODO: (done - needs review) change output according to API
     @PostMapping(consumes = "application/json", produces = "application/json")
     public ProductDto createProductRatings(@RequestBody ProductDto productDto, @PathVariable Integer productID) {
+        ProductDto tmp = service.createProductRatings(productDto, productID);
 
-        return service.createProductRatings(productDto, productID);
+        if(tmp == null){
+            throw new ResourceNotFound("productID " + productID + " does not exist" );
+        }else{
+            return tmp;
+        }
     }
 
     //TODO: (done - needs review) add consumes
     //TODO: (done - needs review) change output according to API
     @PutMapping(consumes = "application/json")
     public ProductDto updateProductRatings(@RequestBody ProductDto productDto, @PathVariable Integer productID) {
+        ProductDto tmp = service.updateProductRatings(productDto, productID);
 
-        return service.updateProductRatings(productDto, productID);
+        if(tmp == null){
+            throw new ResourceNotFound("productID " + productID + " does not exist" );
+        }else{
+            return tmp;
+        }
     }
 
 }
