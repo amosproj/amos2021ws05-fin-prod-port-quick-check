@@ -5,7 +5,6 @@ import com.tu.FinancialQuickCheck.RatingArea;
 import com.tu.FinancialQuickCheck.db.*;
 import com.tu.FinancialQuickCheck.dto.ProductDto;
 import com.tu.FinancialQuickCheck.dto.ProductRatingDto;
-import com.tu.FinancialQuickCheck.dto.RatingDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,16 +61,16 @@ public class ProductRatingService {
     //TODO: (done - needs review)
     @Transactional
     public ProductDto createProductRatings(ProductDto productDto, int productID){
-
+        //Step 1: check if productRatings can be created
         if (!productRepository.existsById(productID)) {
-            throw new ResourceNotFound("productID " + productID + " not found");
+            return null;
         } else {
             ProductEntity product = productRepository.getById(productID);
 
             //Step 2: ensure for each ratingEntity is a productRatingEntity created
             HashMap<Integer, ProductRatingEntity> newProductRatings = initProductRatings(product, productDto);
 
-            //Step 3: assign input to values
+            //Step 3: map input to created productRatingEntities
             assignInputToAttributes(productDto.ratings, newProductRatings);
 
             //Step 4: persist to db
@@ -88,15 +87,9 @@ public class ProductRatingService {
     public ProductDto updateProductRatings(ProductDto productDto, int productID) {
 
         if (!productRepository.existsById(productID)) {
-            throw new ResourceNotFound("productID " + productID + " not found");
+            return null;
         } else {
             ProductEntity productEntity = productRepository.findById(productID).get();
-
-
-            if(productDto.overallEconomicRating != null){
-                productEntity.overallEconomicRating = productDto.overallEconomicRating;
-                productRepository.save(productEntity);
-            }
 
             List<ProductRatingEntity> updates = new ArrayList<>();
 
