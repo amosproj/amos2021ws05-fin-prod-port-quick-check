@@ -1,6 +1,8 @@
 import React from 'react';
-import Card from '../components/Card';
-import Page from '../components/Page';
+import Card from '../../components/Card';
+import Page from '../../components/Page';
+import PieChartGraph from "./PieChart";
+
 import {
   List,
   Button,
@@ -41,6 +43,27 @@ const mock = [
     id: 3,
   },
 ];
+const data = {
+    labels: ['source 1','source 2','source 3','source 4','source 5'],
+    
+    datasets: [
+        {
+            label: 'Values',
+            data: [25,2,25,5,23],
+            borderColor: ['rgba(255,255,255)'],
+            borderWidth:3,
+            backgroundColor: ['rgba(147,213,34)',
+            'rgba(41,213,255)',
+            'rgba(82,8,129)' ,
+            'rgba(255,72,166)',
+            'rgba(108,3,168)'
+            ],
+            pointBackgroundColor: 'rgba(255,206,86,0.2)',
+
+        }
+
+    ]
+};
 
 function SourceRow({ source, key }) {
   return (
@@ -75,9 +98,15 @@ export default function ResultPage() {
         >
           <Flex w="55%">
             <Card alignItems="center" bg="gray.600">
-              <Heading>Pie Chart</Heading>
+
+            <PieChartGraph data={data} ></PieChartGraph>
             </Card>
+
+
           </Flex>
+
+
+
           <Flex flexDirection="column" w="45%" justifyContent="space-between" alignItems="stretch">
             <VStack>
               <Heading size="lg">Sources</Heading>
