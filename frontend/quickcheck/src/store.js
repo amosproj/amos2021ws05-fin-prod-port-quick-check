@@ -1,6 +1,7 @@
 import { createStore, action, thunk } from 'easy-peasy';
 
 import { api } from './utils/apiClient';
+import {ratingArea, score} from "./utils/const";
 
 // Documentation for easy-peasy: https://easy-peasy.vercel.app/docs/tutorials/quick-start.html
 
@@ -82,6 +83,48 @@ const projectModel = {
       .catch(console.error);
   }),
 };
+
+const ratingModel =
+    {
+      /*data: {
+        productID: 0,
+        ratingID: 0,
+        answer: '',
+        comment: '',
+        score: score.gering,
+        rating: {
+          ratingID: 0,
+          category: '',
+          criterion: '',
+          ratingArea: ratingArea.COMPLEXITY
+        },
+      },*/
+      data: {
+        ratings:[]
+      },
+      // general actions
+      set: action((state, ratings) => {
+        state.data = ratings;
+      }),
+      update: action((state, updatedProps) => {
+        state.data = { ...state.data, ...updatedProps };
+      }),
+      updateRating: action((state, rating) => {
+        // overwrite member with same email
+        const index = state.data.ratings.map((r) => r.ratingID).indexOf(rating.ratingID); // get index of member with same email. if not found, index=-1
+        state.data.ratings[index] = { ...state.data.ratings[index], ...rating };
+      }),
+
+      // GET all ratings
+      fetch: thunk(async (actions, ratingArea) => {
+        await api
+            .url('/ratings/' + ratingArea)
+            .get()
+            .json((json) => actions.set(json))
+            .catch(console.error);
+      }),
+
+    };
 
 const store = createStore({
   projectList: projectListModel,

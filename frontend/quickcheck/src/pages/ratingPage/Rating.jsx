@@ -55,6 +55,7 @@ const mockRatings = {
       comment: 'test comment',
       score: score.gering,
       rating: {
+        category: 'Treiber 1',
         criterion: 'test frage',
       },
     },
@@ -63,18 +64,20 @@ const mockRatings = {
       comment: '',
       score: score.mittel,
       rating: {
+        category: 'Treiber 2',
         criterion: 'Wer bin ich',
       },
     },
   ],
 };
 
+
 export default function Rating() {
   const [editMode, setEditMode] = useState(false);
   const [ratingsData, setRatingstData] = useState({
-    //TODO : Rating data structure
     ratings: [],
   });
+  const ratingsPerCategory= {};
 
   const handleChange = (key) => (value) => {
     setRatingstData({
@@ -85,9 +88,26 @@ export default function Rating() {
 
   const setRatings = handleChange('ratings');
 
+  function computeRatingsPerCategory(ratings)
+  {
+    for (const rating of ratings)
+    {
+      if (ratingsPerCategory[rating.rating.category] != null)
+      {
+        ratingsPerCategory[rating.rating.category] = (ratingsPerCategory[rating.rating.category]).push(rating);
+      }
+      else
+      {
+        ratingsPerCategory[rating.rating.category] = [rating];
+      }
+    }
+    return ratingsPerCategory;
+  }
+
   useEffect(() => {
     // fetchProject();
     setRatingstData(mockRatings);
+    computeRatingsPerCategory(mockRatings.ratings);
   }, []);
 
   const EditButtons = () => {
@@ -111,6 +131,7 @@ export default function Rating() {
     }
   };
 
+  //TODO: komp treiber änderungen dynamisch gestallten (https://chakra-ui.com/docs/disclosure/tabs)
   return (
     <Page title="Komplexitätsbewertung">
       <Tabs>
