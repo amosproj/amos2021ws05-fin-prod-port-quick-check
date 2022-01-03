@@ -7,35 +7,39 @@ import java.util.Objects;
 @Embeddable
 public class ProductRatingId implements Serializable {
 
-    @ManyToOne(targetEntity = ProductEntity.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "productid", updatable = false)
-    private ProductEntity productid;
 
+    //TODO: (done - needs review) remove ...id in Name declarations
+    @ManyToOne(targetEntity = ProductEntity.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "product")
+    private ProductEntity product;
+
+    //TODO: (done - needs review) remove ...id in Name declarations
+    //comment: do not change fetchType
     @ManyToOne(targetEntity = RatingEntity.class, fetch = FetchType.EAGER)
-    @JoinColumn(name = "ratingid", updatable = false)
-    private RatingEntity ratingid;
+    @JoinColumn(name = "rating", updatable = false)
+    private RatingEntity rating;
 
     public ProductRatingId(){}
 
-    public ProductRatingId(ProductEntity productID, RatingEntity ratingID){
-        this.productid = productID;
-        this.ratingid = ratingID;
+    public ProductRatingId(ProductEntity product, RatingEntity rating){
+        this.product = product;
+        this.rating = rating;
     }
 
-    public ProductEntity getProductid() {
-        return productid;
+    public ProductEntity getProduct() {
+        return product;
     }
 
-    public void setProductid(ProductEntity productid) {
-        this.productid = productid;
+    public void setProduct(ProductEntity product) {
+        this.product = product;
     }
 
-    public RatingEntity getRatingid() {
-        return ratingid;
+    public RatingEntity getRating() {
+        return rating;
     }
 
-    public void setRatingid(RatingEntity ratingid) {
-        this.ratingid = ratingid;
+    public void setRating(RatingEntity rating) {
+        this.rating = rating;
     }
 
     @Override
@@ -43,11 +47,11 @@ public class ProductRatingId implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProductRatingId that = (ProductRatingId) o;
-        return productid.equals(that.productid) && ratingid.equals(that.ratingid);
+        return product.equals(that.product) && rating.equals(that.rating);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(productid, ratingid);
+        return Objects.hash(product, rating);
     }
 }

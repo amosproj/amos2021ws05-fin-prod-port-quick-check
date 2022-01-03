@@ -1,0 +1,19 @@
+POST localhost:8080/projects
+Content-Type: application/json
+
+{
+  "creatorID": "test@tst.com",
+  "projectName": "Bank4",
+  "productAreas": [1,2],
+  "members": [
+    {
+    "userEmail": "alex@amos.de",
+    "userName": "string",
+    "role": "CLIENT"
+    },
+    {
+      "userEmail": "ines@amos.de",
+      "userName": "string",
+      "role": "CLIENT"
+    }]
+}

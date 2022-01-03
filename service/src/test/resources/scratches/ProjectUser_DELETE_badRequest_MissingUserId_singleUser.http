@@ -1,0 +1,9 @@
+DELETE localhost:8080/projects/100/users
+Content-Type: application/json
+
+[
+  {}
+]
+
+<> 2021-12-15T140112.400.json
+<> 2021-12-15T135527.404.json

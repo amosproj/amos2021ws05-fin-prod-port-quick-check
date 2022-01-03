@@ -1,0 +1,15 @@
+PUT http://localhost:8080/projects/1/users
+Content-Type: application/json
+
+[
+  {
+    "userID": "0fef539d-69be-4013-9380-6a12c3534c67",
+    "role": "CLIENT"
+  }
+]
+
+<> 2021-12-15T130643.404.json
+<> 2021-12-15T125943.500.json
+<> 2021-12-15T125451.201.json
+<> 2021-12-15T125220.500.json
+<> 2021-12-15T124852.500.json

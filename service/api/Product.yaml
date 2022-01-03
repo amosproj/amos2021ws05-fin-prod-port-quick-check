@@ -16,7 +16,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/product'
+                $ref: '#/components/schemas/getProduct'
         401:
           $ref: '#/components/responses/401unauthorized'
         403:
@@ -78,7 +78,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/product'
+                  $ref: '#/components/schemas/getProduct'
         401:
           $ref: '#/components/responses/401unauthorized'
         403:
@@ -103,7 +103,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/product'
+                type: array
+                items:
+                  $ref: '#/components/schemas/getProduct'
+        400:
+          $ref: '#/components/responses/400badrequest'
         401:
           $ref: '#/components/responses/401unauthorized'
         403:
@@ -138,48 +142,66 @@ components:
 
 
   schemas:
-    createProduct:
-      type: object
-      required:
-        - productName
-        - productAreaID
-      properties:
-        productName:
-          type: string
-          example: "Optionen"
-        productAreaID:
-          type: integer
-          description: unique product area ID
-          example: "6"
-        productVariations:
-          type: array
-          items:
-            $ref: '#/components/schemas/productVariation'
+    productName:
+      type: string
+      example: "Optionen"
+    productAreaID:
+      type: integer
+      description: unique product area ID
+      example: "6"
+    resource:
+      type: string
+    resources:
+      type: array
+      items:
+        $ref: '#/components/schemas/resource'
+    comment:
+      type: string
+
     productVariation:
       type: object
       required:
         - productName
       properties:
-        productID:
-          type: integer
-          example: "10"
         productName:
-          type: string
-          example: "Optionen"
-    product:
+          $ref: '#/components/schemas/productName'
+        comment:
+          $ref: '#/components/schemas/comment'
+        resources:
+          $ref: '#/components/schemas/resources'
+
+    createProduct:
+      type: object
+      required:
+        - productName
+        - productArea
+      properties:
+        productName:
+          $ref: '#/components/schemas/productName'
+        productArea:
+          properties:
+            id:
+              $ref: '#/components/schemas/productAreaID'
+        comment:
+          $ref: '#/components/schemas/comment'
+        resources:
+          $ref: '#/components/schemas/resources'
+        productVariations:
+          type: array
+          items:
+            $ref: '#/components/schemas/productVariation'
+    getProduct:
       type: object
       properties:
         productID:
           type: integer
           example: 111
         productName:
-          type: string
-          example: "Optionen"
+          $ref: '#/components/schemas/productName'
         productArea:
           properties:
             id:
-              type: integer
-              example: "1"
+              $ref: '#/components/schemas/productAreaID'
             name:
               type: string
               example: "Kredit"
@@ -192,13 +214,28 @@ components:
         parentID:
           type: integer
           example: 10
-          description: return value of -1 indicates that product does not have a parent
+          description: return value of 0 indicates that product does not have a parent
+        progressComplexity:
+          type: integer
+          example: 23
+          description: returns a value between 0 and 100, which indicates the progress of the complexity rating
+        progressEconomic:
+          type: integer
+          example: 89
+          description: returns a value between 0 and 100, which indicates the progress of the economic rating
+        comment:
+          $ref: '#/components/schemas/comment'
+        resources:
+          $ref: '#/components/schemas/resources'
     updateProduct:
       type: object
       properties:
         productName:
-          type: string
-          example: "Optionen"
+          $ref: '#/components/schemas/productName'
+        comment:
+          $ref: '#/components/schemas/comment'
+        resources:
+          $ref: '#/components/schemas/resources'
 
   responses:
     5XXserverError:
@@ -210,6 +247,6 @@ components:
     401unauthorized:
       description: User not authenticated
     400badrequest:
-      description: Input missing/incorrect
+      description: Input is missing/incorrect
     genericError:
       description: Error

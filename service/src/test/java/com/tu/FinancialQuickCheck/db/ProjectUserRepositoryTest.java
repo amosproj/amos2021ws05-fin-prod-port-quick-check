@@ -40,7 +40,7 @@ public class ProjectUserRepositoryTest {
         System.out.println("ProjectID: " + project.id);
 
 
-        long deletedRecords = repository.deleteByProjectUserId_projectid(project);
+        long deletedRecords = repository.deleteByProjectUserId_project(project);
 //        assertEquals(1, deletedRecords);
 
     }

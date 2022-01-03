@@ -1,0 +1,8 @@
+PUT localhost:8080/products/3
+Content-Type: application/json
+
+{
+
+}
+
+<> 2021-12-13T160042.400.json

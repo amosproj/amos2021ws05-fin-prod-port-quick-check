@@ -10,6 +10,7 @@ import TestRange from './pages/TestRange';
 
 import store from './store';
 import theme from './styles/theme';
+import Rating from './pages/ratingPage/Rating';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
               <Route path="login" element={<Login />} />
               <Route path="projects" element={<ProjectOverview />} />
               <Route path="projects/:id" element={<Project />} />
+              <Route path="ratings" element={<Rating />} />
             </Routes>
             <Link to="/login"> [Login] </Link>
             <Link to="projects"> [Projects] </Link>

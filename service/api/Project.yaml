@@ -16,11 +16,9 @@ paths:
                 schema:
                   type: array
                   items:
-                    '$ref': '#/components/schemas/smallProject'
+                    '$ref': '#/components/schemas/smallProjects'
         401:
           $ref: '#/components/responses/401unauthorized'
-        404:
-          $ref: '#/components/responses/404notfound'
         '5XX':
           $ref: '#/components/responses/5XXserverError'
     post:
@@ -56,7 +54,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/project'
+                $ref: '#/components/schemas/getProject'
         401:
           $ref: '#/components/responses/401unauthorized'
         404:
@@ -76,7 +74,11 @@ paths:
               $ref: '#/components/schemas/updateProject'
       responses:
         200:
-          description: project updated successfully
+          description: JSON containing project meta data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getProject'
         400:
           $ref: '#/components/responses/400badrequest'
         401:
@@ -104,6 +106,8 @@ paths:
   /projects/{projectID}/users:
     post:
       summary: assigns users to projectID
+      parameters:
+        - $ref: '#/components/parameters/projectID'
       requestBody:
         description: JSON containing user data
         content:
@@ -111,10 +115,14 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/userProject'
+                $ref: '#/components/schemas/assignUser'
       responses:
         201:
-          description: "users successfully assigned to project"
+          description: JSON containing assigned project members project meta data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/members'
         400:
           $ref: '#/components/responses/400badrequest'
         401:
@@ -127,6 +135,8 @@ paths:
           $ref: '#/components/responses/5XXserverError'
     put:
       summary: updates users for projectID
+      parameters:
+        - $ref: '#/components/parameters/projectID'
       requestBody:
         description: JSON containing user data
         content:
@@ -134,10 +144,14 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/userProject'
+                $ref: '#/components/schemas/updateUserProject'
       responses:
         200:
-          $ref: '#/components/schemas/userProject'
+          description: JSON containing assigned project members project meta data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/members'
         400:
           $ref: '#/components/responses/400badrequest'
         401:
@@ -150,6 +164,8 @@ paths:
           $ref: '#/components/responses/5XXserverError'
     delete:
       summary: unassigns user from project
+      parameters:
+        - $ref: '#/components/parameters/projectID'
       requestBody:
         description: JSON containing user data
         content:
@@ -157,7 +173,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/deleteUserProject'
+                $ref: '#/components/schemas/deleteProjetctUser'
       responses:
         200:
           description: "users successfully unassigned from project"
@@ -184,117 +200,17 @@ components:
         type: integer
 
   schemas:
-    smallProject:
-      type: object
-      properties:
-        projectID:
-          type: integer
-        projectName:
-          type: string
-    createProject:
-        required:
-          - creator
-          - projectName
-          - productAreas
-          - members
-        properties:
-          creator:
-            type: string
-            description: user email address
-            example: "test@test.com"
-          projectName:
-            type: string
-            example: "DKB"
-          productAreas:
-            type: array
-            required: true
-            example: [ 1 ]
-            items:
-              type: integer
-              description: unique identifiers of product areas
-          members:
-            type: array
-            items:
-              $ref: '#/components/schemas/user'
-    createdProject:
-      properties:
-        projectID:
-          type: integer
-          description: unique project ID
-          example: 10
-        creator:
-          type: string
-          description: user email address
-          example: "test@test.com"
-        projectName:
-          type: string
-          example: "DKB"
-        productAreas:
-          type: array
-          items:
-            $ref: '#/components/schemas/productArea'
-
-
-    updateProject:
-      required:
-        - members
-      properties:
-        projectName:
-          type: string
-          example: "DKB"
-        productAreas:
-          type: array
-          required: true
-          example: [ 1, 2 ,3 ]
-          items:
-            type: integer
-        members:
-          type: array
-          items:
-            $ref: '#/components/schemas/user'
-    project:
-      type: object
-      properties:
-        projectID:
-          type: integer
-        creator:
-          type: string
-          description: user email address
-          example: "test@test.com"
-        projectName:
-          type: string
-          example: "DKB"
-        members:
-          type: array
-          items:
-            $ref: '#/components/schemas/user'
-        productAreas:
-          type: array
-          items:
-            $ref: '#/components/schemas/productArea'
-    user:
-      properties:
-        userEmail:
-          type: string
-        userName:
-          type: string
-        role:
-          type: string
-          required: true
-          enum: [ CLIENT, PROJECT_MANAGER, ADMIN ]
-    userProject:
-      type: object
-      required:
-        - role
-        - userEmail
-      properties:
-        userEmail:
-          type: string
-          example: "test@test.com"
-          description: unique identifier of user
-        role:
-          type: string
-          enum: [ CLIENT, PROJECT_MANAGER, ADMIN ]
+    projectID:
+      type: integer
+      description: unique identifier of project
+      example: 10
+    creatorID:
+      type: string
+      description: unique identifier of user who creates project in form of a UUID
+      example: "0fef539d-69be-4013-9380-6a12c3534c67"
+    projectName:
+      type: string
+      example: "DKB"
     productArea:
       properties:
         id:
@@ -306,15 +222,136 @@ components:
         category:
           type: string
           example: "Privat"
-    deleteUserProject:
-      type: object
+    productAreas:
+      type: array
+      items:
+        $ref: '#/components/schemas/productArea'
+    role:
+      type: string
+      enum: [ CLIENT, PROJECT_MANAGER, ADMIN ]
+    userID:
+      type: string
+      description: unique identifier of user in form of a UUID
+      example: "0fef539d-69be-4013-9380-6a12c3534c67"
+    userEmail:
+      type: string
+      example: "test@test.com"
+    userName:
+      type: string
+      example: "Max Mustermann"
+    getUsers:
+      properties:
+        userID:
+          $ref: '#/components/schemas/userID'
+        userEmail:
+          $ref: '#/components/schemas/userEmail'
+        userName:
+          $ref: '#/components/schemas/userName'
+        role:
+          $ref: '#/components/schemas/role'
+    assignUser:
       required:
+        - role
         - userEmail
       properties:
         userEmail:
-          type: string
-          example: "test@test.com"
-          description: unique identifier of user
+          $ref: '#/components/schemas/userEmail'
+        role:
+          $ref: '#/components/schemas/role'
+    updateAssignedUser:
+      properties:
+        userID:
+          $ref: '#/components/schemas/userID'
+        userEmail:
+          $ref: '#/components/schemas/userEmail'
+        role:
+          $ref: '#/components/schemas/role'
+    updateUserProject:
+      properties:
+        userID:
+          $ref: '#/components/schemas/userID'
+        role:
+          $ref: '#/components/schemas/role'
+    deleteProjetctUser:
+      properties:
+        userID:
+          $ref: '#/components/schemas/userID'
+    members:
+      type: array
+      items:
+        $ref: '#/components/schemas/updateAssignedUser'
+
+    smallProjects:
+      type: object
+      properties:
+        projectID:
+          $ref: '#/components/schemas/projectID'
+        projectName:
+          $ref: '#/components/schemas/projectName'
+    createProject:
+        required:
+          - creatorID
+          - projectName
+          - productAreas
+          - members
+        properties:
+          creatorID:
+            $ref: '#/components/schemas/creatorID'
+          projectName:
+            $ref: '#/components/schemas/projectName'
+          productAreas:
+            type: array
+            example: [ 1, 2, 3 ]
+            items:
+              type: integer
+              description: unique identifiers of product areas
+          members:
+            type: array
+            items:
+              $ref: '#/components/schemas/assignUser'
+    createdProject:
+      properties:
+        projectID:
+          $ref: '#/components/schemas/projectID'
+        creatorID:
+          $ref: '#/components/schemas/creatorID'
+        projectName:
+          $ref: '#/components/schemas/projectName'
+        productAreas:
+          $ref: '#/components/schemas/productAreas'
+        members:
+          $ref: '#/components/schemas/members'
+    getProject:
+      type: object
+      properties:
+        projectID:
+          $ref: '#/components/schemas/projectID'
+        creatorID:
+          $ref: '#/components/schemas/creatorID'
+        projectName:
+          $ref: '#/components/schemas/projectName'
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/getUsers'
+        productAreas:
+          $ref: '#/components/schemas/productAreas'
+    updateProject:
+      required:
+        - members
+      properties:
+        projectName:
+          $ref: '#/components/schemas/projectName'
+        productAreas:
+          type: array
+          example: [ 1, 2 ,3 ]
+          items:
+            type: integer
+            description: unique identifiers of product areas
+        members:
+          $ref: '#/components/schemas/members'
+
+
 
   responses:
     5XXserverError:
@@ -338,7 +375,7 @@ components:
           schema:
             type: string
     400badrequest:
-      description: request is missing required information
+      description: Input is missing/incorrect
       content:
         application/json:
           schema:
