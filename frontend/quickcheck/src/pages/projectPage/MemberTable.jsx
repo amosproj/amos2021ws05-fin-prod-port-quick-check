@@ -27,7 +27,7 @@ function MemberRow({ editMode, member, ...rest }) {
             bg={bg}
             border="0px"
             selected={member.role}
-            options={Object.keys(roles)}
+            options={roles}
             onChange={handleRoleChange}
             w="full"
           />
@@ -52,7 +52,6 @@ const RemoveButton = ({ handleRemove, ...buttonProps }) => {
 
 export default function MemberTable({ editMode }) {
   const members = useStoreState((state) => state.project.data.members);
-  const addMember = useStoreActions((actions) => actions.project.addMember);
   const removeMember = useStoreActions((actions) => actions.project.removeMember);
   const bgHeading = useColorModeValue('gray.400', 'gray.500');
 
@@ -72,8 +71,6 @@ export default function MemberTable({ editMode }) {
             minW={16}
             size="lg"
             variant="primary"
-            onAdd={addMember}
-            size="lg"
             w={5}
           />
         ) : undefined}

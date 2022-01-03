@@ -16,14 +16,14 @@ import {
 } from '@chakra-ui/react';
 import { AddIcon, EmailIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
-import { useStoreActions, useStoreState, sendCreate } from 'easy-peasy';
+import { useStoreActions } from 'easy-peasy';
 
 import { roles } from '../../utils/const';
 import Selection from '../../components/Selection.jsx';
 
-export default function AddMemberButton({ onAdd, ...buttonProps }) {
+export default function AddMemberButton(buttonProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const addMember = useStoreActions((actions) => actions.project.sendCreate);
+  const addMember = useStoreActions((actions) => actions.project.addMember);
 
   const [email, setEmail] = useState('');
   const [role, setRole] = useState('Client');
@@ -55,8 +55,8 @@ export default function AddMemberButton({ onAdd, ...buttonProps }) {
               </InputLeftElement>
             </InputGroup>
             <Selection
-              options={Object.values(roles)}
-              selected={roles.consultant}
+              options={roles}
+              selected={roles[0]}
               onChange={setRole}
             />
           </ModalBody>
@@ -65,8 +65,8 @@ export default function AddMemberButton({ onAdd, ...buttonProps }) {
             <Button
               variant="primary"
               mx={3}
-              onClick={(e) => {
-                onAdd({ userEmail: email, role: role });
+              onClick={e => {
+                addMember({ userEmail: email, role: role });
                 onClose();
               }}
             >
