@@ -6,14 +6,14 @@ const backendURL = 'http://localhost:8080';
 
 const networkErrorHandler = (err) => {
   console.error('fetching error:', { err });
-  const message = `${err.message}`;
-  notification('Error', message);
+  // const message = `${err.message}`;
+  notification('Network Error: Request failed');
 };
 
 const wretcherErrorHandler = (err) => {
   console.error('Caught error on API request:', { err });
-  const message = `Status ${err.response.status}: ${err.message}`;
-  notification('Error', message);
+  const message = `status ${err.response.status}`;
+  notification('Error:', message);
 };
 
 export const api = wretch()
