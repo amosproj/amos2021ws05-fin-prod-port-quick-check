@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import {
   useDisclosure,
   Modal,
@@ -10,34 +10,29 @@ import {
   ModalHeader,
   Button,
   IconButton,
+  Select,
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 
-import Selection from '../../components/Selection.jsx';
-
-const areaMock = {
-  0: { id: 0, name: 'Kredit', category: 'Privat' },
-  1: { id: 1, name: 'Kunden', category: 'Business' },
-  2: { id: 2, name: 'Payments', category: 'Privat' },
-};
-
-const fetchAllAreas = () => {
-  return Object.values(areaMock);
-};
+import { api } from '../../utils/apiClient.js';
 
 export default function AddAreaButton(buttonProps) {
   const productAreas = useStoreState((state) => state.project.data.productAreas);
   const addProductArea = useStoreActions((actions) => actions.project.addProductArea);
-
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const allAreas = fetchAllAreas();
+  const [allAreas, setAllAreas] = useState([])
   const [selectedArea, setSelectedArea] = useState();
-  const header = 'Add Product Area';
+  
+  useEffect(() => {
+    api.url('/productareas').get().json(setAllAreas);
+  }, [])
 
-  const fetchArea = () => {
-    // todo: implement fetching possible Area choices
-  };
+  const getAreaByID = (areaID) => {
+    const index = allAreas.map((a) => a.id).indexOf(areaID);
+    console.log({index, areaID, allAreas})
+    return allAreas[index];
+  }
 
   return (
     <>
@@ -51,17 +46,20 @@ export default function AddAreaButton(buttonProps) {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader color="primary">{header}</ModalHeader>
+          <ModalHeader color="primary">Add Product Area</ModalHeader>
           <ModalCloseButton />
 
           <ModalBody px={10}>
-            <Selection
-              placeholder="Select Poduct Area..."
-              options={allAreas
-                .filter((area) => !productAreas.map((a) => a.id).includes(area.id)) // lookup if area already added // This removes the wrong product area
-                .map((e) => e.name)} // display name in selection field
-              onChange={setSelectedArea}
-            />
+            <Select isRequired placeholder="Select Poduct Area..." onChange={e => setSelectedArea(parseInt(e.target.value))}
+            >
+              {
+                allAreas
+                  .filter((area) => !productAreas.map((a) => a.id).includes(area.id))
+                  .map((area) =>(
+                    <option value={area.id} key={area.id} >{area.name} ({area.category})</option>
+                  ))
+              }
+            </Select>
           </ModalBody>
 
           <ModalFooter>
@@ -70,12 +68,7 @@ export default function AddAreaButton(buttonProps) {
               mr={3}
               disabled={selectedArea === undefined}
               onClick={(e) => {
-                addProductArea({
-                  key: productAreas.length,
-                  id: selectedArea.id,
-                  name: selectedArea,
-                  category: 'Private',
-                });
+                addProductArea(getAreaByID(selectedArea));
                 console.log(selectedArea);
                 onClose();
                 console.log(productAreas);
