@@ -276,6 +276,9 @@ public class ProductServiceTest {
         when(productAreaRepository.existsById(1)).thenReturn(true);
         when(projectRepository.findById(1)).thenReturn(Optional.of(preProjectEntity));
         when(productAreaRepository.findById(1)).thenReturn(Optional.of(preProductAreaEntity));
+        //TODO: implemnt this
+        //when(repository.findByProjectAndProductarea());
+
 
 
         // Step 2: execute and assert createProduct()
@@ -345,6 +348,7 @@ public class ProductServiceTest {
 
     }
 
+    //TODO: Ask Frontend about return by update (if nothing comes back update test)
     @Test
     public void testUpdateById2_inputMissing() {
 
