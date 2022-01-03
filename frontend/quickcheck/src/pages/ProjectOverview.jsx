@@ -45,8 +45,10 @@ export default function ProjectOverview() {
           <ProjectCard project={project} key={project.projectID} />
         ))}
       </List>
-      <Link href='projects/new'>
-        <Button size="lg" variant='primary'>New Project</Button>
+      <Link href="projects/new">
+        <Button size="lg" variant="primary">
+          New Project
+        </Button>
       </Link>
     </Page>
   );

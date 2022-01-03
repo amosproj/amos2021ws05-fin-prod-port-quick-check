@@ -21,18 +21,18 @@ export default function AddAreaButton(buttonProps) {
   const productAreas = useStoreState((state) => state.project.data.productAreas);
   const addProductArea = useStoreActions((actions) => actions.project.addProductArea);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [allAreas, setAllAreas] = useState([])
+  const [allAreas, setAllAreas] = useState([]);
   const [selectedArea, setSelectedArea] = useState();
-  
+
   useEffect(() => {
     api.url('/productareas').get().json(setAllAreas);
-  }, [])
+  }, []);
 
   const getAreaByID = (areaID) => {
     const index = allAreas.map((a) => a.id).indexOf(areaID);
-    console.log({index, areaID, allAreas})
+    console.log({ index, areaID, allAreas });
     return allAreas[index];
-  }
+  };
 
   return (
     <>
@@ -50,15 +50,18 @@ export default function AddAreaButton(buttonProps) {
           <ModalCloseButton />
 
           <ModalBody px={10}>
-            <Select isRequired placeholder="Select Poduct Area..." onChange={e => setSelectedArea(parseInt(e.target.value))}
+            <Select
+              isRequired
+              placeholder="Select Poduct Area..."
+              onChange={(e) => setSelectedArea(parseInt(e.target.value))}
             >
-              {
-                allAreas
-                  .filter((area) => !productAreas.map((a) => a.id).includes(area.id))
-                  .map((area) =>(
-                    <option value={area.id} key={area.id} >{area.name} ({area.category})</option>
-                  ))
-              }
+              {allAreas
+                .filter((area) => !productAreas.map((a) => a.id).includes(area.id))
+                .map((area) => (
+                  <option value={area.id} key={area.id}>
+                    {area.name} ({area.category})
+                  </option>
+                ))}
             </Select>
           </ModalBody>
 

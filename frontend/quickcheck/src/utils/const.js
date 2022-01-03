@@ -1,7 +1,4 @@
-
-export const roles = [
-  'CLIENT', 'PROJECT_MANAGER', 'ADMIN',
-];
+export const roles = ['CLIENT', 'PROJECT_MANAGER', 'ADMIN'];
 
 export const score = {
   gering: 'gering',
@@ -13,4 +10,3 @@ export const ratingArea = {
   ECONOMIC: 'ECONOMIC',
   COMPLEXITY: 'COMPLEXITY',
 };
-

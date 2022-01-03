@@ -66,14 +66,7 @@ export default function MemberTable({ editMode }) {
             Role
           </Heading>
         </Flex>
-        {editMode ? (
-          <AddMemberButton
-            minW={16}
-            size="lg"
-            variant="primary"
-            w={5}
-          />
-        ) : undefined}
+        {editMode ? <AddMemberButton minW={16} size="lg" variant="primary" w={5} /> : undefined}
       </Flex>
 
       {members.map((member) => (
