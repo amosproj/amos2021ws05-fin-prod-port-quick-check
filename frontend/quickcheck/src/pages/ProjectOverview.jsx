@@ -3,17 +3,22 @@ import React, { useEffect } from 'react';
 import Card from '../components/Card';
 import Page from '../components/Page';
 import { List, Button, Heading, VStack, Text, Spacer } from '@chakra-ui/react';
-import {  useStoreActions, useStoreState , createStore, sendCreate} from 'easy-peasy';
+import {  useStoreActions, useStoreState} from 'easy-peasy';
 import { Link } from 'react-router-dom';
 
 const mocks = {
   newProject: {
-    creatorID: '2375e026-d348-4fb6-b42b-891a76758d5d',
+    creator: 'alex@amose.de',
     projectName: 'Mock Project_' + new Date().getSeconds(),
-    members: ['2375e026-d348-4fb6-b42b-891a76758d5d', '0fef539d-69be-4013-9380-6a12c3534c67'],
-    productAreas: [],
+    productAreas: [1],
+    members: [
+      {
+        userEmail: 'alex@amose.de',
+        userName: 'Alex Amos',
+        role: 'PROJECT_MANAGER',
+      },
+    ],
   },
-  role: 'Mock Consultant',
 };
 
 function ProjectCard({ project }) {
@@ -25,7 +30,7 @@ function ProjectCard({ project }) {
       <Spacer />
       <VStack p={2}>
         <Text fontWeight="bolder" fontSize="md">
-          {mocks.role}
+          {'Mock Role'}
         </Text>
         <Text fontSize="sm" color="gray.400">
           Role
@@ -56,8 +61,9 @@ export default function ProjectOverview() {
 
   // FOR DEV ONLY: create new mock project when pressing 'add new' button
   const postProject = () => {
-    //createProject(mocks.newProject);
-    //addProject(mocks.newProject);
+    createProject(mocks.newProject);
+    addProject(mocks.newProject);
+    console.log('updated project list:', { projectList });
   };
 
   return (
@@ -67,12 +73,11 @@ export default function ProjectOverview() {
           <ProjectCard project={project} key={project.projectID} />
         ))}
       </List>
-      <Link to={'' +"new"}>
+      <Link to={''+"new"}>
       <Button size="lg"  onClick={postProject}>
         Add new
       </Button>
       </Link>
-      <p>{JSON.stringify(projectList)}</p>
     </Page>
   );
 }

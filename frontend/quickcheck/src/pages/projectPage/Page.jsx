@@ -1,8 +1,8 @@
-import { Heading, Button, HStack, Input, Spacer } from '@chakra-ui/react';
-import { React, useState, useEffect, Redirect } from 'react';
+import { Heading, Button, HStack, VStack, Input, Spacer } from '@chakra-ui/react';
+import { React, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useStoreActions, useStoreState, sendCreate, sendUpdate } from 'easy-peasy';
+import { useStoreActions, useStoreState } from 'easy-peasy';
 
 import Page from '../../components/Page';
 import Card from '../../components/Card';
@@ -21,7 +21,7 @@ const mockProject = {
   productAreas: [1],
 };
 
-export default function Project(props) {
+export default function Project() {
   const project = useStoreState((state) => state.project.data);
   const setName = useStoreActions((actions) => actions.project.setProjectName);
   const updateProject = useStoreActions((actions) => actions.project.sendUpdate);
@@ -89,38 +89,39 @@ export default function Project(props) {
 
   return (
     <Page title="Manage Project">
-      <Card layerStyle="card_bar" justifyContent="center">
+      <VStack>
+        <Card layerStyle="card_bar" justifyContent="center">
+          <Spacer />
+          <Heading variant="upper" size="md" mr={3} align="center">
+            Project:
+          </Heading>
+          <Input
+            variant="bold"
+            size="3xl"
+            w="auto"
+            isDisabled={!editMode}
+            onChange={(e) => setName(e.target.value)}
+            value={project.projectName}
+          />
+        </Card>
         <Spacer />
-        <Heading variant="upper" size="md" mr={3}>
-          Project:
-        </Heading>
-        <Input
-          align="center"
-          variant="heading"
-          isDisabled={!editMode}
-          onChange={(e) => setName(e.target.value)}
-          value={project.projectName}
-        />
-        <Spacer />
-      </Card>
 
-      <Card direction="column">
-        <Heading variant="upper" size="md">
-          Members
-        </Heading>
-        <MemberTable editMode={editMode} />
-      </Card>
+        <Card direction="column">
+          <Heading variant="upper" size="md">
+            Members
+          </Heading>
+          <MemberTable editMode={editMode} />
+        </Card>
 
-      <Card direction="column">
-        <Heading variant="upper" size="md">
-          Product Areas
-        </Heading>
-        <ProductAreaList editMode={editMode} />
-      </Card>
+        <Card direction="column">
+          <Heading variant="upper" size="md">
+            Product Areas
+          </Heading>
+          <ProductAreaList editMode={editMode} />
+        </Card>
 
-      <EditButtons />
-      <p>{JSON.stringify(project)}</p>
-
+        <EditButtons />
+      </VStack>
     </Page>
   );
 }

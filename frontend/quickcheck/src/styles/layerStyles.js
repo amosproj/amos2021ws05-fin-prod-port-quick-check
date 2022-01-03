@@ -1,9 +1,9 @@
 const card = {
   rounded: 'md',
   boxShadow: 'md',
-  border: '0px',
-  p: '3',
-  px: '8',
+  border: 0,
+  p: 3,
+  px: 8,
   w: 'full',
 };
 
