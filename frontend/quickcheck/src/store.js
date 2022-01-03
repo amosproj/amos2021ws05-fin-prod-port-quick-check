@@ -35,10 +35,20 @@ const projectModel = {
   data: {
     projectID: 0,
     projectName: '',
+    creator: 'test@test.com',
     members: [],
     productAreas: [],
   },
 
+  init: action((state, payload) => {
+    state.data = {
+      projectID: 0,
+      creator: 'test@test.com',
+      projectName: '',
+      members: [],
+      productAreas: [],
+    };
+  }),
   // general actions
   set: action((state, project) => {
     state.data = project;
@@ -82,25 +92,24 @@ const projectModel = {
 
   // POST new Project
   sendCreate: thunk(async (actions, projectData) => {
-    console.log('send POST', { projectData });
+    console.log('send CREATE project:', { projectData });
     await api
       .url('/projects')
       .post(projectData)
       .json((json) => actions.set(json))
       .catch(console.error);
-    actions.set(projectData);
   }),
 
-  sendUpdate: thunk(async (actions, { id, projectData }) => {
-    console.log('send POST', { id, projectData });
-    if (id != 'new') {
-      await api
-        .url(`/projects/` + { id })
-        .put(projectData)
-        .json((json) => actions.set(json))
-        .catch(console.error);
-      actions.set(projectData);
-    }
+  sendUpdate: thunk(async (actions, projectData) => {
+    console.log('send UPDATE project:', { projectData });
+    actions.set(projectData);
+    await api
+      .url(`/projects/` + String(projectData.projectID))
+      .put(projectData)
+      .res(console.log)
+      .catch(console.error);
+
+    actions.set(projectData);
   }),
 };
 
