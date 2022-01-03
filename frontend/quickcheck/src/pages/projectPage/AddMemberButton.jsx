@@ -26,7 +26,7 @@ export default function AddMemberButton(buttonProps) {
   const addMember = useStoreActions((actions) => actions.project.addMember);
 
   const [email, setEmail] = useState('');
-  const [role, setRole] = useState('Client');
+  const [role, setRole] = useState(roles[0]);
   const header = 'Add new Member';
   return (
     <>
