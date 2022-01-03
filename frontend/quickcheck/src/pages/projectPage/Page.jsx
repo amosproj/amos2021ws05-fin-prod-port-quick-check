@@ -31,41 +31,37 @@ export default function Project() {
 
   const { id } = useParams();
   useEffect(() => {
-    if (id === "new"){
-        setEditMode(true)
-    }
-    else{
-       fetchProject(id);
+    if (id === 'new') {
+      setEditMode(true);
+    } else {
+      fetchProject(id);
     }
     // updateProject({ ...mockProject });
   }, []);
 
   const EditButtons = () => {
-      const confirm = () => {
-        setEditMode(false);
+    const confirm = () => {
+      setEditMode(false);
 
-        if (id === "new"){
-            createProject({
-                "creator": "consultant@amos.de", // todo change to current user
-                "projectName": project.projectName,
-                "productAreas": project.productAreas,
-                "members": project.members
-            });
-        }
-        else{
-            updateProject(  id, project );
-        }
-
-    }
+      if (id === 'new') {
+        createProject({
+          creator: 'consultant@amos.de', // todo change to current user
+          projectName: project.projectName,
+          productAreas: project.productAreas,
+          members: project.members,
+        });
+      } else {
+        updateProject(id, project);
+      }
+    };
     const cancel = () => {
       setEditMode(false);
-      if (id !== "new"){
-     fetchProject(id);
-    }
-    else{
-        window.location.href = "../projects";
-    }
-  }
+      if (id !== 'new') {
+        fetchProject(id);
+      } else {
+        window.location.href = '../projects';
+      }
+    };
 
     if (editMode) {
       return (

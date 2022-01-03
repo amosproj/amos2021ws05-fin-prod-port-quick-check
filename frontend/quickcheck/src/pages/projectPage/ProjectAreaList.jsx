@@ -28,19 +28,19 @@ export default function ProductAreaList({ editMode }) {
   return (
     <>
       <List w="full" maxW={500} align="center" spacing={4} pb={5}>
-      {productAreas.map((area) => (
-        <Flex gridGap={2} w="full" align="center" key={area}>
-          <ProductArea productArea={area} />
-          {editMode ? (
-            <ConfirmClick
-              onConfirm={() => removeProductArea(area)}
-              confirmPrompt="Remove this product area?"
-            >
-              <IconButton icon={<DeleteIcon />} variant="whisper" size="lg" />
-            </ConfirmClick>
-          ) : undefined}
-        </Flex>
-      ))}
+        {productAreas.map((area) => (
+          <Flex gridGap={2} w="full" align="center" key={area}>
+            <ProductArea productArea={area} />
+            {editMode ? (
+              <ConfirmClick
+                onConfirm={() => removeProductArea(area)}
+                confirmPrompt="Remove this product area?"
+              >
+                <IconButton icon={<DeleteIcon />} variant="whisper" size="lg" />
+              </ConfirmClick>
+            ) : undefined}
+          </Flex>
+        ))}
         {editMode ? <AddAreaButton variant="primary" size="lg" w={32}></AddAreaButton> : <div />}
       </List>
     </>

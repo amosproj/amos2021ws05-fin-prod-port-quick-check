@@ -71,14 +71,14 @@ export default function AddAreaButton(buttonProps) {
               disabled={selectedArea === undefined}
               onClick={(e) => {
                 addProductArea({
-                key: productAreas.length,
-                   id: selectedArea.id,
-                   name: selectedArea,
-                   category:  'Private',
-               });
-                console.log(selectedArea)
+                  key: productAreas.length,
+                  id: selectedArea.id,
+                  name: selectedArea,
+                  category: 'Private',
+                });
+                console.log(selectedArea);
                 onClose();
-                console.log(productAreas)
+                console.log(productAreas);
               }}
             >
               Save

@@ -27,9 +27,9 @@ const projectListModel = {
 const projectAreaModel = {
   data: {
     id: 0,
-    name:  '',
-    category:  'Private',
-},
+    name: '',
+    category: 'Private',
+  },
 };
 const projectModel = {
   data: {
@@ -38,7 +38,6 @@ const projectModel = {
     members: [],
     productAreas: [],
   },
-
 
   // general actions
   set: action((state, project) => {
@@ -94,15 +93,15 @@ const projectModel = {
 
   sendUpdate: thunk(async (actions, { id, projectData }) => {
     console.log('send POST', { id, projectData });
-    if (id!="new"){
-        await api
-          .url(`/projects/`+{id})
-          .put(projectData)
-          .json((json) => actions.set(json))
-          .catch(console.error);
-        actions.set(projectData);
+    if (id != 'new') {
+      await api
+        .url(`/projects/` + { id })
+        .put(projectData)
+        .json((json) => actions.set(json))
+        .catch(console.error);
+      actions.set(projectData);
     }
-      }),
+  }),
 };
 
 const store = createStore({
