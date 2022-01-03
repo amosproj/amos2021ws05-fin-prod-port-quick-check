@@ -10,33 +10,23 @@ import Card from '../../components/Card';
 import ProductAreaList from './ProjectAreaList';
 import MemberTable from './MemberTable';
 
-const mockProject = {
-  projectID: 1,
-  creatorID: '2375e026-d348-4fb6-b42b-891a76758d5d',
-  projectName: 'Amos Bank',
-  members: [
-    { userEmail: 'consultant@amos.de', role: 'Consultant' },
-    { userEmail: 'manager@amos.de', role: 'Project Owner' },
-  ],
-  productAreas: [1],
-};
-
 export default function Project() {
   const project = useStoreState((state) => state.project.data);
   const setName = useStoreActions((actions) => actions.project.setProjectName);
-  const updateProject = useStoreActions((actions) => actions.project.sendUpdate);
+  const initProject = useStoreActions((actions) => actions.project.init);
   const fetchProject = useStoreActions((actions) => actions.project.fetch);
-  const createProject = useStoreActions((actions) => actions.project.sendCreate);
+  const sendCreateProject = useStoreActions((actions) => actions.project.sendCreate);
+  const sendUpdateProject = useStoreActions((actions) => actions.project.sendUpdate);
   const [editMode, setEditMode] = useState(false);
 
   const { id } = useParams();
   useEffect(() => {
     if (id === 'new') {
+      initProject();
       setEditMode(true);
     } else {
       fetchProject(id);
     }
-    // updateProject({ ...mockProject });
   }, []);
 
   const EditButtons = () => {
@@ -44,22 +34,17 @@ export default function Project() {
       setEditMode(false);
 
       if (id === 'new') {
-        createProject({
-          creator: 'consultant@amos.de', // todo change to current user
-          projectName: project.projectName,
-          productAreas: project.productAreas,
-          members: project.members,
-        });
+        sendCreateProject(project);
       } else {
-        updateProject(id, project);
+        sendUpdateProject(project);
       }
     };
     const cancel = () => {
       setEditMode(false);
-      if (id !== 'new') {
-        fetchProject(id);
-      } else {
+      if (id === 'new') {
         window.location.href = '../projects';
+      } else {
+        fetchProject(id);
       }
     };
 

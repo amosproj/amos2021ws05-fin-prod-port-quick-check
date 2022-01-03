@@ -13,7 +13,7 @@ function ProductArea({ productArea }) {
       <Button as="a" variant="secondary" rounded="md" href="/projects" w="full" py={5}>
         <Spacer />
         <Heading size="md" align="center">
-          {productArea.name}
+          {productArea.name} ({productArea.category})
         </Heading>
         <Spacer />
       </Button>
@@ -29,7 +29,7 @@ export default function ProductAreaList({ editMode }) {
     <>
       <List w="full" maxW={500} align="center" spacing={4} pb={5}>
         {productAreas.map((area) => (
-          <Flex gridGap={2} w="full" align="center" key={area}>
+          <Flex gridGap={2} w="full" align="center" key={area.id}>
             <ProductArea productArea={area} />
             {editMode ? (
               <ConfirmClick
