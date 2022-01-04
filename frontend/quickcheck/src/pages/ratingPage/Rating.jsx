@@ -60,6 +60,15 @@ const mockRatings = {
       },
     },
     {
+      answer: 'test answer',
+      comment: 'test comment',
+      score: score.gering,
+      rating: {
+        category: 'Treiber 1',
+        criterion: 'test frage 1',
+      },
+    },
+    {
       answer: '',
       comment: '',
       score: score.mittel,
@@ -77,11 +86,20 @@ export default function Rating() {
   const [ratingsData, setRatingstData] = useState({
     ratings: [],
   });
-  const ratingsPerCategory= {};
+  const [ratingsPerCategory, setRatingsPerCategory]= useState(
+      []
+  );
 
   const handleChange = (key) => (value) => {
     setRatingstData({
       ...ratingsData,
+      [key]: value,
+    });
+  };
+
+  const handleChange2 = (key) => (value) => {
+    setRatingsPerCategory({
+      ...ratingsPerCategory,
       [key]: value,
     });
   };
@@ -94,7 +112,7 @@ export default function Rating() {
     {
       if (ratingsPerCategory[rating.rating.category] != null)
       {
-        ratingsPerCategory[rating.rating.category] = (ratingsPerCategory[rating.rating.category]).push(rating);
+        (ratingsPerCategory[rating.rating.category]).push(rating);
       }
       else
       {
@@ -131,8 +149,41 @@ export default function Rating() {
     }
   };
 
+  function DataTabs({data})
+  {
+    var a = data.map(complexityDriver => {
+      return complexityDriver[1];
+    })
+    var b = ratingsPerCategory;
+    return (
+        <Page title="Komplexitätsbewertung">
+          <Tabs>
+            <TabList>
+              {data.map(complexityDriver=> (
+                  <Tab key={complexityDriver[1]}>{complexityDriver[0]}</Tab>
+              ))}
+            </TabList>
+            <TabPanels>
+              {data.map(complexityDriver => (
+                  <TabPanel p={4} key={complexityDriver[0]}>
+                    <Card direction="column">
+                      <RatingTable
+                          editMode={editMode}
+                          ratings={complexityDriver[1]}
+                          handleChange={setRatings}
+                      />
+                    </Card>
+                  </TabPanel>
+              ))}
+            </TabPanels>
+          </Tabs>
+        </Page>
+    )
+  }
+
   //TODO: komp treiber änderungen dynamisch gestallten (https://chakra-ui.com/docs/disclosure/tabs)
-  return (
+  return <DataTabs data={ Object.entries(ratingsPerCategory)}/>;
+  /*return (
     <Page title="Komplexitätsbewertung">
       <Tabs>
         <TabList>
@@ -161,5 +212,5 @@ export default function Rating() {
         </TabPanels>
       </Tabs>
     </Page>
-  );
+  );*/
 }
