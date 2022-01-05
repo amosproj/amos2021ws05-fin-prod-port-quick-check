@@ -103,9 +103,9 @@ const ratingModel =
       }),
 
       // GET all ratings
-      fetch: thunk(async (actions, test) => {
+      fetch: thunk(async (actions,) => {
         await api
-            .url('/ratings/' + test )
+            .url('/ratings' )
             .get()
             .json((json) => actions.set(json))
             .catch(console.error);
@@ -116,6 +116,7 @@ const ratingModel =
 const store = createStore({
   projectList: projectListModel,
   project: projectModel,
+  rating: ratingModel,
 });
 
 export default store;
