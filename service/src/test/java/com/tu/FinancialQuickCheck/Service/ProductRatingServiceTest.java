@@ -8,7 +8,6 @@ import com.tu.FinancialQuickCheck.db.*;
 import com.tu.FinancialQuickCheck.dto.ProductDto;
 import com.tu.FinancialQuickCheck.dto.ProductRatingDto;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -311,15 +310,8 @@ public class ProductRatingServiceTest {
         // Step 1: provide knowledge
         when(productRepository.existsById(productID)).thenReturn(false);
 
-        // Step 2: Execute updateProject()
-        Exception exception = assertThrows(ResourceNotFound.class,
-                () -> service.createProductRatings(createDto, productID));
-
-        // Step 3: assert exception
-        String expectedMessage = "productID " + productID + " not found";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));
+        // Step 2: Execute and Assert testcase
+        assertNull(service.createProductRatings(createDto, productID));
     }
 
 
@@ -471,15 +463,8 @@ public class ProductRatingServiceTest {
         // Step 1: provide knowledge
         when(productRepository.existsById(productID)).thenReturn(false);
 
-        // Step 2: Execute updateProject()
-        Exception exception = assertThrows(ResourceNotFound.class,
-                () -> service.updateProductRatings(createDto, productID));
-
-        // Step 3: assert exception
-        String expectedMessage = "productID " + productID + " not found";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));
+        // Step 2: assert null
+        assertNull(service.updateProductRatings(createDto, productID));
     }
 
 
