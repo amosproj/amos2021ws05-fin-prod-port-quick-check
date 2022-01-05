@@ -32,26 +32,6 @@ public class ProjectDto {
     }
 
 
-
-//    public ProjectDto(int id, String name)
-//    {
-//        this.name = name;
-//        this.id = id;
-////        this.products = convertEntities(productEntity);
-//    }
-
-//    private List<Product> convertEntities(List<ProductEntity> productEntity) {
-//        List<Product> products = new ArrayList<>();
-//        for (ProductEntity p: productEntity)
-//        {
-////            if(p.productVariations != null)
-////                products.add(new Product(p.id, p.name, p.productVariations, p.ratingEntities));
-////            else
-//            products.add(new Product(p.id, p.name, p.ratingEntities));
-//        }
-//        return products;
-//    }
-
     private List<ProjectUserDto> convertProjectUserEntities(List<ProjectUserEntity> projectUserEntities) {
         List<ProjectUserDto> members = new ArrayList<>();
 
