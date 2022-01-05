@@ -1,0 +1,11 @@
+answer,comment,score,productid,ratingid
+answer 1,comment 1,0,100,1
+answer 2,comment 2,1,100,2
+answer 3,comment 3,2,100,3
+answer 4,comment 4,2,100,4
+answer 5,comment 5,1,100,5
+answer 6,comment 6,0,100,6
+answer 7,comment 7,1,101,1
+answer 8,comment 8,2,101,2
+answer 9,comment 9,1,101,3
+answer 10,comment 10,2,101,4
