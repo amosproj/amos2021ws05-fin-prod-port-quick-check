@@ -12,7 +12,9 @@ public class ProductRatingIdTest {
     static Logger log = Logger.getLogger(ProductRatingIdTest.class.getName());
 
     ProductRatingId id1;
+    ProductRatingId id1_copy;
     ProductRatingId id2;
+    ProductRatingId id2_copy;
     ProductEntity product1;
     ProductEntity product2;
     ProductAreaEntity productArea1;
@@ -64,10 +66,16 @@ public class ProductRatingIdTest {
         id1 = new ProductRatingId();
         id1.setProduct(product1);
         id1.setRating(rating1);
-
         id2 = new ProductRatingId();
         id2.setProduct(product2);
         id2.setRating(rating2);
+
+        id1_copy = new ProductRatingId();
+        id1_copy.setProduct(product1);
+        id1_copy.setRating(rating1);
+        id2_copy = new ProductRatingId();
+        id2_copy.setProduct(product2);
+        id2_copy.setRating(rating2);
     }
 
     /**
@@ -78,8 +86,8 @@ public class ProductRatingIdTest {
      */
     @Test
     public void testEquals_true() {
-        assertTrue(id1.equals(id1));
-        assertTrue(id2.equals(id2));
+        assertTrue(id1.equals(id1_copy));
+        assertTrue(id2.equals(id2_copy));
     }
 
     @Test
@@ -96,8 +104,8 @@ public class ProductRatingIdTest {
      */
     @Test
     public void testHashCode_equal() {
-        assertEquals(id1.hashCode(), id1.hashCode());
-        assertEquals(id2.hashCode(), id2.hashCode());
+        assertEquals(id1.hashCode(), id1_copy.hashCode());
+        assertEquals(id2.hashCode(), id2_copy.hashCode());
     }
 
     @Test

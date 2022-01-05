@@ -11,7 +11,9 @@ public class ProjectUserIdTest {
     static Logger log = Logger.getLogger(ProjectUserIdTest.class.getName());
 
     ProjectUserId id1;
+    ProjectUserId id1_copy;
     ProjectUserId id2;
+    ProjectUserId id2_copy;
     UserEntity user1;
     UserEntity user2;
     ProjectEntity project1;
@@ -42,10 +44,16 @@ public class ProjectUserIdTest {
         id1 = new ProjectUserId();
         id1.setProject(project1);
         id1.setUser(user1);
-
         id2 = new ProjectUserId();
         id2.setProject(project2);
         id2.setUser(user2);
+
+        id1_copy = new ProjectUserId();
+        id1_copy.setProject(project1);
+        id1_copy.setUser(user1);
+        id2_copy = new ProjectUserId();
+        id2_copy.setProject(project2);
+        id2_copy.setUser(user2);
     }
 
     /**
@@ -56,8 +64,8 @@ public class ProjectUserIdTest {
      */
     @Test
     public void testEquals_true() {
-        assertTrue(id1.equals(id1));
-        assertTrue(id2.equals(id2));
+        assertTrue(id1.equals(id1_copy));
+        assertTrue(id2.equals(id2_copy));
     }
 
     @Test
@@ -74,8 +82,8 @@ public class ProjectUserIdTest {
      */
     @Test
     public void testHashCode_equal() {
-        assertEquals(id1.hashCode(), id1.hashCode());
-        assertEquals(id2.hashCode(), id2.hashCode());
+        assertEquals(id1.hashCode(), id1_copy.hashCode());
+        assertEquals(id2.hashCode(), id2_copy.hashCode());
     }
 
     @Test
