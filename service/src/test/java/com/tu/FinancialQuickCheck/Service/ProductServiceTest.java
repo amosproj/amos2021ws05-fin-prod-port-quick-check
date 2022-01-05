@@ -309,8 +309,6 @@ public class ProductServiceTest {
 
 
     @Test
-    @Disabled
-    //TODO: create working variations
     public void testCreateProduct5_withProductVariations() {
 
         // Step 1: provide knowledge
@@ -331,11 +329,10 @@ public class ProductServiceTest {
        for(ProductDto productDtoOut : out) {
            assertAll("create Product",
                    () -> assertNotNull(productDtoOut.productID),
-                   () -> assertEquals(dto2.productName, productDtoOut.productName),
+                   () -> assertEquals(fullProductDto.productName, productDtoOut.productName),
                    () -> assertEquals(1, productDtoOut.projectID),
-                   //TODO: anpassen
                    () -> assertEquals(1, productDtoOut.productArea.id),
-                   () -> assertEquals(dto2.productVariations, productDtoOut.productVariations),
+                   () -> assertEquals(fullProductDto.productVariations, productDtoOut.productVariations),
                    () -> assertNull(productDtoOut.ratings)
            );
        }
@@ -406,10 +403,20 @@ public class ProductServiceTest {
 
         // Step 2: execute and assert createProduct()
         ProductDto out = service.updateById(updateDto, 1);
-        //TODO: output evtl. anpassen
+
         assertEquals(updateDto.productName, out.productName);
         assertEquals(updateDto.comment, out.comment);
     }
 
+
+    //TODO: implement
+    public void testUpdateById4_updateComment_success(){
+
+    }
+
+    //TODO: implement
+    public void testUpdateById4_updateProductName_success(){
+
+    }
 
 }
