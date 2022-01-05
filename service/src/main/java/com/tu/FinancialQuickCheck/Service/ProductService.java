@@ -84,6 +84,7 @@ public class ProductService {
 
             entities = repository.saveAllAndFlush(entities);
 
+            //TODO: after flush is "entities" empty -> "createProduct" returns always an empty list -> discuss solutions
             List<ProductDto> createdProducts = new ArrayList<>();
             entities.forEach(entity -> createdProducts.add(new ProductDto(entity)));
             return createdProducts;
