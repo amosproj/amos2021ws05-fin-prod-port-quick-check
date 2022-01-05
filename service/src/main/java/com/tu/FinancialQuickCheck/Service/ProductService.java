@@ -121,7 +121,7 @@ public class ProductService {
                         updateProductComment(product, productDto);
                         return repository.save(product);
                     });
-            //TODO: updateById returns always an empty ProdcutDto
+            //TODO: updateById returns always an empty ProdcutDto, change to updated Dto
             return new ProductDto();
         }
     }
