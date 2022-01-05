@@ -86,22 +86,10 @@ const projectModel = {
 
 const ratingModel =
     {
-      /*data: {
-        productID: 0,
-        ratingID: 0,
-        answer: '',
-        comment: '',
-        score: score.gering,
-        rating: {
-          ratingID: 0,
-          category: '',
-          criterion: '',
-          ratingArea: ratingArea.COMPLEXITY
-        },
-      },*/
       data: {
         ratings:[]
       },
+
       // general actions
       set: action((state, ratings) => {
         state.data = ratings;
@@ -110,15 +98,14 @@ const ratingModel =
         state.data = { ...state.data, ...updatedProps };
       }),
       updateRating: action((state, rating) => {
-        // overwrite member with same email
         const index = state.data.ratings.map((r) => r.ratingID).indexOf(rating.ratingID); // get index of member with same email. if not found, index=-1
         state.data.ratings[index] = { ...state.data.ratings[index], ...rating };
       }),
 
       // GET all ratings
-      fetch: thunk(async (actions, ratingArea) => {
+      fetch: thunk(async (actions, test) => {
         await api
-            .url('/ratings/' + ratingArea)
+            .url('/ratings/' + test )
             .get()
             .json((json) => actions.set(json))
             .catch(console.error);

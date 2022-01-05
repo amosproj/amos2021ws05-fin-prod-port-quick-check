@@ -18,35 +18,8 @@ import Card from '../../components/Card';
 import MemberTable from '../projectPage/MemberTable';
 import RatingTable from './RatingTable';
 import { score } from '../../utils/const';
+import {useStoreActions} from "easy-peasy";
 
-/*
-    ratingID:
-      type: integer
-      example: 111
-    answer:
-      type: string
-      example: "an answer to a question or the volume of an economic criterion"
-    comment:
-      type: string
-      example: "a comment to an answer or an economic criterion"
-    score:
-      type: string
-      enum: [ HOCH, MITTEL, GERING ]
-    rating:
-      type: object
-      properties:
-        ratingID:
-          $ref: '#/components/schemas/ratingID'
-        category:
-          type: string
-          example: "Komplexitätstreiber oder Gruppierung von Finanzkriterien"
-        criterion:
-          type: string
-          example: "question or criterion to be analysed"
-        ratingArea:
-          type: string
-          enum: [ ECONOMIC, COMPLEXITY ]
- */
 
 const mockRatings = {
   ratings: [
@@ -90,6 +63,8 @@ export default function Rating() {
       []
   );
 
+  const fetchRatings = useStoreActions((actions) => actions.project.fetch);
+
   const handleChange = (key) => (value) => {
     setRatingstData({
       ...ratingsData,
@@ -123,7 +98,7 @@ export default function Rating() {
   }
 
   useEffect(() => {
-    // fetchProject();
+    var a = fetchRatings();
     setRatingstData(mockRatings);
     computeRatingsPerCategory(mockRatings.ratings);
   }, []);
@@ -151,10 +126,6 @@ export default function Rating() {
 
   function DataTabs({data})
   {
-    var a = data.map(complexityDriver => {
-      return complexityDriver[1];
-    })
-    var b = ratingsPerCategory;
     return (
         <Page title="Komplexitätsbewertung">
           <Tabs>
@@ -181,36 +152,6 @@ export default function Rating() {
     )
   }
 
-  //TODO: komp treiber änderungen dynamisch gestallten (https://chakra-ui.com/docs/disclosure/tabs)
   return <DataTabs data={ Object.entries(ratingsPerCategory)}/>;
-  /*return (
-    <Page title="Komplexitätsbewertung">
-      <Tabs>
-        <TabList>
-          <Tab>Treiber 1:</Tab>
-          <Tab>Treiber 2:</Tab>
-        </TabList>
-        <TabPanels>
-          <TabPanel>
-            <Card direction="column">
-              <RatingTable
-                editMode={editMode}
-                ratings={ratingsData.ratings}
-                handleChange={setRatings}
-              />
-            </Card>
-          </TabPanel>
-          <TabPanel>
-            <Card direction="column">
-              <RatingTable
-                editMode={editMode}
-                ratings={ratingsData.ratings}
-                handleChange={setRatings}
-              />
-            </Card>
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-    </Page>
-  );*/
+
 }
