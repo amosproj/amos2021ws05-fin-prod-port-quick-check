@@ -90,6 +90,24 @@ const ratingModel =
         ratings:[]
       },
 
+      init: action((state, payload) => {
+        state.data = [
+          {
+            productID: 0,
+            ratingID: 0,
+            answer: 'test answer',
+            comment: 'test comment',
+            score: score.gering,
+            rating: {
+              ratingID: 0,
+              category: 'Treiber 1',
+              criterion: 'test frage',
+              ratingArea: ratingArea.ECONOMIC
+            },
+          },
+        ]
+      }),
+
       // general actions
       set: action((state, ratings) => {
         state.data = ratings;
