@@ -1,6 +1,5 @@
 package com.tu.FinancialQuickCheck.Controller;
 
-
 import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.RatingArea;
 import com.tu.FinancialQuickCheck.Service.ProductRatingService;
@@ -8,17 +7,32 @@ import com.tu.FinancialQuickCheck.dto.ProductDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-
+/**
+ * The ProductRatingController manages and processes requests for updating product ratings or returning existing ones
+ */
 @RestController
 @RequestMapping("products/{productID}/ratings")
 public class ProductRatingController {
 
     private ProductRatingService service;
 
+    /**
+     * Constructor for class ProductRatingController.
+     *
+     * @param productRatingService
+     */
     public ProductRatingController(ProductRatingService productRatingService){
         this.service = productRatingService;
     }
 
+    /**
+     * This method returns economical and complexity ratings for a product by their ID.
+     *
+     * @param productID The ID of the product.
+     * @param ratingArea There is a economic and a complexity rating area.
+     * @throws ResourceNotFound When the productID does not exist.
+     * @return The economic and the complexity rating for a product by their ID.
+     */
     //TODO: (done - needs review) return empty list or return Error if no ratings exist? --> empty list
     @GetMapping()
     public ProductDto getProductRatings(
@@ -35,7 +49,13 @@ public class ProductRatingController {
 
     }
 
-
+    /**
+     * This method can create economical or complexity ratings for a product by their ID.
+     *
+     * @param productDto The product data transfer object.
+     * @param productID The ID of the product.
+     * @return The created rating for a product by their ID.
+     */
     //TODO: (done - needs review) add consumes and produces
     //TODO: (done - needs review) change output according to API
     @PostMapping(consumes = "application/json", produces = "application/json")
@@ -44,6 +64,13 @@ public class ProductRatingController {
         return service.createProductRatings(productDto, productID);
     }
 
+    /**
+     * This method can update economical or complexity ratings for a product by their ID.
+     *
+     * @param productDto The product data transfer object.
+     * @param productID The ID of the product for which the rating can be updated.
+     * @return The updated rating for a product by their ID.
+     */
     //TODO: (done - needs review) add consumes
     //TODO: (done - needs review) change output according to API
     @PutMapping(consumes = "application/json")

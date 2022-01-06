@@ -3,6 +3,11 @@ package com.tu.FinancialQuickCheck.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * This class is
+ *
+ *
+ */
 @RestController
 public class HelloWorldController {
 
