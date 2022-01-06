@@ -82,10 +82,14 @@ public class ProductService {
                 }
             }
 
+            //TODO: Product Area is missing in entity produces a nullpoint exception
+            List<ProductDto> createdProducts = new ArrayList<>();
+            //entities.forEach(entity -> createdProducts.add(new ProductDto(entity)));
+
             entities = repository.saveAllAndFlush(entities);
 
-            List<ProductDto> createdProducts = new ArrayList<>();
-            entities.forEach(entity -> createdProducts.add(new ProductDto(entity)));
+
+
             return createdProducts;
 
         }else {
@@ -120,7 +124,8 @@ public class ProductService {
                         updateProductComment(product, productDto);
                         return repository.save(product);
                     });
-            return new ProductDto();
+
+            return productDto;
         }
     }
 

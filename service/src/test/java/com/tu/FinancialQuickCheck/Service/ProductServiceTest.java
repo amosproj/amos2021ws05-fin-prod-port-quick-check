@@ -58,6 +58,7 @@ public class ProductServiceTest {
     private ProductDto updateDto;
     private ProductDto preProductDto;
     private ProductDto fullProductDto;
+    private ProductDto fullProductDtoVariation;
     private ProductDto productDtoVariation;
 
     private ProductAreaDto fullProductAreaDto;
@@ -65,6 +66,7 @@ public class ProductServiceTest {
 
     private ProductEntity emptyProductEntity;
     private ProductEntity preProductEntity;
+    private ProductEntity fullProductEntity;
     private ProductEntity entity1;
     private ProductEntity entity2;
     private ProductEntity entity3;
@@ -103,10 +105,6 @@ public class ProductServiceTest {
         dto2.productVariations = new ArrayList<>();
         dto2.productVariations.add(tmpProductDto1);
 
-        updateDto = new ProductDto();
-        updateDto.productName = productName2;
-        updateDto.comment = updateComment;
-
         projectEntity = new ProjectEntity();
         projectEntity.id = 1;
         projectEntity.name = "DKB";
@@ -141,7 +139,7 @@ public class ProductServiceTest {
 
         //create preProduct for Testing
         preProductName = "preProduct";
-        preProductId = 1;
+        preProductId = 42;
 
         preProductEntity = new ProductEntity();
         preProductEntity.id = preProductId;
@@ -152,9 +150,17 @@ public class ProductServiceTest {
         preProductAreaEntities = new ArrayList<>();
         preProductAreaEntities.add(preProductAreaEntity);
 
+        preProductAreaDto = new ProductAreaDto(
+                42,
+                "examplePreAreaName",
+                "examplePreCat"
+        );
+
         preProductDto = new ProductDto();
         preProductDto.productName = preProductName;
         preProductDto.productID = preProductId;
+        preProductDto.projectID = 1;
+        preProductDto.productArea = preProductAreaDto;
 
         fullProductAreaDto = new ProductAreaDto(1, "exampleAreaName", "exampleCat");
 
@@ -164,9 +170,17 @@ public class ProductServiceTest {
         fullProductDto.productArea = fullProductAreaDto;
         fullProductDto.projectID = 1;
 
-        productDtoVariation = fullProductDto;
+        productDtoVariation = new ProductDto();
         productDtoVariation.productName = "exampleProductVariation";
+        productDtoVariation.productID = 1;
+        productDtoVariation.productArea = fullProductAreaDto;
+        productDtoVariation.projectID = 1;
 
+        updateDto = new ProductDto();
+        updateDto.productName = "updatedDto";
+        updateDto.productID = 111;
+        updateDto.productArea = preProductAreaDto;
+        updateDto.projectID = 1;
 
     }
 
@@ -217,6 +231,7 @@ public class ProductServiceTest {
      *                     --> return ProductDto with productVariations
      * testCreateProduct6: input contains more than required information
      *                      --> product is created correctly, productID returned and additional information is ignored
+     * testCreateProduct7: input contains full Product
      */
     @Test
     public void testCreateProduct1_projectIdNotFound() {
@@ -257,9 +272,9 @@ public class ProductServiceTest {
         fullProductDto.productName = null;
 
         // Step 1: provide knowledge
-        when(projectRepository.existsById(1)).thenReturn(true);
-        when(productAreaRepository.existsById(1)).thenReturn(true);
-        when(projectRepository.findById(1)).thenReturn(Optional.of(preProjectEntity));
+        when(repository.existsByProjectAndProductarea(
+                projectRepository.getById(1),
+                productAreaRepository.getById(1))).thenReturn(true);
 
         // Step 2: execute and assert createProduct()
         assertNull(service.createProduct(1, fullProductDto));
@@ -270,54 +285,76 @@ public class ProductServiceTest {
     public void testCreateProduct4_withoutProductVariations() {
 
         // Step 1: provide knowledge
-        when(projectRepository.existsById(1)).thenReturn(true);
-        when(productAreaRepository.existsById(1)).thenReturn(true);
+
         when(projectRepository.findById(1)).thenReturn(Optional.of(preProjectEntity));
-        when(productAreaRepository.findById(1)).thenReturn(Optional.of(preProductAreaEntity));
+        when(repository.existsByProjectAndProductarea(
+                projectRepository.getById(1),
+                productAreaRepository.getById(1))).thenReturn(true);
+
 
 
         // Step 2: execute and assert createProduct()
         List<ProductDto> out = service.wrapper_createProduct(1, fullProductDto);
-        ProductDto firstOut = out.get(0);
-        System.out.println(out);
-        //TODO: anpassen auf List output
-        assertAll("create Product",
-                () -> assertNotNull(firstOut),
-                () -> assertEquals(fullProductDto.productName, firstOut.productName),
-                () -> assertEquals(1, firstOut.projectID),
-                //TODO: anpassen
-                () -> assertNull(firstOut.productVariations),
-                () -> assertNull(firstOut.ratings)
-        );
+
+        List<ProductDto> emptyList = new ArrayList<>();
+        assertNotEquals(emptyList, out);
+
+        for(ProductDto productDtoOut : out) {
+            assertAll("create Product",
+                    () -> assertNotNull(productDtoOut.productID),
+                    () -> assertEquals(fullProductDto.productName, productDtoOut.productName),
+                    () -> assertEquals(1, productDtoOut.projectID),
+                    //TODO: anpassen
+                    () -> assertEquals(1, productDtoOut.productArea.id),
+                    () -> assertEquals(fullProductDto.productVariations, productDtoOut.productVariations),
+                    () -> assertNull(productDtoOut.ratings)
+            );
+        }
     }
 
 
-
     @Test
-    @Disabled
-    //TODO: create working variations
     public void testCreateProduct5_withProductVariations() {
-        // Step 1: provide knowledge
-        when(projectRepository.existsById(1)).thenReturn(true);
-        when(productAreaRepository.existsById(1)).thenReturn(true);
-        when(projectRepository.findById(1)).thenReturn(Optional.of(projectEntity));
 
-        fullProductDto.productVariations.add(tmpProductDto1);
+        // Step 1: provide knowledge
+        when(projectRepository.findById(1)).thenReturn(Optional.of(preProjectEntity));
+        when(repository.existsByProjectAndProductarea(
+                projectRepository.getById(1),
+                productAreaRepository.getById(1))).thenReturn(true);
+
+        fullProductDto.productVariations = new ArrayList<>();
+        fullProductDto.productVariations.add(productDtoVariation);
 
         // Step 2: execute and assert createProduct()
-        List<ProductDto> out = service.wrapper_createProduct(1, dto2);
+        List<ProductDto> out = service.wrapper_createProduct(1, fullProductDto);
+
+        List<ProductDto> emptyList = new ArrayList<>();
+        assertNotEquals(emptyList, out);
 
        for(ProductDto productDtoOut : out) {
            assertAll("create Product",
                    () -> assertNotNull(productDtoOut.productID),
-                   () -> assertEquals(dto2.productName, productDtoOut.productName),
+                   () -> assertEquals(fullProductDto.productName, productDtoOut.productName),
                    () -> assertEquals(1, productDtoOut.projectID),
-                   //TODO: anpassen
                    () -> assertEquals(1, productDtoOut.productArea.id),
-                   () -> assertEquals(dto2.productVariations, productDtoOut.productVariations),
+                   () -> assertEquals(fullProductDto.productVariations, productDtoOut.productVariations),
                    () -> assertNull(productDtoOut.ratings)
            );
        }
+    }
+
+    //TODO: implement when multiple creations is posible
+    @Test
+    @Disabled
+    public void testCreateMultipleProducts1_withVariations(){
+
+        // Step 1: provide knowledge
+        when(projectRepository.findById(1)).thenReturn(Optional.of(preProjectEntity));
+        when(repository.existsByProjectAndProductarea(
+                projectRepository.getById(1),
+                productAreaRepository.getById(1))).thenReturn(true);
+
+
     }
 
     /**
@@ -332,7 +369,7 @@ public class ProductServiceTest {
         // Step 1: provide knowledge
         when(repository.existsById(1)).thenReturn(false);
 
-        // Step 2: execute and assert creaateProduct()
+        // Step 2: execute and assert createProduct()
         Exception exception = assertThrows(ResourceNotFound.class,
                 () -> service.updateById(tmpProductDto1, 1));
 
@@ -353,23 +390,75 @@ public class ProductServiceTest {
 
         //TODO: add remaining parts check if an empty dt schuld be the result
 
-        // Step 2: execute and assert creaateProduct()
+        // Step 2: execute and assert createProduct()
         assertNull(service.updateById(emptyProductDto, 1).productName);
     }
 
     @Test
     @Disabled
     public void testUpdateById3_success() {
-        // Step 1: provide knowledge
-        when(repository.existsById(1)).thenReturn(true);
-        when(repository.findById(1)).thenReturn(Optional.of(preProductEntity));
 
-        // Step 2: execute and assert creaateProduct()
-        ProductDto out = service.updateById(updateDto, 1);
-        //TODO: output evtl. anpassen
-        assertEquals(updateDto.productName, out.productName);
-        assertEquals(updateDto.comment, out.comment);
+        // Step 1: provide knowledge
+        when(repository.existsById(42)).thenReturn(true);
+        when(repository.findById(42)).thenReturn(Optional.of(preProductEntity));
+
+        // Step 2: execute and assert createProduct()
+        preProductDto.productName = "updatedName";
+        preProductDto.comment = "updateComment";
+        ProductDto out = service.updateById(preProductDto, 42);
+
+        assertEquals("updatedName", out.productName);
+        assertEquals("updateComment", out.comment);
     }
 
+
+    @Test
+    public void testUpdateById4_updateComment_success(){
+
+        // Step 1: provide knowledge
+        when(repository.existsById(42)).thenReturn(true);
+        when(repository.findById(42)).thenReturn(Optional.of(preProductEntity));
+
+        preProductDto.comment = "updateComment";
+        preProductDto.productName = null;
+
+        // Step 2: execute and assert createProduct()
+        ProductDto out = service.updateById(preProductDto, 42);
+
+
+        //TODO: klären ob einzelne updates von Name und comment möglich sein sollen oder jewails nur als ganzes bztw als löschen
+        assertAll("update Product",
+                () -> assertNotNull(out.productID),
+                //() -> assertEquals(preProductDto.productName, out.productName),
+                () -> assertEquals("updateComment", out.comment),
+                () -> assertEquals(1, out.projectID),
+                () -> assertEquals(42, out.productArea.id),
+                () -> assertNull(out.ratings));
+
+
+    }
+
+    @Test
+    public void testUpdateById4_updateProductName_success(){
+
+        // Step 1: provide knowledge
+        when(repository.existsById(42)).thenReturn(true);
+        when(repository.findById(42)).thenReturn(Optional.of(preProductEntity));
+
+        preProductDto.productName = "updatedName";
+        preProductDto.comment = null;
+
+        // Step 2: execute and assert createProduct()
+        ProductDto out = service.updateById(preProductDto, 42);
+
+        //TODO: klären ob einzelne updates von Name und comment möglich sein sollen oder jewails nur als ganzes bztw als löschen
+        assertAll("update Product",
+                () -> assertNotNull(out.productID),
+                () -> assertEquals(preProductDto.productName, out.productName),
+                //() -> assertEquals("updateComment", out.comment),
+                () -> assertEquals(1, out.projectID),
+                () -> assertEquals(42, out.productArea.id),
+                () -> assertNull(out.ratings));
+    }
 
 }
