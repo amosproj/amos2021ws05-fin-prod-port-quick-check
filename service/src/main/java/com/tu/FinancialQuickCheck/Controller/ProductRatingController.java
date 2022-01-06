@@ -19,7 +19,7 @@ public class ProductRatingController {
     /**
      * Constructor for class ProductRatingController.
      *
-     * @param productRatingService
+     * @param productRatingService The different services for the product rating.
      */
     public ProductRatingController(ProductRatingService productRatingService){
         this.service = productRatingService;

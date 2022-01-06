@@ -20,7 +20,7 @@ public class ProductAreaController {
     /**
      * Constructor for class ProductAreaController.
      *
-     * @param productAreaService
+     * @param productAreaService The different services for the product areas.
      */
     public ProductAreaController(ProductAreaService productAreaService){
         this.service = productAreaService;

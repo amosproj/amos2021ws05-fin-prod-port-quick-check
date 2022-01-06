@@ -17,7 +17,7 @@ public class ProductController {
     /**
      * Constructor for class ProductController.
      *
-     * @param productService
+     * @param productService The different services for the product.
      */
     public ProductController(ProductService productService){
         this.service = productService;
