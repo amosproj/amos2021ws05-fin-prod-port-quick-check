@@ -17,13 +17,13 @@ services:
       - "3306:3306"
 
 
-  service:
-    image: "maven:3.6.3-jdk-11-slim"
-    container_name: service
-    command: mvn -f /app/ spring-boot:run
-    volumes:
+service:
+  image: "maven:3.6.3-jdk-11-slim"
+  container_name: service
+  command: mvn -f /app/ spring-boot:run
+  volumes:
       - ./service:/app
-#      - ./service/pom.xml:/app/pom.xml
+      - ./service/pom.xml:/app/pom.xml
     ports:
       - "8080:8080"
 
