@@ -82,11 +82,14 @@ public class ProductService {
                 }
             }
 
+            //TODO: Product Area is missing in entity produces a nullpoint exception
+            List<ProductDto> createdProducts = new ArrayList<>();
+            //entities.forEach(entity -> createdProducts.add(new ProductDto(entity)));
+
             entities = repository.saveAllAndFlush(entities);
 
-            //TODO: after flush is "entities" empty -> "createProduct" returns always an empty list -> discuss solutions
-            List<ProductDto> createdProducts = new ArrayList<>();
-            entities.forEach(entity -> createdProducts.add(new ProductDto(entity)));
+
+
             return createdProducts;
 
         }else {
@@ -121,8 +124,8 @@ public class ProductService {
                         updateProductComment(product, productDto);
                         return repository.save(product);
                     });
-            //TODO: updateById returns always an empty ProdcutDto, change to updated Dto
-            return new ProductDto();
+
+            return productDto;
         }
     }
 

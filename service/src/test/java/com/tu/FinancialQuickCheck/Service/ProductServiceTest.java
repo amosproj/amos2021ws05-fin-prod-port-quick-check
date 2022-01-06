@@ -139,7 +139,7 @@ public class ProductServiceTest {
 
         //create preProduct for Testing
         preProductName = "preProduct";
-        preProductId = 1;
+        preProductId = 42;
 
         preProductEntity = new ProductEntity();
         preProductEntity.id = preProductId;
@@ -150,9 +150,17 @@ public class ProductServiceTest {
         preProductAreaEntities = new ArrayList<>();
         preProductAreaEntities.add(preProductAreaEntity);
 
+        preProductAreaDto = new ProductAreaDto(
+                42,
+                "examplePreAreaName",
+                "examplePreCat"
+        );
+
         preProductDto = new ProductDto();
         preProductDto.productName = preProductName;
         preProductDto.productID = preProductId;
+        preProductDto.projectID = 1;
+        preProductDto.productArea = preProductAreaDto;
 
         fullProductAreaDto = new ProductAreaDto(
                 1,
@@ -307,7 +315,6 @@ public class ProductServiceTest {
     }
 
 
-
     @Test
     public void testCreateProduct5_withProductVariations() {
 
@@ -338,21 +345,17 @@ public class ProductServiceTest {
        }
     }
 
-    //TODO: finalize fullProductDto
+    //TODO: implement when multiple creations is posible
     @Test
     @Disabled
-    public void testCreateProduct7_fullProduct(){
+    public void testCreateMultipleProducts1_withVariations(){
 
-        //Step 1: provide knowledge
+        // Step 1: provide knowledge
+        when(projectRepository.findById(1)).thenReturn(Optional.of(preProjectEntity));
         when(repository.existsByProjectAndProductarea(
                 projectRepository.getById(1),
                 productAreaRepository.getById(1))).thenReturn(true);
-        when(projectRepository.findById(1)).thenReturn(Optional.ofNullable(preProjectEntity));
 
-        List<ProductDto> tmpProductDtoList = service.createProduct(1, fullProductDto);
-
-        // Step 2: execute and assert createProduct()
-        assertEquals(fullProductDto, service.createProduct(1, fullProductDto).get(0));
 
     }
 
@@ -379,7 +382,6 @@ public class ProductServiceTest {
 
     }
 
-    //TODO: Ask Frontend about return by update (if nothing comes back update test)
     @Test
     public void testUpdateById2_inputMissing() {
 
@@ -398,25 +400,66 @@ public class ProductServiceTest {
     public void testUpdateById3_success() {
 
         // Step 1: provide knowledge
-        when(repository.existsById(1)).thenReturn(true);
-        when(repository.findById(1)).thenReturn(Optional.of(preProductEntity));
+        when(repository.existsById(42)).thenReturn(true);
+        when(repository.findById(42)).thenReturn(Optional.of(preProductEntity));
 
         // Step 2: execute and assert createProduct()
-        ProductDto out = service.updateById(updateDto, 1);
+        preProductDto.productName = "updatedName";
+        preProductDto.comment = "updateComment";
+        ProductDto out = service.updateById(preProductDto, 42);
 
-        assertEquals(updateDto.productName, out.productName);
-        assertEquals(updateDto.comment, out.comment);
+        assertEquals("updatedName", out.productName);
+        assertEquals("updateComment", out.comment);
     }
 
 
-    //TODO: implement
+    @Test
     public void testUpdateById4_updateComment_success(){
 
+        // Step 1: provide knowledge
+        when(repository.existsById(42)).thenReturn(true);
+        when(repository.findById(42)).thenReturn(Optional.of(preProductEntity));
+
+        preProductDto.comment = "updateComment";
+        preProductDto.productName = null;
+
+        // Step 2: execute and assert createProduct()
+        ProductDto out = service.updateById(preProductDto, 42);
+
+
+        //TODO: klären ob einzelne updates von Name und comment möglich sein sollen oder jewails nur als ganzes bztw als löschen
+        assertAll("update Product",
+                () -> assertNotNull(out.productID),
+                //() -> assertEquals(preProductDto.productName, out.productName),
+                () -> assertEquals("updateComment", out.comment),
+                () -> assertEquals(1, out.projectID),
+                () -> assertEquals(42, out.productArea.id),
+                () -> assertNull(out.ratings));
+
+
     }
 
-    //TODO: implement
+    @Test
     public void testUpdateById4_updateProductName_success(){
 
+        // Step 1: provide knowledge
+        when(repository.existsById(42)).thenReturn(true);
+        when(repository.findById(42)).thenReturn(Optional.of(preProductEntity));
+
+        preProductDto.productName = "updatedName";
+        preProductDto.comment = null;
+
+        // Step 2: execute and assert createProduct()
+        ProductDto out = service.updateById(preProductDto, 42);
+
+        //TODO: klären ob einzelne updates von Name und comment möglich sein sollen oder jewails nur als ganzes bztw als löschen
+        assertAll("update Product",
+                () -> assertNotNull(out.productID),
+                () -> assertEquals(preProductDto.productName, out.productName),
+                //() -> assertEquals("updateComment", out.comment),
+                () -> assertEquals(1, out.projectID),
+                () -> assertEquals(42, out.productArea.id),
+                () -> assertNull(out.ratings));
     }
 
 }
