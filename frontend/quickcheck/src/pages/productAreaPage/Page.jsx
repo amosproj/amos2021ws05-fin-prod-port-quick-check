@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Page from '../components/Page';
+import Page from '../../components/Page';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import {
   Modal,
@@ -19,7 +19,7 @@ import {
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 
-import ProductRow from '../components/ProductRow';
+import ProductRow from './ProductRow';
 
 const products = [
   {
@@ -169,8 +169,6 @@ export default function ProductOverview() {
         </List>
         <Button>Generate Results</Button>
         <EditButtons />
-        <p>{/*JSON.stringify(productsAction)*/}</p>
-        <p>{/*JSON.stringify(products)*/}</p>
       </Page>
     </div>
   );

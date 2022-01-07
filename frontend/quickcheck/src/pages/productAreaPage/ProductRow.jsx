@@ -9,7 +9,7 @@ import {
   Box
 } from '@chakra-ui/react';
 import React from 'react';
-import Card from './Card';
+import Card from '../../components/Card';
 import { DeleteIcon } from '@chakra-ui/icons';
 import { useStoreActions } from 'easy-peasy';
 
