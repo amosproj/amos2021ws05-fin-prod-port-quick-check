@@ -6,7 +6,7 @@ import {
   Spacer,
   Textarea,
   VStack,
-  Box
+  Box,
 } from '@chakra-ui/react';
 import React from 'react';
 import Card from '../../components/Card';
@@ -47,7 +47,6 @@ export default function ProductRow({ product, editMode }) {
         // w={(parentID > 0) ? ' 90%' : 'full'}
         _hover={{ boxShadow: '2xl' }}
       >
-
         <Input
           align="center"
           size="md"
@@ -60,22 +59,24 @@ export default function ProductRow({ product, editMode }) {
         />
         <Spacer />
         <VStack>
-          <CircularProgress size='40px' value={40} />
+          <CircularProgress size="40px" value={40} />
           <Button variant="whisper">Economical</Button>
         </VStack>
         <Spacer />
 
         <VStack>
-          <CircularProgress size='40px' value={40} />
+          <CircularProgress size="40px" value={40} />
           <Button variant="whisper">Complexity</Button>
         </VStack>
         <Spacer />
 
-        <Textarea bg={'gray.600'}  width="30%" placeholder="Anmerkung" />
-        {editMode ? <Box ml={3}><RemoveButton removeProdFct={removeProduct} /></Box> : undefined}
-
+        <Textarea bg={'gray.600'} width="30%" placeholder="Anmerkung" />
+        {editMode ? (
+          <Box ml={3}>
+            <RemoveButton removeProdFct={removeProduct} />
+          </Box>
+        ) : undefined}
       </Card>
-
     </div>
   );
 }
