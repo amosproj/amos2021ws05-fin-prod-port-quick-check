@@ -5,20 +5,25 @@ services:
     image: "mysql:8"
     container_name: mysql
     command: "--default-authentication-plugin=mysql_native_password"
+    restart: always
+    volumes:
+      - ./DummyData/sqlFiles:/docker-entrypoint-initdb.d
     environment:
       - "MYSQL_ROOT_PASSWORD=secret"
+      -  "MYSQL_DATABASE=bootdb"
     expose:
       - "3306"
     ports:
       - "3306:3306"
 
-  service:
-    image: "maven:3.6.3-jdk-11-slim"
-    container_name: service
-    command: mvn -f /app/ spring-boot:run
-    volumes:
+
+service:
+  image: "maven:3.6.3-jdk-11-slim"
+  container_name: service
+  command: mvn -f /app/ spring-boot:run
+  volumes:
       - ./service:/app
-#      - ./service/pom.xml:/app/pom.xml
+      - ./service/pom.xml:/app/pom.xml
     ports:
       - "8080:8080"
 

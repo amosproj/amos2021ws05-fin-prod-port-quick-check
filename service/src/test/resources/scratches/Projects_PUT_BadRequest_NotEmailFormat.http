@@ -1,0 +1,27 @@
+PUT localhost:8080/projects/10
+Content-Type: application/json
+
+{
+  "productAreas": [],
+  "members": [
+    {
+      "userID": "0fef539d-69be-4013-9380-6a12c3534c67",
+      "userEmail": "lily@amos.de",
+      "userName": "string",
+      "role": "CLIENT"
+    },
+    {
+      "userEmail": "test",
+      "userName": "string",
+      "role": "CLIENT"
+    }
+  ]
+}
+
+<> 2021-12-13T101228.400.json
+<> 2021-12-13T100049.404.json
+<> 2021-12-13T095947.200.json
+<> 2021-12-13T095840.200.json
+<> 2021-12-13T095735.200.json
+<> 2021-12-13T094807.200.json
+<> 2021-12-13T093227.200.json

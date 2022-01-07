@@ -1,0 +1,52 @@
+POST localhost:8080/products/103/ratings
+Content-Type: application/json
+
+{
+  "overallEconomicRating": true,
+  "ratings": [
+    {
+    "ratingID": 1,
+    "answer": "answer 1",
+    "comment": "comment 1",
+    "score": "GERING"},
+    {
+      "ratingID": 2,
+      "answer": "answer 2",
+      "comment": "comment 2",
+      "score": "MITTEL"},
+    {
+      "ratingID": 3,
+      "answer": "answer 3",
+      "comment": "comment 3",
+      "score": "HOCH"},
+    {
+      "ratingID": 4,
+      "answer": "answer 4",
+      "comment": "comment 4",
+      "score": "MITTEL"},
+    {
+      "ratingID": 5,
+      "answer": "answer 5",
+      "comment": "comment 5",
+      "score": "HOCH"},
+    {
+      "ratingID": 6,
+      "answer": "answer 6",
+      "comment": "comment 6",
+      "score": "GERING"},
+    {
+      "ratingID": 7,
+      "answer": "answer 7",
+      "comment": "comment 7",
+      "score": "MITTEL"},
+    {
+      "ratingID": 8,
+      "answer": "answer 8",
+      "comment": "comment 8",
+      "score": "HOCH"}
+  ]
+}
+
+<> 2021-12-13T173701.200.json
+<> 2021-12-13T173423.200.json
+<> 2021-12-13T173347.200.json

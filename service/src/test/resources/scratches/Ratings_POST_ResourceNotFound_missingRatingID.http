@@ -1,0 +1,29 @@
+POST localhost:8080/products/103/ratings
+Content-Type: application/json
+
+{
+  "overallEconomicRating": false,
+  "ratings": [
+    {
+      "ratingID": 1,
+      "answer": "answer 1",
+      "comment": "comment 1",
+      "score": "GERING"},
+    {
+      "ratingID": 2,
+      "answer": "answer 2",
+      "comment": "comment 2",
+      "score": "MITTEL"},
+    {
+      "ratingID": 3,
+      "answer": "answer 3",
+      "comment": "comment 3",
+      "score": "HOCH"},
+    {
+      "answer": "answer 4",
+      "comment": "comment 4",
+      "score": "MITTEL"}
+  ]
+}
+
+<> 2021-12-13T175114.404.json

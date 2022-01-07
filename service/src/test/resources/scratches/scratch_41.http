@@ -1,7 +1,0 @@
-PUT localhost:8080/projects/5
-Content-Type: application/json
-
-{
-  "projectName": "Bank 5",
-  "productAreas": [2,4, 5]
-}
