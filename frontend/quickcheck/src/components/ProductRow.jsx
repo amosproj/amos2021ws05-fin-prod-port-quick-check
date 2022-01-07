@@ -3,15 +3,15 @@ import {
   IconButton,
   Button,
   CircularProgress,
-  CircularProgressLabel,
   Spacer,
   Textarea,
+  VStack,
+  Box
 } from '@chakra-ui/react';
 import React from 'react';
 import Card from './Card';
 import { DeleteIcon } from '@chakra-ui/icons';
 import { useStoreActions } from 'easy-peasy';
-// import { useEffect } from 'react';
 
 function RemoveButton({ removeProdFct }) {
   return (
@@ -47,6 +47,7 @@ export default function ProductRow({ product, editMode }) {
         // w={(parentID > 0) ? ' 90%' : 'full'}
         _hover={{ boxShadow: '2xl' }}
       >
+
         <Input
           align="center"
           size="md"
@@ -58,19 +59,23 @@ export default function ProductRow({ product, editMode }) {
           value={product.productName}
         />
         <Spacer />
-        <Button> Economical </Button>
-        <CircularProgress value={40} color="green.400">
-          <CircularProgressLabel>40%</CircularProgressLabel>
-        </CircularProgress>
+        <VStack>
+          <CircularProgress size='40px' value={40} />
+          <Button variant="whisper">Economical</Button>
+        </VStack>
         <Spacer />
-        <Button> Complexity </Button>
-        <CircularProgress value={40} color="green.400">
-          <CircularProgressLabel>40%</CircularProgressLabel>
-        </CircularProgress>
+
+        <VStack>
+          <CircularProgress size='40px' value={40} />
+          <Button variant="whisper">Complexity</Button>
+        </VStack>
         <Spacer />
-        <Textarea width="30%" placeholder="Anmerkung" />
-        {editMode ? <RemoveButton removeProdFct={removeProduct} /> : undefined}
+
+        <Textarea bg={'gray.600'}  width="30%" placeholder="Anmerkung" />
+        {editMode ? <Box ml={3}><RemoveButton removeProdFct={removeProduct} /></Box> : undefined}
+
       </Card>
+
     </div>
   );
 }
