@@ -1,6 +1,4 @@
 import {
-  Flex,
-  Box,
   Input,
   IconButton,
   Button,
@@ -11,8 +9,8 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import Card from './Card';
-import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
-import { useStoreState, useStoreActions } from 'easy-peasy';
+import { DeleteIcon } from '@chakra-ui/icons';
+import { useStoreActions } from 'easy-peasy';
 // import { useEffect } from 'react';
 
 function RemoveButton({ removeProdFct }) {

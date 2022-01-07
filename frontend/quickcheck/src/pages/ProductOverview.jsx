@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Page from '../components/Page';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import {
@@ -20,16 +20,6 @@ import {
 import { AddIcon } from '@chakra-ui/icons';
 
 import ProductRow from '../components/ProductRow';
-
-const mock = {
-  product: {
-    productID: 151,
-    productName: 'Added Prod',
-    productArea: {},
-    projectID: 1,
-    parentID: 0,
-  },
-};
 
 const products = [
   {
@@ -70,13 +60,13 @@ const products = [
   },
 ];
 
-const getProducts = (products) => {
-  return products.filter((prod) => prod.parentID === 0);
-};
+// const getProducts = (products) => {
+//   return products.filter((prod) => prod.parentID === 0);
+// };
 
-const getChildren = (product) => {
-  return products.filter((prod) => prod.parentID === product.productID);
-};
+// const getChildren = (product) => {
+//   return products.filter((prod) => prod.parentID === product.productID);
+// };
 
 function AddButton(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -126,12 +116,8 @@ export default function ProductOverview() {
   const setProducts = useStoreActions((actions) => actions.productList.set);
   const [editMode, setEditMode] = useState(false);
 
-  const set = () => {
-    setProducts(products);
-  };
-
   useEffect(() => {
-    set();
+    setProducts(products);
   }, []);
 
   const EditButtons = () => {

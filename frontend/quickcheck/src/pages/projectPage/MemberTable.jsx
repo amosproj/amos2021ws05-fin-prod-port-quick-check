@@ -71,11 +71,9 @@ export default function MemberTable({ editMode }) {
         {editMode ? (
           <AddMemberButton
             minW={16}
-            size="lg"
             variant="primary"
             onAdd={addMember}
             size="lg"
-            w={5}
           />
         ) : undefined}
       </Flex>
