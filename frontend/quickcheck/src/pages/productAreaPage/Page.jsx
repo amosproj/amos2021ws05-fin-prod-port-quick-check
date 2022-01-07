@@ -19,7 +19,7 @@ import {
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 
-import ProductRow from './ProductRow';
+import ProductRow from './Product';
 
 const products = [
   {
@@ -60,13 +60,7 @@ const products = [
   },
 ];
 
-// const getProducts = (products) => {
-//   return products.filter((prod) => prod.parentID === 0);
-// };
 
-// const getChildren = (product) => {
-//   return products.filter((prod) => prod.parentID === product.productID);
-// };
 
 function AddButton(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -110,6 +104,14 @@ function AddButton(props) {
   );
 }
 
+// const getProducts = (products) => {
+//   return products.filter((prod) => prod.parentID === 0);
+// };
+
+// const getChildren = (product) => {
+//   return products.filter((prod) => prod.parentID === product.productID);
+// };
+
 export default function ProductOverview() {
   const productsAction = useStoreState((state) => state.productList.products);
   const addProductAction = useStoreActions((actions) => actions.productList.addProduct);
@@ -143,6 +145,7 @@ export default function ProductOverview() {
       );
     }
   };
+  
   const addProduct = (productName) => {
     const prod = {
       productID: new Date().getMilliseconds(),
