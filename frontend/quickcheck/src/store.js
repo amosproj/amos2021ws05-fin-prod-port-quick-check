@@ -1,4 +1,4 @@
-import { createStore, action, thunk } from 'easy-peasy';
+import { createStore, action, thunk, computed } from 'easy-peasy';
 
 import { api } from './utils/apiClient';
 
@@ -6,8 +6,8 @@ import { api } from './utils/apiClient';
 
 // first define the store model, then add actions to change the stored state and add 'thunks' for actions with side effects (e.g. api calls)
 
-const productAreaModel = {
-  products: [
+const productListModel = {
+  items: [
     /*{
       productID: 0,
       productName: '',
@@ -19,14 +19,21 @@ const productAreaModel = {
       parentID: 0,
     }*/
   ],
+
+  products: computed((state) => state.items.filter((p) => p.parentID === 0)),
+
+  getVariants: computed((state) => {
+    return (product) => state.items.filter((p) => p.parentID === product.productID);
+  }),
+
   set: action((state, products) => {
-    state.products = products;
+    state.items = products;
   }),
   addProduct: action((state, product) => {
-    state.products.push(product);
+    state.items.push(product);
   }),
   removeProduct: action((state, product) => {
-    state.products = state.products.filter((p) => p.productID !== product.productID);
+    state.items = state.products.filter((p) => p.productID !== product.productID);
   }),
 };
 
@@ -110,7 +117,7 @@ const projectModel = {
 const store = createStore({
   projectList: projectListModel,
   project: projectModel,
-  productList: productAreaModel,
+  productList: productListModel,
 });
 
 export default store;
