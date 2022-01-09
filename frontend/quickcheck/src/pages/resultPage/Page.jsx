@@ -2,6 +2,7 @@ import React from 'react';
 import Card from '../../components/Card';
 import Page from '../../components/Page';
 import PieChartGraph from './PieChart';
+import BubbleGraph from './BubbleChart';
 
 import {
   List,
@@ -88,32 +89,53 @@ export default function ResultPage() {
   return (
     <div>
       <Page title="Results">
+
         <Flex
-          flexDirection="row"
+          flexDirection="column"
           w="full"
-          gridGap={3}
+          gridGap={1}
           justifyContent="space-between"
           alignItems="stretch"
         >
-          <Flex w="55%">
-            <Card alignItems="center" bg="gray.600">
-              <PieChartGraph data={data}></PieChartGraph>
-            </Card>
-          </Flex>
 
-          <Flex flexDirection="column" w="45%" justifyContent="space-between" alignItems="stretch">
-            <VStack>
+          <Card alignItems="center" bg="gray.100">
+            <BubbleGraph></BubbleGraph>
+          </Card>
+
+
+        <Flex
+          flexDirection="row"
+          w="full"
+          gridGap={1}
+          justifyContent="space-between"
+          alignItems="stretch"
+        >
+        <Flex
+          w="50%"
+        >
+        <Card alignItems="center" bg="gray.600">
+          <PieChartGraph data={data}></PieChartGraph>
+        </Card>
+        </Flex>
+
+        <Flex
+          w="50%"
+        >
+        <Card alignItems="center" bg="gray.600">
+           <PieChartGraph data={data}></PieChartGraph>
+        </Card>
+        </Flex>
+      </Flex>
               <Heading size="lg">Sources</Heading>
               {sources.map((source) => (
                 <SourceRow source={source} key={source.ID} />
               ))}
-            </VStack>
-          </Flex>
-        </Flex>
+  </Flex>
         <HStack>
           <Button> Export Results </Button>
           <Button> Back</Button>
         </HStack>
+
         <p>{/*JSON.stringify(sources)*/}</p>
       </Page>
     </div>
