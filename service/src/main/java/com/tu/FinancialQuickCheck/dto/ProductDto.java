@@ -2,7 +2,6 @@ package com.tu.FinancialQuickCheck.dto;
 
 //import com.tu.FinancialQuickCheck.RatingArea;
 //import com.tu.FinancialQuickCheck.Score;
-
 import com.tu.FinancialQuickCheck.Score;
 import com.tu.FinancialQuickCheck.db.ProductAreaEntity;
 import com.tu.FinancialQuickCheck.db.ProductEntity;
@@ -12,6 +11,10 @@ import com.tu.FinancialQuickCheck.db.RatingEntity;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class represents the product data transfer object, which is used for reducing the number of multiple
+ * method calls into a single one
+ */
 public class ProductDto {
 
     // TODO: (done - needs review) add progressComplexity and progressEconomic to necessary constructors
@@ -60,8 +63,7 @@ public class ProductDto {
         this.parentID = convertParentEntity(parent);
     }
 
-    public ProductDto(ProductEntity product, List<ProductRatingEntity> productRatingEntities, Boolean getOrPostPut)
-    {
+    public ProductDto(ProductEntity product, List<ProductRatingEntity> productRatingEntities, Boolean getOrPostPut) {
         this.productName = product.name;
         this.overallEconomicRating = product.overallEconomicRating;
         this.ratings = convertProductRatingEntities(productRatingEntities, getOrPostPut);
@@ -90,7 +92,13 @@ public class ProductDto {
 //        return Score.valueOf(sum/values.size());
 //    }
 
-
+    /**
+     * Converts Product Rating Entities into a list of ProductRating DTO's.
+     *
+     * @param productRatingEntities Product Rating Entities which should be converted into a list of DTO's.
+     * @param getOrPostPut
+     * @return
+     */
     private List<ProductRatingDto> convertProductRatingEntities(List<ProductRatingEntity> productRatingEntities,
                                                                 Boolean getOrPostPut) {
         List<ProductRatingDto> tmp = new ArrayList<>();
@@ -112,15 +120,26 @@ public class ProductDto {
                         entity.productRatingId.getRating().id));
             }
         }
-
-
+        
         return tmp;
     }
 
+    /**
+     * Converts Product Area Entity into single Product Area DTO.
+     *
+     * @param productAreaEntity Product Area Entities which should be converted into a DTO.
+     * @return The converted Product Area DTO.
+     */
     private ProductAreaDto convertProductAreaEntity(ProductAreaEntity productAreaEntity) {
         return new ProductAreaDto(productAreaEntity.id, productAreaEntity.name, productAreaEntity.category);
     }
 
+    /**
+     * Converts Product Entity into a parent entity.
+     *
+     * @param parentEntity The product entity that has to be converted into parent entity.
+     * @return The converted parent entity.
+     */
     //TODO: (done - review needed) change returned parent-id to 0 if no parent exist
     private int convertParentEntity(ProductEntity parentEntity) {
         if(parentEntity != null){
