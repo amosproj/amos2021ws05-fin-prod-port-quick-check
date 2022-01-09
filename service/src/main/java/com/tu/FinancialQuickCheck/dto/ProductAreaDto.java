@@ -1,6 +1,5 @@
 package com.tu.FinancialQuickCheck.dto;
 
-
 import java.util.Objects;
 
 public class ProductAreaDto {
