@@ -12,12 +12,10 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
-
 /**
  * Underlying Service for User- aka. member-management.
  * Acts as connection between presentation Layer and persistence layer.
  */
-
 @Service
 public class UserService {
 
@@ -28,7 +26,7 @@ public class UserService {
     }
 
     /**
-     * returns a List of all Users without passwords
+     * Returns a List of all Users without passwords.
      */
     public List<UserDto> getAllUsers() {
 
@@ -44,10 +42,12 @@ public class UserService {
 
 
     /**
-     * Search for User by given email
+     * Search for User by given email.
      *
-     * @param email
-     * @return userDto
+     * @param email The email of the user which should be found.
+     * @throws ResourceNotFound When the user is not found.
+     * @throws BadRequest When the input is incorrect or missing.
+     * @return userDto The user data transfer object.
      */
     public UserDto findByEmail(String email) {
 
@@ -68,12 +68,11 @@ public class UserService {
 
 
     /**
-     * create new User and saves in (user)repository
+     * Create new User and saves in (user)repository.
      *
-     * @param userDto
-     * @return UserDto
+     * @param userDto The user data transfer object.
+     * @return UserDto The user data transfer object.
      */
-
     //TODO: (prio: low) add constraints for input --> check if String is empty else return Bad Request
     public UserDto createUser(UserDto userDto) {
 
@@ -93,7 +92,14 @@ public class UserService {
     }
 
 
-
+    /**
+     * This method is updating a user by its email.
+     *
+     * @param userDto The users data transfer object.
+     * @param email The email of the user which should be updated.
+     * @throws ResourceNotFound When the user cannot be find.
+     * @return The updated user data transfer object.
+     */
     //TODO: (prio: medium) Discuss Update By ID and Update By Email with Frontend, should it be possible to update userEmail --> yes
     //TODO: (prio: low) add constraints for input --> check if String is empty else return Bad Request
     public UserDto updateUserByEmail(UserDto userDto, String email) {
@@ -130,9 +136,10 @@ public class UserService {
 
 
     /**
-     * Deletes User
+     * Deletes user.
      *
-     * @param userID
+     * @param userID The ID of the user which should be deleted by its ID.
+     * @throws ResourceNotFound When the user ID cannot be found.
      */
     //TODO: (prio low) discuss Admin accsess with frontend
     public void deleteUserById(UUID userID) {
@@ -154,12 +161,11 @@ public class UserService {
     }
 
     /**
-     * search for ID in repository and updates if found
+     * Search for ID in repository and updates if found
      *
-     * @param userDto
-     * @param userID
+     * @param userDto The user data transfer object.
+     * @param userID The ID of the user.
      */
-
     /**public UserDto updateByUserID(UserDto userDto, UUID userID) {
 
      Optional<UserEntity> entity = repository.findById(userID.toString());
