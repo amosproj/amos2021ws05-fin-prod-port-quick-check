@@ -164,7 +164,7 @@ public class ProductService {
             }
             return productsByProject;
         }else{
-            throw new ResourceNotFound("project " + projectID + "does not exist.");
+            throw new ResourceNotFound("project " + projectID + " does not exist.");
         }
     }
 

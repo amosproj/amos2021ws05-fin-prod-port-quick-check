@@ -44,32 +44,17 @@ public class ProductServiceTest {
 
     private ProductService service;
 
-    private String productName1;
-    private String productName2;
-    private String preProductName;
-    private String updateComment;
-    private int productID;
-    private int preProductId;
-
     private ProductDto emptyProductDto;
     private ProductDto tmpProductDto1;
-    private ProductDto dto2;
-    private ProductDto dto3;
     private ProductDto updateDto;
     private ProductDto preProductDto;
     private ProductDto fullProductDto;
-    private ProductDto fullProductDtoVariation;
     private ProductDto productDtoVariation;
 
     private ProductAreaDto fullProductAreaDto;
     private ProductAreaDto preProductAreaDto;
 
-    private ProductEntity emptyProductEntity;
     private ProductEntity preProductEntity;
-    private ProductEntity fullProductEntity;
-    private ProductEntity entity1;
-    private ProductEntity entity2;
-    private ProductEntity entity3;
 
     private ProjectEntity projectEntity;
     private ProjectEntity preProjectEntity;
@@ -90,32 +75,13 @@ public class ProductServiceTest {
         // init empty test object
         emptyProductDto = new ProductDto();
         // init necessary information for test objects
-        productID = 1;
-        productName1 = "Swaps";
-        productName2 = "Optionen";
-        updateComment = "updatedComment";
 
-        //dto1 with name only
         tmpProductDto1 = new ProductDto();
-        tmpProductDto1.productName = productName1;
-
-        //dto2 with name and variation
-        dto2 = new ProductDto();
-        dto2.productName = productName2;
-        dto2.productVariations = new ArrayList<>();
-        dto2.productVariations.add(tmpProductDto1);
+        tmpProductDto1.productName = "Swaps";
 
         projectEntity = new ProjectEntity();
         projectEntity.id = 1;
         projectEntity.name = "DKB";
-
-        entity1 = new ProductEntity();
-//        entity1.product_id = productID;
-        entity1.name = productName1;
-        entity1.project = projectEntity;
-        //TODO: anpassen
-//        entity1.productareaid = 1;
-
 
         List<ProductEntity> emptyProductEntitiesList = new ArrayList<>();
         List<ProjectUserEntity> emptyProjectUserEntitiesList = new ArrayList<>();
@@ -138,12 +104,9 @@ public class ProductServiceTest {
         preProductAreaEntity.name = "exampleAreaName";
 
         //create preProduct for Testing
-        preProductName = "preProduct";
-        preProductId = 42;
-
         preProductEntity = new ProductEntity();
-        preProductEntity.id = preProductId;
-        preProductEntity.name = preProductName;
+        preProductEntity.id = 42;
+        preProductEntity.name = "preProduct";
         preProductEntity.productarea = preProductAreaEntity;
         preProductEntity.project = preProjectEntity;
 
@@ -157,8 +120,8 @@ public class ProductServiceTest {
         );
 
         preProductDto = new ProductDto();
-        preProductDto.productName = preProductName;
-        preProductDto.productID = preProductId;
+        preProductDto.productName = "preProduct";
+        preProductDto.productID = 42;
         preProductDto.projectID = 1;
         preProductDto.productArea = preProductAreaDto;
 
@@ -204,14 +167,14 @@ public class ProductServiceTest {
     public void testFindById2_productExists() {
 
         // Step 1: provide knowledge
-        when(repository.findById(preProductId)).thenReturn(Optional.of(preProductEntity));
+        when(repository.findById(preProductDto.productID)).thenReturn(Optional.of(preProductEntity));
 
         // Step 2: execute findById()
-        ProductDto out = service.findById(preProductId);
+        ProductDto out = service.findById(preProductDto.productID);
 
         assertAll("find Product",
-                () -> assertEquals(preProductId, out.productID),
-                () -> assertEquals(preProductName, out.productName),
+                () -> assertEquals(preProductDto.productID, out.productID),
+                () -> assertEquals(preProductDto.productName, out.productName),
                 () -> assertEquals(preProductEntity.project.id, out.projectID),
                 () -> assertNull(out.ratings),
                 () -> assertNull(out.productVariations)
@@ -266,7 +229,6 @@ public class ProductServiceTest {
     }
 
     @Test
-    @Disabled
     public void testCreateProduct3_projectNameMissing() {
         // Step 0: init test object
         fullProductDto.productName = null;
@@ -281,7 +243,6 @@ public class ProductServiceTest {
     }
 
     @Test
-    @Disabled
     public void testCreateProduct4_withoutProductVariations() {
 
         // Step 1: provide knowledge
@@ -302,10 +263,10 @@ public class ProductServiceTest {
         for(ProductDto productDtoOut : out) {
             assertAll("create Product",
                     () -> assertNotNull(productDtoOut.productID),
+                    () -> assertEquals(fullProductDto.productID, productDtoOut.productID),
                     () -> assertEquals(fullProductDto.productName, productDtoOut.productName),
-                    () -> assertEquals(1, productDtoOut.projectID),
-                    //TODO: anpassen
-                    () -> assertEquals(1, productDtoOut.productArea.id),
+                    () -> assertEquals(fullProductDto.projectID, productDtoOut.projectID),
+                    () -> assertEquals(fullProductDto.productArea.id, productDtoOut.productArea.id),
                     () -> assertEquals(fullProductDto.productVariations, productDtoOut.productVariations),
                     () -> assertNull(productDtoOut.ratings)
             );
@@ -395,7 +356,6 @@ public class ProductServiceTest {
     }
 
     @Test
-    @Disabled
     public void testUpdateById3_success() {
 
         // Step 1: provide knowledge
@@ -459,6 +419,50 @@ public class ProductServiceTest {
                 () -> assertEquals(1, out.projectID),
                 () -> assertEquals(42, out.productArea.id),
                 () -> assertNull(out.ratings));
+    }
+
+    @Test
+    public void testGetProductsByProjectId_IdNotFound(){
+
+        Exception exception = assertThrows(ResourceNotFound.class,
+                () -> service.getProductsByProjectId(404));
+
+        String expectedMessage = "project 404 does not exist.";
+        String actualMessage = exception.getMessage();
+
+        assertEquals(expectedMessage, actualMessage);
+    }
+
+
+    @Test
+    @Disabled
+    public void testGetProductsByProjectId_succsess(){
+
+        //step 1: provide knowledge
+        //TODO: find out how to create an Iterable
+        ProductEntity tmp[] = {preProductEntity};
+        Iterable<ProductEntity> productEntities = Arrays.asList(tmp);
+
+        when(projectRepository.existsById(preProjectEntity.id)).thenReturn(true);
+        when(repository.findByProject(projectRepository.findById(preProjectEntity.id).get())).thenReturn(productEntities);
+
+        List<ProductDto> out = service.getProductsByProjectId(preProjectEntity.id);
+
+        assertEquals(productEntities, out);
+    }
+
+    @Test
+    //TODO: Discuss getProductsByProjectIdAndProductAreaId
+    public void testGetProductsByProjectIdAndProductAreaId_NotFound() {
+
+        Exception exception = assertThrows(ResourceNotFound.class,
+                () -> service.getProductsByProjectIdAndProductAreaId(404, 404));
+
+        String expectedMessage = "project 404 does not exist.";
+        String actualMessage = exception.getMessage();
+
+        assertEquals(expectedMessage, actualMessage);
+
     }
 
 }
