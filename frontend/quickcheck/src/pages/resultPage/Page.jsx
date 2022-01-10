@@ -2,6 +2,7 @@ import React from 'react';
 import Card from '../../components/Card';
 import Page from '../../components/Page';
 import PieChartGraph from './PieChart';
+import { Link } from 'react-router-dom';
 
 import {
   List,
@@ -105,16 +106,21 @@ export default function ResultPage() {
             <VStack>
               <Heading size="lg">Sources</Heading>
               {sources.map((source) => (
-                <SourceRow source={source} key={source.ID} />
+                <SourceRow source={source} key={source.id} />
+                
+              
               ))}
             </VStack>
           </Flex>
         </Flex>
         <HStack>
           <Button> Export Results </Button>
-          <Button> Back</Button>
+          <Link to={"/projects"}>
+            <Button> Back</Button>
+          </Link>
         </HStack>
-        <p>{/*JSON.stringify(sources)*/}</p>
+        <p>{/*JSON.stringify(sources[0].id)*/}</p>
+
       </Page>
     </div>
   );
