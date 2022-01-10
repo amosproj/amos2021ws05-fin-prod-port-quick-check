@@ -1,0 +1,11 @@
+PUT localhost:8080/products/3
+Content-Type: application/json
+
+{
+  "productName": "Name vorhanden zum Updaten"
+}
+
+<> 2021-12-13T155716.400.json
+<> 2021-12-13T155233.400.json
+<> 2021-12-13T153920.400.json
+<> 2021-12-13T145638.400.json

@@ -1,0 +1,12 @@
+POST http://localhost:8080/projects/100/users
+Content-Type: application/json
+
+[
+  {
+    "userEmail": "maxr@amos.de",
+    "role=": "CLIENT"
+  },
+  {
+    "userEmail": "maxb@amos.de"
+  }
+]

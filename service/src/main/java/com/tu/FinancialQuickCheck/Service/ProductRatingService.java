@@ -6,6 +6,7 @@ import com.tu.FinancialQuickCheck.db.*;
 import com.tu.FinancialQuickCheck.dto.ProductDto;
 import com.tu.FinancialQuickCheck.dto.ProductRatingDto;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,20 +28,20 @@ public class ProductRatingService {
         this.ratingRepository = ratingRepository;
     }
 
-
+    //TODO: (done - needs review) test output against api definition
     public ProductDto getProductRatings(int productID, RatingArea ratingArea) {
 
         Optional<ProductEntity> productEntity = productRepository.findById(productID);
 
         if (productEntity.isEmpty()) {
-            throw new ResourceNotFound("productID " + productID + " not found");
+            return null;
         } else {
 
             Iterable<ProductRatingEntity> entities = productEntity.get().productRatingEntities;
 
             if (ratingArea != null) {
                 entities = StreamSupport.stream(entities.spliterator(), false)
-                        .filter(product -> product.productRatingId.getRatingid().ratingarea == ratingArea)
+                        .filter(product -> product.productRatingId.getRating().ratingarea == ratingArea)
                         .collect(Collectors.toList());
             }
 
@@ -48,46 +49,70 @@ public class ProductRatingService {
                     .stream(entities.spliterator(), false)
                     .collect(Collectors.toList());
 
-            return new ProductDto(productEntity.get().name , tmp);
+            return new ProductDto(productEntity.get(), tmp, true);
         }
     }
 
-    // TODO: merge createProductRatings & updateProductRatings --> mit Max B. besprochen
+
+    // TODO: (prio: high) sicherstellen dass für jede hinterlegte Frage in der Rating_Entity ein Eintrag angelegt
+    // wird in der Product_Rating_Entity
+    @Transactional
     public ProductDto createProductRatings(ProductDto productDto, int productID) {
 
         if (!productRepository.existsById(productID)) {
             throw new ResourceNotFound("productID " + productID + " not found");
         } else {
+            ProductEntity productEntity = productRepository.findById(productID).get();
+
+            if(productDto.overallEconomicRating != null){
+                productEntity.overallEconomicRating = productDto.overallEconomicRating;
+                productRepository.saveAndFlush(productEntity);
+            }
+
             List<ProductRatingEntity> newProductRatings = new ArrayList<>();
 
             for (ProductRatingDto tmp : productDto.ratings) {
                 if(ratingRepository.existsById(tmp.ratingID)){
                     ProductRatingEntity newEntity = new ProductRatingEntity();
                     assignAttributes(tmp, newEntity);
+                    RatingEntity ratingEntity = ratingRepository.findById(tmp.ratingID).get();
                     newEntity.productRatingId = new ProductRatingId(
-                            productRepository.getById(productID),
-                            ratingRepository.getById(tmp.ratingID));
+                            productRepository.getById(productID), ratingEntity);
                     newProductRatings.add(newEntity);
                 }else{
                     throw new ResourceNotFound("ratingID " + tmp.ratingID + " not found");
                 }
             }
 
+//            productEntity.productRatingEntities = newProductRatings;
+
             repository.saveAll(newProductRatings);
-            return new ProductDto(productDto.productName, newProductRatings);
+
+            return new ProductDto(productEntity , newProductRatings, false);
         }
     }
 
+    //TODO: (test)
+    @Transactional
+    public ProductDto updateProductRatings(ProductDto productDto, int productID) {
 
-    public void updateProductRatings(ProductDto productDto, int productID) {
         if (!productRepository.existsById(productID)) {
             throw new ResourceNotFound("productID " + productID + " not found");
         } else {
+            ProductEntity productEntity = productRepository.findById(productID).get();
+
+
+            if(productDto.overallEconomicRating != null){
+                productEntity.overallEconomicRating = productDto.overallEconomicRating;
+                productRepository.save(productEntity);
+            }
+
             List<ProductRatingEntity> updates = new ArrayList<>();
 
             for (ProductRatingDto tmp : productDto.ratings) {
                 ProductRatingId tmpId = new ProductRatingId(productRepository.getById(productID),
                         ratingRepository.getById(tmp.ratingID));
+
                 Optional<ProductRatingEntity> updateEntity = repository.findById(tmpId);
 
                 if(updateEntity.isPresent()){
@@ -102,11 +127,13 @@ public class ProductRatingService {
             }
 
             repository.saveAll(updates);
+
+            return new ProductDto(productEntity , updates, false);
         }
     }
 
 
-    private void assignAttributes(ProductRatingDto tmp, ProductRatingEntity newEntity) {
+    public void assignAttributes(ProductRatingDto tmp, ProductRatingEntity newEntity) {
         if(tmp.answer != null){
             newEntity.answer = tmp.answer;
         }

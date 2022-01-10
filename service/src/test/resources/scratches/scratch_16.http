@@ -1,6 +1,0 @@
-POST localhost:8080/projects/5/productareas/2/products
-Content-Type: application/json
-
-{
-  "productName": "Swaps"
-}

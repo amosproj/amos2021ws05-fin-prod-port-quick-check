@@ -6,7 +6,9 @@ import java.util.List;
 
 @Entity
 public class ProductEntity {
-    // TODO: add attribute for overall economic rating (what type is it?)
+    // TODO: (done: needs review) confirm attribute for overallEconomicRating? --> done, Boolean type passt laut Max B.
+    //TODO: (done: needs review) add missing attribute: comment
+    //TODO: (prio: medium) (Topic: Dateien abspeichern) add missing attribute: list of resources or something else (?)
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -15,7 +17,13 @@ public class ProductEntity {
     @Column(name = "name")
     public String name;
 
-    @ManyToOne(targetEntity = ProjectEntity.class, fetch = FetchType.LAZY)
+    @Column(name = "overallRating")
+    public Boolean overallEconomicRating;
+
+    @Column(name = "comment")
+    public String comment;
+
+    @ManyToOne(targetEntity = ProjectEntity.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "project")
     public ProjectEntity project;
 
@@ -23,11 +31,11 @@ public class ProductEntity {
     @JoinColumn(name = "productarea")
     public ProductAreaEntity productarea;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "productid", insertable = false, updatable = false)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "product")
     public List<ProductRatingEntity> productRatingEntities;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     public ProductEntity parentProduct;
 
 //    @OneToMany(fetch = FetchType.LAZY, mappedBy="parentProduct")
