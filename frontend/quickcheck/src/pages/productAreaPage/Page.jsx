@@ -21,7 +21,7 @@ import { AddIcon } from '@chakra-ui/icons';
 
 import ProductRow from './Product';
 
-const products = [
+const productsMock = [
   {
     productID: 111,
     productName: 'Optionen 1',
@@ -59,8 +59,6 @@ const products = [
     parentID: 112,
   },
 ];
-
-
 
 function AddButton(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -104,22 +102,19 @@ function AddButton(props) {
   );
 }
 
-// const getProducts = (products) => {
-//   return products.filter((prod) => prod.parentID === 0);
-// };
+const filterVariants = (products) => {
+  return products.filter((prod) => prod.parentID === 0);
+};
 
-// const getChildren = (product) => {
-//   return products.filter((prod) => prod.parentID === product.productID);
-// };
 
 export default function ProductOverview() {
-  const productsAction = useStoreState((state) => state.productList.products);
+  const products = useStoreState((state) => state.productList.products);
   const addProductAction = useStoreActions((actions) => actions.productList.addProduct);
   const setProducts = useStoreActions((actions) => actions.productList.set);
   const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
-    setProducts(products);
+    setProducts(productsMock);
   }, []);
 
   const EditButtons = () => {
@@ -145,7 +140,7 @@ export default function ProductOverview() {
       );
     }
   };
-  
+
   const addProduct = (productName) => {
     const prod = {
       productID: new Date().getMilliseconds(),
@@ -161,9 +156,8 @@ export default function ProductOverview() {
     <div>
       <Page title="Product Overview">
         <List spacing={2} w="full">
-          {productsAction.map((product) => (
+          {filterVariants(products).map((product) => (
             <ProductRow
-              parentID={0}
               product={product}
               key={product.productID}
               editMode={editMode}
