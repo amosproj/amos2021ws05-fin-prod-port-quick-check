@@ -31,7 +31,6 @@ function App() {
             </Routes>
             <Link to="/login"> [Login] </Link>
             <Link to="projects"> [Projects] </Link>
-            
           </Router>
         </StoreProvider>
       </ChakraProvider>

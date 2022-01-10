@@ -107,8 +107,8 @@ export default function ResultPage() {
               <Heading size="lg">Sources</Heading>
               {sources.map((source) => (
                 <SourceRow source={source} key={source.id} />
-                
-              
+
+
               ))}
             </VStack>
           </Flex>
@@ -120,7 +120,6 @@ export default function ResultPage() {
           </Link>
         </HStack>
         <p>{/*JSON.stringify(sources[0].id)*/}</p>
-
       </Page>
     </div>
   );
