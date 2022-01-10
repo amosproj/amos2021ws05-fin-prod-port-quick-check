@@ -2,6 +2,7 @@ import React from 'react';
 import Card from '../../components/Card';
 import Page from '../../components/Page';
 import PieChartGraph from './PieChart';
+import { Link } from 'react-router-dom';
 
 import {
   List,
@@ -111,10 +112,9 @@ export default function ResultPage() {
           </Flex>
         </Flex>
         <HStack>
-          <Button> Export Results </Button>
-          <Button> Back</Button>
+          
         </HStack>
-        <p>{/*JSON.stringify(sources)*/}</p>
+        <p>{/*asd*/}</p>
       </Page>
     </div>
   );
