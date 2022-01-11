@@ -26,21 +26,21 @@ const products = [
     productID: 111,
     productName: 'Optionen 1',
     productArea: {},
-    projectID: 1,
+    projectID: 100,
     parentID: 0,
   },
   {
     productID: 112,
     productName: 'Optionen 2',
     productArea: {},
-    projectID: 1,
+    projectID: 100,
     parentID: 0,
   },
   {
     productID: 113,
     productName: 'Optionen 1 child',
     productArea: {},
-    projectID: 1,
+    projectID: 100,
     parentID: 111,
   },
 
@@ -48,17 +48,18 @@ const products = [
     productID: 114,
     productName: 'Optionen 1 child',
     productArea: {},
-    projectID: 1,
+    projectID: 100,
     parentID: 111,
   },
   {
     productID: 115,
     productName: 'Optionen 2 child',
     productArea: {},
-    projectID: 1,
+    projectID: 100,
     parentID: 112,
   },
 ];
+
 
 // const getProducts = (products) => {
 //   return products.filter((prod) => prod.parentID === 0);
@@ -113,18 +114,24 @@ function AddButton(props) {
 export default function ProductOverview() {
   const productsAction = useStoreState((state) => state.productList.products);
   const addProductAction = useStoreActions((actions) => actions.productList.addProduct);
-  const setProducts = useStoreActions((actions) => actions.productList.set);
+  const fetchProducts = useStoreActions((actions) => actions.productList.fetch);
+  const createProduct = useStoreActions((actions) => actions.productList.createProduct);
+  // const setProducts = useStoreActions((actions) => actions.productList.set);
   const [editMode, setEditMode] = useState(false);
+  const projectID = 300;
 
   useEffect(() => {
-    setProducts(products);
+    //setProducts(products);
+    fetchProducts(projectID);
+    console.log('rendered');
+
   }, []);
 
   const EditButtons = () => {
     if (editMode) {
       return (
         <HStack>
-          {editMode ? <AddButton w={16} onAddProduct={addProduct} /> : undefined}
+          {editMode ? <AddButton w={16} onAddProduct={addProductAPI} /> : undefined}
           <Button size="md" onClick={() => setEditMode(false)}>
             Cancel
           </Button>
@@ -154,6 +161,19 @@ export default function ProductOverview() {
     addProductAction(prod);
   };
 
+  const addProductAPI = (productName) => {
+    const prod = {
+      "productName": productName,
+      "productArea":
+      {
+        "id": "1"
+
+      }
+    }
+    
+    createProduct(prod);
+  };
+
   return (
     <div>
       <Page title="Product Overview">
@@ -168,6 +188,7 @@ export default function ProductOverview() {
           ))}
         </List>
         <Button>Generate Results</Button>
+        <Button onClick={() => fetchProducts(projectID)}>Refresh</Button>
         <EditButtons />
       </Page>
     </div>

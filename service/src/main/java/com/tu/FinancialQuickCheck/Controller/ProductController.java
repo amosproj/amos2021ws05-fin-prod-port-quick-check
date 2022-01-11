@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * The ProductController manages and processes requests for finding different products or updating product information
  */
+@CrossOrigin
 @RestController
 @RequestMapping("products")
 public class ProductController {
