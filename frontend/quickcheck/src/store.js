@@ -59,7 +59,7 @@ const projectModel = {
   data: {
     projectID: 0,
     projectName: '',
-    creator: 'test@test.com',
+    creatorID: '0fef539d-69be-4013-9380-6a12c3534c67',
     members: [],
     productAreas: [],
   },
@@ -67,7 +67,7 @@ const projectModel = {
   init: action((state, payload) => {
     state.data = {
       projectID: 0,
-      creator: 'test@test.com',
+      creatorID: '0fef539d-69be-4013-9380-6a12c3534c67',
       projectName: '',
       members: [],
       productAreas: [],
