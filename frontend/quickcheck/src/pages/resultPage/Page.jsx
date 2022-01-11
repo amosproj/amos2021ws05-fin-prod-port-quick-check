@@ -4,15 +4,7 @@ import Page from '../../components/Page';
 import PieChartGraph from './PieChart';
 import { Link } from 'react-router-dom';
 
-import {
-  Button,
-  Heading,
-  VStack,
-  Text,
-  Flex,
-  HStack,
-  Spacer,
-} from '@chakra-ui/react';
+import { Button, Heading, VStack, Text, Flex, HStack, Spacer } from '@chakra-ui/react';
 import { useState } from 'react';
 
 const mock = [
