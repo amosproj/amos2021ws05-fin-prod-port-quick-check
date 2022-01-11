@@ -6,6 +6,30 @@ import { api } from './utils/apiClient';
 
 // first define the store model, then add actions to change the stored state and add 'thunks' for actions with side effects (e.g. api calls)
 
+const productAreaModel = {
+  products: [
+    /*{
+      productID: 0,
+      productName: '',
+      productArea: {
+        "id": "1",
+        "name": "Kredit",
+      "category": "Privat"},
+      projectID: 1,
+      parentID: 0,
+    }*/
+  ],
+  set: action((state, products) => {
+    state.products = products;
+  }),
+  addProduct: action((state, product) => {
+    state.products.push(product);
+  }),
+  removeProduct: action((state, product) => {
+    state.products = state.products.filter((p) => p.productID !== product.productID);
+  }),
+};
+
 const projectListModel = {
   items: [], // list of: {"projectID": 2,"projectName": "Mock Project" }
 
@@ -116,6 +140,7 @@ const projectModel = {
 const store = createStore({
   projectList: projectListModel,
   project: projectModel,
+  productList: productAreaModel,
 });
 
 export default store;

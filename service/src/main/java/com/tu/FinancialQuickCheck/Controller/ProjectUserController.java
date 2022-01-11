@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
+/**
+ * The ProjectUserController manages and processes requests for updating or deleting users in projects
+ */
 @RestController
 @RequestMapping("/projects/{projectID}/users")
 public class ProjectUserController {
@@ -24,7 +26,14 @@ public class ProjectUserController {
 //        return service.getProjectUsersByProjectId(projectID);
 //    }
 
-
+    /**
+     * This method is updating/adding users to a project.
+     *
+     * @param projectUsers The user who can be added or updated to a project.
+     * @param projectID The ID of the project for that a user can be added or updated.
+     * @throws ResourceNotFound When the project or the user cannot be found.
+     * @return The updated or added users to a project.
+     */
     //TODO: (done - needs review) change according to API
     @PutMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
@@ -41,7 +50,12 @@ public class ProjectUserController {
 
     }
 
-
+    /**
+     * This method is deleting users from a project.
+     *
+     * @param projectUsers The user which can be deleted out of the project.
+     * @param projectID The ID of the project for that a user can be deleted.
+     */
     //TODO: (done - needs review) change according to API
      @DeleteMapping(produces = "application/json")
      public void deleteProjectUser(@RequestBody List<ProjectUserDto> projectUsers,
