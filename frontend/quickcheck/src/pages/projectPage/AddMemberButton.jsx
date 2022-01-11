@@ -66,7 +66,7 @@ export default function AddMemberButton(buttonProps) {
                 <EmailIcon />
               </InputLeftElement>
             </InputGroup>
-            <Selection options={roles} selected={roles[0]} onChange={setRole} />
+            <Selection options={roles} selected={role} onChange={setRole} />
           </ModalBody>
 
           <ModalFooter py={5} px={10}>
