@@ -1,0 +1,13 @@
+PUT localhost:8080/projects/1
+Content-Type: application/json
+
+{
+  "productAreas": [1,2],
+  "members": [
+    {
+      "userEmail": "ines@amose.de",
+      "userName": "string",
+      "role": "CLIENT"
+    }
+  ]
+}

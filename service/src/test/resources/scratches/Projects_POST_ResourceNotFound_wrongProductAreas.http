@@ -1,0 +1,30 @@
+POST localhost:8080/projects
+Content-Type: application/json
+
+{
+  "creatorID": "74c31a72-7c9e-4095-a1d6-ec208b57ff1a",
+  "projectName": "Bank4",
+  "productAreas": [10],
+  "members": [
+    {
+      "userEmail": "alex@amos.de",
+      "userName": "string",
+      "role": "CLIENT"
+    },
+    {
+      "userEmail": "ines@amos.de",
+      "userName": "string",
+      "role": "CLIENT"
+    }]
+}
+
+<> 2021-12-13T092214.404.json
+<> 2021-12-13T092158.404.json
+<> 2021-12-13T092138.400.json
+<> 2021-12-13T091805.400.json
+<> 2021-12-13T091454-1.400.json
+<> 2021-12-13T091454.400.json
+<> 2021-12-13T091315.400.json
+<> 2021-12-13T091227.400.json
+<> 2021-12-13T091042.201.json
+<> 2021-12-13T090804.201.json

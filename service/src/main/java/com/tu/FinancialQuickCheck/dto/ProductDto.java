@@ -2,23 +2,37 @@ package com.tu.FinancialQuickCheck.dto;
 
 //import com.tu.FinancialQuickCheck.RatingArea;
 //import com.tu.FinancialQuickCheck.Score;
-
+import com.tu.FinancialQuickCheck.Score;
 import com.tu.FinancialQuickCheck.db.ProductAreaEntity;
 import com.tu.FinancialQuickCheck.db.ProductEntity;
 import com.tu.FinancialQuickCheck.db.ProductRatingEntity;
+import com.tu.FinancialQuickCheck.db.RatingEntity;
 //import com.tu.FinancialQuickCheck.db.ProductRatingEntity;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class represents the product data transfer object, which is used for reducing the number of multiple
+ * method calls into a single one
+ */
 public class ProductDto {
-    // TODO: add value for progress bar of economic and complexity
+
+    // TODO: (done - needs review) add progressComplexity and progressEconomic to necessary constructors
+    // TODO: (done - needs review) add overallEconomicRating to necessary constructors
+    // TODO: (done - needs review) add comment to necessary constructors
+    // TODO: (done - needs review) add List of resources to necessary constructors
     public int  productID;
     public String productName;
     public ProductAreaDto productArea;
     public int projectID;
     public int parentID;
+    public int progressComplexity;
+    public int progressEconomic;
+    public Boolean overallEconomicRating;
     public List<ProductRatingDto> ratings;
     public List<ProductDto> productVariations;
+    public String comment;
+    public List<String> resources;
 
 
     public ProductDto(){}
@@ -49,10 +63,23 @@ public class ProductDto {
         this.parentID = convertParentEntity(parent);
     }
 
-    public ProductDto(String name, List<ProductRatingEntity> productRatingEntities)
-    {
-        this.productName = name;
-        this.ratings = convertProductRatingEntities(productRatingEntities);
+    public ProductDto(ProductEntity product, List<ProductRatingEntity> productRatingEntities, Boolean getOrPostPut) {
+        this.productName = product.name;
+        this.overallEconomicRating = product.overallEconomicRating;
+        this.ratings = convertProductRatingEntities(productRatingEntities, getOrPostPut);
+    }
+
+    public ProductDto(ProductEntity product){
+        this.productID = product.id;
+        this.productName = product.name;
+        this.productArea = convertProductAreaEntity(product.productarea);
+        this.projectID = product.project.id;
+        this.parentID = convertParentEntity(product.parentProduct);
+        //TODO: (prio: medium) replace 42 values with calculation for progress bars
+        this.progressComplexity = 42;
+        this.progressEconomic = 42;
+        this.comment = product.comment;
+        this.resources = new ArrayList<>();
     }
 
 
@@ -65,31 +92,60 @@ public class ProductDto {
 //        return Score.valueOf(sum/values.size());
 //    }
 
-
-    private List<ProductRatingDto> convertProductRatingEntities(List<ProductRatingEntity> productRatingEntities) {
+    /**
+     * Converts Product Rating Entities into a list of ProductRating DTO's.
+     *
+     * @param productRatingEntities Product Rating Entities which should be converted into a list of DTO's.
+     * @param getOrPostPut
+     * @return
+     */
+    private List<ProductRatingDto> convertProductRatingEntities(List<ProductRatingEntity> productRatingEntities,
+                                                                Boolean getOrPostPut) {
         List<ProductRatingDto> tmp = new ArrayList<>();
 
-        for(ProductRatingEntity entity : productRatingEntities){
-            ProductRatingDto p = new ProductRatingDto();
-            p.ratingID = entity.productRatingId.getRatingid().id;
-            p.score = entity.score;
-            p.answer = entity.answer;
-            p.comment = entity.comment;
-            tmp.add(p);
+        if(getOrPostPut){
+            for(ProductRatingEntity entity : productRatingEntities){
+                tmp.add(new ProductRatingDto(
+                            entity.answer,
+                            entity.comment,
+                            entity.score,
+                            entity.productRatingId.getRating()));
+            }
+        }else{
+            for(ProductRatingEntity entity : productRatingEntities){
+                tmp.add(new ProductRatingDto(
+                        entity.answer,
+                        entity.comment,
+                        entity.score,
+                        entity.productRatingId.getRating().id));
+            }
         }
-
+        
         return tmp;
     }
 
+    /**
+     * Converts Product Area Entity into single Product Area DTO.
+     *
+     * @param productAreaEntity Product Area Entities which should be converted into a DTO.
+     * @return The converted Product Area DTO.
+     */
     private ProductAreaDto convertProductAreaEntity(ProductAreaEntity productAreaEntity) {
         return new ProductAreaDto(productAreaEntity.id, productAreaEntity.name, productAreaEntity.category);
     }
 
+    /**
+     * Converts Product Entity into a parent entity.
+     *
+     * @param parentEntity The product entity that has to be converted into parent entity.
+     * @return The converted parent entity.
+     */
+    //TODO: (done - review needed) change returned parent-id to 0 if no parent exist
     private int convertParentEntity(ProductEntity parentEntity) {
         if(parentEntity != null){
             return parentEntity.id;
         }else{
-            return -1;
+            return 0;
         }
     }
 }

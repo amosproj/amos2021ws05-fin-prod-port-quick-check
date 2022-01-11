@@ -7,50 +7,81 @@ import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * This class represents the ID of an user which is assigned to a specific project.
+ */
 @Embeddable
 public class ProjectUserId implements Serializable {
 
+    /**
+     * Project to which a User is assigned to.
+     */
+    //TODO: (done - need review) rename ...id declarations
     @ManyToOne(targetEntity = ProjectEntity.class, fetch = FetchType.EAGER)
-    @JoinColumn(name = "projectid")
-    private ProjectEntity projectid;
+    @JoinColumn(name = "project")
+    private ProjectEntity project;
 
+    /**
+     * User which is assigned to a project and therefore has a ProjectUserID.
+     */
     @ManyToOne(targetEntity = UserEntity.class, fetch = FetchType.EAGER)
-    @JoinColumn(name = "userid")
-    private UserEntity userid;
+    @JoinColumn(name = "user")
+    private UserEntity user;
 
+
+    /**
+     * No-argument Constructor for class ProjectUserID.
+     */
     public ProjectUserId(){}
 
+    /**
+     * Constructor for class ProjectUserID.
+     *
+     * @param project Project to which a user is assgined to.
+     * @param user The user which is assgined to a project.
+     */
     public ProjectUserId(ProjectEntity project, UserEntity user){
-        this.projectid = project;
-        this.userid = user;
+        this.project = project;
+        this.user = user;
     }
 
-    public ProjectEntity getProjectid() {
-        return projectid;
+    public ProjectEntity getProject() {
+        return project;
     }
 
-    public void setProjectid(ProjectEntity projectid) {
-        this.projectid = projectid;
+    public void setProject(ProjectEntity project) {
+        this.project = project;
     }
 
-    public UserEntity getUserid() {
-        return userid;
+    public UserEntity getUser() {
+        return user;
     }
 
-    public void setUserid(UserEntity userid) {
-        this.userid = userid;
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 
+    /**
+     * Compares two projectUserIDs based on the user and project.
+     *
+     * @param o projectUserID which has to be compared.
+     * @return True when the two projectUserIDs are identical.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProjectUserId that = (ProjectUserId) o;
-        return projectid.equals(that.projectid) && userid.equals(that.userid);
+        return project.equals(that.project) && user.equals(that.user);
     }
 
+    /**
+     * Gives back the hashcode value of projectUserID.
+     *
+     * @return Hashcode value of projectUserID.
+     */
     @Override
     public int hashCode() {
-        return Objects.hash(projectid, userid);
+        return Objects.hash(project, user);
     }
 }
