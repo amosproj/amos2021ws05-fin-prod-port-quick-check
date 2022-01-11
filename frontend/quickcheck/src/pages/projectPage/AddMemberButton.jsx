@@ -30,16 +30,16 @@ export default function AddMemberButton(buttonProps) {
   const [role, setRole] = useState(roles[0]);
   const header = 'Add new Member';
 
-  const [allUsers, setAllUsers] = useState([])
+  const [allUsers, setAllUsers] = useState([]);
 
   const checkMemberExists = (email) => {
-    return allUsers.map(u => u.userEmail).includes(email)
-  }
+    return allUsers.map((u) => u.userEmail).includes(email);
+  };
 
   useEffect(() => {
     api.url('/users').get().json(setAllUsers);
-  }, [])
-  
+  }, []);
+
   return (
     <>
       <IconButton
@@ -78,7 +78,7 @@ export default function AddMemberButton(buttonProps) {
                   addMember({ userEmail: email, role: role });
                   onClose();
                 } else {
-                  alert("User does not exist")
+                  alert('User does not exist');
                 }
               }}
             >
