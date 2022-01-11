@@ -52,7 +52,7 @@ export default function AddAreaButton(buttonProps) {
           <ModalBody px={10}>
             <Select
               isRequired
-              placeholder="Select Poduct Area..."
+              placeholder="Select Product Area..."
               onChange={(e) => setSelectedArea(parseInt(e.target.value))}
             >
               {allAreas
