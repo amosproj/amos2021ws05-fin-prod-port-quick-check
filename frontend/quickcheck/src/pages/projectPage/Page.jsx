@@ -72,7 +72,6 @@ export default function Project() {
     <Page title="Manage Project">
       <VStack>
         <Card layerStyle="card_bar" justifyContent="center">
-          <Spacer />
           <Heading variant="upper" size="md" mr={3} align="center">
             Project:
           </Heading>
