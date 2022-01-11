@@ -4,71 +4,88 @@ import { Pie } from 'react-chartjs-2';
 
 Chart.register(ArcElement, Tooltip, Legend);
 var ctx = document.getElementById("myChart");
-var ChartData = {
-  labels: [],
-  datasets: [
-      {data: [25, 2, 25, 5, 23],
-      backgroundColor: [
-        'rgba(147,213,34)',
-        'rgba(41,213,255)',
-        'rgba(82,8,129)',
-        'rgba(255,72,166)',
-        'rgba(108,3,168)',
-    ]},
-      {
-    data: [300, 50, 100],
-    backgroundColor: [
-      "#FF6384",
-      "#36A2EB",
-      "#FFCE56"
-    ],
-    hoverBackgroundColor: [
-      "rgba(108,3,168)",
-      "#36A2EB",
-      "#FFCE56"
-    ]
-  }, {
-    data: [200, 100, 25, 25, 66, 34],
-    backgroundColor: [
-      "#FF6384",
-      "#36A2EB",
-      "#FFCE56",
-      "#FF6384",
-      "#36A2EB",
-      "#FFCE56"
-    ],
-    hoverBackgroundColor: [
-      "#FF6384",
-      "#36A2EB",
-      "#FFCE56",
-      "#FF6384",
-      "#36A2EB",
-      "#FFCE56"
-    ]
-  }]
-};
+var yellow='rgba(255, 195, 0, .7)';
+var green= 'rgba(131, 239, 56, .7 )';
+var red ='rgba(239, 65, 56, .7 )';
 
-const options = {
-  plugins: {
-    title: {
-      display: true,
-      text: 'Pie Chart',
-      color: 'white',
-      borderWidth: 3,
-      font: {
-        size: 20,
+var fullyellow='rgba(255, 195, 0, 1)';
+var fullgreen= 'rgba(131, 239, 56,1 )';
+var fullred ='rgba(239, 65, 56, 1)';
+
+function PieChartGraph({data_outer, data_inner, title, color}) {
+
+    var ChartData = {
+      labels: [],
+      datasets: [
+
+          {
+        data: [300, 50, 100],
+        backgroundColor: [
+          yellow,
+          green,
+          red
+        ],
+        hoverBackgroundColor: [
+            fullyellow,
+            fullgreen,
+            fullred
+        ]
       },
-      padding: {
-        top: 3,
-        bottom: 3,
-      },
-      animation: {
-        animateScale: true,
-      },
+          {
+        data: [30, 5, 100],
+        backgroundColor: [
+          yellow,
+          green,
+          red
+        ],
+        hoverBackgroundColor: [
+            fullyellow,
+            fullgreen,
+            fullred
+        ]
     },
-  },
-};
-function PieChartGraph(props) {
+    {
+    data: [1],
+    borderWidth: [0],
+    backgroundColor: [
+        yellow
+    ],
+    hoverBackgroundColor: [
+        yellow
+    ]
+    }]
+    };
+    var options = {
+        callbacks: {
+          label: function(tooltipItem, data) {
+            return 'Date: ' + tooltipItem[0].xLabel + ' GMT+2';
+          }
+      },
+      plugins: {
+        title: {
+          display: true,
+          text: 'Pie Chart',
+          color: 'black',
+          borderWidth: 2,
+          font: {
+            size: 15,
+          },
+          padding: {
+            top: 3,
+            bottom: 3,
+          },
+          animation: {
+            animateScale: true,
+          },
+        },
+      },
+    };
+
+    options["plugins"]["title"]["text"]=title
+    ChartData["datasets"][0]["data"]=data_outer
+    ChartData["datasets"][1]["data"]=data_inner
+    ChartData["datasets"][2]["backgroundColor"]=color
+    ChartData["datasets"][2]["hoverBackgroundColor"]=color
   return <Pie data={ChartData} options={options} />;
 }
 
