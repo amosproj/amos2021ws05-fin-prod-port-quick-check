@@ -10,7 +10,6 @@ import Project from './pages/projectPage/Page';
 import ResultPage from './pages/resultPage/Page';
 import TestRange from './pages/TestRange';
 
-
 import store from './store';
 import theme from './styles/theme';
 

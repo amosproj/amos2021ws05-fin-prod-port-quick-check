@@ -107,15 +107,13 @@ export default function ResultPage() {
               <Heading size="lg">Sources</Heading>
               {sources.map((source) => (
                 <SourceRow source={source} key={source.id} />
-
-
               ))}
             </VStack>
           </Flex>
         </Flex>
         <HStack>
           <Button> Export Results </Button>
-          <Link to={"/projects"}>
+          <Link to={'/projects'}>
             <Button> Back</Button>
           </Link>
         </HStack>
