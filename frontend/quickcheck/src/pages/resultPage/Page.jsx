@@ -5,22 +5,15 @@ import PieChartGraph from './PieChart';
 import { Link } from 'react-router-dom';
 
 import {
-  List,
   Button,
   Heading,
   VStack,
   Text,
   Flex,
-  Square,
-  Center,
-  Box,
   HStack,
-  Input,
-  TextArea,
   Spacer,
 } from '@chakra-ui/react';
 import { useState } from 'react';
-// import { Link } from 'react-router-dom';
 
 const mock = [
   {
@@ -65,7 +58,7 @@ const data = {
   ],
 };
 
-function SourceRow({ source, key }) {
+function SourceRow({ source }) {
   return (
     <Card bg={'gray.600'} layerStyle={'card_bordered'}>
       <Heading color="primary" size="md" align="center" w="40%" maxW="50%">
@@ -117,7 +110,6 @@ export default function ResultPage() {
             <Button> Back</Button>
           </Link>
         </HStack>
-        <p>{/*JSON.stringify(sources[0].id)*/}</p>
       </Page>
     </div>
   );
