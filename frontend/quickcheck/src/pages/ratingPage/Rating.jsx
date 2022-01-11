@@ -1,19 +1,9 @@
 import { React, useEffect, useState } from 'react';
-import {
-  Button,
-  HStack,
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
-} from '@chakra-ui/react';
+import { Button, HStack, Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 import Page from '../../components/Page';
 import Card from '../../components/Card';
 import RatingTable from './RatingTable';
 import { score } from '../../utils/const';
-
-
 
 const mockRatings = {
   ratings: [

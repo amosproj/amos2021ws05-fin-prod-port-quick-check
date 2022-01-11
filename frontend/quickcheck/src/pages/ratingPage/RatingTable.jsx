@@ -1,9 +1,4 @@
-import {
-  Flex,
-  Input,
-  Spacer,
-  List,
-} from '@chakra-ui/react';
+import { Flex, Input, Spacer, List } from '@chakra-ui/react';
 import React from 'react';
 import Card from '../../components/Card';
 import Selection from '../../components/Selection';
