@@ -5,12 +5,12 @@ import { StoreProvider } from 'easy-peasy';
 
 import Login from './pages/Login';
 import ProjectOverview from './pages/ProjectOverview';
+import ProductOverview from './pages/productAreaPage/Page';
 import Project from './pages/projectPage/Page';
 import TestRange from './pages/TestRange';
 
 import store from './store';
 import theme from './styles/theme';
-import Rating from './pages/ratingPage/Rating';
 
 function App() {
   return (
@@ -25,10 +25,11 @@ function App() {
               <Route path="login" element={<Login />} />
               <Route path="projects" element={<ProjectOverview />} />
               <Route path="projects/:id" element={<Project />} />
-              <Route path="ratings" element={<Rating />} />
+              <Route path="products" element={<ProductOverview />} />
             </Routes>
-            <Link to="/login"> [Login] </Link>
+            <Link to="login"> [Login] </Link>
             <Link to="projects"> [Projects] </Link>
+            <Link to="products"> [Products] </Link>
           </Router>
         </StoreProvider>
       </ChakraProvider>
