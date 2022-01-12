@@ -15,6 +15,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
+/**
+ * The current test class verifies the functionalities of the Product Area Service
+ */
 @ExtendWith(MockitoExtension.class)
 public class ProductAreaServiceTest {
 
@@ -38,7 +41,9 @@ public class ProductAreaServiceTest {
     private ProductAreaEntity productArea2;
     private List<ProductAreaEntity> productAreas;
 
-
+    /**
+     * This method should be executed before each @test method in the current test class.
+     */
     @BeforeEach
     public void init() {
         log.info("@BeforeEach - setup for Tests in ProductAreaServiceTest.class");
@@ -75,10 +80,10 @@ public class ProductAreaServiceTest {
 
 
     /**
-     * tests for getAllProductAreas()
+     * Tests for returning all product areas.
      *
-     * testGetAllProductAreas1: no productAreas exist --> return empty List<ProductAreaDto>
-     * testGetAllProductAreas2: productAreas exist --> return List<ProductAreaDto>
+     * @result testGetAllProductAreas1: no productAreas exist --> return empty List<ProductAreaDto>
+     * @result testGetAllProductAreas2: productAreas exist --> return List<ProductAreaDto>
      */
     @Test
     public void testGetAllProductAreas1() {
@@ -95,6 +100,12 @@ public class ProductAreaServiceTest {
         assertEquals(expected, projectsOut);
     }
 
+    /**
+     * Tests for returning all projects.
+     *
+     *
+     *
+     */
     @Test
     public void testGetAllProjects2() {
         // Step 2: provide knowledge
@@ -114,13 +125,13 @@ public class ProductAreaServiceTest {
     }
 
     /**
-     * tests for createProductArea()
+     * Tests for creating a product area.
      *
-     * testCreateProductArea1: input contains required information
+     * @result testCreateProductArea1: input contains required information
      *                      --> productArea is created correctly and productAreaID returned
-     * testCreateProductArea2: input missing required information
+     * @result testCreateProductArea2: input missing required information
      *                      --> output == null
-     * testCreateProductArea3: input contains more than required information
+     * @result testCreateProductArea3: input contains more than required information
      *                      --> productArea is created correctly, productAreaID returned and
      *                      additional information is ignored
      */
