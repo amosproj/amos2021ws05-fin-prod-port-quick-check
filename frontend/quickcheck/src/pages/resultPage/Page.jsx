@@ -2,7 +2,7 @@ import React from 'react';
 import Card from '../../components/Card';
 import Page from '../../components/Page';
 import Figure from './Figure';
-import { Button, Heading, VStack, Text, Flex, HStack, Spacer } from '@chakra-ui/react';
+import { Button, Heading, VStack, Text, Flex, HStack, Spacer, Link } from '@chakra-ui/react';
 import { useState } from 'react';
 
 const mock = [
