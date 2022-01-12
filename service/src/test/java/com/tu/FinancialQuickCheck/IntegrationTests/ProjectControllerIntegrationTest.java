@@ -1,6 +1,5 @@
 package com.tu.FinancialQuickCheck.IntegrationTests;
 
-import org.junit.Before;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class ProjectControllerTest {
+public class ProjectControllerIntegrationTest {
 
     @LocalServerPort
     private int port;

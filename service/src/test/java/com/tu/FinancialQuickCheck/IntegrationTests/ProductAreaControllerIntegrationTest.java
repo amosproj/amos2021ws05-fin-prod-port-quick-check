@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class ProductAreaControllerTest {
+public class ProductAreaControllerIntegrationTest {
 
     @LocalServerPort
     private int port = 8080;

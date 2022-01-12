@@ -1,13 +1,12 @@
 package com.tu.FinancialQuickCheck.Controller;
 
-
 import com.tu.FinancialQuickCheck.Exceptions.BadRequest;
+import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.Service.ProductService;
 import com.tu.FinancialQuickCheck.dto.ProductDto;
 import org.springframework.web.bind.annotation.*;
 
-
-
+@CrossOrigin
 @RestController
 @RequestMapping("products")
 public class ProductController {
@@ -20,7 +19,13 @@ public class ProductController {
 
     @GetMapping("/{productID}")
     public ProductDto findById(@PathVariable int productID) {
-        return service.findById(productID);
+        ProductDto tmp = service.findById(productID);
+
+        if (tmp == null) {
+            throw new ResourceNotFound("productID " + productID + " not found");
+        }else{
+            return tmp;
+        }
     }
 
     //TODO: (done - needs review) add attribute comment
@@ -33,7 +38,7 @@ public class ProductController {
         }else{
             ProductDto tmp = service.updateById(productDto, productID);
             if(tmp == null){
-                throw new BadRequest("Input missing/incorrect");
+                throw new ResourceNotFound("productID " + productID + " not found");
             }
         }
     }

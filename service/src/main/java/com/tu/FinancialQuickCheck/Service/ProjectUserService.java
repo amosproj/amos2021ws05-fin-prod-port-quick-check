@@ -40,11 +40,10 @@ public class ProjectUserService {
 
     //TODO: (prio: high) include in API documentation (Project.yaml)
     public List<ProjectUserDto> getProjectUsersByProjectId(int projectID) {
-
         Optional<ProjectEntity> entity = projectRepository.findById(projectID);
 
         if (entity.isEmpty()) {
-            throw new ResourceNotFound("projectID " + projectID + " not found");
+            return null;
         } else {
             return new ListOfProjectUserDto(entity.get().projectUserEntities).projectUsers;
         }
@@ -98,16 +97,20 @@ public class ProjectUserService {
 
 
     //TODO: (test)
-    public void wrapperDeleteProjectUser(int projectID, List<ProjectUserDto> projectUsers){
-
+    public Boolean wrapperDeleteProjectUser(int projectID, List<ProjectUserDto> projectUsers){
+        Boolean tmp = Boolean.TRUE;
         for(ProjectUserDto projectUser: projectUsers){
-            deleteProjectUser(projectID, projectUser);
+            if(tmp){
+                tmp = deleteProjectUser(projectID, projectUser);
+            }
         }
+
+        return tmp;
     }
 
 
     // TODO: (test)
-    public void deleteProjectUser(int projectID, ProjectUserDto projectUserDto) {
+    public Boolean deleteProjectUser(int projectID, ProjectUserDto projectUserDto) {
 
         if (projectUserDto.userID != null) {
 
@@ -119,10 +122,12 @@ public class ProjectUserService {
                 repository.deleteById(new ProjectUserId(
                         projectRepository.getById(projectID),
                         userRepository.getById(projectUserDto.userID.toString())));
+
+                return Boolean.TRUE;
             }
 
         } else {
-            throw new BadRequest("Input missing/is incorrect");
+            return Boolean.FALSE;
         }
     }
 }

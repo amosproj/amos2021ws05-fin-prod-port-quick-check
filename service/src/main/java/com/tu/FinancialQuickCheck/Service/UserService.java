@@ -3,6 +3,8 @@ package com.tu.FinancialQuickCheck.Service;
 import com.tu.FinancialQuickCheck.Exceptions.BadRequest;
 import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.db.*;
+import com.tu.FinancialQuickCheck.dto.ListOfRatingDto;
+import com.tu.FinancialQuickCheck.dto.ListOfUserDto;
 import com.tu.FinancialQuickCheck.dto.UserDto;
 import org.springframework.stereotype.Service;
 
@@ -31,15 +33,7 @@ public class UserService {
      * returns a List of all Users without passwords
      */
     public List<UserDto> getAllUsers() {
-
-        List<UserDto> userList = new ArrayList<>();
-        Iterable<UserEntity> allUserEntitys = repository.findAll();
-
-        for (UserEntity userEntity : allUserEntitys) {
-            UserDto userDto = new UserDto(UUID.fromString(userEntity.id), userEntity.email, userEntity.username);
-            userList.add(userDto);
-        }
-        return userList;
+        return new ListOfUserDto(this.repository.findAll()).users;
     }
 
 
@@ -50,19 +44,13 @@ public class UserService {
      * @return userDto
      */
     public UserDto findByEmail(String email) {
+        Optional<UserEntity> entity = repository.findByEmail(email);
 
-        if(validateEmail(email)){
-            Optional<UserEntity> entity = repository.findByEmail(email);
-
-            if(entity.isPresent()){
-                return new UserDto(UUID.fromString(entity.get().id), entity.get().email, entity.get().username);
-
-            }else{
-                throw new ResourceNotFound("User not found");
-            }
+        if(entity.isPresent()){
+            return new UserDto(entity.get());
 
         }else{
-            throw new BadRequest("Incorrect Input");
+            return null;
         }
     }
 
@@ -78,7 +66,7 @@ public class UserService {
     public UserDto createUser(UserDto userDto) {
 
         if (userDto.userName != null && userDto.userEmail != null && userDto.password != null
-                && validateEmail(userDto.userEmail) && !repository.existsById(userDto.userEmail)) {
+                && userDto.validateEmail(userDto.userEmail) && !repository.existsById(userDto.userEmail)) {
             UserEntity newUser = new UserEntity();
             newUser.id = UUID.randomUUID().toString();
             newUser.username = userDto.userName;
@@ -98,12 +86,14 @@ public class UserService {
     //TODO: (prio: low) add constraints for input --> check if String is empty else return Bad Request
     public UserDto updateUserByEmail(UserDto userDto, String email) {
 
+        if ((userDto.userEmail == null && userDto.userName == null && userDto.password == null) ||
+                (userDto.userEmail != null && !userDto.validateEmail(userDto.userEmail))){
+            throw new BadRequest("Input is missing/incorrect");
+        }
+
         Optional<UserEntity> entity = repository.findByEmail(email);
 
         if (entity.isEmpty()) {
-            throw new ResourceNotFound("User not found");
-        } else if ((userDto.userEmail == null && userDto.userName == null
-                && userDto.password == null) || (userDto.userEmail != null && !validateEmail(userDto.userEmail))){
             return null;
         } else {
             entity.map(
@@ -123,8 +113,7 @@ public class UserService {
                         return repository.save(user);
                     });
 
-            return new UserDto(UUID.fromString(entity.get().id), entity.get().email, entity.get().username);
-
+            return new UserDto(entity.get());
         }
     }
 
@@ -134,62 +123,15 @@ public class UserService {
      *
      * @param userID
      */
-    //TODO: (prio low) discuss Admin accsess with frontend
-    public void deleteUserById(UUID userID) {
+    public Boolean deleteUserById(UUID userID) {
 
         if (!repository.existsById(userID.toString())) {
-            throw new ResourceNotFound("userID " + userID + " not found");
+            return null;
         } else {
             repository.deleteById(userID.toString());
+            return Boolean.TRUE;
         }
     }
 
-
-    public boolean validateEmail(String emailAddress){
-        // regexPattern from RFC 5322 for Email Validation
-        String regexPattern = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
-        return Pattern.compile(regexPattern)
-                .matcher(emailAddress)
-                .matches();
-    }
-
-    /**
-     * search for ID in repository and updates if found
-     *
-     * @param userDto
-     * @param userID
-     */
-
-    /**public UserDto updateByUserID(UserDto userDto, UUID userID) {
-
-     Optional<UserEntity> entity = repository.findById(userID.toString());
-
-     if (entity.isEmpty()) {
-     throw new ResourceNotFound("userID " + userID + " not found");
-     } else if ((userDto.userEmail == null && userDto.userName == null
-     && userDto.password == null) || (userDto.userEmail != null && !validateEmail(userDto.userEmail))){
-     return null;
-     } else {
-     entity.map(
-     user -> {
-     if (userDto.userEmail != null) {
-     user.email = userDto.userEmail;
-     }
-
-     if (userDto.password != null) {
-     user.password = userDto.password;
-     }
-
-     if (userDto.userName != null) {
-     user.username = userDto.userName;
-     }
-
-     return repository.save(user);
-     });
-
-     return new UserDto(UUID.fromString(entity.get().id), entity.get().email, entity.get().username);
-
-     }
-     }**/
 
 }

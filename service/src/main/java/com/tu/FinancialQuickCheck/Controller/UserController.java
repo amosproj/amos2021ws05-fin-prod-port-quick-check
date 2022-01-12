@@ -15,6 +15,7 @@ import java.util.UUID;
  * Presentation layer
  */
 
+@CrossOrigin
 @RestController
 @RequestMapping("users")
 public class UserController {
@@ -35,7 +36,7 @@ public class UserController {
         UserDto tmp = service.createUser(userDto);
 
         if (tmp == null) {
-            throw new BadRequest("User cannot be created due to missing/incoorect information.");
+            throw new BadRequest("Input is missing/incorrect");
         }else {
             return tmp;
         }
@@ -44,30 +45,29 @@ public class UserController {
     //TODO: (prio: low) change path-var to request-body userDto & change path
     @GetMapping("email/{email}")
     public UserDto findByEmail(@PathVariable String email){
-        return service.findByEmail(email);
+        UserDto tmp = service.findByEmail(email);
+
+        if(tmp == null){
+            throw new ResourceNotFound("User not found");
+        }else{
+            return tmp;
+        }
     }
 
     //TODO: (prio: low) change path-var to request-body userDto & change path
     @PutMapping("email/{email}")
     public void updateUserByEmail(@RequestBody UserDto userDto, @PathVariable String email) {
+
         if (service.updateUserByEmail(userDto, email) == null){
-            throw new BadRequest("User cannot be updated due to missing/incorrect information.");
+            throw new ResourceNotFound("User not found");
         }
     }
 
     @DeleteMapping("/{userID}")
-    void deleteByUserId(@PathVariable UUID userID){
-        service.deleteUserById(userID);
+    public void deleteByUserId(@PathVariable UUID userID){
+
+        if(service.deleteUserById(userID) == null){
+            throw new ResourceNotFound("User not found");
+        }
     }
-
-
-
-//    @PutMapping("/{userID}")
-//    public void updateUserByUserID(@RequestBody UserDto userDto, @PathVariable UUID userID){
-//
-//        if (service.updateByUserID(userDto, userID) == null) {
-//            throw new BadRequest("User cannot be updated due to missing/incorrect information.");
-//        }
-//    }
-
 }

@@ -5,9 +5,9 @@ import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.Service.ProductAreaService;
 import com.tu.FinancialQuickCheck.dto.ProductAreaDto;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("productareas")
 public class ProductAreaController {

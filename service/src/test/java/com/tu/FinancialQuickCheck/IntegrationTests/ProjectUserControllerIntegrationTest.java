@@ -14,7 +14,7 @@ import java.util.Objects;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class ProjectUserControllerTest {
+public class ProjectUserControllerIntegrationTest {
 
     @LocalServerPort
     private int port;

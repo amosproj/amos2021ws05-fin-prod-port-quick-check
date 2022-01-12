@@ -1,13 +1,10 @@
 package com.tu.FinancialQuickCheck.IntegrationTests;
 
-import com.tu.FinancialQuickCheck.dto.UserDto;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.skyscreamer.jsonassert.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -20,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class UserControllerTest{
+public class UserControllerIntegrationTest {
 
     @LocalServerPort
     private int port = 8080;

@@ -8,7 +8,7 @@ import com.tu.FinancialQuickCheck.dto.ProductDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-
+@CrossOrigin
 @RestController
 @RequestMapping("products/{productID}/ratings")
 public class ProductRatingController {

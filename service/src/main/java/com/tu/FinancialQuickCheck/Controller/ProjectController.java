@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.OptionalInt;
 
-
 @CrossOrigin
 @RestController
 @RequestMapping("projects")
@@ -32,17 +31,14 @@ public class ProjectController {
         this.productService = productService;
     }
 
-    //TODO: (done - need review) --> return empty list or resource not found, what do you prefer?
-    //TODO: (prio: medium) User Management - change output according to api or define new endpoint including role and list of projects for each user
     @GetMapping(produces = "application/json")
     public List<SmallProjectDto> findALL() {
         return service.getAllProjects();
     }
 
-
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public ProjectDto createByName(@RequestBody ProjectDto projectDto) {
+    public ProjectDto createProject(@RequestBody ProjectDto projectDto) {
         ProjectDto tmp = service.createProject(projectDto);
 
         if (tmp == null) {
@@ -92,14 +88,14 @@ public class ProjectController {
                                                   @RequestParam(required = false) Optional<String> productArea) {
         List<ProductDto> tmp;
 
-        if(productArea.isEmpty()){
+        if(!productArea.isPresent()){
             tmp = productService.getProductsByProjectId(projectID);
         }else{
             try{
                 int area = Integer.parseInt(productArea.get());
                 tmp = productService.getProductsByProjectIdAndProductAreaId(projectID, area);
             }catch (Exception e){
-                throw new BadRequest("Input missing/incorrect.");
+                throw new BadRequest("Input is missing/incorrect.");
             }
         }
 
@@ -118,13 +114,13 @@ public class ProjectController {
         if(productDto.productArea != null && productDto.productName != null){
             List<ProductDto> tmp = productService.wrapper_createProduct(projectID, productDto);
             if(tmp == null){
-                throw new BadRequest("Input is incorrect/missing");
+                throw new BadRequest("Input is missing/incorrect");
             }else{
 
                 return tmp;
             }
         }else{
-            throw new BadRequest("Input is incorrect/missing");
+            throw new BadRequest("Input is missing/incorrect");
         }
     }
 
@@ -135,7 +131,13 @@ public class ProjectController {
     public List<ProjectUserDto> createProjectUser(@RequestBody List<ProjectUserDto> members,
                                                   @PathVariable int projectID) {
 
-        return service.createProjectUsers(projectID, members);
+        List<ProjectUserDto> tmp = service.createProjectUsers(projectID, members);
+
+        if(tmp == null){
+            throw new ResourceNotFound("projectID " + projectID + " not found");
+        }else{
+            return tmp;
+        }
     }
 
 }

@@ -1,5 +1,7 @@
 package com.tu.FinancialQuickCheck.dto;
 
+import com.tu.FinancialQuickCheck.db.UserEntity;
+
 import java.util.Objects;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -21,6 +23,13 @@ public class UserDto {
         this.userID = userID;
         this.userEmail = email;
         this.userName = username;
+    }
+
+    public UserDto(UserEntity user)
+    {
+        this.userID = UUID.fromString(user.id);
+        this.userEmail = user.email;
+        this.userName = user.username;
     }
 
 

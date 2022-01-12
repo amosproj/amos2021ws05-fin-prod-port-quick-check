@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("ratings")
 public class RatingController {

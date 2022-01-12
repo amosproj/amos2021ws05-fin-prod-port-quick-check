@@ -1,5 +1,6 @@
 package com.tu.FinancialQuickCheck.Controller;
 
+import com.tu.FinancialQuickCheck.Exceptions.BadRequest;
 import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.Service.ProjectUserService;
 import com.tu.FinancialQuickCheck.dto.ProjectUserDto;
@@ -10,19 +11,26 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
+@CrossOrigin
 @RestController
 @RequestMapping("/projects/{projectID}/users")
 public class ProjectUserController {
 
-    @Autowired
     private ProjectUserService service;
 
+    public ProjectUserController(ProjectUserService projectUserService){
+        this.service = projectUserService;
+    }
 
     @GetMapping(produces = "application/json")
     public List<ProjectUserDto> findProjectUsersByProjectId(@PathVariable int projectID) {
+        List<ProjectUserDto> tmp = service.getProjectUsersByProjectId(projectID);
 
-        return service.getProjectUsersByProjectId(projectID);
+        if(tmp == null){
+            throw new ResourceNotFound("projectID " + projectID + " not found");
+        }else{
+            return tmp;
+        }
     }
 
 
@@ -34,12 +42,11 @@ public class ProjectUserController {
 
         List<ProjectUserDto> tmp = service.updateProjectUsers(projectID, projectUsers);
 
-        if(tmp != null){
-            return tmp;
-        }else{
+        if(tmp == null){
             throw new ResourceNotFound("Project or User not Found.");
+        }else{
+            return tmp;
         }
-
     }
 
 
@@ -47,7 +54,10 @@ public class ProjectUserController {
      @DeleteMapping(produces = "application/json")
      public void deleteProjectUser(@RequestBody List<ProjectUserDto> projectUsers,
                                   @PathVariable int projectID) {
-        service.wrapperDeleteProjectUser(projectID, projectUsers);
+
+        if(!service.wrapperDeleteProjectUser(projectID, projectUsers)){
+            throw new BadRequest("Input missing/is incorrect");
+        }
     }
 
 }

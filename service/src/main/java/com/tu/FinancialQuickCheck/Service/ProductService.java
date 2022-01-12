@@ -32,7 +32,7 @@ public class ProductService {
         Optional<ProductEntity> productEntity = repository.findById(productID);
 
         if (productEntity.isEmpty()) {
-            throw new ResourceNotFound("productID " + productID + " not found");
+            return null;
         }else{
             return new ProductDto(productEntity.get());
         }
@@ -116,7 +116,7 @@ public class ProductService {
     public ProductDto updateById(ProductDto productDto, int productID) {
 
         if (!repository.existsById(productID)) {
-            throw new ResourceNotFound("productID " + productID + " not found");
+            return null;
         }else{
             repository.findById(productID).map(
                     product -> {

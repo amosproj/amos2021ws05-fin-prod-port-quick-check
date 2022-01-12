@@ -1,7 +1,6 @@
 package com.tu.FinancialQuickCheck.UnitTests.Service;
 
 import com.tu.FinancialQuickCheck.Exceptions.BadRequest;
-import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.Service.UserService;
 import com.tu.FinancialQuickCheck.db.UserEntity;
 import com.tu.FinancialQuickCheck.db.UserRepository;
@@ -151,35 +150,18 @@ public class UserServiceTest {
     /**
      * tests for findByEmail()
      *
-     * testFindByEmail1: incorrect input --> throw BadRequest Exception
+     * testFindByEmail1: incorrect input --> return null
      * testFindByEmail2: email does not exist --> throw ResourceNotFound Exception
      * testFindByEmail3: input correct --> return UserDto
      */
     @Test
     public void testFindByEmail1_incorrectInput() {
-        // Step 1: execute findByEmail()
-        Exception exception = assertThrows(BadRequest.class, ()
-                -> service.findByEmail(keineEmail));
-
-        String expectedMessage = "Incorrect Input";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));
+        assertNull(service.findByEmail(keineEmail));
     }
 
     @Test
     public void testFindByEmail2_emailNotFound() {
-        // Step 1: provide knowledge
-        when(repository.findByEmail(email1)).thenReturn(Optional.empty());
-
-        // Step 2: execute updateByUserID()
-        Exception exception = assertThrows(ResourceNotFound.class, ()
-                -> service.findByEmail(email1));
-
-        String expectedMessage = "User not found";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));
+        assertNull(service.findByEmail(email1));
     }
 
     @Test
@@ -197,24 +179,6 @@ public class UserServiceTest {
                 () -> assertNotNull(out.userID),
                 () -> assertNull(out.password));
 
-    }
-
-
-    /**
-     * tests for validEmail()
-     *
-     * testValidEmail1: email format correct --> return true
-     * testValidEmail2: email format incorrect --> return false
-     */
-    @Test
-    public void testValidateEmail_true() {
-        String emailAddress = "username@domain.com";
-        assertTrue(service.validateEmail(emailAddress));
-    }
-
-    @Test
-    public void testValidateEmail_false() {
-        assertFalse(service.validateEmail(keineEmail));
     }
 
     
@@ -288,12 +252,7 @@ public class UserServiceTest {
 
     @Test
     public void testCreateUser3a_invalidEmail() {
-        // TODO: define requirements for input attribute pw, e.g. pw length
-        // Test: attribute password
-
-        // Test: attribute email
         assertNull(service.createUser(dto3));
-
     }
 
     @Test
@@ -305,7 +264,7 @@ public class UserServiceTest {
 
 
     /**
-     * tests for updateByUserID()
+     * tests for updateByByEmail()
      *
      * testUpdateByUserID1: userId does not exist -> throw ResourceNotFound Exception
      * testUpdateByUserID2: userId exists, misses attributes to update -> return null
@@ -320,36 +279,23 @@ public class UserServiceTest {
         // Step 1: provide knowledge
         when(repository.findByEmail(email404)).thenReturn(Optional.empty());
 
-        // Step 2: execute updateByUserID()
-        Exception exception = assertThrows(ResourceNotFound.class, ()
-                -> service.updateUserByEmail(dto1, email404));
+        // Step 2: execute and assert test method
+        assertNull(service.updateUserByEmail(dto1, email404));
+    }
 
-        String expectedMessage = "User not found";
+    @Test
+    public void testUpdateUser2_NothingToUpdate() {
+        // execute updateByUserID() and assert result
+        Exception exception;
+        exception = assertThrows(BadRequest.class,
+                () -> service.updateUserByEmail(emptyDto, email1));
+
+        String expectedMessage = "Input is missing/incorrect";
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
     }
 
-    @Test
-    public void testUpdateUser2_NothingToUpdate() {
-        // Step 1: provide knowledge
-        when(repository.findByEmail(email1)).thenReturn(Optional.of(entity1));
-
-        // Step 2 and 3: execute updateByUserID() and assert result
-        assertNull(service.updateUserByEmail(emptyDto, email1));
-
-
-    }
-
-    /**@Test
-    public void testUpdateUser3_invalidEmail() {
-        // Step 1: provide knowledge
-        when(repository.findById(userID1.toString())).thenReturn(Optional.of(entity1));
-
-        // Step 2 and 3: execute updateByUserID() and assert result
-        assertNull(service.updateByUserID(dto3, userID1));
-
-    }**/
 
     @Test
     public void testUpdateUser4_fullValidUpdate() {
@@ -423,24 +369,6 @@ public class UserServiceTest {
         );
     }
 
-    /**@Test
-    public void testUpdateUser5d_partialUpdate_emailAndUsername() {
-        // Step 1: init test object
-        dto2.password = null;
-
-        // Step 2: provide knowledge
-        when(repository.findById(userID1.toString())).thenReturn(Optional.of(entity1));
-
-        // Step 3: execute updateByUserID() and assert result
-        UserDto out = service.updateByUserID(dto2, userID1);
-
-        assertAll("update User",
-                () -> assertNull(out.password),
-                () -> assertEquals(dto2.userName, out.userName),
-                () -> assertEquals(dto2.userEmail, out.userEmail)
-        );
-    }**/
-
     @Test
     public void testUpdateUser5e_partialUpdate_usernameAndPassword() {
         // Step 1: init test object
@@ -459,31 +387,12 @@ public class UserServiceTest {
         );
     }
 
-    /**@Test
-    public void testUpdateUser5f_partialUpdate_emailAndPassword() {
-        // Step 1: init test object
-        dto2.userName = null;
-
-        // Step 2: provide knowledge
-        when(repository.findById(userID1.toString())).thenReturn(Optional.of(entity1));
-
-        // Step 3: execute updateByUserID() and assert result
-        UserDto out = service.updateByUserID(dto2, userID1);
-
-        assertAll("update User",
-                () -> assertNull(out.password),
-                () -> assertEquals(entity1.username, out.userName),
-                () -> assertEquals(dto2.userEmail, out.userEmail)
-        );
-    }**/
-
     /**
      * tests for deleteUserById()
      *
      * testDeleteUserById1: userId does not exist -> throw ResourceNotFound Exception
      * testDeleteUserById2: userId exists -> void
      */
-
     @Test
     public void testDeleteUserById1_userIdNotFound()
     {
@@ -491,13 +400,7 @@ public class UserServiceTest {
         when(repository.existsById(userID1.toString())).thenReturn(false);
 
         // Step 2: execute updateByUserID()
-        Exception exception = assertThrows(ResourceNotFound.class, ()
-                -> service.deleteUserById(UUID.fromString("5710db7c-e875-4e63-9e03-7f6ad85cc429")));
-
-        String expectedMessage = "userID " + userID1 + " not found";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));
+        assertNull(service.deleteUserById(UUID.fromString("5710db7c-e875-4e63-9e03-7f6ad85cc429")));
     }
 
     @Test
@@ -507,8 +410,8 @@ public class UserServiceTest {
         when(repository.existsById(userID1.toString())).thenReturn(true);
 
         // Step 2: execute updateByUserID()
-        service.deleteUserById(UUID.fromString("5710db7c-e875-4e63-9e03-7f6ad85cc429"));
+        Boolean out = service.deleteUserById(UUID.fromString("5710db7c-e875-4e63-9e03-7f6ad85cc429"));
 
-
+        assertTrue(out);
     }
 }
