@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import ProjectOverview from './pages/ProjectOverview';
 import ProductOverview from './pages/productAreaPage/Page';
 import Project from './pages/projectPage/Page';
+import ResultPage from './pages/resultPage/Page';
 import TestRange from './pages/TestRange';
 
 import store from './store';
@@ -25,6 +26,7 @@ function App() {
               <Route path="login" element={<Login />} />
               <Route path="projects" element={<ProjectOverview />} />
               <Route path="projects/:id" element={<Project />} />
+              <Route path="results" element={<ResultPage />} />
               <Route path="products" element={<ProductOverview />} />
             </Routes>
             <Link to="login"> [Login] </Link>

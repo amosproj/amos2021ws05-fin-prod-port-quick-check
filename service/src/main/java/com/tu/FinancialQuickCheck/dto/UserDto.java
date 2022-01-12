@@ -6,7 +6,10 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
-
+/**
+ * This class represents the user data transfer object, which is used for reducing the number of multiple
+ * method calls into a single one
+ */
 //TODO: (done - already had it) create userPasswordDto to manage Password outside of userDto --> ProjectUserDto
 public class UserDto {
 
@@ -22,15 +25,18 @@ public class UserDto {
         this.userEmail = email;
     }
 
-
-    public UserDto(UUID userID, String email, String username)
-    {
+    public UserDto(UUID userID, String email, String username) {
         this.userID = userID;
         this.userEmail = email;
         this.userName = username;
     }
 
-
+    /**
+     * This method is validating an email address based on a regex pattern.
+     *
+     * @param emailAddress The email address which has to be verified.
+     * @return True if the email matches with regex pattern.
+     */
     public boolean validateEmail(String emailAddress){
         // regexPattern from RFC 5322 for Email Validation
         String regexPattern = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";

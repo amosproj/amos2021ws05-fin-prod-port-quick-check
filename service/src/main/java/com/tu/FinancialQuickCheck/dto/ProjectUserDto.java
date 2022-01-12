@@ -6,6 +6,10 @@ import com.tu.FinancialQuickCheck.db.ProjectUserEntity;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
+/**
+ * This class represents the project user data transfer object, which is used for reducing the number of multiple
+ * method calls into a single one
+ */
 public class ProjectUserDto {
 
     public UUID userID;
@@ -31,6 +35,12 @@ public class ProjectUserDto {
         this.role = entity.role;
     }
 
+    /**
+     * This method is validating an email address based on a regex pattern.
+     *
+     * @param emailAddress The email address which has to be verified.
+     * @return True if the email matches with regex pattern.
+     */
     public boolean validateEmail(String emailAddress){
         // regexPattern from RFC 5322 for Email Validation
         String regexPattern = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
