@@ -1,4 +1,4 @@
-import { Heading, Button, HStack, VStack, Input, Spacer, Text } from '@chakra-ui/react';
+import { Heading, Button, HStack, VStack, Input, Spacer } from '@chakra-ui/react';
 import { React, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -10,37 +10,51 @@ import Card from '../../components/Card';
 import ProductAreaList from './ProjectAreaList';
 import MemberTable from './MemberTable';
 
-const mockProject = {
-  projectID: 1,
-  creatorID: '2375e026-d348-4fb6-b42b-891a76758d5d',
-  projectName: 'Amos Bank',
-  members: [
-    { email: 'consultant@amos.de', role: 'Consultant' },
-    { email: 'manager@amos.de', role: 'Project Owner' },
-  ],
-  productAreas: [1],
-};
-
-export default function Project(props) {
+export default function Project() {
   const project = useStoreState((state) => state.project.data);
   const setName = useStoreActions((actions) => actions.project.setProjectName);
-  const updateProject = useStoreActions((actions) => actions.project.update);
+  const initProject = useStoreActions((actions) => actions.project.init);
+  const fetchProject = useStoreActions((actions) => actions.project.fetch);
+  const sendCreateProject = useStoreActions((actions) => actions.project.sendCreate);
+  const sendUpdateProject = useStoreActions((actions) => actions.project.sendUpdate);
   const [editMode, setEditMode] = useState(false);
 
   const { id } = useParams();
   useEffect(() => {
-    // fetchProject(id);
-    updateProject({ ...mockProject });
+    if (id === 'new') {
+      initProject();
+      setEditMode(true);
+    } else {
+      fetchProject(id);
+    }
   }, []);
 
   const EditButtons = () => {
+    const confirm = () => {
+      setEditMode(false);
+
+      if (id === 'new') {
+        sendCreateProject(project);
+      } else {
+        sendUpdateProject(project);
+      }
+    };
+    const cancel = () => {
+      setEditMode(false);
+      if (id === 'new') {
+        window.location.href = '../projects';
+      } else {
+        fetchProject(id);
+      }
+    };
+
     if (editMode) {
       return (
         <HStack>
-          <Button variant="whisper" size="md" onClick={() => setEditMode(false)}>
+          <Button variant="whisper" size="md" onClick={() => cancel()}>
             Cancel
           </Button>
-          <Button variant="primary" size="md" onClick={() => setEditMode(false)}>
+          <Button variant="primary" size="md" onClick={() => confirm()}>
             Confirm
           </Button>
         </HStack>
@@ -58,7 +72,6 @@ export default function Project(props) {
     <Page title="Manage Project">
       <VStack>
         <Card layerStyle="card_bar" justifyContent="center">
-          <Spacer />
           <Heading variant="upper" size="md" mr={3} align="center">
             Project:
           </Heading>

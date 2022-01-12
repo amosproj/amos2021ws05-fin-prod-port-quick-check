@@ -11,6 +11,7 @@ import java.util.List;
 /**
  * The ProductAreaController manages and processes requests for creating product areas or finding existing ones
  */
+
 @CrossOrigin
 @RestController
 @RequestMapping("productareas")
