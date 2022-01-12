@@ -82,6 +82,9 @@ export default function Rating() {
 
   function computeRatingsPerCategory(ratings)
   {
+    if(ratings.length === 0 || Object.keys(ratingsPerCategory).length != 0) {
+      return [];
+    }
     for (const rating of ratings)
     {
       if (ratingsPerCategory[rating.rating.category] != null)
@@ -99,9 +102,7 @@ export default function Rating() {
   useEffect(() => {
     //initRatingsData();
     //var a = fetchRatings("");
-    setRatingsData('mockRatings');
-    let a = ratingsData.name;
-    computeRatingsPerCategory(mockRatings.ratings);
+    setRatingsData(mockRatings.ratings);
   }, []);
 
   const EditButtons = () => {
@@ -149,10 +150,11 @@ export default function Rating() {
               ))}
             </TabPanels>
           </Tabs>
+          <p>{ratingsData.name}</p>
         </Page>
     )
   }
-
+  computeRatingsPerCategory(ratingsData.ratings);
   return <DataTabs data={ Object.entries(ratingsPerCategory)}/>;
 
 }

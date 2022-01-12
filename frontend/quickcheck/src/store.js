@@ -86,11 +86,7 @@ const projectModel = {
 
 const ratingModel =
     {
-        name: '',
-        set: action((state, ratings) => {
-            state.name = ratings;
-        }),
-/*        ratings : [],
+       ratings : [],
 
       init: action((state, payload) => {
               state.ratings = [{
@@ -111,7 +107,7 @@ const ratingModel =
 
       // general actions
       set: action((state, ratings) => {
-        state.name = ratings;
+        state.ratings = ratings;
       }),
       update: action((state, updatedProps) => {
         state.data = { ...state.data, ...updatedProps };
@@ -128,7 +124,7 @@ const ratingModel =
             .get()
             .json((json) => actions.set(json))
             .catch(console.error);
-      }),*/
+      }),
 
     };
 
