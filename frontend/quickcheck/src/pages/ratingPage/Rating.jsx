@@ -59,10 +59,12 @@ export default function Rating() {
   const [ratingsPerCategory, setRatingsPerCategory]= useState(
       []
   );
-  const ratingsData = useStoreState((state) => state.rating);
+  const ratingsData = useStoreState((state) => state.rating.ratings);
   //const initRatingsData = useStoreActions((actions) => actions.rating.init);
   const setRatingsData = useStoreActions((actions) => actions.rating.set);
   const fetchRatings = useStoreActions((actions) => actions.rating.fetch);
+
+  const { productID } = useParams();
 
   const handleChange = (key) => (value) => {
     setRatingsData({ //set action statt setRatingstData
@@ -153,7 +155,9 @@ export default function Rating() {
         </Page>
     )
   }
-  computeRatingsPerCategory(ratingsData.ratings);
+  if (ratingsData.ratings != undefined) {
+    computeRatingsPerCategory(ratingsData.ratings);
+  }
   return <DataTabs data={ Object.entries(ratingsPerCategory)}/>;
 
 }
