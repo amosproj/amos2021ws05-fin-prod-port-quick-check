@@ -8,6 +8,7 @@ import ProjectOverview from './pages/ProjectOverview';
 import ProductOverview from './pages/productAreaPage/Page';
 import Project from './pages/projectPage/Page';
 import ResultPage from './pages/resultPage/Page';
+import Rating from './pages/ratingPage/Rating';
 import TestRange from './pages/TestRange';
 
 import store from './store';
@@ -28,10 +29,13 @@ function App() {
               <Route path="projects/:id" element={<Project />} />
               <Route path="results" element={<ResultPage />} />
               <Route path="products" element={<ProductOverview />} />
+              <Route path="ratings" element={<Rating />} />
             </Routes>
             <Link to="login"> [Login] </Link>
             <Link to="projects"> [Projects] </Link>
             <Link to="products"> [Products] </Link>
+            <Link to="ratings"> [Ratings] </Link>
+            <Link to="results"> [Results] </Link>
           </Router>
         </StoreProvider>
       </ChakraProvider>
