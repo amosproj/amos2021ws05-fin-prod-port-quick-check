@@ -106,7 +106,6 @@ const filterVariants = (products) => {
   return products.filter((prod) => prod.parentID === 0);
 };
 
-
 export default function ProductOverview() {
   const products = useStoreState((state) => state.productList.products);
   const addProductAction = useStoreActions((actions) => actions.productList.addProduct);
@@ -157,11 +156,7 @@ export default function ProductOverview() {
       <Page title="Product Overview">
         <List spacing={2} w="full">
           {filterVariants(products).map((product) => (
-            <ProductRow
-              product={product}
-              key={product.productID}
-              editMode={editMode}
-            ></ProductRow>
+            <ProductRow product={product} key={product.productID} editMode={editMode}></ProductRow>
           ))}
         </List>
         <Button>Generate Results</Button>
