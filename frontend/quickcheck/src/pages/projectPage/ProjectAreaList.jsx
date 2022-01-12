@@ -10,7 +10,7 @@ import AddAreaButton from './AddAreaButton.jsx';
 function ProductArea({ productArea }) {
   return (
     <>
-      <Button as="a" variant="secondary" rounded="md" href="/projects" w="full" py={5}>
+      <Button as="a" variant="secondary" rounded="md" href="/projects/1/productArea/1" w="full" py={5}>
         <Spacer />
         <Heading size="md" align="center">
           {productArea.name}

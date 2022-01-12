@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * The ProductRatingController manages and processes requests for updating product ratings or returning existing ones
  */
+@CrossOrigin
 @RestController
 @RequestMapping("products/{productID}/ratings")
 public class ProductRatingController {

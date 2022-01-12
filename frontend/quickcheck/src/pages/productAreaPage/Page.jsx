@@ -21,7 +21,7 @@ import { AddIcon } from '@chakra-ui/icons';
 
 import ProductRow from './ProductRow';
 
-const products = [
+/* const products = [
   {
     productID: 111,
     productName: 'Optionen 1',
@@ -58,7 +58,7 @@ const products = [
     projectID: 100,
     parentID: 112,
   },
-];
+];*/
 
 
 // const getProducts = (products) => {
@@ -113,12 +113,12 @@ function AddButton(props) {
 
 export default function ProductOverview() {
   const productsAction = useStoreState((state) => state.productList.products);
-  const addProductAction = useStoreActions((actions) => actions.productList.addProduct);
+  // const addProductAction = useStoreActions((actions) => actions.productList.addProduct);
   const fetchProducts = useStoreActions((actions) => actions.productList.fetch);
   const createProduct = useStoreActions((actions) => actions.productList.createProduct);
   // const setProducts = useStoreActions((actions) => actions.productList.set);
   const [editMode, setEditMode] = useState(false);
-  const projectID = 300;
+  const projectID = 200;
 
   useEffect(() => {
     //setProducts(products);
@@ -150,7 +150,7 @@ export default function ProductOverview() {
       );
     }
   };
-  const addProduct = (productName) => {
+  /*const addProduct = (productName) => {
     const prod = {
       productID: new Date().getMilliseconds(),
       productName: productName,
@@ -159,7 +159,7 @@ export default function ProductOverview() {
       parentID: 0,
     };
     addProductAction(prod);
-  };
+  };*/
 
   const addProductAPI = (productName) => {
     const prod = {
@@ -168,11 +168,26 @@ export default function ProductOverview() {
       {
         "id": "1"
 
-      }
+      },
+      "projectID": projectID,
     }
-    
     createProduct(prod);
   };
+
+  /*const updateProduct = (productName) => {
+    const updatedProd = {
+
+      "productName": productName,
+      "comment": "string",
+      "resources":
+
+        [
+          "string"
+        ]
+
+    }
+    //updateProduct(updatedProduct, productID);
+  }*/
 
   return (
     <div>
