@@ -2,15 +2,7 @@ import React from 'react';
 import Card from '../../components/Card';
 import Page from '../../components/Page';
 import Figure from './Figure';
-import {
-  Button,
-  Heading,
-  VStack,
-  Text,
-  Flex,
-  HStack,
-  Spacer,
-} from '@chakra-ui/react';
+import { Button, Heading, VStack, Text, Flex, HStack, Spacer } from '@chakra-ui/react';
 import { useState } from 'react';
 
 const mock = [
@@ -36,7 +28,6 @@ const mock = [
   },
 ];
 
-
 function SourceRow({ source }) {
   return (
     <Card bg={'gray.600'} layerStyle={'card_bordered'}>
@@ -61,7 +52,6 @@ export default function ResultPage() {
   return (
     <div>
       <Page title="Results">
-
         <Flex
           flexDirection="column"
           w="full"
@@ -69,12 +59,12 @@ export default function ResultPage() {
           justifyContent="space-between"
           alignItems="stretch"
         >
-        <Figure></Figure>
-              <Heading size="lg">Sources</Heading>
-              {sources.map((source) => (
-                <SourceRow source={source} key={source.id} />
-              ))}
-  </Flex>
+          <Figure></Figure>
+          <Heading size="lg">Sources</Heading>
+          {sources.map((source) => (
+            <SourceRow source={source} key={source.id} />
+          ))}
+        </Flex>
         <HStack>
           <Button> Export Results </Button>
           <Link to={'/projects'}>
