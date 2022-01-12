@@ -29,16 +29,16 @@ const productAreaModel = {
     state.products = state.products.filter((p) => p.productID !== product.productID);
   }),
   fetch: thunk(async (actions, id) => {
-    console.log('/projects/'+ id +'/products');
+    console.log('/projects/' + id + '/products');
     await api
-      .url('/projects/'+ id +'/products')
+      .url('/projects/' + id + '/products')
       .get()
       .json((json) => actions.set(json))
       .catch(console.error);
   }),
   createProduct: thunk(async (actions, newProduct) => {
     //console.log(newProduct);
-    console.log('/products/' + newProduct.projectID + '/products')
+    console.log('/products/' + newProduct.projectID + '/products');
     await api
       .url('/products/' + newProduct.projectID + '/products')
       .post(newProduct)
@@ -52,7 +52,7 @@ const productAreaModel = {
       .put(updatedProduct)
       .json((json) => actions.set(json))
       .catch(console.error);
-  })
+  }),
 };
 
 const projectListModel = {

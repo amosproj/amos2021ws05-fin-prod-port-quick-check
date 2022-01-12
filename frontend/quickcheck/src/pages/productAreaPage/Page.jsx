@@ -60,7 +60,6 @@ import ProductRow from './ProductRow';
   },
 ];*/
 
-
 // const getProducts = (products) => {
 //   return products.filter((prod) => prod.parentID === 0);
 // };
@@ -124,7 +123,6 @@ export default function ProductOverview() {
     //setProducts(products);
     fetchProducts(projectID);
     console.log('rendered');
-
   }, []);
 
   const EditButtons = () => {
@@ -163,14 +161,12 @@ export default function ProductOverview() {
 
   const addProductAPI = (productName) => {
     const prod = {
-      "productName": productName,
-      "productArea":
-      {
-        "id": "1"
-
+      productName: productName,
+      productArea: {
+        id: '1',
       },
-      "projectID": projectID,
-    }
+      projectID: projectID,
+    };
     createProduct(prod);
   };
 

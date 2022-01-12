@@ -27,7 +27,10 @@ function App() {
               <Route path="projects" element={<ProjectOverview />} />
               <Route path="projects/:id" element={<Project />} />
               <Route path="results" element={<ResultPage />} />
-              <Route path="projects/:projectID/productArea/:productAreaID" element={<ProductOverview />} />
+              <Route
+                path="projects/:projectID/productArea/:productAreaID"
+                element={<ProductOverview />}
+              />
             </Routes>
             <Link to="login"> [Login] </Link>
             <Link to="projects"> [Projects] </Link>
