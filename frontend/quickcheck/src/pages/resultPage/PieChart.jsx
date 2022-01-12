@@ -3,7 +3,6 @@ import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 
 Chart.register(ArcElement, Tooltip, Legend);
-var ctx = document.getElementById('myChart');
 var yellow = 'rgba(255, 195, 0, .7)';
 var green = 'rgba(131, 239, 56, .7 )';
 var red = 'rgba(239, 65, 56, .7 )';
