@@ -45,6 +45,14 @@ const productAreaModel = {
       .json((json) => actions.set(json))
       .catch(console.error);
   }),
+  updateProduct: thunk(async (actions, updatedProduct, productID) => {
+    console.log(updatedProduct);
+    await api
+      .url('/products/' + productID)
+      .put(updatedProduct)
+      .json((json) => actions.set(json))
+      .catch(console.error);
+  })
 };
 
 const projectListModel = {
