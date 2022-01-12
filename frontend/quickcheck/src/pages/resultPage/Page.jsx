@@ -1,10 +1,8 @@
 import React from 'react';
 import Card from '../../components/Card';
 import Page from '../../components/Page';
-import PieChartGraph from './PieChart';
-import { Link } from 'react-router-dom';
-
-import { Button, Heading, VStack, Text, Flex, HStack, Spacer } from '@chakra-ui/react';
+import Figure from './Figure';
+import { Button, Heading, VStack, Text, Flex, HStack, Spacer, Link } from '@chakra-ui/react';
 import { useState } from 'react';
 
 const mock = [
@@ -29,26 +27,6 @@ const mock = [
     id: 3,
   },
 ];
-const data = {
-  labels: ['source 1', 'source 2', 'source 3', 'source 4', 'source 5'],
-
-  datasets: [
-    {
-      label: 'Values',
-      data: [25, 2, 25, 5, 23],
-      borderColor: ['rgba(255,255,255)'],
-      borderWidth: 3,
-      backgroundColor: [
-        'rgba(147,213,34)',
-        'rgba(41,213,255)',
-        'rgba(82,8,129)',
-        'rgba(255,72,166)',
-        'rgba(108,3,168)',
-      ],
-      pointBackgroundColor: 'rgba(255,206,86,0.2)',
-    },
-  ],
-};
 
 function SourceRow({ source }) {
   return (
@@ -75,26 +53,17 @@ export default function ResultPage() {
     <div>
       <Page title="Results">
         <Flex
-          flexDirection="row"
+          flexDirection="column"
           w="full"
-          gridGap={3}
+          gridGap={1}
           justifyContent="space-between"
           alignItems="stretch"
         >
-          <Flex w="55%">
-            <Card alignItems="center" bg="gray.600">
-              <PieChartGraph data={data}></PieChartGraph>
-            </Card>
-          </Flex>
-
-          <Flex flexDirection="column" w="45%" justifyContent="space-between" alignItems="stretch">
-            <VStack>
-              <Heading size="lg">Sources</Heading>
-              {sources.map((source) => (
-                <SourceRow source={source} key={source.id} />
-              ))}
-            </VStack>
-          </Flex>
+          <Figure></Figure>
+          <Heading size="lg">Sources</Heading>
+          {sources.map((source) => (
+            <SourceRow source={source} key={source.id} />
+          ))}
         </Flex>
         <HStack>
           <Button> Export Results </Button>
