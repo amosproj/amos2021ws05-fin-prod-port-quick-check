@@ -121,8 +121,6 @@ export default function ProductOverview() {
 
   const { projectID, productAreaID } = useParams();
 
-
-
   useEffect(() => {
     //setProducts(products);
     fetchProducts(projectID);
