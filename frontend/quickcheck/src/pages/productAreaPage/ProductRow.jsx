@@ -61,16 +61,18 @@ export default function ProductRow({ product, editMode }) {
         <Spacer />
         <VStack>
           <CircularProgress size="40px" value={40} />
-          <Link href='/ratings'>
-          <Button variant="whisper" >Economical</Button>
+          <Link href="/ratings">
+            <Button variant="whisper">Economical</Button>
           </Link>
         </VStack>
         <Spacer />
 
         <VStack>
           <CircularProgress size="40px" value={40} />
-          <Link href='/ratings'>
-          <Button variant="whisper" href='/ratings'>Complexity</Button>
+          <Link href="/ratings">
+            <Button variant="whisper" href="/ratings">
+              Complexity
+            </Button>
           </Link>
         </VStack>
         <Spacer />
