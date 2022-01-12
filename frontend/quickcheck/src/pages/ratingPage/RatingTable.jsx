@@ -1,28 +1,9 @@
-import {
-  Flex,
-  Box,
-  Input,
-  Heading,
-  Editable,
-  EditableInput,
-  EditablePreview,
-  Button,
-  CircularProgress,
-  CircularProgressLabel,
-  Spacer,
-  Textarea,
-  List,
-} from '@chakra-ui/react';
+import { Flex, Input, Spacer, List } from '@chakra-ui/react';
 import React from 'react';
 import Card from '../../components/Card';
 import Selection from '../../components/Selection';
-import { score } from '../../utils/const';
-import Page from '../../components/Page';
-import MemberTable from '../projectPage/MemberTable';
-import ProductAreaList from '../projectPage/ProjectAreaList';
-import AddMemberButton from '../projectPage/AddMemberButton';
 
-function RatingRow({ rating, editable, onChangeScore, onChangeComment, onChangeAnswer }) {
+function RatingRow({ rating, onChangeScore, onChangeComment, onChangeAnswer }) {
   return (
     <div>
       <Card

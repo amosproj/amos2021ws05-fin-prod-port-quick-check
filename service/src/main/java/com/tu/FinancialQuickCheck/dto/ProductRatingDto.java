@@ -3,7 +3,10 @@ package com.tu.FinancialQuickCheck.dto;
 import com.tu.FinancialQuickCheck.Score;
 import com.tu.FinancialQuickCheck.db.RatingEntity;
 
-
+/**
+ * This class represents the product rating data transfer object, which is used for reducing the number of multiple
+ * method calls into a single one
+ */
 public class ProductRatingDto {
 
     public int productID;

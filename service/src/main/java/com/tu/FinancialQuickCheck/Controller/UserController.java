@@ -12,9 +12,10 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Presentation layer
+ * The UserController manages and processes requests for creating, updating or finding users
  */
 
+@CrossOrigin
 @RestController
 @RequestMapping("users")
 public class UserController {
@@ -22,13 +23,30 @@ public class UserController {
     @Autowired
     private UserService service;
 
+    /**
+     * Constructor for class UserController.
+     *
+     * @param userService The different services for the user.
+     */
     public UserController(UserService userService){this.service = userService;}
 
+    /**
+     * This method can return all users.
+     *
+     * @return A list of all users.
+     */
     @GetMapping(produces = "application/json")
     public List<UserDto> findAllUser(){
         return service.getAllUsers();
     }
 
+    /**
+     * This method can create users.
+     *
+     * @param userDto The user data transfer object.
+     * @throws BadRequest When the user cannot be created due to missing or incorrect information.
+     * @return The created user entity in database.
+     */
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto createUser(@RequestBody UserDto userDto) {
@@ -41,12 +59,25 @@ public class UserController {
         }
     }
 
+    /**
+     * This method is finding users by their email.
+     *
+     * @param email The email of the user who can be found.
+     * @return The user who had to be found.
+     */
     //TODO: (prio: low) change path-var to request-body userDto & change path
     @GetMapping("email/{email}")
     public UserDto findByEmail(@PathVariable String email){
         return service.findByEmail(email);
     }
 
+    /**
+     * This method is updating user information by their email.
+     *
+     * @param userDto The user data transfer object.
+     * @throws BadRequest When the user cannot be updated due to missing or incorrect information.
+     * @param email The email of the user for which information can be updated.
+     */
     //TODO: (prio: low) change path-var to request-body userDto & change path
     @PutMapping("email/{email}")
     public void updateUserByEmail(@RequestBody UserDto userDto, @PathVariable String email) {
@@ -55,11 +86,15 @@ public class UserController {
         }
     }
 
+    /**
+     * This method is deleting users by their ID.
+     *
+     * @param userID The ID of the user who can be deleted.
+     */
     @DeleteMapping("/{userID}")
     void deleteByUserId(@PathVariable UUID userID){
         service.deleteUserById(userID);
     }
-
 
 
 //    @PutMapping("/{userID}")
