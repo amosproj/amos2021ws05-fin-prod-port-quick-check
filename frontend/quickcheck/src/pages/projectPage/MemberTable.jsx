@@ -14,13 +14,12 @@ function MemberRow({ editMode, member, ...rest }) {
   const handleRoleChange = (newRole) => {
     updateMember({ ...member, role: newRole });
   };
-
   const bg = useColorModeValue('gray.200', 'gray.600');
 
   return (
     <Flex {...rest} w="full">
-      <Text variant="cell" align="left" w="full">
-        {member.email}
+      <Text variant="cell" align="left" w="66%">
+        {member.userEmail}
       </Text>
       <Flex w={60} pt={0}>
         {editMode ? (
@@ -28,7 +27,7 @@ function MemberRow({ editMode, member, ...rest }) {
             bg={bg}
             border="0px"
             selected={member.role}
-            options={Object.values(roles)}
+            options={roles}
             onChange={handleRoleChange}
             w="full"
           />
@@ -53,7 +52,6 @@ const RemoveButton = ({ handleRemove, ...buttonProps }) => {
 
 export default function MemberTable({ editMode }) {
   const members = useStoreState((state) => state.project.data.members);
-  const addMember = useStoreActions((actions) => actions.project.addMember);
   const removeMember = useStoreActions((actions) => actions.project.removeMember);
   const bgHeading = useColorModeValue('gray.400', 'gray.500');
 
@@ -61,26 +59,23 @@ export default function MemberTable({ editMode }) {
     <List spacing={2} direction="column" w="full" align="center" maxW={700}>
       <Flex gridGap={3} w="full">
         <Flex gridGap={3} h={12} w="full">
-          <Heading size="md" rounded="md" pt={3} bg={bgHeading} w="full">
+          <Heading size="md" rounded="md" pt={3} bg={bgHeading} w="66%">
             Email
           </Heading>
           <Heading size="md" rounded="md" pt={3} bg={bgHeading} w={60}>
             Role
           </Heading>
         </Flex>
-        {editMode ? (
-          <AddMemberButton minW={16} variant="primary" onAdd={addMember} size="lg" />
-        ) : undefined}
+        {editMode ? <AddMemberButton minW={16} size="lg" variant="primary" w={5} /> : undefined}
       </Flex>
 
       {members.map((member) => (
-        <Flex gridGap={3}>
+        <Flex gridGap={3} key={member.userEmail}>
           <MemberRow
             rounded="md"
             align="center"
             w="full"
             gridGap={3}
-            key={member.email}
             member={member}
             editMode={editMode}
           ></MemberRow>
