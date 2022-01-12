@@ -12,7 +12,6 @@ import {
   Spacer,
 } from '@chakra-ui/react';
 import { useState } from 'react';
-// import { Link } from 'react-router-dom';
 
 const mock = [
   {
@@ -38,7 +37,7 @@ const mock = [
 ];
 
 
-function SourceRow({ source, key }) {
+function SourceRow({ source }) {
   return (
     <Card bg={'gray.600'} layerStyle={'card_bordered'}>
       <Heading color="primary" size="md" align="center" w="40%" maxW="50%">
@@ -73,15 +72,15 @@ export default function ResultPage() {
         <Figure></Figure>
               <Heading size="lg">Sources</Heading>
               {sources.map((source) => (
-                <SourceRow source={source} key={source.ID} />
+                <SourceRow source={source} key={source.id} />
               ))}
   </Flex>
         <HStack>
           <Button> Export Results </Button>
-          <Button> Back</Button>
+          <Link to={'/projects'}>
+            <Button> Back</Button>
+          </Link>
         </HStack>
-
-        <p>{/*JSON.stringify(sources)*/}</p>
       </Page>
     </div>
   );

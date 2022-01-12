@@ -2,7 +2,10 @@ package com.tu.FinancialQuickCheck.dto;
 
 import com.tu.FinancialQuickCheck.RatingArea;
 
-
+/**
+ * This class represents the rating data transfer object, which is used for reducing the number of multiple
+ * method calls into a single one
+ */
 public class RatingDto {
 
     public int id;

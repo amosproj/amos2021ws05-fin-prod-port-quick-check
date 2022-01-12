@@ -1,0 +1,13 @@
+POST localhost:8080/projects
+Content-Type: application/json
+
+{
+  "creatorID": "74c31a72-7c9e-4095-a1d6-ec208b57ff1a",
+  "projectName": "Bank4",
+  "productAreas": [1,2],
+  "members": [
+    ]
+}
+
+<> 2021-12-13T091519.400.json
+<> 2021-12-13T090804.201.json

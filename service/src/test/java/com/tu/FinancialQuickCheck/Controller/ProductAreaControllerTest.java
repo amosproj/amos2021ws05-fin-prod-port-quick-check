@@ -13,7 +13,9 @@ import org.springframework.http.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
+/**
+ * The current test class verifies the functionalities of the Product Area Controller
+ */
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class ProductAreaControllerTest {
 
@@ -29,7 +31,9 @@ public class ProductAreaControllerTest {
     private String productAreas = "/productareas";
     private String initProductArea = "{\"category\":\"PRIVAT\", \"name\":\"KREDIT\"}";
 
-
+    /**
+     * This method should be executed before each @test method in the current test class.
+     */
     @BeforeEach
     public void init(){
         HttpHeaders headers = new HttpHeaders();
@@ -46,7 +50,11 @@ public class ProductAreaControllerTest {
         System.out.println("Init: " + responseBody);
     }
 
-
+    /**
+     * The server cannot or will not process the request due to
+     *
+     * @result
+     */
     @Test
     public void getProductAreas400() throws Exception {
         // delete all existing productAreas

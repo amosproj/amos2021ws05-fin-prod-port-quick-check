@@ -3,35 +3,73 @@ package com.tu.FinancialQuickCheck.db;
 import javax.persistence.*;
 import java.util.List;
 
-
+/**
+ * The ProductEntity-class represents the product's database table, in which each class‘ attribute corresponds
+ * to a row
+ */
 @Entity
 public class ProductEntity {
-    // TODO: add attribute for overall economic rating (what type is it?)
+    // TODO: (done: needs review) confirm attribute for overallEconomicRating? --> done, Boolean type passt laut Max B.
+    //TODO: (done: needs review) add missing attribute: comment
+    //TODO: (prio: medium) (Topic: Dateien abspeichern) add missing attribute: list of resources or something else (?)
 
+    /**
+     * ID of the product (as primary key).
+     */
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     public int id;
 
+    /**
+     * Name of the product (e.g. mortage, loan credit, dispo credit..).
+     */
     @Column(name = "name")
     public String name;
 
-    @ManyToOne(targetEntity = ProjectEntity.class, fetch = FetchType.LAZY)
+    /**
+     * Final score from economic evaluation (high, mid and low).
+     */
+    @Column(name = "overallRating")
+    public Boolean overallEconomicRating;
+
+    /**
+     * Comment(s) about the product entered by user.
+     */
+    @Column(name = "comment")
+    public String comment;
+
+    /**
+     * Name of the project. Usually identical with the name of the financial institution using the software.
+     */
+    @ManyToOne(targetEntity = ProjectEntity.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "project")
     public ProjectEntity project;
 
+    /**
+     * All products have one product area which is credit, payment or client.
+     */
     @ManyToOne(targetEntity = ProductAreaEntity.class , fetch = FetchType.EAGER)
     @JoinColumn(name = "productarea")
     public ProductAreaEntity productarea;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "productid", insertable = false, updatable = false)
+    /**
+     * All products can be rated. The rating consists of an answer, score and an optional comment.
+     */
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "product")
     public List<ProductRatingEntity> productRatingEntities;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    /**
+     * Some products can have a parent product (e.g. dispo credit is the parent of dispo credit-flex and -normal).
+     */
+    @ManyToOne(fetch = FetchType.EAGER)
     public ProductEntity parentProduct;
 
 //    @OneToMany(fetch = FetchType.LAZY, mappedBy="parentProduct")
 //    public List<ProductEntity> subProducts = new ArrayList<>();
 
+    /**
+     * Constructor for class ProductEntity.
+     */
     public ProductEntity(){}
 }
