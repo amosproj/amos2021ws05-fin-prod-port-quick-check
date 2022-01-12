@@ -16,6 +16,7 @@ import {
   HStack,
   IconButton,
   Input,
+  Link
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 
@@ -198,9 +199,10 @@ export default function ProductOverview() {
             ></ProductRow>
           ))}
         </List>
-        <Button>Generate Results</Button>
-        <Button onClick={() => fetchProducts(projectID)}>Refresh</Button>
         <EditButtons />
+        <Link href="/results">
+        <Button>Generate Results</Button>
+        </Link>
       </Page>
     </div>
   );
