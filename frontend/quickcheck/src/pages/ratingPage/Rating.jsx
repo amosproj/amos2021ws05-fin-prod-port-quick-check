@@ -18,7 +18,7 @@ import Card from '../../components/Card';
 import MemberTable from '../projectPage/MemberTable';
 import RatingTable from './RatingTable';
 import { score } from '../../utils/const';
-import {useStoreActions} from "easy-peasy";
+import {useStoreActions, useStoreState} from "easy-peasy";
 
 
 const mockRatings = {
@@ -56,17 +56,16 @@ const mockRatings = {
 
 export default function Rating() {
   const [editMode, setEditMode] = useState(false);
-  const [ratingsData, setRatingstData] = useState({
-    ratings: [],
-  });
   const [ratingsPerCategory, setRatingsPerCategory]= useState(
       []
   );
-
-  const fetchRatings = useStoreActions((actions) => actions.project.fetch);
+  const ratingsData = useStoreState((state) => state.rating);
+  //const initRatingsData = useStoreActions((actions) => actions.rating.init);
+  const setRatingsData = useStoreActions((actions) => actions.rating.set);
+  //const fetchRatings = useStoreActions((actions) => actions.rating.fetch);
 
   const handleChange = (key) => (value) => {
-    setRatingstData({
+    setRatingsData({ //set action statt setRatingstData
       ...ratingsData,
       [key]: value,
     });
@@ -98,8 +97,10 @@ export default function Rating() {
   }
 
   useEffect(() => {
-    var a = fetchRatings();
-    setRatingstData(mockRatings);
+    //initRatingsData();
+    //var a = fetchRatings("");
+    setRatingsData('mockRatings');
+    let a = ratingsData.name;
     computeRatingsPerCategory(mockRatings.ratings);
   }, []);
 

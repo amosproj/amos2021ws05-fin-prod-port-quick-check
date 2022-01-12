@@ -86,31 +86,32 @@ const projectModel = {
 
 const ratingModel =
     {
-      data: {
-        ratings:[]
-      },
+        name: '',
+        set: action((state, ratings) => {
+            state.name = ratings;
+        }),
+/*        ratings : [],
 
       init: action((state, payload) => {
-        state.data = [
-          {
-            productID: 0,
-            ratingID: 0,
-            answer: 'test answer',
-            comment: 'test comment',
-            score: score.gering,
-            rating: {
+              state.ratings = [{
+              productID: 0,
               ratingID: 0,
-              category: 'Treiber 1',
-              criterion: 'test frage',
-              ratingArea: ratingArea.ECONOMIC
-            },
-          },
-        ]
-      }),
+              answer: 'test answer',
+              comment: 'test comment',
+              score: score.gering,
+              rating: {
+                  ratingID: 0,
+                  category: 'Treiber 1',
+                  criterion: 'test frage',
+                  ratingArea: ratingArea.ECONOMIC
+              },
+          }];
+      }
+      ),
 
       // general actions
       set: action((state, ratings) => {
-        state.data = ratings;
+        state.name = ratings;
       }),
       update: action((state, updatedProps) => {
         state.data = { ...state.data, ...updatedProps };
@@ -121,13 +122,13 @@ const ratingModel =
       }),
 
       // GET all ratings
-      fetch: thunk(async (actions,) => {
+      fetch: thunk(async (actions, ) => {
         await api
             .url('/ratings' )
             .get()
             .json((json) => actions.set(json))
             .catch(console.error);
-      }),
+      }),*/
 
     };
 
