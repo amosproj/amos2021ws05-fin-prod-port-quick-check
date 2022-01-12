@@ -62,7 +62,7 @@ export default function Rating() {
   const ratingsData = useStoreState((state) => state.rating);
   //const initRatingsData = useStoreActions((actions) => actions.rating.init);
   const setRatingsData = useStoreActions((actions) => actions.rating.set);
-  //const fetchRatings = useStoreActions((actions) => actions.rating.fetch);
+  const fetchRatings = useStoreActions((actions) => actions.rating.fetch);
 
   const handleChange = (key) => (value) => {
     setRatingsData({ //set action statt setRatingstData
@@ -101,7 +101,7 @@ export default function Rating() {
 
   useEffect(() => {
     //initRatingsData();
-    //var a = fetchRatings("");
+    fetchRatings();
     setRatingsData(mockRatings.ratings);
   }, []);
 
@@ -150,7 +150,6 @@ export default function Rating() {
               ))}
             </TabPanels>
           </Tabs>
-          <p>{ratingsData.name}</p>
         </Page>
     )
   }
