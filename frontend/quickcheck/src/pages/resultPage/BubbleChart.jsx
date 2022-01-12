@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Chart,
-  LineController,
-  LineElement,
-  PointElement,
-  LinearScale,
-  Title,
-} from 'chart.js';
+import { Chart, LineController, LineElement, PointElement, LinearScale, Title } from 'chart.js';
 import { Bubble } from 'react-chartjs-2';
 import annotationPlugin from 'chartjs-plugin-annotation';
 
