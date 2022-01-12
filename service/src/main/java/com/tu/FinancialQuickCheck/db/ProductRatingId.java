@@ -10,9 +10,6 @@ import java.util.Objects;
 @Embeddable
 public class ProductRatingId implements Serializable {
 
-    /**
-     * Product for which a rating was conducted and therefore a productRatingID was given.
-     */
     //TODO: (done - needs review) remove ...id in Name declarations
     @ManyToOne(targetEntity = ProductEntity.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "product")

@@ -2,11 +2,11 @@ package com.tu.FinancialQuickCheck.Service;
 
 import com.tu.FinancialQuickCheck.db.ProductAreaEntity;
 import com.tu.FinancialQuickCheck.db.ProductAreaRepository;
+import com.tu.FinancialQuickCheck.dto.ListOfProductAreaDto;
 import com.tu.FinancialQuickCheck.dto.ProductAreaDto;
 
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,15 +29,8 @@ public class ProductAreaService {
      */
     public List<ProductAreaDto> getAllProductAreas() {
 
-        List<ProductAreaDto> productAreaDtos = new ArrayList<>() {
-        }; //TODO: (Alex) check different definition
-        Iterable<ProductAreaEntity> productAreaEntities = repository.findAll();
+        return new ListOfProductAreaDto(this.repository.findAll()).productAreas;
 
-        for(ProductAreaEntity tmp : productAreaEntities){
-            productAreaDtos.add(new ProductAreaDto(tmp.id, tmp.name, tmp.category));
-        }
-
-        return productAreaDtos;
     }
 
     /**
@@ -57,7 +50,7 @@ public class ProductAreaService {
 
             repository.save(newEntity);
 
-            return new ProductAreaDto(newEntity.id, newEntity.name, newEntity.category);
+            return new ProductAreaDto(newEntity);
         }else{
             return null;
         }

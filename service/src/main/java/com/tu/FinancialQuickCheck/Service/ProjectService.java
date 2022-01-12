@@ -139,16 +139,18 @@ public class ProjectService {
                 if(projectDto.projectName != null){entity.name = projectDto.projectName;}
 
                 // add none existing product areas
-                List<ProductEntity> newProductEntities = assignProductAreasToProject(projectDto, entity, true);
-                entity.productEntities.addAll(newProductEntities);
-                productRepository.saveAllAndFlush(newProductEntities);
+                if(projectDto.productAreas != null){
+                    List<ProductEntity> newProductEntities = assignProductAreasToProject(projectDto, entity, true);
+                    entity.productEntities.addAll(newProductEntities);
+                    productRepository.saveAllAndFlush(newProductEntities);
+                }
 
                 // unassign existing users from project
-                long numDeletedRecords = projectUserRepository.deleteByProjectUserId_project(entity);
+                projectUserRepository.deleteByProjectUserId_project(entity);
                 repository.flush();
 
                 // assign new users to project
-                List<ProjectUserDto> newUsers = createProjectUsers(projectID, projectDto.members);
+                entity.projectUserEntities = assignMembersToProject(projectDto.members, entity);
 
                 repository.saveAndFlush(entity);
                 return new ProjectDto(entity);
@@ -168,7 +170,7 @@ public class ProjectService {
     public List<ProjectUserDto> createProjectUsers(int projectID, List<ProjectUserDto> members) {
 
         if(!repository.existsById(projectID)){
-            throw new ResourceNotFound("projectID " + projectID + " not found");
+            return null;
         }else{
             List<ProjectUserDto> out = new ArrayList<>();
             ProjectEntity project = repository.findById(projectID).get();
@@ -198,7 +200,7 @@ public class ProjectService {
         List<ProjectUserEntity> assignedMembers = new ArrayList<>();
 
         // check if members exist
-        Set<ProjectUserDto> newUsers = new HashSet<>(members);
+        Set<ProjectUserDto> newUsers = new LinkedHashSet<>(members);
         for(ProjectUserDto member: newUsers){
             if((member.userID == null && member.userEmail == null) || member.role == null){
                 throw new BadRequest("Input is missing/incorrect");
@@ -227,7 +229,6 @@ public class ProjectService {
      */
     //TODO: (done - needs review)
     public Optional<UserEntity> userExists(ProjectUserDto user){
-
         if(user.userID != null){
             return userRepository.findById(user.userID.toString());
         }else if(user.userEmail != null && !user.validateEmail(user.userEmail)){
@@ -250,19 +251,19 @@ public class ProjectService {
     public List<ProductEntity> assignProductAreasToProject(ProjectDto projectDto, ProjectEntity project, Boolean isPut){
 
         List<ProductEntity> productEntities = new ArrayList<>();
-        Set<ProductAreaDto> newProductAreas = new HashSet<>(projectDto.productAreas);
+        Set<ProductAreaDto> newProductAreas = new LinkedHashSet<>(projectDto.productAreas);
         for (ProductAreaDto productArea : newProductAreas){
             Optional<ProductAreaEntity> tmp = productAreaRepository.findById(productArea.id);
             if(tmp.isPresent()){
                 if(isPut && productRepository.existsByProjectAndProductarea(project, tmp.get())){
                     continue;
-                }else{
-                    ProductEntity product = new ProductEntity();
-                    product.project = project;
-                    product.productarea = tmp.get();
-                    product.name = "DUMMY";
-                    productEntities.add(product);
                 }
+
+                ProductEntity product = new ProductEntity();
+                product.project = project;
+                product.productarea = tmp.get();
+                product.name = "DUMMY";
+                productEntities.add(product);
             }else{
                 throw new ResourceNotFound("productArea " + productArea.id + " does not exist" );
             }

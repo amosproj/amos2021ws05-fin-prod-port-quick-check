@@ -43,7 +43,7 @@ public class ProductService {
         Optional<ProductEntity> productEntity = repository.findById(productID);
 
         if (productEntity.isEmpty()) {
-            throw new ResourceNotFound("productID " + productID + " not found");
+            return null;
         }else{
             return new ProductDto(productEntity.get());
         }
@@ -108,10 +108,14 @@ public class ProductService {
                 }
             }
 
+            //TODO: Product Area is missing in entity produces a nullpoint exception
+            List<ProductDto> createdProducts = new ArrayList<>();
+            //entities.forEach(entity -> createdProducts.add(new ProductDto(entity)));
+
             entities = repository.saveAllAndFlush(entities);
 
-            List<ProductDto> createdProducts = new ArrayList<>();
-            entities.forEach(entity -> createdProducts.add(new ProductDto(entity)));
+
+
             return createdProducts;
 
         }else {
@@ -156,7 +160,7 @@ public class ProductService {
     public ProductDto updateById(ProductDto productDto, int productID) {
 
         if (!repository.existsById(productID)) {
-            throw new ResourceNotFound("productID " + productID + " not found");
+            return null;
         }else{
             repository.findById(productID).map(
                     product -> {
@@ -164,7 +168,8 @@ public class ProductService {
                         updateProductComment(product, productDto);
                         return repository.save(product);
                     });
-            return new ProductDto();
+
+            return productDto;
         }
     }
 
@@ -221,10 +226,9 @@ public class ProductService {
                     productsByProject.add(addProduct);
                 }
             }
-
             return productsByProject;
         }else{
-            throw new ResourceNotFound("project " + projectID + "does not exist.");
+            throw new ResourceNotFound("project " + projectID + " does not exist.");
         }
     }
 

@@ -5,12 +5,7 @@ import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.Service.ProductAreaService;
 import com.tu.FinancialQuickCheck.dto.ProductAreaDto;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-
-/**
- * The ProductAreaController manages and processes requests for creating product areas or finding existing ones
- */
 
 @CrossOrigin
 @RestController

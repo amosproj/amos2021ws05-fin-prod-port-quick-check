@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * The RatingController manages and processes requests for returning ratings for economic or complexity evaluation
- */
+@CrossOrigin
 @RestController
 @RequestMapping("ratings")
 public class RatingController {

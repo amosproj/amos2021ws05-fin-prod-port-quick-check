@@ -1,6 +1,6 @@
 package com.tu.FinancialQuickCheck.dto;
 
-import com.tu.FinancialQuickCheck.Role;
+import com.tu.FinancialQuickCheck.db.UserEntity;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -20,23 +20,22 @@ public class UserDto {
 
     public UserDto(){}
 
-    public UserDto(String email)
-    {
-        this.userEmail = email;
-    }
 
-    public UserDto(UUID userID, String email, String username) {
+    public UserDto(UUID userID, String email, String username)
+    {
         this.userID = userID;
         this.userEmail = email;
         this.userName = username;
     }
 
-    /**
-     * This method is validating an email address based on a regex pattern.
-     *
-     * @param emailAddress The email address which has to be verified.
-     * @return True if the email matches with regex pattern.
-     */
+    public UserDto(UserEntity user)
+    {
+        this.userID = UUID.fromString(user.id);
+        this.userEmail = user.email;
+        this.userName = user.username;
+    }
+
+
     public boolean validateEmail(String emailAddress){
         // regexPattern from RFC 5322 for Email Validation
         String regexPattern = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
