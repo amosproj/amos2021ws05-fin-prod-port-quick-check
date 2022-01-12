@@ -16,7 +16,6 @@ function BubbleGraph({ data }) {
   const options = {
     onClick: (e, element) => {
       if (element.length > 0) {
-        var ind = element[0]._index;
         console.log('bubble clicked', element);
       }
     },
