@@ -70,13 +70,13 @@ import ProductRow from './ProductRow';
 //   return products.filter((prod) => prod.parentID === product.productID);
 // };
 
-function AddButton(props) {
+function AddButton({ onAddProduct }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [productName, setProductName] = useState('');
   const header = 'Add Product';
   return (
     <>
-      <IconButton icon={<AddIcon />} variant="primary" size="lg" {...props} onClick={onOpen} />
+      <IconButton icon={<AddIcon />} variant="primary" size="lg" onClick={onOpen} />
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
@@ -96,7 +96,7 @@ function AddButton(props) {
               variant="primary"
               mx={3}
               onClick={(e) => {
-                props.onAddProduct(productName);
+                onAddProduct(productName);
                 onClose();
               }}
             >
