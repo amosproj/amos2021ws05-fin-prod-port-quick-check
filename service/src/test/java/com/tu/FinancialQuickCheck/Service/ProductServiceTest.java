@@ -440,8 +440,8 @@ public class ProductServiceTest {
 
         //step 1: provide knowledge
         //TODO: find out how to create an Iterable
-        ProductEntity tmp[] = {preProductEntity};
-        Iterable<ProductEntity> productEntities = Arrays.asList(tmp);
+        List<ProductEntity> productEntities = new ArrayList<>();
+        productEntities.add(preProductEntity);
 
         when(projectRepository.existsById(preProjectEntity.id)).thenReturn(true);
         when(repository.findByProject(projectRepository.findById(preProjectEntity.id).get())).thenReturn(productEntities);
