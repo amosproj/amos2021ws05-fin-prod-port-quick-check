@@ -20,7 +20,7 @@ import RatingTable from './RatingTable';
 import { score } from '../../utils/const';
 import {useStoreActions, useStoreState} from "easy-peasy";
 
-
+//http://localhost:3000/projects/100/productArea/1/products/100/ratings
 const mockRatings = {
   ratings: [
     {
@@ -73,12 +73,6 @@ export default function Rating() {
     });
   };
 
-  const handleChange2 = (key) => (value) => {
-    setRatingsPerCategory({
-      ...ratingsPerCategory,
-      [key]: value,
-    });
-  };
 
   const setRatings = handleChange('ratings');
 
@@ -103,8 +97,8 @@ export default function Rating() {
 
   useEffect(() => {
     //initRatingsData();
-    fetchRatings();
-    setRatingsData(mockRatings.ratings);
+    fetchRatings(productID);
+    //setRatingsData(mockRatings.ratings);
   }, []);
 
   const EditButtons = () => {

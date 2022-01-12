@@ -118,9 +118,9 @@ const ratingModel =
       }),
 
       // GET all ratings
-      fetch: thunk(async (actions, ) => {
+      fetch: thunk(async (actions, productID) => {
         await api
-            .url('/products/100/ratings' )
+            .url('/products/'+productID + '/ratings' )
             .get()
             .json((json) => actions.set(json))
             .catch(console.error);
