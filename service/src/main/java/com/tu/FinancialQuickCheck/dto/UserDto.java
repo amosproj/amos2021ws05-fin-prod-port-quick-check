@@ -1,7 +1,5 @@
 package com.tu.FinancialQuickCheck.dto;
 
-import com.tu.FinancialQuickCheck.Role;
-
 import java.util.Objects;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -16,11 +14,6 @@ public class UserDto {
     public String password;
 
     public UserDto(){}
-
-    public UserDto(String email)
-    {
-        this.userEmail = email;
-    }
 
 
     public UserDto(UUID userID, String email, String username)

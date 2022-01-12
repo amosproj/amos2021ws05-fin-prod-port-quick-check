@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface ProductRepository extends JpaRepository<ProductEntity, Integer> {
 
-
     Boolean existsByProjectAndProductarea(ProjectEntity project, ProductAreaEntity productArea);
 
     List<ProductEntity> findByProject(ProjectEntity project);
