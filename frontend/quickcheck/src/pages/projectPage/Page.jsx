@@ -19,13 +19,13 @@ export default function Project() {
   const sendUpdateProject = useStoreActions((actions) => actions.project.sendUpdate);
   const [editMode, setEditMode] = useState(false);
 
-  const { id } = useParams();
+  const { projectID } = useParams();
   useEffect(() => {
-    if (id === 'new') {
+    if (projectID === 'new') {
       initProject();
       setEditMode(true);
     } else {
-      fetchProject(id);
+      fetchProject(projectID);
     }
   }, []);
 
@@ -33,7 +33,7 @@ export default function Project() {
     const confirm = () => {
       setEditMode(false);
 
-      if (id === 'new') {
+      if (projectID === 'new') {
         sendCreateProject(project);
       } else {
         sendUpdateProject(project);
@@ -41,10 +41,10 @@ export default function Project() {
     };
     const cancel = () => {
       setEditMode(false);
-      if (id === 'new') {
+      if (projectID === 'new') {
         window.location.href = '../projects';
       } else {
-        fetchProject(id);
+        fetchProject(projectID);
       }
     };
 

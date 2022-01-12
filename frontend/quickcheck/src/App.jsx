@@ -26,9 +26,12 @@ function App() {
               <Route path="/" element={<Navigate replace to="/login" />} />
               <Route path="login" element={<Login />} />
               <Route path="projects" element={<ProjectOverview />} />
-              <Route path="projects/:id" element={<Project />} />
+              <Route path="projects/:projectID" element={<Project />} />
               <Route path="results" element={<ResultPage />} />
-              <Route path="products" element={<ProductOverview />} />
+              <Route
+                path="projects/:projectID/productArea/:productAreaID"
+                element={<ProductOverview />}
+              />
               <Route path="ratings" element={<Rating />} />
             </Routes>
             <Link to="login"> [Login] </Link>

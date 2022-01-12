@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Page from '../../components/Page';
 import { useStoreState, useStoreActions } from 'easy-peasy';
+import { useParams } from 'react-router-dom';
 import {
   Modal,
   ModalOverlay,
@@ -16,65 +17,19 @@ import {
   HStack,
   IconButton,
   Input,
+  Link,
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 
 import ProductRow from './ProductRow';
 
-const products = [
-  {
-    productID: 111,
-    productName: 'Optionen 1',
-    productArea: {},
-    projectID: 1,
-    parentID: 0,
-  },
-  {
-    productID: 112,
-    productName: 'Optionen 2',
-    productArea: {},
-    projectID: 1,
-    parentID: 0,
-  },
-  {
-    productID: 113,
-    productName: 'Optionen 1 child',
-    productArea: {},
-    projectID: 1,
-    parentID: 111,
-  },
-
-  {
-    productID: 114,
-    productName: 'Optionen 1 child',
-    productArea: {},
-    projectID: 1,
-    parentID: 111,
-  },
-  {
-    productID: 115,
-    productName: 'Optionen 2 child',
-    productArea: {},
-    projectID: 1,
-    parentID: 112,
-  },
-];
-
-// const getProducts = (products) => {
-//   return products.filter((prod) => prod.parentID === 0);
-// };
-
-// const getChildren = (product) => {
-//   return products.filter((prod) => prod.parentID === product.productID);
-// };
-
-function AddButton(props) {
+function AddButton({ onAddProduct }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [productName, setProductName] = useState('');
   const header = 'Add Product';
   return (
     <>
-      <IconButton icon={<AddIcon />} variant="primary" size="lg" {...props} onClick={onOpen} />
+      <IconButton icon={<AddIcon />} variant="primary" size="lg" onClick={onOpen} />
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
@@ -94,7 +49,7 @@ function AddButton(props) {
               variant="primary"
               mx={3}
               onClick={(e) => {
-                props.onAddProduct(productName);
+                onAddProduct(productName);
                 onClose();
               }}
             >
@@ -112,19 +67,25 @@ function AddButton(props) {
 
 export default function ProductOverview() {
   const productsAction = useStoreState((state) => state.productList.products);
-  const addProductAction = useStoreActions((actions) => actions.productList.addProduct);
-  const setProducts = useStoreActions((actions) => actions.productList.set);
+  // const addProductAction = useStoreActions((actions) => actions.productList.addProduct);
+  const fetchProducts = useStoreActions((actions) => actions.productList.fetch);
+  const createProduct = useStoreActions((actions) => actions.productList.createProduct);
+  // const setProducts = useStoreActions((actions) => actions.productList.set);
   const [editMode, setEditMode] = useState(false);
 
+  const { projectID, productAreaID } = useParams();
+
   useEffect(() => {
-    setProducts(products);
+    //setProducts(products);
+    fetchProducts(projectID);
+    console.log('rendered');
   }, []);
 
   const EditButtons = () => {
     if (editMode) {
       return (
         <HStack>
-          {editMode ? <AddButton w={16} onAddProduct={addProduct} /> : undefined}
+          {editMode ? <AddButton w={16} onAddProduct={addProductAPI} /> : undefined}
           <Button size="md" onClick={() => setEditMode(false)}>
             Cancel
           </Button>
@@ -143,7 +104,7 @@ export default function ProductOverview() {
       );
     }
   };
-  const addProduct = (productName) => {
+  /*const addProduct = (productName) => {
     const prod = {
       productID: new Date().getMilliseconds(),
       productName: productName,
@@ -152,7 +113,33 @@ export default function ProductOverview() {
       parentID: 0,
     };
     addProductAction(prod);
+  };*/
+
+  const addProductAPI = (productName) => {
+    const prod = {
+      productName: productName,
+      productArea: {
+        id: '1',
+      },
+      projectID: projectID,
+    };
+    createProduct(prod);
   };
+
+  /*const updateProduct = (productName) => {
+    const updatedProd = {
+
+      "productName": productName,
+      "comment": "string",
+      "resources":
+
+        [
+          "string"
+        ]
+
+    }
+    //updateProduct(updatedProduct, productID);
+  }*/
 
   return (
     <div>
@@ -167,8 +154,10 @@ export default function ProductOverview() {
             ></ProductRow>
           ))}
         </List>
-        <Button>Generate Results</Button>
         <EditButtons />
+        <Link href="/results">
+          <Button>Generate Results</Button>
+        </Link>
       </Page>
     </div>
   );

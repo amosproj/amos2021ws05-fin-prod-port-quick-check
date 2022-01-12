@@ -2,15 +2,25 @@ import { React } from 'react';
 import { Button, Heading, IconButton, Spacer, List, Flex } from '@chakra-ui/react';
 import { DeleteIcon } from '@chakra-ui/icons';
 import { useStoreActions, useStoreState } from 'easy-peasy';
+import { useParams } from 'react-router-dom';
 
 import ConfirmClick from '../../components/ConfirmClick.jsx';
 
 import AddAreaButton from './AddAreaButton.jsx';
 
 function ProductArea({ productArea }) {
+  const { projectID } = useParams();
+
   return (
     <>
-      <Button as="a" variant="secondary" rounded="md" href="/projects" w="full" py={5}>
+      <Button
+        as="a"
+        variant="secondary"
+        rounded="md"
+        href={`/projects/${projectID}/productArea/${productArea.id}`}
+        w="full"
+        py={5}
+      >
         <Spacer />
         <Heading size="md" align="center">
           {productArea.name} ({productArea.category})

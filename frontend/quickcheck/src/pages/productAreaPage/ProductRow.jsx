@@ -7,6 +7,7 @@ import {
   Textarea,
   VStack,
   Box,
+  Link,
 } from '@chakra-ui/react';
 import React from 'react';
 import Card from '../../components/Card';
@@ -60,13 +61,19 @@ export default function ProductRow({ product, editMode }) {
         <Spacer />
         <VStack>
           <CircularProgress size="40px" value={40} />
-          <Button variant="whisper">Economical</Button>
+          <Link href="/ratings">
+            <Button variant="whisper">Economical</Button>
+          </Link>
         </VStack>
         <Spacer />
 
         <VStack>
           <CircularProgress size="40px" value={40} />
-          <Button variant="whisper">Complexity</Button>
+          <Link href="/ratings">
+            <Button variant="whisper" href="/ratings">
+              Complexity
+            </Button>
+          </Link>
         </VStack>
         <Spacer />
 
