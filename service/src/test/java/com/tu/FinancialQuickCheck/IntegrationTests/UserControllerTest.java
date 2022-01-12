@@ -1,4 +1,4 @@
-package com.tu.FinancialQuickCheck.Controller;
+package com.tu.FinancialQuickCheck.IntegrationTests;
 
 import com.tu.FinancialQuickCheck.dto.UserDto;
 import org.json.JSONException;

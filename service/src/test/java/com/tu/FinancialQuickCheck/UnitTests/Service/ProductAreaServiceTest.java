@@ -1,5 +1,6 @@
-package com.tu.FinancialQuickCheck.Service;
+package com.tu.FinancialQuickCheck.UnitTests.Service;
 
+import com.tu.FinancialQuickCheck.Service.ProductAreaService;
 import com.tu.FinancialQuickCheck.db.*;
 import com.tu.FinancialQuickCheck.dto.ProductAreaDto;
 import org.junit.jupiter.api.BeforeEach;

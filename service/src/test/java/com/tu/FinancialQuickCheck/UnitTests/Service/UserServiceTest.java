@@ -1,7 +1,8 @@
-package com.tu.FinancialQuickCheck.Service;
+package com.tu.FinancialQuickCheck.UnitTests.Service;
 
 import com.tu.FinancialQuickCheck.Exceptions.BadRequest;
 import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
+import com.tu.FinancialQuickCheck.Service.UserService;
 import com.tu.FinancialQuickCheck.db.UserEntity;
 import com.tu.FinancialQuickCheck.db.UserRepository;
 import com.tu.FinancialQuickCheck.dto.UserDto;
@@ -11,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.*;
 import java.util.logging.Logger;

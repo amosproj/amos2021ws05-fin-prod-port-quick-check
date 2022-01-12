@@ -1,4 +1,4 @@
-package com.tu.FinancialQuickCheck.Controller;
+package com.tu.FinancialQuickCheck.IntegrationTests;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

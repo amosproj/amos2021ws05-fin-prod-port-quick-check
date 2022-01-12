@@ -1,9 +1,10 @@
-package com.tu.FinancialQuickCheck.Service;
+package com.tu.FinancialQuickCheck.UnitTests.Service;
 
 
 import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.RatingArea;
 import com.tu.FinancialQuickCheck.Score;
+import com.tu.FinancialQuickCheck.Service.ProductRatingService;
 import com.tu.FinancialQuickCheck.db.*;
 import com.tu.FinancialQuickCheck.dto.ProductDto;
 import com.tu.FinancialQuickCheck.dto.ProductRatingDto;

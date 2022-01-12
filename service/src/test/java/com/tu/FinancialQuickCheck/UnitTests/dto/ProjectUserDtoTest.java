@@ -1,5 +1,6 @@
-package com.tu.FinancialQuickCheck.dto;
+package com.tu.FinancialQuickCheck.UnitTests.dto;
 
+import com.tu.FinancialQuickCheck.dto.ProjectUserDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;

@@ -1,6 +1,7 @@
-package com.tu.FinancialQuickCheck.Service;
+package com.tu.FinancialQuickCheck.UnitTests.Service;
 
 import com.tu.FinancialQuickCheck.RatingArea;
+import com.tu.FinancialQuickCheck.Service.RatingService;
 import com.tu.FinancialQuickCheck.db.RatingEntity;
 import com.tu.FinancialQuickCheck.db.RatingRepository;
 import com.tu.FinancialQuickCheck.dto.RatingDto;

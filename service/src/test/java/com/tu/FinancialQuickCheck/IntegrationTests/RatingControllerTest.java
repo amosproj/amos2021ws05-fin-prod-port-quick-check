@@ -1,4 +1,4 @@
-package com.tu.FinancialQuickCheck.Controller;
+package com.tu.FinancialQuickCheck.IntegrationTests;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

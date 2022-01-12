@@ -1,6 +1,10 @@
-package com.tu.FinancialQuickCheck.db;
+package com.tu.FinancialQuickCheck.UnitTests.db;
 
 import com.tu.FinancialQuickCheck.RatingArea;
+import com.tu.FinancialQuickCheck.db.ProductAreaEntity;
+import com.tu.FinancialQuickCheck.db.ProductEntity;
+import com.tu.FinancialQuickCheck.db.ProductRatingId;
+import com.tu.FinancialQuickCheck.db.RatingEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.logging.Logger;

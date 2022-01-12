@@ -1,5 +1,8 @@
-package com.tu.FinancialQuickCheck.db;
+package com.tu.FinancialQuickCheck.UnitTests.db;
 
+import com.tu.FinancialQuickCheck.db.ProjectEntity;
+import com.tu.FinancialQuickCheck.db.ProjectUserId;
+import com.tu.FinancialQuickCheck.db.UserEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.logging.Logger;

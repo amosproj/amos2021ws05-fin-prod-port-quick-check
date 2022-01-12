@@ -1,4 +1,4 @@
-package com.tu.FinancialQuickCheck.Controller;
+package com.tu.FinancialQuickCheck.IntegrationTests;
 
 import com.tu.FinancialQuickCheck.db.ProductAreaRepository;
 import org.junit.jupiter.api.BeforeEach;
