@@ -19,7 +19,7 @@ import {
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 
-import ProductRow from './Product';
+import ProductRow from './ProductRow';
 
 const productsMock = [
   {
