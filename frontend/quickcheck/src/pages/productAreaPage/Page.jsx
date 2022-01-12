@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Page from '../../components/Page';
 import { useStoreState, useStoreActions } from 'easy-peasy';
+import { useParams } from 'react-router-dom';
 import {
   Modal,
   ModalOverlay,
@@ -118,7 +119,8 @@ export default function ProductOverview() {
   const createProduct = useStoreActions((actions) => actions.productList.createProduct);
   // const setProducts = useStoreActions((actions) => actions.productList.set);
   const [editMode, setEditMode] = useState(false);
-  const projectID = 200;
+
+  const { projectID, productAreaID } = useParams();
 
   useEffect(() => {
     //setProducts(products);
