@@ -48,13 +48,7 @@ const projectListModel = {
       .catch(console.error);
   }),
 };
-const projectAreaModel = {
-  data: {
-    id: 0,
-    name: '',
-    category: 'Private',
-  },
-};
+
 const projectModel = {
   data: {
     projectID: 0,
