@@ -23,53 +23,6 @@ import { AddIcon } from '@chakra-ui/icons';
 
 import ProductRow from './ProductRow';
 
-/* const products = [
-  {
-    productID: 111,
-    productName: 'Optionen 1',
-    productArea: {},
-    projectID: 100,
-    parentID: 0,
-  },
-  {
-    productID: 112,
-    productName: 'Optionen 2',
-    productArea: {},
-    projectID: 100,
-    parentID: 0,
-  },
-  {
-    productID: 113,
-    productName: 'Optionen 1 child',
-    productArea: {},
-    projectID: 100,
-    parentID: 111,
-  },
-
-  {
-    productID: 114,
-    productName: 'Optionen 1 child',
-    productArea: {},
-    projectID: 100,
-    parentID: 111,
-  },
-  {
-    productID: 115,
-    productName: 'Optionen 2 child',
-    productArea: {},
-    projectID: 100,
-    parentID: 112,
-  },
-];*/
-
-// const getProducts = (products) => {
-//   return products.filter((prod) => prod.parentID === 0);
-// };
-
-// const getChildren = (product) => {
-//   return products.filter((prod) => prod.parentID === product.productID);
-// };
-
 function AddButton({ onAddProduct }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [productName, setProductName] = useState('');
