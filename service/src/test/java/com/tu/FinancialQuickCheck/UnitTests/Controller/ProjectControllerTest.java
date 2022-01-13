@@ -5,6 +5,7 @@ import com.tu.FinancialQuickCheck.Exceptions.BadRequest;
 import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.Service.ProductService;
 import com.tu.FinancialQuickCheck.Service.ProjectService;
+import com.tu.FinancialQuickCheck.Service.ResultService;
 import com.tu.FinancialQuickCheck.dto.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,6 +31,8 @@ public class ProjectControllerTest {
     private ProjectService service;
     @Mock
     private ProductService productService;
+    @Mock
+    private ResultService resultService;
 
     private ProjectController controller;
 
@@ -44,7 +47,7 @@ public class ProjectControllerTest {
     public void init() {
         log.info("@BeforeEach - setup for Tests in ProjectControllerTest.class");
 
-        controller = new ProjectController(service, productService);
+        controller = new ProjectController(service, productService, resultService);
 
         dto1 = new ProjectDto();
         dto2 = new ProjectDto();
