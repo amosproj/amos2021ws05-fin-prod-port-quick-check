@@ -45,6 +45,9 @@ components:
         type: integer
 
   schemas:
+    productName:
+      type: string
+      example: "Optionen"
     ratingID:
       type: integer
       example: 111
@@ -84,12 +87,14 @@ components:
           example: 4
     getProductEvaluation:
       properties:
+        productName:
+          $ref: '#/components/schemas/productName'
         ratings:
           type: array
           description: list containing ratings of "Kreditvolumen im Bestand" (= size of pie), "Marge" (= y-axis) and "tbd" (= outer circle values)
           items:
             $ref: "#/components/schemas/productRating"
-        innerCircel:
+        scores:
           type: array
           description: aggregated values of field "Gesamteinschätzung wirtschaftlicher Bewertung" for productvariants
           items:

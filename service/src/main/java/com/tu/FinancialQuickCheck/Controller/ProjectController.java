@@ -5,6 +5,7 @@ import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.RatingArea;
 import com.tu.FinancialQuickCheck.Service.ProductService;
 import com.tu.FinancialQuickCheck.Service.ProjectService;
+import com.tu.FinancialQuickCheck.Service.ResultService;
 import com.tu.FinancialQuickCheck.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,8 @@ public class ProjectController {
     private ProjectService service;
     @Autowired
     private ProductService productService;
+    @Autowired
+    private ResultService resultService;
 
     /**
      * Constructor for class ProjectController.
@@ -31,10 +34,11 @@ public class ProjectController {
      * @param projectService The different services for the project.
      * @param productService The different services for the products.
      */
-    public ProjectController(ProjectService projectService, ProductService productService){
+    public ProjectController(ProjectService projectService, ProductService productService, ResultService resultService){
 
         this.service = projectService;
         this.productService = productService;
+        this.resultService = resultService;
     }
 
     @GetMapping(produces = "application/json")
@@ -115,7 +119,7 @@ public class ProjectController {
                                                   @RequestParam(required = false) Optional<String> productArea) {
         List<ProductDto> tmp;
 
-        if(!productArea.isPresent()){
+        if(productArea.isEmpty()){
             tmp = productService.getProductsByProjectId(projectID);
         }else{
             try{
@@ -127,7 +131,6 @@ public class ProjectController {
         }
 
         return tmp;
-
     }
 
     /**
@@ -172,6 +175,19 @@ public class ProjectController {
                                                   @PathVariable int projectID) {
 
         List<ProjectUserDto> tmp = service.createProjectUsers(projectID, members);
+
+        if(tmp == null){
+            throw new ResourceNotFound("projectID " + projectID + " not found");
+        }else{
+            return tmp;
+        }
+    }
+
+    @GetMapping("/{projectID}/results")
+    public List<ResultDto> getResults(@PathVariable int projectID,
+                                       @RequestParam(required = false) Optional<String> productAreaID) {
+
+        List<ResultDto> tmp = resultService.getResults(projectID, productAreaID);
 
         if(tmp == null){
             throw new ResourceNotFound("projectID " + projectID + " not found");

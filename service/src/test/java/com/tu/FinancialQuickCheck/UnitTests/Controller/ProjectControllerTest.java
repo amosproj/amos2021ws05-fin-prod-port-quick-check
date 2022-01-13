@@ -5,6 +5,7 @@ import com.tu.FinancialQuickCheck.Exceptions.BadRequest;
 import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.Service.ProductService;
 import com.tu.FinancialQuickCheck.Service.ProjectService;
+import com.tu.FinancialQuickCheck.Service.ResultService;
 import com.tu.FinancialQuickCheck.dto.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,8 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,24 +30,26 @@ public class ProjectControllerTest {
     private ProjectService service;
     @Mock
     private ProductService productService;
+    @Mock
+    private ResultService resultService;
 
     private ProjectController controller;
 
     private ProjectDto dto1;
-    private ProjectDto dto2;
     private List<SmallProjectDto> listDtos;
     private ProductDto productDto;
     private List<ProductDto> listProductDtos;
     private List<ProjectUserDto> listProjectUserDtos;
+    private List<ResultDto> listOfResults;
 
     @BeforeEach
     public void init() {
         log.info("@BeforeEach - setup for Tests in ProjectControllerTest.class");
 
-        controller = new ProjectController(service, productService);
+        controller = new ProjectController(service, productService, resultService);
 
         dto1 = new ProjectDto();
-        dto2 = new ProjectDto();
+        ProjectDto dto2 = new ProjectDto();
         listDtos = new ArrayList<>();
 
         productDto = new ProductDto();
@@ -56,6 +58,7 @@ public class ProjectControllerTest {
         listProductDtos = new ArrayList<>();
 
         listProjectUserDtos = new ArrayList<>();
+        listOfResults = new ArrayList<>();
     }
 
     @Test
@@ -66,7 +69,7 @@ public class ProjectControllerTest {
         // Step 2: execute test method and assert
         List<SmallProjectDto> out = controller.findALL();
 
-        assertTrue(out.size() == listDtos.size());
+        assertEquals(out.size(), listDtos.size());
     }
 
     @Test
@@ -93,7 +96,7 @@ public class ProjectControllerTest {
         // Step 2: execute test method and assert
         ProjectDto out = controller.createProject(dto1);
 
-        assertTrue(out == dto1);
+        assertSame(out, dto1);
     }
 
     @Test
@@ -122,7 +125,7 @@ public class ProjectControllerTest {
         // Step 2: execute test method and assert
         ProjectDto out = controller.findById(projectID);
 
-        assertTrue(out == dto1);
+        assertSame(out, dto1);
     }
 
     @Test
@@ -151,7 +154,7 @@ public class ProjectControllerTest {
         // Step 2: execute test method and assert
         ProjectDto out = controller.updateById(dto1, projectID);
 
-        assertTrue(out == dto1);
+        assertSame(out, dto1);
     }
 
     @Test
@@ -178,7 +181,7 @@ public class ProjectControllerTest {
         //execute test method and assert
         List<ProductDto> out = controller.findProductsByProject(projectID, Optional.of(productArea));
 
-        assertTrue(out.size() == listProductDtos.size());
+        assertEquals(out.size(), listProductDtos.size());
     }
 
     @Test
@@ -188,7 +191,7 @@ public class ProjectControllerTest {
         //execute test method and assert
         List<ProductDto> out = controller.findProductsByProject(projectID, Optional.empty());
 
-        assertTrue(out.size() == listProductDtos.size());
+        assertEquals(out.size(), listProductDtos.size());
     }
 
     @Test
@@ -249,7 +252,7 @@ public class ProjectControllerTest {
         // execute test method and assert
         List<ProductDto> out = controller.createProduct(projectID, productDto);
 
-        assertTrue(out.size() == listProductDtos.size());
+        assertEquals(out.size(), listProductDtos.size());
     }
 
     @Test
@@ -278,6 +281,37 @@ public class ProjectControllerTest {
         // Step 2: execute test method and assert
         List<ProjectUserDto> out = controller.createProjectUser(listProjectUserDtos, projectID);
 
-        assertTrue(out.size() == listProjectUserDtos.size());
+        assertEquals(out.size(), listProjectUserDtos.size());
+    }
+
+    @Test
+    public void testGetResults_resourceNotFound(){
+        int projectID = 1;
+
+        // provide knowledge
+        when(resultService.getResults(projectID, Optional.empty())).thenReturn(null);
+
+        // execute and assert test methode
+        Exception exception;
+        exception = assertThrows(ResourceNotFound.class,
+                () -> controller.getResults(projectID, Optional.empty()));
+
+        String expectedMessage = "projectID 1 not found";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    public void testGetResults_resourceExists(){
+        int projectID = 1;
+
+        // provide knowledge
+        when(resultService.getResults(projectID, Optional.empty())).thenReturn(listOfResults);
+
+        // execute and assert test methode
+        List<ResultDto> out = controller.getResults(projectID, Optional.empty());
+
+        assertEquals(out.size(), listOfResults.size());
     }
 }

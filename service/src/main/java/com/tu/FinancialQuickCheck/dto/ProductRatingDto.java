@@ -9,7 +9,6 @@ import com.tu.FinancialQuickCheck.db.RatingEntity;
  */
 public class ProductRatingDto {
 
-    public int productID;
     public int ratingID;
     public RatingDto rating;
 
