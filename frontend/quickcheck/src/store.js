@@ -1,7 +1,7 @@
 import { createStore, action, thunk } from 'easy-peasy';
 
 import { api } from './utils/apiClient';
-import {ratingArea, score} from "./utils/const";
+import { ratingArea, score } from './utils/const';
 
 // Documentation for easy-peasy: https://easy-peasy.vercel.app/docs/tutorials/quick-start.html
 
@@ -157,49 +157,48 @@ const projectModel = {
   }),
 };
 
-const ratingModel =
-    {
-       ratings : [],
+const ratingModel = {
+  ratings: [],
 
-      init: action((state, payload) => {
-              state.ratings = [{
-              productID: 0,
-              ratingID: 0,
-              answer: 'test answer',
-              comment: 'test comment',
-              score: score.gering,
-              rating: {
-                  ratingID: 0,
-                  category: 'Treiber 1',
-                  criterion: 'test frage',
-                  ratingArea: ratingArea.ECONOMIC
-              },
-          }];
-      }
-      ),
+  init: action((state, payload) => {
+    state.ratings = [
+      {
+        productID: 0,
+        ratingID: 0,
+        answer: 'test answer',
+        comment: 'test comment',
+        score: score.gering,
+        rating: {
+          ratingID: 0,
+          category: 'Treiber 1',
+          criterion: 'test frage',
+          ratingArea: ratingArea.ECONOMIC,
+        },
+      },
+    ];
+  }),
 
-      // general actions
-      set: action((state, ratings) => {
-        state.ratings = ratings;
-      }),
-      update: action((state, updatedProps) => {
-        state.data = { ...state.data, ...updatedProps };
-      }),
-      updateRating: action((state, rating) => {
-        const index = state.data.ratings.map((r) => r.ratingID).indexOf(rating.ratingID); // get index of member with same email. if not found, index=-1
-        state.data.ratings[index] = { ...state.data.ratings[index], ...rating };
-      }),
+  // general actions
+  set: action((state, ratings) => {
+    state.ratings = ratings;
+  }),
+  update: action((state, updatedProps) => {
+    state.data = { ...state.data, ...updatedProps };
+  }),
+  updateRating: action((state, rating) => {
+    const index = state.data.ratings.map((r) => r.ratingID).indexOf(rating.ratingID); // get index of member with same email. if not found, index=-1
+    state.data.ratings[index] = { ...state.data.ratings[index], ...rating };
+  }),
 
-      // GET all ratings
-      fetch: thunk(async (actions, productID) => {
-        await api
-            .url('/products/'+productID + '/ratings' )
-            .get()
-            .json((json) => actions.set(json))
-            .catch(console.error);
-      }),
-
-    };
+  // GET all ratings
+  fetch: thunk(async (actions, productID) => {
+    await api
+      .url('/products/' + productID + '/ratings')
+      .get()
+      .json((json) => actions.set(json))
+      .catch(console.error);
+  }),
+};
 
 const store = createStore({
   projectList: projectListModel,

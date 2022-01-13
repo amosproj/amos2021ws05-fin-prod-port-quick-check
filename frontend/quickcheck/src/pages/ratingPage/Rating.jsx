@@ -4,8 +4,7 @@ import Page from '../../components/Page';
 import Card from '../../components/Card';
 import RatingTable from './RatingTable';
 import { score } from '../../utils/const';
-import {useStoreActions, useStoreState} from "easy-peasy";
-
+import { useStoreActions, useStoreState } from 'easy-peasy';
 
 //http://localhost:3000/projects/100/productArea/1/products/100/ratings
 
@@ -41,12 +40,9 @@ const mockRatings = {
   ],
 };
 
-
 export default function Rating() {
   const [editMode, setEditMode] = useState(false);
-  const [ratingsPerCategory, setRatingsPerCategory]= useState(
-      []
-  );
+  const [ratingsPerCategory, setRatingsPerCategory] = useState([]);
   const ratingsData = useStoreState((state) => state.rating.ratings);
   //const initRatingsData = useStoreActions((actions) => actions.rating.init);
   const setRatingsData = useStoreActions((actions) => actions.rating.set);
@@ -55,28 +51,23 @@ export default function Rating() {
   const { productID } = useParams();
 
   const handleChange = (key) => (value) => {
-    setRatingsData({ //set action statt setRatingstData
+    setRatingsData({
+      //set action statt setRatingstData
       ...ratingsData,
       [key]: value,
     });
   };
 
-
   const setRatings = handleChange('ratings');
 
-  function computeRatingsPerCategory(ratings)
-  {
-    if(ratings.length === 0 || Object.keys(ratingsPerCategory).length != 0) {
+  function computeRatingsPerCategory(ratings) {
+    if (ratings.length === 0 || Object.keys(ratingsPerCategory).length != 0) {
       return [];
     }
-    for (const rating of ratings)
-    {
-      if (ratingsPerCategory[rating.rating.category] != null)
-      {
-        (ratingsPerCategory[rating.rating.category]).push(rating);
-      }
-      else
-      {
+    for (const rating of ratings) {
+      if (ratingsPerCategory[rating.rating.category] != null) {
+        ratingsPerCategory[rating.rating.category].push(rating);
+      } else {
         ratingsPerCategory[rating.rating.category] = [rating];
       }
     }
@@ -110,36 +101,34 @@ export default function Rating() {
     }
   };
 
-  function DataTabs({data})
-  {
+  function DataTabs({ data }) {
     return (
-        <Page title="Komplexitätsbewertung">
-          <Tabs>
-            <TabList>
-              {data.map(complexityDriver=> (
-                  <Tab key={complexityDriver[1]}>{complexityDriver[0]}</Tab>
-              ))}
-            </TabList>
-            <TabPanels>
-              {data.map(complexityDriver => (
-                  <TabPanel p={4} key={complexityDriver[0]}>
-                    <Card direction="column">
-                      <RatingTable
-                          editMode={editMode}
-                          ratings={complexityDriver[1]}
-                          handleChange={setRatings}
-                      />
-                    </Card>
-                  </TabPanel>
-              ))}
-            </TabPanels>
-          </Tabs>
-        </Page>
-    )
+      <Page title="Komplexitätsbewertung">
+        <Tabs>
+          <TabList>
+            {data.map((complexityDriver) => (
+              <Tab key={complexityDriver[1]}>{complexityDriver[0]}</Tab>
+            ))}
+          </TabList>
+          <TabPanels>
+            {data.map((complexityDriver) => (
+              <TabPanel p={4} key={complexityDriver[0]}>
+                <Card direction="column">
+                  <RatingTable
+                    editMode={editMode}
+                    ratings={complexityDriver[1]}
+                    handleChange={setRatings}
+                  />
+                </Card>
+              </TabPanel>
+            ))}
+          </TabPanels>
+        </Tabs>
+      </Page>
+    );
   }
   if (ratingsData.ratings != undefined) {
     computeRatingsPerCategory(ratingsData.ratings);
   }
-  return <DataTabs data={ Object.entries(ratingsPerCategory)}/>;
-
+  return <DataTabs data={Object.entries(ratingsPerCategory)} />;
 }

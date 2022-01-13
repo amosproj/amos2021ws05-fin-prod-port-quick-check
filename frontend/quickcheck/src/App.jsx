@@ -32,7 +32,10 @@ function App() {
                 path="projects/:projectID/productArea/:productAreaID"
                 element={<ProductOverview />}
               />
-              <Route path="projects/:projectID/productArea/:productAreaID/products/:productID/ratings" element={<Rating />} />
+              <Route
+                path="projects/:projectID/productArea/:productAreaID/products/:productID/ratings"
+                element={<Rating />}
+              />
             </Routes>
             <Link to="login"> [Login] </Link>
             <Link to="projects"> [Projects] </Link>
