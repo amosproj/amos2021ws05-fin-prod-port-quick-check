@@ -1,7 +1,6 @@
 package com.tu.FinancialQuickCheck.Service;
 
 import com.tu.FinancialQuickCheck.Exceptions.BadRequest;
-import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.Score;
 import com.tu.FinancialQuickCheck.db.*;
 import com.tu.FinancialQuickCheck.dto.*;
@@ -55,7 +54,11 @@ public class ResultService {
 
     public List<ResultDto> getResultsByProject(int projectID) {
 
-        return returnDummyData();
+        if(!projectRepository.existsById(projectID)){
+            return null;
+        }else{
+            return returnDummyData();
+        }
     }
 
     /**
@@ -67,7 +70,11 @@ public class ResultService {
      */
     public List<ResultDto> getResultsByProductArea(int projectID, int productAreaID) {
 
-        return returnDummyData();
+        if(!projectRepository.existsById(projectID)){
+            return null;
+        }else{
+            return returnDummyData();
+        }
     }
 
     // TODO: delete when data is correctly send (can potentially be used for testing)
