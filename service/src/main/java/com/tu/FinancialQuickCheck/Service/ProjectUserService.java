@@ -116,9 +116,10 @@ public class ProjectUserService {
     public Boolean deleteProjectUser(int projectID, ProjectUserDto projectUserDto) {
 
         if (projectUserDto.userID != null) {
-
-            if (!repository.existsById(new ProjectUserId(projectRepository.findById(projectID).get(),
-                userRepository.findById(projectUserDto.userID.toString()).get()))) {
+            ProjectEntity project = projectRepository.findById(projectID).get();
+            UserEntity user = userRepository.findById(projectUserDto.userID.toString()).get();
+            ProjectUserId tmp = new ProjectUserId(project, user);
+            if (!repository.existsById(tmp)) {
                 throw new ResourceNotFound("User is not assigned to project.");
             }else{
 
