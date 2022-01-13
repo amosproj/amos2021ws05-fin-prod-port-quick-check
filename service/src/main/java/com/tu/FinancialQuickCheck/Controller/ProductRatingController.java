@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
 @RestController
+@CrossOrigin
 @RequestMapping("products/{productID}/ratings")
 public class ProductRatingController {
 
