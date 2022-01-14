@@ -54,11 +54,7 @@ public class ResultService {
 
     public List<ResultDto> getResultsByProject(int projectID) {
 
-        if(!projectRepository.existsById(projectID)){
-            return null;
-        }else{
-            return returnDummyData();
-        }
+        return returnDummyData(6);
     }
 
     /**
@@ -70,21 +66,17 @@ public class ResultService {
      */
     public List<ResultDto> getResultsByProductArea(int projectID, int productAreaID) {
 
-        if(!projectRepository.existsById(projectID)){
-            return null;
-        }else{
-            return returnDummyData();
-        }
+        return returnDummyData(3);
     }
 
     // TODO: delete when data is correctly send (can potentially be used for testing)
-    public List<ResultDto> returnDummyData() {
+    public List<ResultDto> returnDummyData(int num_iterations) {
 
         List<ResultDto> dummyResult = new ArrayList<>();
         String[] ratingNames = {"Kreditvolumen im Bestand", "Marge", "Kunde"};
         String[] answers = {"700 Mio EUR", "2,5%", "10.0, 20.0, 70.0"};
 
-        for(int i = 1; i < 2; i++){
+        for(int i = 1; i < num_iterations; i++){
             List<ProductRatingDto> ratings = new ArrayList<>();
             for(int j = 0; j < ratingNames.length; j++){
                 ProductRatingDto p = new ProductRatingDto();
