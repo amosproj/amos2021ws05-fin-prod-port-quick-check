@@ -7,15 +7,9 @@ import com.tu.FinancialQuickCheck.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
-/**
- * The ProductRatingService class performs service tasks and defines the logic for the product ratings. This includes
- * creating, updating or giving back product ratings
- */
+
 @Service
 public class ResultService {
     @Autowired
@@ -23,101 +17,82 @@ public class ResultService {
     @Autowired
     private final ProductRepository productRepository;
     @Autowired
-    private final RatingRepository ratingRepository;
+    private final ProductRatingRepository productRatingRepository;
+
+    public static final Integer[] SET_VALUES = new Integer[] {4, 5, 10};
+    public static final Set<Integer> RATINGS = new HashSet<>(Arrays.asList(SET_VALUES));
+    public static final Integer SCORES = 9;
 
     public ResultService(ProjectRepository repository, ProductRepository productRepository,
-                         RatingRepository ratingRepository) {
+                         ProductRatingRepository productRatingRepository) {
         this.projectRepository = repository;
         this.productRepository = productRepository;
-        this.ratingRepository = ratingRepository;
+        this.productRatingRepository = productRatingRepository;
     }
 
-    /**
-     *
-     *
-     * @param projectID
-     * @param productAreaID
-     * @return List of ResultDto
-     */
     public List<ResultDto> getResults(int projectID, Optional<String> productAreaID) {
+        List<ProductRatingEntity> tmp;
 
         if(productAreaID.isEmpty()){
-            return getResultsByProject(projectID);
+            tmp = productRatingRepository.getResultsByProject(projectID);
         }else{
             try{
                 int area = Integer.parseInt(productAreaID.get());
-                return getResultsByProductArea(projectID, area);
+                tmp = productRatingRepository.getResultsByProjectAndProductArea(projectID, area);
             }catch (Exception e){
                 throw new BadRequest("Input is missing/incorrect.");
             }
         }
+
+        return convertEntitiesToResultDtos(tmp);
     }
 
-    public List<ResultDto> getResultsByProject(int projectID) {
+    public List<ResultDto> convertEntitiesToResultDtos(List<ProductRatingEntity> productEntities){
 
-        if(!projectRepository.existsById(projectID)){
-            return null;
-        }else{
-            List<ProductEntity> tmp = productRepository.getResultsByProject(projectID);
+        Hashtable<Integer, ResultDto> table = new Hashtable<>();
 
-            return convertResultsToOutput(tmp);
-        }
-    }
-
-    /**
-     *
-     *
-     * @param projectID
-     * @param productAreaID
-     * @return List of ResultDto
-     */
-    public List<ResultDto> getResultsByProductArea(int projectID, int productAreaID) {
-
-        if(!projectRepository.existsById(projectID)){
-            return null;
-        }else{
-            List<ProductEntity> tmp = productRepository.getResultsByProjectAndProductArea(projectID, productAreaID);
-
-            return convertResultsToOutput(tmp);
-        }
-    }
-
-    // TODO: finish implementation
-    public List<ResultDto> convertResultsToOutput(List<ProductEntity> productEntities){
-        List<ResultDto> out = new ArrayList<>();
-        Hashtable<Integer, ResultDto> table = new Hashtable<Integer, ResultDto>();
-
-        for(ProductEntity product: productEntities){
-            //TODO: check if ResultDto exists in table
-            //TODO: table.put überschreibt das vorhandene Daten? oder was genau passiert hier
-            ResultDto tmp = new ResultDto();
-            if(product.parentProduct == null){
-                tmp.productName = product.name;
-                tmp.ratings = getResultRatings(product.productRatingEntities);
-                table.put(product.id, tmp);
-            }else{
-                tmp.scores = getResultScores(product.productRatingEntities);
-                table.put(product.parentProduct.id, tmp);
+        for(ProductRatingEntity p: productEntities) {
+            if (p.productRatingId.getProduct().parentProduct == null) {
+                updateResultRating(table, p);
+            } else {
+                updateResultScore(table, p);
             }
 
-
         }
 
-        return out;
-    };
-
-    // TODO: implement
-    public List<ProductRatingDto> getResultRatings(List<ProductRatingEntity> productRatingEntities){
-        List<ProductRatingDto> out = new ArrayList<>();
-
-        return out;
+        return new ArrayList<>(table.values());
     }
 
-    // TODO: implement
-    public List<ScoreDto> getResultScores(List<ProductRatingEntity> productRatingEntities){
-        List<ScoreDto> out = new ArrayList<>();
+    public void updateResultRating(Hashtable<Integer, ResultDto> table, ProductRatingEntity p){
+        ResultDto tmp = getResultDto(table, p.productRatingId.getProduct().id);
+        tmp.updateProductInfos(p.productRatingId.getProduct().id, p.productRatingId.getProduct().name);
 
-        return out;
+        if (RATINGS.contains(p.productRatingId.getRating().id)) {
+            tmp.ratings.add(new ProductRatingDto(p.answer, p.score, p.productRatingId.getRating()));
+        }
+        table.put(p.productRatingId.getProduct().id, tmp);
+    }
+
+    public void updateResultScore(Hashtable<Integer, ResultDto> table, ProductRatingEntity p){
+        ResultDto tmp = getResultDto(table, p.productRatingId.getProduct().parentProduct.id);
+        tmp.updateProductInfos(p.productRatingId.getProduct().parentProduct.id,
+                p.productRatingId.getProduct().parentProduct.name);
+
+        if (p.productRatingId.getRating().id == SCORES) {
+            int index = p.score.getValue() - 1;
+            int current_count = tmp.scores[index].count;
+            tmp.scores[index].count = current_count + 1;
+        }
+        table.put(p.productRatingId.getProduct().parentProduct.id, tmp);
+    }
+
+    public ResultDto getResultDto(Hashtable<Integer, ResultDto> table, Integer productId){
+
+        if (table.containsKey(productId)) {
+            return table.get(productId);
+        } else {
+            return new ResultDto();
+        }
     }
 
     // TODO: delete when data is correctly send (can potentially be used for testing)
@@ -139,12 +114,12 @@ public class ResultService {
                 ratings.add(p);
             }
 
-            List<ScoreDto> scores = new ArrayList<>();
-            scores.add(new ScoreDto(Score.HOCH, 5));
-            scores.add(new ScoreDto(Score.MITTEL, 7));
-            scores.add(new ScoreDto(Score.GERING, 0));
+            ScoreDto[] scores = new ScoreDto[3];
+            scores[2] = new ScoreDto(Score.HOCH, 5);
+            scores[1] = new ScoreDto(Score.MITTEL, 7);
+            scores[0] = new ScoreDto(Score.GERING, 0);
 
-            dummyResult.add(new ResultDto("productName" + i, ratings, scores));
+            dummyResult.add(new ResultDto(i, "productName" + i, ratings, scores));
         }
 
         return dummyResult;
