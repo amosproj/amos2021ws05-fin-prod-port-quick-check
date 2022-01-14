@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -34,7 +35,7 @@ public class ResultServiceTest {
     @Mock
     private ProductRepository productRepository;
     @Mock
-    private RatingRepository ratingRepository;
+    private ProductRatingRepository productRatingRepository;
 
     private ResultService service;
 
@@ -43,13 +44,13 @@ public class ResultServiceTest {
     private Optional<String> productAreaIdStringOptional;
 
     private List<ResultDto> listDtos;
-    private List<ProductEntity> listProductEntities;
+    private List<ProductRatingEntity> listProductRatingEntities;
 
     @BeforeEach
     public void init() {
         log.info("@BeforeEach - setup for Tests in ResultServiceTest.class");
         // init ProductRatingService
-        service = new ResultService(projectRepository, productRepository, ratingRepository);
+        service = new ResultService(projectRepository, productRepository, productRatingRepository);
 
         projectID = 1;
         productAreaID = 6;
@@ -71,15 +72,15 @@ public class ResultServiceTest {
                 ratings.add(p);
             }
 
-            List<ScoreDto> scores = new ArrayList<>();
-            scores.add(new ScoreDto(Score.HOCH, 5));
-            scores.add(new ScoreDto(Score.MITTEL, 7));
-            scores.add(new ScoreDto(Score.GERING, 0));
+            ScoreDto[] scores = new ScoreDto[3];
+            scores[2] = new ScoreDto(Score.HOCH, 5);
+            scores[1] = new ScoreDto(Score.MITTEL, 7);
+            scores[0] = new ScoreDto(Score.GERING, 0);
 
-            listDtos.add(new ResultDto("productName" + i, ratings, scores));
+            listDtos.add(new ResultDto(i, "productName" + i, ratings, scores));
         }
 
-        listProductEntities = new ArrayList<>();
+        listProductRatingEntities = new ArrayList<>();
     }
 
     /**
@@ -145,59 +146,5 @@ public class ResultServiceTest {
         assertTrue(actualMessage.contains(expectedMessage));
     }
 
-    /**
-     * tests for getResultsByProject()
-     *
-     * testGetResultsById: projectID does not exists --> return null
-     */
-    @Test
-    public void testGetResultsByProject_resourceNotFound() {
-        // provide knowledge
-        when(projectRepository.existsById(projectID)).thenReturn(Boolean.FALSE);
-
-        // execute and assert test method
-        assertNull(service.getResultsByProject(projectID));
-    }
-
-    @Test
-    public void testGetResultsByProject_resourceExists() {
-
-        // provide knowledge
-        when(projectRepository.existsById(projectID)).thenReturn(Boolean.TRUE);
-        when(productRepository.getResultsByProject(projectID)).thenReturn(listProductEntities);
-
-        // execute and assert test method
-        List<ResultDto> out = service.getResultsByProject(projectID);
-
-        assertEquals(out.size(), listDtos.size());
-    }
-
-    /**
-     * tests for getResultsByProductArea()
-     *
-     * testGetResultsByProductArea: projectID does not exists --> return null
-     * testGetResultsByProductArea: projectID does exists, productAreaId does not exist --> return null
-     */
-    @Test
-    public void testGetResultsByProjectAndProductArea_resourceNotFound_projectID() {
-        // provide knowledge
-        when(projectRepository.existsById(projectID)).thenReturn(Boolean.FALSE);
-
-        // execute and assert test method
-        assertNull(service.getResultsByProductArea(projectID, productAreaID));
-    }
-
-    @Test
-    public void testGetResultsByProjectAndProductArea_resourceExists() {
-
-        // provide knowledge
-        when(projectRepository.existsById(projectID)).thenReturn(Boolean.TRUE);
-        when(productRepository.getResultsByProjectAndProductArea(projectID, productAreaID)).thenReturn(listProductEntities);
-
-        // execute and assert test method
-        List<ResultDto> out = service.getResultsByProductArea(projectID, productAreaID);
-
-        assertEquals(out.size(), listDtos.size());
-    }
 
 }
