@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,7 +58,9 @@ public class ResultService {
         if(!projectRepository.existsById(projectID)){
             return null;
         }else{
-            return returnDummyData();
+            List<ProductEntity> tmp = productRepository.getResultsByProject(projectID);
+
+            return convertResultsToOutput(tmp);
         }
     }
 
@@ -73,8 +76,48 @@ public class ResultService {
         if(!projectRepository.existsById(projectID)){
             return null;
         }else{
-            return returnDummyData();
+            List<ProductEntity> tmp = productRepository.getResultsByProjectAndProductArea(projectID, productAreaID);
+
+            return convertResultsToOutput(tmp);
         }
+    }
+
+    // TODO: finish implementation
+    public List<ResultDto> convertResultsToOutput(List<ProductEntity> productEntities){
+        List<ResultDto> out = new ArrayList<>();
+        Hashtable<Integer, ResultDto> table = new Hashtable<Integer, ResultDto>();
+
+        for(ProductEntity product: productEntities){
+            //TODO: check if ResultDto exists in table
+            //TODO: table.put überschreibt das vorhandene Daten? oder was genau passiert hier
+            ResultDto tmp = new ResultDto();
+            if(product.parentProduct == null){
+                tmp.productName = product.name;
+                tmp.ratings = getResultRatings(product.productRatingEntities);
+                table.put(product.id, tmp);
+            }else{
+                tmp.scores = getResultScores(product.productRatingEntities);
+                table.put(product.parentProduct.id, tmp);
+            }
+
+
+        }
+
+        return out;
+    };
+
+    // TODO: implement
+    public List<ProductRatingDto> getResultRatings(List<ProductRatingEntity> productRatingEntities){
+        List<ProductRatingDto> out = new ArrayList<>();
+
+        return out;
+    }
+
+    // TODO: implement
+    public List<ScoreDto> getResultScores(List<ProductRatingEntity> productRatingEntities){
+        List<ScoreDto> out = new ArrayList<>();
+
+        return out;
     }
 
     // TODO: delete when data is correctly send (can potentially be used for testing)

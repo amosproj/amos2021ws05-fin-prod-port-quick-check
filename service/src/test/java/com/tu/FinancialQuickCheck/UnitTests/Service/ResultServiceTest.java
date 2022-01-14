@@ -43,6 +43,7 @@ public class ResultServiceTest {
     private Optional<String> productAreaIdStringOptional;
 
     private List<ResultDto> listDtos;
+    private List<ProductEntity> listProductEntities;
 
     @BeforeEach
     public void init() {
@@ -77,6 +78,8 @@ public class ResultServiceTest {
 
             listDtos.add(new ResultDto("productName" + i, ratings, scores));
         }
+
+        listProductEntities = new ArrayList<>();
     }
 
     /**
@@ -156,14 +159,27 @@ public class ResultServiceTest {
         assertNull(service.getResultsByProject(projectID));
     }
 
+    @Test
+    public void testGetResultsByProject_resourceExists() {
+
+        // provide knowledge
+        when(projectRepository.existsById(projectID)).thenReturn(Boolean.TRUE);
+        when(productRepository.getResultsByProject(projectID)).thenReturn(listProductEntities);
+
+        // execute and assert test method
+        List<ResultDto> out = service.getResultsByProject(projectID);
+
+        assertEquals(out.size(), listDtos.size());
+    }
+
     /**
      * tests for getResultsByProductArea()
      *
-     * testGetResultsByProductAre: projectID does not exists --> return null
-     * testGetResultsByProductAre: projectID does exists, productAreaId does not exist --> return null
+     * testGetResultsByProductArea: projectID does not exists --> return null
+     * testGetResultsByProductArea: projectID does exists, productAreaId does not exist --> return null
      */
     @Test
-    public void testGetResults_resourceNotFound_projectID() {
+    public void testGetResultsByProjectAndProductArea_resourceNotFound_projectID() {
         // provide knowledge
         when(projectRepository.existsById(projectID)).thenReturn(Boolean.FALSE);
 
@@ -171,6 +187,17 @@ public class ResultServiceTest {
         assertNull(service.getResultsByProductArea(projectID, productAreaID));
     }
 
+    @Test
+    public void testGetResultsByProjectAndProductArea_resourceExists() {
 
+        // provide knowledge
+        when(projectRepository.existsById(projectID)).thenReturn(Boolean.TRUE);
+        when(productRepository.getResultsByProjectAndProductArea(projectID, productAreaID)).thenReturn(listProductEntities);
+
+        // execute and assert test method
+        List<ResultDto> out = service.getResultsByProductArea(projectID, productAreaID);
+
+        assertEquals(out.size(), listDtos.size());
+    }
 
 }
