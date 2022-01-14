@@ -45,6 +45,9 @@ components:
         type: integer
 
   schemas:
+    productId:
+      type: integer
+      example: 29
     productName:
       type: string
       example: "Optionen"
@@ -53,7 +56,7 @@ components:
       example: 111
     answer:
       type: string
-      example: "containing values for x-axis, y-axis and outer circle"
+      example: "containing values for either y-axis, size of pie or outer circle(= string containing three values)"
     score:
       type: string
       enum: [ HOCH, MITTEL, GERING ]
@@ -87,11 +90,13 @@ components:
           example: 4
     getProductEvaluation:
       properties:
+        productId:
+          $ref: '#/components/schemas/productId'
         productName:
           $ref: '#/components/schemas/productName'
         ratings:
           type: array
-          description: list containing ratings of "Kreditvolumen im Bestand" (= size of pie), "Marge" (= y-axis) and "tbd" (= outer circle values)
+          description: list containing ratings of "Kreditvolumen im Bestand" (= size of pie), "Marge" (= y-axis) and "Kunde" (= outer circle values)
           items:
             $ref: "#/components/schemas/productRating"
         scores:
