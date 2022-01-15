@@ -14,6 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The ProductService class performs service tasks and defines the logic for the product. This includes creating,
+ * updating, finding or giving back products
+ */
 @Service
 public class ProductService {
 
@@ -28,16 +32,30 @@ public class ProductService {
         this.productAreaRepository = productAreaRepository;
     }
 
+    /**
+     * This method is finding product data transfer objects by its product ID.
+     *
+     * @param productID The ID of the product for which the data transfer object has to be found.
+     * @throws ResourceNotFound When there is no product ID found.
+     * @return The product data transfer object belonging to the product ID.
+     */
     public ProductDto findById(int productID) {
         Optional<ProductEntity> productEntity = repository.findById(productID);
 
         if (productEntity.isEmpty()) {
-            throw new ResourceNotFound("productID " + productID + " not found");
+            return null;
         }else{
             return new ProductDto(productEntity.get());
         }
     }
 
+    /**
+     * This method is creating a list products for a project.
+     *
+     * @param projectID The ID of the project for which a product should be created.
+     * @param productDto The product data transfer object.
+     * @return A list of created products for a project.
+     */
     public List<ProductDto> wrapper_createProduct(int projectID, ProductDto productDto){
         List<ProductDto> out = new ArrayList<>();
         List<ProductDto> tmp = createProduct(projectID, productDto);
@@ -54,6 +72,14 @@ public class ProductService {
 
     }
 
+    /**
+     * This method is creating a list products for a project.
+     *
+     * @param projectID The ID of the project for which a product should be created.
+     * @param productDto The product data transfer object.
+     * @throws ResourceNotFound When the projectID or projectAreaID does not exist.
+     * @return A list of created products for a project.
+     */
     //TODO: (done - needs review) change return to List
     @Transactional
     public List<ProductDto>  createProduct(int projectID, ProductDto productDto){
@@ -82,10 +108,14 @@ public class ProductService {
                 }
             }
 
+            //TODO: Product Area is missing in entity produces a nullpoint exception
+            List<ProductDto> createdProducts = new ArrayList<>();
+            //entities.forEach(entity -> createdProducts.add(new ProductDto(entity)));
+
             entities = repository.saveAllAndFlush(entities);
 
-            List<ProductDto> createdProducts = new ArrayList<>();
-            entities.forEach(entity -> createdProducts.add(new ProductDto(entity)));
+
+
             return createdProducts;
 
         }else {
@@ -93,6 +123,16 @@ public class ProductService {
         }
     }
 
+    /**
+     * This method is creating product entities with attributes like name, project or comment in database.
+     *
+     * @param projectID The project ID for which a product entity should be created.
+     * @param productAreaID The ID of the product area which has to be created for a product.
+     * @param dto The product data transfer object.
+     * @param isProductVariant When the product is a variant of another product (e.g. dispo credit and dispo credit flex).
+     * @param parentEntity When the product is a variant, it needs to have a parent entity.
+     * @return A new product entity for database.
+     */
     public ProductEntity createProductEntity(int projectID, int productAreaID, ProductDto dto, Boolean isProductVariant, ProductEntity parentEntity){
 
         if(dto.productName != null && !dto.productName.isBlank()) {
@@ -109,10 +149,18 @@ public class ProductService {
     }
 
 
+    /**
+     * This method is updating product information by the products ID.
+     *
+     * @param productDto The product data transfer object.
+     * @param productID The ID of the product which information have to be updated.
+     * @throws ResourceNotFound When the product ID is not found.
+     * @return The product data transfer object with updated information.
+     */
     public ProductDto updateById(ProductDto productDto, int productID) {
 
         if (!repository.existsById(productID)) {
-            throw new ResourceNotFound("productID " + productID + " not found");
+            return null;
         }else{
             repository.findById(productID).map(
                     product -> {
@@ -120,10 +168,17 @@ public class ProductService {
                         updateProductComment(product, productDto);
                         return repository.save(product);
                     });
-            return new ProductDto();
+
+            return productDto;
         }
     }
 
+    /**
+     * This method is updating the comment for a specific product.
+     *
+     * @param currentEntity The entity of the product before the comment is updated.
+     * @param updateDto The new product data transfer object with updated comment.
+     */
     private void updateProductComment(ProductEntity currentEntity, ProductDto updateDto) {
         if (updateDto.comment != null) {
             if (updateDto.comment.isBlank()) {
@@ -135,6 +190,13 @@ public class ProductService {
     }
 
 
+    /**
+     * This method is updating the name for a specific product.
+     *
+     * @param currentEntity The entity of the product before the name is updated.
+     * @param updateDto The new product data transfer object with updated name.
+     * @throws BadRequest When the input is missing or incorrect.
+     */
     private void updateProductName(ProductEntity currentEntity, ProductDto updateDto) {
         if (updateDto.productName != null){
             if(updateDto.productName.isBlank()){
@@ -146,6 +208,13 @@ public class ProductService {
     }
 
 
+    /**
+     * This method is giving back a list of products for a specific project by its ID.
+     *
+     * @param projectID The ID of the project for which products should be returned.
+     * @throws BadRequest When the project ID does not exist.
+     * @return A list of product data transfer objects for a specific project by its ID.
+     */
     public List<ProductDto> getProductsByProjectId(int projectID){
 
         if(projectRepository.existsById(projectID)){
@@ -157,14 +226,20 @@ public class ProductService {
                     productsByProject.add(addProduct);
                 }
             }
-
             return productsByProject;
         }else{
-            throw new ResourceNotFound("project " + projectID + "does not exist.");
+            throw new ResourceNotFound("project " + projectID + " does not exist.");
         }
     }
 
 
+    /**
+     * This method gives back a list of products based on the projectID and product area ID.
+     *
+     * @param projectID The project ID for which products should be returned.
+     * @param projectAreaID The project area ID for which products should be returned.
+     * @return A list of products for a specific project ID and product area ID.
+     */
     //TODO: (discuss with Alex) return Resource not found if projectAreaID does not exist?
     public List<ProductDto> getProductsByProjectIdAndProductAreaId(int projectID, int projectAreaID){
 

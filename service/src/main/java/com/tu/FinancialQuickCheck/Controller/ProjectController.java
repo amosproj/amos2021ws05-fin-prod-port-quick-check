@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.OptionalInt;
 
-
 @CrossOrigin
 @RestController
 @RequestMapping("projects")
@@ -26,23 +25,26 @@ public class ProjectController {
     @Autowired
     private ProductService productService;
 
+    /**
+     * Constructor for class ProjectController.
+     *
+     * @param projectService The different services for the project.
+     * @param productService The different services for the products.
+     */
     public ProjectController(ProjectService projectService, ProductService productService){
 
         this.service = projectService;
         this.productService = productService;
     }
 
-    //TODO: (done - need review) --> return empty list or resource not found, what do you prefer?
-    //TODO: (prio: medium) User Management - change output according to api or define new endpoint including role and list of projects for each user
     @GetMapping(produces = "application/json")
     public List<SmallProjectDto> findALL() {
         return service.getAllProjects();
     }
 
-
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public ProjectDto createByName(@RequestBody ProjectDto projectDto) {
+    public ProjectDto createProject(@RequestBody ProjectDto projectDto) {
         ProjectDto tmp = service.createProject(projectDto);
 
         if (tmp == null) {
@@ -52,7 +54,13 @@ public class ProjectController {
         }
     }
 
-
+    /**
+     * This method is finding projects by their ID.
+     *
+     * @param projectID The ID of the project which has to be find.
+     * @throws ResourceNotFound When the projectID was not found.
+     * @return The project that had to be find by their ID.
+     */
     @GetMapping("/{projectID}")
     public ProjectDto findById(@PathVariable int projectID) {
         ProjectDto tmp = service.getProjectById(projectID);
@@ -65,7 +73,14 @@ public class ProjectController {
 
     }
 
-
+    /**
+     * This method is updating project information like name, areas or members.
+     *
+     * @param projectDto The project data transfer object.
+     * @param projectID The ID of the project that has to be updated.
+     * @throws BadRequest When the input is missing or incorrect.
+     * @return The updated ProjectEntity in DB.
+     */
     @PutMapping("/{projectID}")
     public ProjectDto updateById(@RequestBody ProjectDto projectDto, @PathVariable int projectID) {
         ProjectDto tmp = service.updateProject(projectDto, projectID);
@@ -86,20 +101,28 @@ public class ProjectController {
 //
 //    }
 
+    /**
+     * This method is finding the products for projects.
+     *
+     * @param projectID The ID of the project for which products can be find.
+     * @param productArea The product area of the product which can be find.
+     * @throws BadRequest When the input is missing or incorrect.
+     * @return The products for a project or the products for a project and their related product area.
+     */
     //TODO (done - needs review) change output to empty list if no products exist
     @GetMapping("/{projectID}/products")
     public List<ProductDto> findProductsByProject(@PathVariable int projectID,
                                                   @RequestParam(required = false) Optional<String> productArea) {
         List<ProductDto> tmp;
 
-        if(productArea.isEmpty()){
+        if(!productArea.isPresent()){
             tmp = productService.getProductsByProjectId(projectID);
         }else{
             try{
                 int area = Integer.parseInt(productArea.get());
                 tmp = productService.getProductsByProjectIdAndProductAreaId(projectID, area);
             }catch (Exception e){
-                throw new BadRequest("Input missing/incorrect.");
+                throw new BadRequest("Input is missing/incorrect.");
             }
         }
 
@@ -107,7 +130,14 @@ public class ProjectController {
 
     }
 
-
+    /**
+     * This method can create or add products to projects.
+     *
+     * @param projectID The ID of the project for which products can be added.
+     * @param productDto The product data transfer object.
+     * @throws BadRequest When the input is incorrect or missing.
+     * @return A list of products which have been added to the project.
+     */
     //TODO: (done: needs review) change Path (see api def)
     //TODO: (prio: ???) fix output --> does not propagate values for productArea and projectID
     @PostMapping(value = "/{projectID}/products",
@@ -118,24 +148,36 @@ public class ProjectController {
         if(productDto.productArea != null && productDto.productName != null){
             List<ProductDto> tmp = productService.wrapper_createProduct(projectID, productDto);
             if(tmp == null){
-                throw new BadRequest("Input is incorrect/missing");
+                throw new BadRequest("Input is missing/incorrect");
             }else{
 
                 return tmp;
             }
         }else{
-            throw new BadRequest("Input is incorrect/missing");
+            throw new BadRequest("Input is missing/incorrect");
         }
     }
 
-
+    /**
+     * This method can add users/members to projects.
+     *
+     * @param members The users/members who can be added to the project.
+     * @param projectID The ID of the project for which members/users can be added.
+     * @return New users/members were added to the project.
+     */
 //    TODO: (done - needs review) change according to API
     @PostMapping( value = "/{projectID}/users", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public List<ProjectUserDto> createProjectUser(@RequestBody List<ProjectUserDto> members,
                                                   @PathVariable int projectID) {
 
-        return service.createProjectUsers(projectID, members);
+        List<ProjectUserDto> tmp = service.createProjectUsers(projectID, members);
+
+        if(tmp == null){
+            throw new ResourceNotFound("projectID " + projectID + " not found");
+        }else{
+            return tmp;
+        }
     }
 
 }

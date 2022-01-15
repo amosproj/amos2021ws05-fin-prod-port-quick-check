@@ -1,19 +1,19 @@
+import { notification } from './notification';
 import wretch from 'wretch';
 // For documentation see: https://github.com/elbywan/wretch
 
 const backendURL = 'http://localhost:8080';
 
 const networkErrorHandler = (err) => {
-  console.error('Network error during fetching occurred:', err);
+  console.error('fetching error:', { err });
+  // const message = `${err.message}`;
+  notification('Network Error: Request failed');
 };
 
 const wretcherErrorHandler = (err) => {
-  console.error(
-    'Caught error on API request. Statuscode:',
-    err.response.status,
-    'Message:',
-    err.message
-  );
+  console.error('Caught error on API request:', { err });
+  const message = `status ${err.response.status}`;
+  notification('Error:', message);
 };
 
 export const api = wretch()

@@ -1,12 +1,15 @@
 package com.tu.FinancialQuickCheck.dto;
 
-import com.tu.FinancialQuickCheck.Role;
+import com.tu.FinancialQuickCheck.db.UserEntity;
 
 import java.util.Objects;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
-
+/**
+ * This class represents the user data transfer object, which is used for reducing the number of multiple
+ * method calls into a single one
+ */
 //TODO: (done - already had it) create userPasswordDto to manage Password outside of userDto --> ProjectUserDto
 public class UserDto {
 
@@ -17,17 +20,19 @@ public class UserDto {
 
     public UserDto(){}
 
-    public UserDto(String email)
-    {
-        this.userEmail = email;
-    }
-
 
     public UserDto(UUID userID, String email, String username)
     {
         this.userID = userID;
         this.userEmail = email;
         this.userName = username;
+    }
+
+    public UserDto(UserEntity user)
+    {
+        this.userID = UUID.fromString(user.id);
+        this.userEmail = user.email;
+        this.userName = user.username;
     }
 
 

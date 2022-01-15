@@ -2,9 +2,10 @@ package com.tu.FinancialQuickCheck.db;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-// This will be AUTO IMPLEMENTED by Spring into a Bean called projectRepository
-// CRUD refers Create, Read, Update, Delete
-
+/**
+ * JPA repository infrastructure scans classpath for ProductAreaRepository interface, creates a Spring bean for it and
+ * implements CRUD-methods.
+ */
 public interface ProductAreaRepository extends JpaRepository<ProductAreaEntity, Integer> {
 
 }
