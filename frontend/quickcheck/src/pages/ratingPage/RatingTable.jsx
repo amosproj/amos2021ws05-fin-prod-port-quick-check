@@ -41,7 +41,7 @@ function RatingRow({ rating, onChangeScore, onChangeComment, onChangeAnswer }) {
         />
         <Spacer />
         <Selection
-          options={['gering', 'mittel', 'hoch']}
+          options={['GERING', 'MITTEL', 'HOCH']}
           selected={rating.score}
           onChange={onChangeScore}
         ></Selection>

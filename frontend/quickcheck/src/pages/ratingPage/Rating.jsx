@@ -44,19 +44,31 @@ const mockRatings = {
 export default function Rating() {
   const [editMode, setEditMode] = useState(false);
   const [ratingsPerCategory, setRatingsPerCategory] = useState([]);
-  const ratingsData = useStoreState((state) => state.rating.ratings);
-  //const initRatingsData = useStoreActions((actions) => actions.rating.init);
+  const productData = useStoreState((state) => state.rating.ratings);
+  const createNew = useStoreActions((actions) => actions.rating.createNew);
   const setRatingsData = useStoreActions((actions) => actions.rating.set);
   const fetchRatings = useStoreActions((actions) => actions.rating.fetch);
+  const sendRatings = useStoreActions((actions) => actions.rating.sendUpdate);
 
   const { productID } = useParams();
 
   const handleChange = (key) => (value) => {
-    setRatingsData({
-      //set action statt setRatingstData
-      ...ratingsData,
-      [key]: value,
-    });
+    let index = -1;
+    for(let i = 0; i< productData.ratings.length; i++)
+    {
+      if (value[0].rating.id == (productData.ratings[i]).rating.id)
+      {
+        index = i;
+        break;
+      }
+      else
+        continue;
+    }
+    let a = productData;
+
+    let newProductData = Object.assign({}, productData);  // creating copy of state variable jasper
+    newProductData.ratings[index] = value[0];
+    setRatingsData(newProductData);
   };
 
   const setRatings = handleChange('ratings');
@@ -125,11 +137,19 @@ export default function Rating() {
             ))}
           </TabPanels>
         </Tabs>
+        <Button variant="whisper" size="md"
+                onClick={() => {
+                  sendRatings(productData);
+                }
+                }
+        >
+          Save
+        </Button>
       </Page>
     );
   }
-  if (ratingsData.ratings != undefined) {
-    computeRatingsPerCategory(ratingsData.ratings);
+  if (productData.ratings != undefined) {
+    computeRatingsPerCategory(productData.ratings);
   }
   return <DataTabs data={Object.entries(ratingsPerCategory)} />;
 }
