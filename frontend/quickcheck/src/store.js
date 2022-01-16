@@ -199,10 +199,10 @@ const ratingModel = {
     //console.log('send UPDATE project:', { projectData });
     actions.set(product);
     await api
-        .url(`/products/` + String(product.productID)+ '/ratings')
-        .post(product)
-        .res(console.log)
-        .catch(console.error);
+      .url(`/products/` + String(product.productID) + '/ratings')
+      .post(product)
+      .res(console.log)
+      .catch(console.error);
 
     actions.set(product);
   }),
@@ -211,10 +211,10 @@ const ratingModel = {
     //console.log('send UPDATE project:', { projectData });
     actions.set(product);
     await api
-        .url(`/products/` + String(product.productID)+ '/ratings')
-        .put(product)
-        .res(console.log)
-        .catch(console.error);
+      .url(`/products/` + String(product.productID) + '/ratings')
+      .put(product)
+      .res(console.log)
+      .catch(console.error);
 
     actions.set(product);
   }),

@@ -54,19 +54,15 @@ export default function Rating() {
 
   const handleChange = (key) => (value) => {
     let index = -1;
-    for(let i = 0; i< productData.ratings.length; i++)
-    {
-      if (value[0].rating.id == (productData.ratings[i]).rating.id)
-      {
+    for (let i = 0; i < productData.ratings.length; i++) {
+      if (value[0].rating.id == productData.ratings[i].rating.id) {
         index = i;
         break;
-      }
-      else
-        continue;
+      } else continue;
     }
     let a = productData;
 
-    let newProductData = Object.assign({}, productData);  // creating copy of state variable jasper
+    let newProductData = Object.assign({}, productData); // creating copy of state variable jasper
     newProductData.ratings[index] = value[0];
     setRatingsData(newProductData);
   };
@@ -137,11 +133,12 @@ export default function Rating() {
             ))}
           </TabPanels>
         </Tabs>
-        <Button variant="whisper" size="md"
-                onClick={() => {
-                  sendRatings(productData);
-                }
-                }
+        <Button
+          variant="whisper"
+          size="md"
+          onClick={() => {
+            sendRatings(productData);
+          }}
         >
           Save
         </Button>
