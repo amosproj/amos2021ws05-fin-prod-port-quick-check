@@ -13,7 +13,13 @@ import java.util.List;
 public interface ProductRatingRepository extends JpaRepository<ProductRatingEntity, ProductRatingId> {
 
     // TODO: was wird zurück gegeben wenn projectID nicht existiert? --> leere Liste
-    // TODO: what is returned of ratings do not exist but ids exist?
+    // TODO: what is returned of ratings do not exist but ids exist? --> leere Liste
+
+    // TODO: wenn finale rating daten vorhanden, dann rating.id abgleichen und evtl. anpassen
+    // rating.id = 4     --> Kredivolumen im Bestand --> Größe des Kreises und nur der Wert vom Produkt nicht von den Produktvarianten
+    // rating.id = 5     --> Marge --> y-Achse und nur der Wert vom Produkt nicht von den Produktvarianten
+    // rating.id = 9     --> Gesamteinschätzung wirtschaftliche Bewertung --> innerCircle und nur die Werte der Produktvarianten
+    // rating.id = 10    --> Kunde --> outerCircle --> nur der Wert vom Produkt nicht von den Produktvarianten
 
     @Query("SELECT distinct pr from ProductRatingEntity as pr " +
             "join ProductEntity as p on pr.productRatingId.product = p " +
