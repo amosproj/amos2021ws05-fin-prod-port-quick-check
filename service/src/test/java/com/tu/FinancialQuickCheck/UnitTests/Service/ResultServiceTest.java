@@ -57,19 +57,33 @@ public class ResultServiceTest {
         productAreaIdStringOptional = Optional.of("6");
 
         listDtos = new ArrayList<>();
-        String[] ratingNames = {"Kreditvolumen im Bestand", "Marge", "Kunde"};
-        String[] answers = {"700 Mio EUR", "2,5%", "10.0, 20.0, 70.0"};
+        String[] ratingNames = {"Kreditvolumen im Bestand", "Marge", "Kunde", "Gesamteinschätzung wirtschaftliche Bewertung"};
+        Integer[] ratingIds = {4, 5, 10, 9};
+        String[] answers = {"700 Mio EUR", "2,5%", "10.0, 20.0, 70.0", "answer 9"};
 
+        List<ProductRatingDto> ratings = new ArrayList<>();
+        listProductRatingEntities = new ArrayList<>();
         for (int i = 1; i < 2; i++) {
-            List<ProductRatingDto> ratings = new ArrayList<>();
             for (int j = 0; j < ratingNames.length; j++) {
-                ProductRatingDto p = new ProductRatingDto();
-                RatingDto tmp = new RatingDto();
-                tmp.id = j;
-                tmp.criterion = ratingNames[j];
-                p.rating = tmp;
-                p.answer = answers[j];
-                ratings.add(p);
+                ProductRatingDto dto = new ProductRatingDto();
+                RatingDto ratingDto = new RatingDto();
+                ratingDto.id = ratingIds[j];
+                ratingDto.criterion = ratingNames[j];
+                dto.rating = ratingDto;
+                dto.answer = answers[j];
+                ratings.add(dto);
+
+                ProductRatingEntity entity = new ProductRatingEntity();
+                ProductEntity productEntity = new ProductEntity();
+                productEntity.id = 100;
+                RatingEntity ratingEntity = new RatingEntity();
+                ratingEntity.id = ratingIds[j];
+                ratingEntity.criterion = ratingNames[j];
+                entity.productRatingId = new ProductRatingId();
+                entity.productRatingId.setRating(ratingEntity);
+                entity.productRatingId.setProduct(productEntity);
+                entity.answer = answers[j];
+                listProductRatingEntities.add(entity);
             }
 
             ScoreDto[] scores = new ScoreDto[3];
@@ -79,8 +93,6 @@ public class ResultServiceTest {
 
             listDtos.add(new ResultDto(i, "productName" + i, ratings, scores));
         }
-
-        listProductRatingEntities = new ArrayList<>();
     }
 
     /**
@@ -94,43 +106,47 @@ public class ResultServiceTest {
      */
     @Test
     public void testGetResults_resourceNotFound_productAreaIdEmpty() {
-        // provide knowledge
-        when(projectRepository.existsById(projectID)).thenReturn(Boolean.FALSE);
+//        // provide knowledge
+//        when(projectRepository.existsById(projectID)).thenReturn(Boolean.FALSE);
+//
+//        // execute and assert test method
+//        assertNull(service.getResults(projectID, Optional.empty()));
 
-        // execute and assert test method
-        assertNull(service.getResults(projectID, Optional.empty()));
+        assertEquals(new ArrayList<>(), service.getResults(projectID, Optional.empty()));
 
     }
 
     @Test
     public void testGetResults_resourceNotFound_productAreaIdNotEmpty() {
         // provide knowledge
-        when(projectRepository.existsById(projectID)).thenReturn(Boolean.FALSE);
+//        when(projectRepository.existsById(projectID)).thenReturn(Boolean.FALSE);
 
         // execute and assert test method
-        assertNull(service.getResults(projectID, productAreaIdStringOptional));
+//        assertNull(service.getResults(projectID, productAreaIdStringOptional));
+
+        assertEquals(new ArrayList<>(), service.getResults(projectID, productAreaIdStringOptional));
     }
 
     @Test
     public void testGetResults_resourceExists_productAreaIdEmpty() {
         // provide knowledge
-        when(projectRepository.existsById(projectID)).thenReturn(Boolean.TRUE);
+        when(productRatingRepository.getResultsByProject(projectID)).thenReturn(listProductRatingEntities);
 
         // execute and assert test method
         List<ResultDto> out = service.getResults(projectID, Optional.empty());
 
-        assertEquals(out.size(), listDtos.size());
+        assertEquals(listDtos.size(), out.size());
     }
 
     @Test
     public void testGetResults_resourceExists_productAreaIdNotEmpty() {
         // provide knowledge
-        when(projectRepository.existsById(projectID)).thenReturn(Boolean.TRUE);
+        when(productRatingRepository.getResultsByProjectAndProductArea(projectID, productAreaID)).thenReturn(listProductRatingEntities);
 
         // execute and assert test method
         List<ResultDto> out = service.getResults(projectID, productAreaIdStringOptional);
 
-        assertEquals(out.size(), listDtos.size());
+        assertEquals(listDtos.size(), out.size());
     }
 
     @Test
