@@ -15,10 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.logging.Logger;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,6 +42,14 @@ public class ResultServiceTest {
 
     private List<ResultDto> listDtos;
     private List<ProductRatingEntity> listProductRatingEntities;
+    private List<ProductRatingDto> ratings;
+
+    private Hashtable<Integer, ResultDto> ResultTable;
+    private Hashtable<Integer, ResultDto> ResultTableCopy;
+
+    private ProductRatingEntity productRatingEntityForResult;
+
+    private ResultDto resultDto1;
 
     @BeforeEach
     public void init() {
@@ -61,7 +66,7 @@ public class ResultServiceTest {
         Integer[] ratingIds = {4, 5, 10, 9};
         String[] answers = {"700 Mio EUR", "2,5%", "10.0, 20.0, 70.0", "answer 9"};
 
-        List<ProductRatingDto> ratings = new ArrayList<>();
+        ratings = new ArrayList<>();
         listProductRatingEntities = new ArrayList<>();
         for (int i = 1; i < 2; i++) {
             for (int j = 0; j < ratingNames.length; j++) {
@@ -93,6 +98,24 @@ public class ResultServiceTest {
 
             listDtos.add(new ResultDto(i, "productName" + i, ratings, scores));
         }
+
+
+        ScoreDto[] scores = new ScoreDto[3];
+        scores[2] = new ScoreDto(Score.HOCH, 5);
+        scores[1] = new ScoreDto(Score.MITTEL, 7);
+        scores[0] = new ScoreDto(Score.GERING, 0);
+
+        resultDto1 = new ResultDto();
+        resultDto1.productID = 1;
+        resultDto1.ratings = ratings;
+        resultDto1.productName = "productName";
+        resultDto1.scores = scores;
+
+        ResultTable = new Hashtable<>();
+        ResultTableCopy = new Hashtable<>();
+        ResultTable.put(1, resultDto1);
+        ResultTableCopy.put(1, resultDto1);
+
     }
 
     /**
@@ -161,6 +184,51 @@ public class ResultServiceTest {
 
         assertTrue(actualMessage.contains(expectedMessage));
     }
+
+    /**tests for updateProductRatings()**/
+    @Test
+    public void testUpdateResultRating_emptyRatingEntity(){
+
+        Exception exception = assertThrows(BadRequest.class,
+                () -> service.updateResultRating(ResultTable, productRatingEntityForResult));
+
+        String expectedMessage = "Table is Empty or ProductRatingEntity is missing";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+
+
+    }
+
+    @Test
+    public void testUpdateResultRating_emptyTable(){
+
+        Hashtable<Integer, ResultDto> emptyTable_1 = new Hashtable<>();
+
+        Exception exception = assertThrows(BadRequest.class,
+                () -> service.updateResultRating(emptyTable_1, productRatingEntityForResult));
+
+        String expectedMessage = "Table is Empty or ProductRatingEntity is missing";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    public void testUpdateResultRating_succsess(){
+
+        ResultTable.put(100, resultDto1);
+        productRatingEntityForResult = listProductRatingEntities.get(0);
+        productRatingEntityForResult.productRatingId.getProduct().name = "newName";
+        service.updateResultRating(ResultTable, productRatingEntityForResult);
+
+        assertAll("update Result Rating",
+                () -> assertEquals(100, ResultTable.get(100).productID),
+                () -> assertEquals("newName", ResultTable.get(100).productName)
+        );
+    }
+
+
 
 
 }

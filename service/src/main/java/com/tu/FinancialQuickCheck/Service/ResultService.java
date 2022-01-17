@@ -64,8 +64,14 @@ public class ResultService {
     }
 
     public void updateResultRating(Hashtable<Integer, ResultDto> table, ProductRatingEntity p){
-        ResultDto tmp = getResultDto(table, p.productRatingId.getProduct().id);
-        tmp.updateProductInfos(p.productRatingId.getProduct().id, p.productRatingId.getProduct().name);
+
+        ResultDto tmp;
+        try {
+            tmp = getResultDto(table, p.productRatingId.getProduct().id);
+            tmp.updateProductInfos(p.productRatingId.getProduct().id, p.productRatingId.getProduct().name);
+        }catch (Exception e){
+            throw new BadRequest("Table is Empty or ProductRatingEntity is missing");
+        }
 
         if (RATINGS.contains(p.productRatingId.getRating().id)) {
             tmp.ratings.add(new ProductRatingDto(p.answer, p.score, p.productRatingId.getRating()));
