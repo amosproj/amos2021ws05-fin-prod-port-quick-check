@@ -37,22 +37,20 @@ function RemoveButton({ removeProdFct }) {
 export default function ProductRow({ product, editMode, projectID }) {
   const removeProductState = useStoreActions((actions) => actions.productList.removeProduct);
   const changeProductName = useStoreActions((actions) => actions.productList.changeProductName);
-  const changeProductComment = useStoreActions((actions) => actions.productList.changeProductComment);
-
-
-
+  const changeProductComment = useStoreActions(
+    (actions) => actions.productList.changeProductComment
+  );
 
   const removeProduct = () => {
     removeProductState(product);
   };
 
   const setProduct = (productName) => {
-    product.productName = productName
+    product.productName = productName;
     changeProductName(product);
-
   };
   const handleTextInputChange = (comment) => {
-    product.comment = comment
+    product.comment = comment;
     changeProductComment(product);
   };
 
@@ -71,7 +69,6 @@ export default function ProductRow({ product, editMode, projectID }) {
           isDisabled={!editMode}
           onChange={(e) => {
             setProduct(e.target.value);
-
           }}
           value={product.productName}
         />
@@ -98,12 +95,12 @@ export default function ProductRow({ product, editMode, projectID }) {
           
           width="30%"
           isDisabled={!editMode}
-          value={(product.comment !== null) ? product.comment : ""}
+          value={product.comment !== null ? product.comment : ''}
           onChange={(e) => {
             handleTextInputChange(e.target.value);
-
           }}
-          placeholder="Anmerkung" />
+          placeholder="Anmerkung"
+        />
 
         {editMode ? (
           <Box ml={3}>
