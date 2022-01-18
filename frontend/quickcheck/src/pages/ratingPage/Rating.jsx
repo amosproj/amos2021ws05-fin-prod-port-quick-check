@@ -42,7 +42,6 @@ const mockRatings = {
 };
 
 export default function Rating() {
-  const [editMode, setEditMode] = useState(false);
   const [ratingsPerCategory, setRatingsPerCategory] = useState([]);
   const productData = useStoreState((state) => state.rating.ratings);
   const createNew = useStoreActions((actions) => actions.rating.createNew);
@@ -53,17 +52,7 @@ export default function Rating() {
   const { productID } = useParams();
 
   const handleChange = (key) => (value) => {
-    let index = -1;
-    for (let i = 0; i < productData.ratings.length; i++) {
-      if (value[0].rating.id == productData.ratings[i].rating.id) {
-        index = i;
-        break;
-      } else continue;
-    }
-    let a = productData;
-
     let newProductData = Object.assign({}, productData); // creating copy of state variable jasper
-    newProductData.ratings[index] = value[0];
     setRatingsData(newProductData);
   };
 
@@ -80,35 +69,14 @@ export default function Rating() {
         ratingsPerCategory[rating.rating.category] = [rating];
       }
     }
+    setRatingsPerCategory(ratingsPerCategory)
     return ratingsPerCategory;
   }
 
   useEffect(() => {
-    //initRatingsData();
     fetchRatings(productID);
-    //setRatingsData(mockRatings.ratings);
   }, []);
 
-  const EditButtons = () => {
-    if (editMode) {
-      return (
-        <HStack>
-          <Button variant="whisper" size="md" onClick={() => setEditMode(false)}>
-            Cancel
-          </Button>
-          <Button variant="primary" size="md" onClick={() => setEditMode(false)}>
-            Confirm
-          </Button>
-        </HStack>
-      );
-    } else {
-      return (
-        <Button variant="whisper" size="md" onClick={() => setEditMode(true)}>
-          Edit
-        </Button>
-      );
-    }
-  };
 
   function DataTabs({ data }) {
     return (
@@ -124,7 +92,6 @@ export default function Rating() {
               <TabPanel p={4} key={complexityDriver[0]}>
                 <Card direction="column">
                   <RatingTable
-                    editMode={editMode}
                     ratings={complexityDriver[1]}
                     handleChange={setRatings}
                   />

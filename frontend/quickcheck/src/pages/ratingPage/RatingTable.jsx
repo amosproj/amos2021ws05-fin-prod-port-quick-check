@@ -1,5 +1,5 @@
 import { Flex, Input, Spacer, List } from '@chakra-ui/react';
-import React from 'react';
+import React, {useState} from 'react';
 import Card from '../../components/Card';
 import Selection from '../../components/Selection';
 
@@ -27,7 +27,6 @@ function RatingRow({ rating, onChangeScore, onChangeComment, onChangeAnswer }) {
       <Card
         layerStyle="card_bordered"
         justifyContent="space-between"
-        // w={(parentID > 0) ? ' 90%' : 'full'}
         _hover={{ boxShadow: '2xl' }}
       >
         <Spacer />
@@ -70,7 +69,8 @@ function RatingRow({ rating, onChangeScore, onChangeComment, onChangeAnswer }) {
   );
 }
 
-export default function RatingTable({ editMode, ratings, handleChange }) {
+export default function RatingTable({ ratings, handleChange}) {
+
   const handleScoreChange = (rating) => (newRating) => {
     // This is a curried function in JS
     let index = ratings.map((r) => r.rating.criterion).indexOf(rating.rating.criterion);
@@ -99,7 +99,6 @@ export default function RatingTable({ editMode, ratings, handleChange }) {
         <Flex gridGap={3}>
           <RatingRow
             rating={rating}
-            editMode={editMode}
             onChangeScore={handleScoreChange(rating)}
             onChangeComment={handleCommentChange(rating)}
             onChangeAnswer={handleAnswerChange(rating)}
