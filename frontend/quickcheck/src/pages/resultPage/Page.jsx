@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Heading, VStack, Text, Flex, HStack, Spacer, Link } from '@chakra-ui/react';
-import { useState,  useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { score } from '../../utils/const';
@@ -53,23 +53,20 @@ function SourceRow({ source }) {
 }
 
 export default function ResultPage() {
+  const { projectID } = useParams();
 
-const { projectID} = useParams();
+  const setResultsData = useStoreActions((actions) => actions.resultList.set);
+  const fetchResults = useStoreActions((actions) => actions.resultList.fetch);
+  const results = useStoreState((state) => state.resultList.results);
 
-const setResultsData = useStoreActions((actions) => actions.resultList.set);
-const fetchResults = useStoreActions((actions) => actions.resultList.fetch);
-const results = useStoreState((state) => state.resultList.results);
-
-
- const [sources, setSources] = useState(mock);
- useEffect(() => {
-   //initRatingsData();
-   fetchResults(projectID);
-   //setRatingsData(mockRatings.ratings);
- }, []);
-console.log( {results})
+  const [sources, setSources] = useState(mock);
+  useEffect(() => {
+    //initRatingsData();
+    fetchResults(projectID);
+    //setRatingsData(mockRatings.ratings);
+  }, []);
+  console.log({ results });
   return (
-
     <div>
       <Page title="Results">
         <Flex

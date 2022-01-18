@@ -57,9 +57,7 @@ const productAreaModel = {
 };
 
 const resultModel = {
-  results: [
-
-  ],
+  results: [],
   set: action((state, results) => {
     state.results = results;
   }),
@@ -70,9 +68,8 @@ const resultModel = {
       .get()
       .json((json) => actions.set(json))
       .catch(console.error);
-  })
+  }),
 };
-
 
 const projectListModel = {
   items: [], // list of: {"projectID": 2,"projectName": "Mock Project" }
