@@ -69,14 +69,13 @@ export default function Rating() {
         ratingsPerCategory[rating.rating.category] = [rating];
       }
     }
-    setRatingsPerCategory(ratingsPerCategory)
+    setRatingsPerCategory(ratingsPerCategory);
     return ratingsPerCategory;
   }
 
   useEffect(() => {
     fetchRatings(productID);
   }, []);
-
 
   function DataTabs({ data }) {
     return (
@@ -91,10 +90,7 @@ export default function Rating() {
             {data.map((complexityDriver) => (
               <TabPanel p={4} key={complexityDriver[0]}>
                 <Card direction="column">
-                  <RatingTable
-                    ratings={complexityDriver[1]}
-                    handleChange={setRatings}
-                  />
+                  <RatingTable ratings={complexityDriver[1]} handleChange={setRatings} />
                 </Card>
               </TabPanel>
             ))}
