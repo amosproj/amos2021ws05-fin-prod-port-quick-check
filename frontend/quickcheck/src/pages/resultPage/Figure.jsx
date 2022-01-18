@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heading, Flex, Icon } from '@chakra-ui/react';
+import { Heading, Flex, Icon, Text } from '@chakra-ui/react';
 
 import Card from '../../components/Card';
 import PieChartGraph from './PieChart';
@@ -137,7 +137,7 @@ function Figure(props) {
           justifyContent="space-between"
           alignItems="stretch"
         >
-          <text>Bubble Size = Volume in EUR </text>
+          <Text>Bubble Size = Volume in EUR </Text>
 
           <Flex
             flexDirection="row"

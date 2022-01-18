@@ -33,6 +33,10 @@ function App() {
                 element={<ProductOverview />}
               />
               <Route
+                path="projects/:projectID/productArea/:productAreaID/results"
+                element={<ResultPage />}
+              />
+              <Route
                 path="projects/:projectID/productArea/:productAreaID/products/:productID/ratings"
                 element={<Rating />}
               />
