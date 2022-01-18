@@ -13,6 +13,7 @@ import React from 'react';
 import Card from '../../components/Card';
 import { DeleteIcon } from '@chakra-ui/icons';
 import { useStoreActions } from 'easy-peasy';
+import { useState } from 'react';
 
 function RemoveButton({ removeProdFct }) {
   return (
@@ -33,11 +34,24 @@ function RemoveButton({ removeProdFct }) {
   );
 }
 
-export default function ProductRow({ product, editMode }) {
+export default function ProductRow({ product, editMode, projectID }) {
   const removeProductState = useStoreActions((actions) => actions.productList.removeProduct);
+  const updateProduct = useStoreActions((actions) => actions.productList.updateProduct);
+  const changeProduct = useStoreActions((actions) => actions.productList.changeProduct);
+  const fetchProducts = useStoreActions((actions) => actions.productList.fetch);
+
+
 
   const removeProduct = () => {
     removeProductState(product);
+  };
+
+  const setProduct = (productName) => {
+    product.productName = productName
+    //console.log(JSON.stringify(product))
+    changeProduct(product);
+    // updateProduct(product);
+    //fetchProducts(product.projectID)
   };
 
   return (
@@ -54,7 +68,8 @@ export default function ProductRow({ product, editMode }) {
           w="25%"
           isDisabled={!editMode}
           onChange={(e) => {
-            console.log(e.target.value);
+            setProduct(e.target.value);
+            // console.log(JSON.stringify(product))
           }}
           value={product.productName}
         />

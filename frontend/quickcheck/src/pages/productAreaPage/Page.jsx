@@ -71,6 +71,7 @@ export default function ProductOverview() {
   const fetchProducts = useStoreActions((actions) => actions.productList.fetch);
   const createProduct = useStoreActions((actions) => actions.productList.createProduct);
   // const setProducts = useStoreActions((actions) => actions.productList.set);
+  const updateAllProducts = useStoreActions((actions) => actions.productList.updateAllProducts);
   const [editMode, setEditMode] = useState(false);
 
   const { projectID, productAreaID } = useParams();
@@ -81,6 +82,12 @@ export default function ProductOverview() {
     console.log('rendered');
   }, []);
 
+  const updateProducts = () => {
+    setEditMode(false);
+    updateAllProducts(productsAction);
+    
+  }
+
   const EditButtons = () => {
     if (editMode) {
       return (
@@ -89,7 +96,7 @@ export default function ProductOverview() {
           <Button size="md" onClick={() => setEditMode(false)}>
             Cancel
           </Button>
-          <Button size="md" onClick={() => setEditMode(false)}>
+          <Button size="md" onClick={() => updateProducts()}>
             Confirm
           </Button>
         </HStack>

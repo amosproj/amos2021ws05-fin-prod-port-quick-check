@@ -26,6 +26,11 @@ const productAreaModel = {
   addProduct: action((state, product) => {
     state.products.push(product);
   }),
+  changeProduct: action((state, product) => {
+    const index = state.products.map((p) => p.productID).indexOf(product.productID);
+    // get index of member with same email. if not found, index=-1
+    state.products[index] = { ...state.products[index], productName: product.productName };
+  }),
   removeProduct: action((state, product) => {
     state.products = state.products.filter((p) => p.productID !== product.productID);
   }),
@@ -46,15 +51,31 @@ const productAreaModel = {
       .json((json) => actions.set(json))
       .catch(console.error);
   }),
-  updateProduct: thunk(async (actions, updatedProduct, productID) => {
-    console.log(updatedProduct);
+  updateAllProducts: thunk(async (actions, products) => {
+    const put = "";
+    products.map((product) => (
+      
+        actions.updateProduct(product)
+    ));
+
+  }),
+
+  updateProduct: thunk(async (actions, product) => {
+    const put = {
+      productName: product.productName,
+      comment: product.comment
+    }
     await api
-      .url('/products/' + productID)
-      .put(updatedProduct)
+      .url('/products/' + product.productID + "/")
+      .put(put)
       .json((json) => actions.set(json))
       .catch(console.error);
-  }),
+  
+  })
+  
 };
+
+
 
 const projectListModel = {
   items: [], // list of: {"projectID": 2,"projectName": "Mock Project" }
