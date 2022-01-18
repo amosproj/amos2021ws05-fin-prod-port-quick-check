@@ -26,10 +26,15 @@ const productAreaModel = {
   addProduct: action((state, product) => {
     state.products.push(product);
   }),
-  changeProduct: action((state, product) => {
+  changeProductName: action((state, product) => {
     const index = state.products.map((p) => p.productID).indexOf(product.productID);
     // get index of member with same email. if not found, index=-1
     state.products[index] = { ...state.products[index], productName: product.productName };
+  }),
+  changeProductComment: action((state, product) => {
+    const index = state.products.map((p) => p.productID).indexOf(product.productID);
+    // get index of member with same email. if not found, index=-1
+    state.products[index] = { ...state.products[index], comment: product.comment };
   }),
   removeProduct: action((state, product) => {
     state.products = state.products.filter((p) => p.productID !== product.productID);
@@ -52,7 +57,6 @@ const productAreaModel = {
       .catch(console.error);
   }),
   updateAllProducts: thunk(async (actions, products) => {
-    const put = "";
     products.map((product) => (
       
         actions.updateProduct(product)

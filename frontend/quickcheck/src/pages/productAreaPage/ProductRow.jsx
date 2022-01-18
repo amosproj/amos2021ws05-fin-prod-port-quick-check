@@ -36,9 +36,9 @@ function RemoveButton({ removeProdFct }) {
 
 export default function ProductRow({ product, editMode, projectID }) {
   const removeProductState = useStoreActions((actions) => actions.productList.removeProduct);
-  const updateProduct = useStoreActions((actions) => actions.productList.updateProduct);
-  const changeProduct = useStoreActions((actions) => actions.productList.changeProduct);
-  const fetchProducts = useStoreActions((actions) => actions.productList.fetch);
+  const changeProductName = useStoreActions((actions) => actions.productList.changeProductName);
+  const changeProductComment = useStoreActions((actions) => actions.productList.changeProductComment);
+
 
 
 
@@ -48,10 +48,12 @@ export default function ProductRow({ product, editMode, projectID }) {
 
   const setProduct = (productName) => {
     product.productName = productName
-    //console.log(JSON.stringify(product))
-    changeProduct(product);
-    // updateProduct(product);
-    //fetchProducts(product.projectID)
+    changeProductName(product);
+
+  };
+  const handleTextInputChange = (comment) => {
+    product.comment = comment
+    changeProductComment(product);
   };
 
   return (
@@ -69,7 +71,7 @@ export default function ProductRow({ product, editMode, projectID }) {
           isDisabled={!editMode}
           onChange={(e) => {
             setProduct(e.target.value);
-            // console.log(JSON.stringify(product))
+
           }}
           value={product.productName}
         />
@@ -92,7 +94,17 @@ export default function ProductRow({ product, editMode, projectID }) {
         </VStack>
         <Spacer />
 
-        <Textarea bg={'gray.600'} width="30%" placeholder="Anmerkung" />
+        <Textarea
+          bg={'gray.600'}
+          width="30%"
+          isDisabled={!editMode}
+          value={(product.comment !== null) ? product.comment : ""}
+          onChange={(e) => {
+            handleTextInputChange(e.target.value);
+
+          }}
+          placeholder="Anmerkung" />
+
         {editMode ? (
           <Box ml={3}>
             <RemoveButton removeProdFct={removeProduct} />
