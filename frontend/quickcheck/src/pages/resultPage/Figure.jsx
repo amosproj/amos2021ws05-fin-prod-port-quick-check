@@ -14,58 +14,6 @@ var yellow = 'rgba(255, 195, 0, .7)';
 var green = 'rgba(131, 239, 56, .7 )';
 var red = 'rgba(239, 65, 56, .7 )';
 
-const data = {
-  click: function ({ chart, element }) {
-    console.log('Box annotation clicked');
-  },
-
-  datasets: [
-    {
-      label: 'Car Leasing',
-      data: [
-        {
-          x: 150,
-          y: -150,
-          r: 20,
-        },
-      ],
-      backgroundColor: 'rgba(255,72,166)',
-    },
-    {
-      label: 'Consumer Credit',
-      data: [
-        {
-          x: -140,
-          y: 100,
-          r: 30,
-        },
-      ],
-      backgroundColor: 'rgba(147,213,34)',
-    },
-    {
-      label: 'Overdraft Facility',
-      data: [
-        {
-          x: -60,
-          y: 30,
-          r: 60,
-        },
-      ],
-      backgroundColor: 'rgba(41,213,255)',
-    },
-    {
-      label: 'Mortgage',
-      data: [
-        {
-          x: 10,
-          y: 0,
-          r: 70,
-        },
-      ],
-      backgroundColor: 'rgba(82,8,129)',
-    },
-  ],
-};
 
 const CircleIcon = (props) => (
   <Icon viewBox="10 1 200 200" {...props}>
@@ -73,7 +21,85 @@ const CircleIcon = (props) => (
   </Icon>
 );
 
-function Figure(props) {
+function ShowPieCharts({results}){
+    return( <Flex
+       flexDirection="row"
+       w="full"
+       gridGap={1}
+       justifyContent="space-between"
+       alignItems="stretch"
+     >
+
+       <Flex w="25%">
+         <PieChartGraph
+           data_outer={testdata}
+           data_inner={testdata3}
+           color="rgba(255,72,166)"
+           title={['Car', 'Leasing']}
+         ></PieChartGraph>
+       </Flex>
+       <Flex w="25%">
+         <PieChartGraph
+           data_outer={testdata2}
+           data_inner={testdata}
+           color="rgba(147,213,34)"
+           title={['Consumer', 'Credit']}
+         ></PieChartGraph>
+       </Flex>
+       <Flex w="25%">
+         <PieChartGraph
+           data_outer={testdata3}
+           data_inner={testdata4}
+           color="rgba(41,213,255)"
+           title={['Overdraft', 'Facility']}
+         ></PieChartGraph>
+       </Flex>
+       <Flex w="25%">
+         <PieChartGraph
+           data_outer={testdata4}
+           data_inner={testdata2}
+           color="rgba(82,8,129)"
+           title={['Mortgage', '']}
+         ></PieChartGraph>
+       </Flex>
+     </Flex>)
+
+}
+
+
+function Figure({results}) {
+    var colors=['rgba(255,72,166)', 'rgba(147,213,34)',  'rgba(41,213,255)',  'rgba(82,8,129)']
+    var scores=[1,2,3] //TODO are these the right values?
+    var data={
+      click: function ({ chart, element }) {
+        console.log('Box annotation clicked');
+      },
+      datasets: []
+}
+
+    for (let i = 0; i < results.length; i++) {
+        var complexity=0;
+        var values= results[i]["ratings"][2]["answer"].split(' ');
+        for (let j = 0; j < values.length; j++) {
+            complexity = complexity+parseFloat(values[j]) * scores[j] ;
+        }
+        complexity= complexity/100
+    data["datasets"][i]={
+    label: results[i]["productName"],
+    data: [
+      {
+        x: parseFloat(results[i]["ratings"][1]["answer"]),
+        y: complexity,
+        r: parseFloat(results[i]["ratings"][0]["answer"])/10,
+      },
+    ],
+    backgroundColor: colors[i % colors.length]
+  }
+  console.log(results[i], data["datasets"][i]);
+
+}
+
+
   return (
     <div>
       <Card alignItems="center" bg="gray.100">
@@ -85,46 +111,7 @@ function Figure(props) {
           alignItems="stretch"
         >
           <BubbleGraph data={data}></BubbleGraph>
-          <Flex
-            flexDirection="row"
-            w="full"
-            gridGap={1}
-            justifyContent="space-between"
-            alignItems="stretch"
-          >
-            <Flex w="25%">
-              <PieChartGraph
-                data_outer={testdata}
-                data_inner={testdata3}
-                color="rgba(255,72,166)"
-                title={['Car', 'Leasing']}
-              ></PieChartGraph>
-            </Flex>
-            <Flex w="25%">
-              <PieChartGraph
-                data_outer={testdata2}
-                data_inner={testdata}
-                color="rgba(147,213,34)"
-                title={['Consumer', 'Credit']}
-              ></PieChartGraph>
-            </Flex>
-            <Flex w="25%">
-              <PieChartGraph
-                data_outer={testdata3}
-                data_inner={testdata4}
-                color="rgba(41,213,255)"
-                title={['Overdraft', 'Facility']}
-              ></PieChartGraph>
-            </Flex>
-            <Flex w="25%">
-              <PieChartGraph
-                data_outer={testdata4}
-                data_inner={testdata2}
-                color="rgba(82,8,129)"
-                title={['Mortgage', '']}
-              ></PieChartGraph>
-            </Flex>
-          </Flex>
+          <ShowPieCharts results={results}/>
         </Flex>
       </Card>
       <Heading>Legend</Heading>
