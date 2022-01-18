@@ -85,8 +85,7 @@ export default function ProductOverview() {
   const updateProducts = () => {
     setEditMode(false);
     updateAllProducts(productsAction);
-    
-  }
+  };
 
   const EditButtons = () => {
     if (editMode) {

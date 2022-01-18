@@ -57,29 +57,21 @@ const productAreaModel = {
       .catch(console.error);
   }),
   updateAllProducts: thunk(async (actions, products) => {
-    products.map((product) => (
-      
-        actions.updateProduct(product)
-    ));
-
+    products.map((product) => actions.updateProduct(product));
   }),
 
   updateProduct: thunk(async (actions, product) => {
     const put = {
       productName: product.productName,
-      comment: product.comment
-    }
+      comment: product.comment,
+    };
     await api
-      .url('/products/' + product.productID + "/")
+      .url('/products/' + product.productID + '/')
       .put(put)
       .json((json) => actions.set(json))
       .catch(console.error);
-  
-  })
-  
+  }),
 };
-
-
 
 const projectListModel = {
   items: [], // list of: {"projectID": 2,"projectName": "Mock Project" }
