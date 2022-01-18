@@ -15,7 +15,7 @@ function RatingRow({ rating }) {
         <Spacer />
         <Text>{rating.rating.category}</Text>
         <Spacer />
-        <Textarea isDisabled={true}
+        <Textarea isReadOnly={true}
           align="center"
           size="md"
           width="100%"
@@ -33,7 +33,7 @@ function RatingRow({ rating }) {
           align="center"
           size="md"
           width="100%"
-          isDisabled={true}
+          isReadOnly={true}
           value={rating.comment}
         />
         <Spacer />
