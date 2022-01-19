@@ -99,61 +99,59 @@ export default function ProductRow({ product, editMode }) {
       // w={(parentID > 0) ? ' 90%' : 'full'}
       _hover={{ boxShadow: '2xl' }}
     >
-      
-      
-      <Flex direction="row" w='full' justifyContent="space-between">
-      <Flex w="25%" mb={3}>
-        <Input
-          variant="bold"
-          align="center"
-          size="2xl"
-          isDisabled={!editMode}
-          onChange={(e) => {
-            setProduct(e.target.value);
-          }}
-          value={product.productName}
-        />
-      </Flex>
-      <Flex w="75%">
-        <VStack mr={5}>
-          <CircularProgress size="40px" value={product.progressEconomic} />
+      <Flex direction="row" w="full" justifyContent="space-between">
+        <Flex w="25%" mb={3}>
+          <Input
+            variant="bold"
+            align="center"
+            size="2xl"
+            isDisabled={!editMode}
+            onChange={(e) => {
+              setProduct(e.target.value);
+            }}
+            value={product.productName}
+          />
+        </Flex>
+        <Flex w="75%">
+          <VStack mr={5}>
+            <CircularProgress size="40px" value={product.progressEconomic} />
 
-          <Link href="/ratings">
-            <Button variant="whisper">Economical</Button>
-          </Link>
-        </VStack>
+            <Link href="/ratings">
+              <Button variant="whisper">Economical</Button>
+            </Link>
+          </VStack>
 
-        <VStack>
-          <CircularProgress size="40px" value={product.progressComplexity} />
-          <Link href="/ratings">
-            <Button variant="whisper" href="/ratings">
-              Complexity
-            </Button>
-          </Link>
-        </VStack>
-        <Spacer />
+          <VStack>
+            <CircularProgress size="40px" value={product.progressComplexity} />
+            <Link href="/ratings">
+              <Button variant="whisper" href="/ratings">
+                Complexity
+              </Button>
+            </Link>
+          </VStack>
+          <Spacer />
 
-        <Textarea
-          width="50%"
-          isDisabled={!editMode}
-          value={product.comment !== null ? product.comment : ''}
-          onChange={(e) => {
-            handleTextInputChange(e.target.value);
-          }}
-          placeholder="Anmerkung"
-        />
-      </Flex>
+          <Textarea
+            width="50%"
+            isDisabled={!editMode}
+            value={product.comment !== null ? product.comment : ''}
+            onChange={(e) => {
+              handleTextInputChange(e.target.value);
+            }}
+            placeholder="Anmerkung"
+          />
+        </Flex>
       </Flex>
       <Heading size="md" mt={8} align="left" w="full">
         Variants
       </Heading>
-      <Flex w='full' mt={5}>
-      <List w="full">
-        {productVariants.map((variant) => (
-          // <p>{JSON.stringify(variant)}</p>
-          <ProductVariant productVariant={variant} editMode={editMode} key={variant.productID} />
-        ))}
-      </List>
+      <Flex w="full" mt={5}>
+        <List w="full">
+          {productVariants.map((variant) => (
+            // <p>{JSON.stringify(variant)}</p>
+            <ProductVariant productVariant={variant} editMode={editMode} key={variant.productID} />
+          ))}
+        </List>
       </Flex>
     </Card>
   );
