@@ -13,6 +13,7 @@
     "@testing-library/user-event": "^12.1.10",
     "chart.js": "^3.7.0",
     "chartjs": "^0.3.24",
+    "chartjs-plugin-annotation": "^1.2.2",
     "easy-peasy": "^5.0.4",
     "framer-motion": "^4",
     "images": "^3.2.3",

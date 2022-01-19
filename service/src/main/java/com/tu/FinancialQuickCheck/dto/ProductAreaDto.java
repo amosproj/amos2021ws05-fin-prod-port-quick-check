@@ -1,5 +1,6 @@
 package com.tu.FinancialQuickCheck.dto;
 
+import com.tu.FinancialQuickCheck.db.ProductAreaEntity;
 import java.util.Objects;
 
 /**
@@ -35,12 +36,12 @@ public class ProductAreaDto {
         this.category = category;
     }
 
-    /**
-     * Compares two ProductAreaDto's based on the ID, name and category.
-     *
-     * @param o ProductAreaDto which has to be compared.
-     * @return True when the two ProductAreaDto's are identical.
-     */
+    public ProductAreaDto(ProductAreaEntity productAreaEntity){
+        this.id = productAreaEntity.id;
+        this.name = productAreaEntity.name;
+        this.category = productAreaEntity.category;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

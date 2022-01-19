@@ -1,9 +1,14 @@
 import { React, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { Button, HStack, Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 import Page from '../../components/Page';
 import Card from '../../components/Card';
 import RatingTable from './RatingTable';
 import { score } from '../../utils/const';
+import { useStoreActions, useStoreState } from 'easy-peasy';
+import { useParams } from 'react-router-dom';
+
+//http://localhost:3000/projects/100/productArea/1/products/100/ratings
 
 const mockRatings = {
   ratings: [
@@ -12,7 +17,17 @@ const mockRatings = {
       comment: 'test comment',
       score: score.gering,
       rating: {
+        category: 'Treiber 1',
         criterion: 'test frage',
+      },
+    },
+    {
+      answer: 'test answer',
+      comment: 'test comment',
+      score: score.gering,
+      rating: {
+        category: 'Treiber 1',
+        criterion: 'test frage 1',
       },
     },
     {
@@ -20,6 +35,7 @@ const mockRatings = {
       comment: '',
       score: score.mittel,
       rating: {
+        category: 'Treiber 2',
         criterion: 'Wer bin ich',
       },
     },
@@ -28,13 +44,17 @@ const mockRatings = {
 
 export default function Rating() {
   const [editMode, setEditMode] = useState(false);
-  const [ratingsData, setRatingstData] = useState({
-    //TODO : Rating data structure
-    ratings: [],
-  });
+  const [ratingsPerCategory, setRatingsPerCategory] = useState([]);
+  const ratingsData = useStoreState((state) => state.rating.ratings);
+  //const initRatingsData = useStoreActions((actions) => actions.rating.init);
+  const setRatingsData = useStoreActions((actions) => actions.rating.set);
+  const fetchRatings = useStoreActions((actions) => actions.rating.fetch);
+
+  const { productID } = useParams();
 
   const handleChange = (key) => (value) => {
-    setRatingstData({
+    setRatingsData({
+      //set action statt setRatingstData
       ...ratingsData,
       [key]: value,
     });
@@ -42,9 +62,24 @@ export default function Rating() {
 
   const setRatings = handleChange('ratings');
 
+  function computeRatingsPerCategory(ratings) {
+    if (ratings.length === 0 || Object.keys(ratingsPerCategory).length != 0) {
+      return [];
+    }
+    for (const rating of ratings) {
+      if (ratingsPerCategory[rating.rating.category] != null) {
+        ratingsPerCategory[rating.rating.category].push(rating);
+      } else {
+        ratingsPerCategory[rating.rating.category] = [rating];
+      }
+    }
+    return ratingsPerCategory;
+  }
+
   useEffect(() => {
-    // fetchProject();
-    setRatingstData(mockRatings);
+    //initRatingsData();
+    fetchRatings(productID);
+    //setRatingsData(mockRatings.ratings);
   }, []);
 
   const EditButtons = () => {
@@ -68,34 +103,34 @@ export default function Rating() {
     }
   };
 
-  return (
-    <Page title="Komplexitätsbewertung">
-      <Tabs>
-        <TabList>
-          <Tab>Treiber 1:</Tab>
-          <Tab>Treiber 2:</Tab>
-        </TabList>
-        <TabPanels>
-          <TabPanel>
-            <Card direction="column">
-              <RatingTable
-                editMode={editMode}
-                ratings={ratingsData.ratings}
-                handleChange={setRatings}
-              />
-            </Card>
-          </TabPanel>
-          <TabPanel>
-            <Card direction="column">
-              <RatingTable
-                editMode={editMode}
-                ratings={ratingsData.ratings}
-                handleChange={setRatings}
-              />
-            </Card>
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-    </Page>
-  );
+  function DataTabs({ data }) {
+    return (
+      <Page title="Komplexitätsbewertung">
+        <Tabs>
+          <TabList>
+            {data.map((complexityDriver) => (
+              <Tab key={complexityDriver[1]}>{complexityDriver[0]}</Tab>
+            ))}
+          </TabList>
+          <TabPanels>
+            {data.map((complexityDriver) => (
+              <TabPanel p={4} key={complexityDriver[0]}>
+                <Card direction="column">
+                  <RatingTable
+                    editMode={editMode}
+                    ratings={complexityDriver[1]}
+                    handleChange={setRatings}
+                  />
+                </Card>
+              </TabPanel>
+            ))}
+          </TabPanels>
+        </Tabs>
+      </Page>
+    );
+  }
+  if (ratingsData.ratings != undefined) {
+    computeRatingsPerCategory(ratingsData.ratings);
+  }
+  return <DataTabs data={Object.entries(ratingsPerCategory)} />;
 }

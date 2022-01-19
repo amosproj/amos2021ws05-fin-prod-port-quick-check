@@ -24,63 +24,16 @@ public class ProjectDto {
     //necessary for mapping
     public ProjectDto() {}
 
-    public ProjectDto(int projectID, String projectName, UUID creator,
-                      List<ProductEntity> productEntities, List<ProjectUserEntity> projectUserEntities){
-        this.projectID = projectID;
-        this.creatorID = creator;
-        this.projectName = projectName;
-        this.members = convertProjectUserEntities(projectUserEntities);
-        this.productAreas = convertProductAreaEntities(productEntities);
-    }
 
     public ProjectDto(ProjectEntity project){
         this.projectID = project.id;
         this.projectName = project.name;
         this.creatorID = UUID.fromString(project.creatorID);
         this.members = convertProjectUserEntities(project.projectUserEntities);
-        this.productAreas = convertProductAreaEntities(project.productEntities);
+        this.productAreas = new ListOfProductAreaDto(project).productAreas;
     }
 
 
-//    public ProjectDto(int id, String name)
-//    {
-//        this.name = name;
-//        this.id = id;
-////        this.products = convertEntities(productEntity);
-//    }
-
-//    private List<Product> convertEntities(List<ProductEntity> productEntity) {
-//        List<Product> products = new ArrayList<>();
-//        for (ProductEntity p: productEntity)
-//        {
-////            if(p.productVariations != null)
-////                products.add(new Product(p.id, p.name, p.productVariations, p.ratingEntities));
-////            else
-//            products.add(new Product(p.id, p.name, p.ratingEntities));
-//        }
-//        return products;
-//    }
-
-    /**
-     * This method converts product areas into a list of product area DTO's.
-     * @param productAreas The product areas which have to be converted.
-     * @return A list of product area DTO's.
-     */
-    private List<ProductAreaDto> convertProductAreaSet(List<Integer> productAreas) {
-        List<ProductAreaDto> areas = new ArrayList<>();
-        for (Integer productAreaId: productAreas)
-        {
-            areas.add(new ProductAreaDto(productAreaId));
-        }
-        return areas;
-    }
-
-    /**
-     * This method cnverts project user entities into a list of project user DTO's.
-     *
-     * @param projectUserEntities The product user entities which have to be converted.
-     * @return A list of project user DTO's.
-     */
     private List<ProjectUserDto> convertProjectUserEntities(List<ProjectUserEntity> projectUserEntities) {
         List<ProjectUserDto> members = new ArrayList<>();
 
@@ -89,26 +42,5 @@ public class ProjectDto {
             members.add(new ProjectUserDto(member));
         }
         return members;
-    }
-
-    /**
-     * This method converts product entities into a list of product area DTO's.
-     *
-     * @param productEntities The product entities which have to be converted.
-     * @return A list of product area DTO's.
-     */
-    private List<ProductAreaDto> convertProductAreaEntities(List<ProductEntity> productEntities) {
-        //TODO: (prio: low) greift alle Produktdaten für project ab, es würde ausreichen nur die DUMMY Daten abzugreifen
-        HashSet<ProductAreaDto> areas = new HashSet<>();
-
-        for (ProductEntity product: productEntities)
-        {
-            areas.add(new ProductAreaDto(
-                    product.productarea.id,
-                    product.productarea.name,
-                    product.productarea.category
-            ));
-        }
-        return new ArrayList<>(areas);
     }
 }

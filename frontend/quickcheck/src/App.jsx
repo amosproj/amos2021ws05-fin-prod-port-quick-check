@@ -8,6 +8,7 @@ import ProjectOverview from './pages/ProjectOverview';
 import ProductOverview from './pages/productAreaPage/Page';
 import Project from './pages/projectPage/Page';
 import ResultPage from './pages/resultPage/Page';
+import Rating from './pages/ratingPage/Rating';
 import TestRange from './pages/TestRange';
 
 import store from './store';
@@ -25,13 +26,26 @@ function App() {
               <Route path="/" element={<Navigate replace to="/login" />} />
               <Route path="login" element={<Login />} />
               <Route path="projects" element={<ProjectOverview />} />
-              <Route path="projects/:id" element={<Project />} />
+              <Route path="projects/:projectID" element={<Project />} />
               <Route path="results" element={<ResultPage />} />
-              <Route path="products" element={<ProductOverview />} />
+              <Route
+                path="projects/:projectID/productArea/:productAreaID"
+                element={<ProductOverview />}
+              />
+              <Route
+                path="projects/:projectID/productArea/:productAreaID/results"
+                element={<ResultPage />}
+              />
+              <Route
+                path="projects/:projectID/productArea/:productAreaID/products/:productID/ratings"
+                element={<Rating />}
+              />
             </Routes>
             <Link to="login"> [Login] </Link>
             <Link to="projects"> [Projects] </Link>
             <Link to="products"> [Products] </Link>
+            <Link to="ratings"> [Ratings] </Link>
+            <Link to="results"> [Results] </Link>
           </Router>
         </StoreProvider>
       </ChakraProvider>

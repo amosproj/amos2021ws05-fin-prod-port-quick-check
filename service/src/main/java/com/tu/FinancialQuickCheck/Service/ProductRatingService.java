@@ -5,10 +5,12 @@ import com.tu.FinancialQuickCheck.RatingArea;
 import com.tu.FinancialQuickCheck.db.*;
 import com.tu.FinancialQuickCheck.dto.ProductDto;
 import com.tu.FinancialQuickCheck.dto.ProductRatingDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,9 +22,11 @@ import java.util.stream.StreamSupport;
  */
 @Service
 public class ProductRatingService {
-
+    @Autowired
     private final ProductRatingRepository repository;
+    @Autowired
     private final ProductRepository productRepository;
+    @Autowired
     private final RatingRepository ratingRepository;
 
     public ProductRatingService(ProductRatingRepository repository, ProductRepository productRepository,
@@ -65,75 +69,38 @@ public class ProductRatingService {
     }
 
 
-    /**
-     * This method is creating ratings for a product by its ID. Before the method is checking if there is a product in
-     * database for the ID.
-     *
-     * @param productDto The product data transfer object.
-     * @param productID The ID of the product for which a rating should be conducted.
-     * @throws ResourceNotFound When the product ID is not found.
-     * @return A Product data transfer object with new product rating.
-     */
-    // TODO: (prio: high) sicherstellen dass für jede hinterlegte Frage in der Rating_Entity ein Eintrag angelegt
-    // wird in der Product_Rating_Entity
+    //TODO: (done - needs review)
     @Transactional
-    public ProductDto createProductRatings(ProductDto productDto, int productID) {
-
+    public ProductDto createProductRatings(ProductDto productDto, int productID){
+        //Step 1: check if productRatings can be created
         if (!productRepository.existsById(productID)) {
-            throw new ResourceNotFound("productID " + productID + " not found");
+            return null;
         } else {
-            ProductEntity productEntity = productRepository.findById(productID).get();
+            ProductEntity product = productRepository.getById(productID);
 
-            if(productDto.overallEconomicRating != null){
-                productEntity.overallEconomicRating = productDto.overallEconomicRating;
-                productRepository.saveAndFlush(productEntity);
-            }
+            //Step 2: ensure for each ratingEntity is a productRatingEntity created
+            HashMap<Integer, ProductRatingEntity> newProductRatings = initProductRatings(product, productDto);
 
-            List<ProductRatingEntity> newProductRatings = new ArrayList<>();
+            //Step 3: map input to created productRatingEntities
+            assignInputToAttributes(productDto.ratings, newProductRatings);
 
-            for (ProductRatingDto tmp : productDto.ratings) {
-                if(ratingRepository.existsById(tmp.ratingID)){
-                    ProductRatingEntity newEntity = new ProductRatingEntity();
-                    assignAttributes(tmp, newEntity);
-                    RatingEntity ratingEntity = ratingRepository.findById(tmp.ratingID).get();
-                    newEntity.productRatingId = new ProductRatingId(
-                            productRepository.getById(productID), ratingEntity);
-                    newProductRatings.add(newEntity);
-                }else{
-                    throw new ResourceNotFound("ratingID " + tmp.ratingID + " not found");
-                }
-            }
+            //Step 4: persist to db
+            List<ProductRatingEntity> tmp = new ArrayList<>(newProductRatings.values());
+            repository.saveAll(tmp);
 
-//            productEntity.productRatingEntities = newProductRatings;
-
-            repository.saveAll(newProductRatings);
-
-            return new ProductDto(productEntity , newProductRatings, false);
+            return new ProductDto(product, tmp, false);
         }
     }
 
-    /**
-     * This method is updating ratings for specific products.
-     *
-     * @param productDto The product data transfer object.
-     * @param productID The ID pf the product for which the rating has to be updated.
-     * @throws ResourceNotFound When the product ID or rating ID is not found.
-     * @return A product data transfer object with the updated rating for product.
-     */
+
     //TODO: (test)
     @Transactional
     public ProductDto updateProductRatings(ProductDto productDto, int productID) {
 
         if (!productRepository.existsById(productID)) {
-            throw new ResourceNotFound("productID " + productID + " not found");
+            return null;
         } else {
             ProductEntity productEntity = productRepository.findById(productID).get();
-
-
-            if(productDto.overallEconomicRating != null){
-                productEntity.overallEconomicRating = productDto.overallEconomicRating;
-                productRepository.save(productEntity);
-            }
 
             List<ProductRatingEntity> updates = new ArrayList<>();
 
@@ -160,12 +127,19 @@ public class ProductRatingService {
         }
     }
 
-    /**
-     * This method is defining answer, comment and score for a product rating.
-     *
-     * @param tmp The product rating DTO.
-     * @param newEntity The product rating entity in database.
-     */
+
+    public void assignInputToAttributes(List<ProductRatingDto> productRatingsIn,
+                                        HashMap<Integer, ProductRatingEntity> existingProductRatings){
+
+        for (ProductRatingDto tmp : productRatingsIn) {
+            if(ratingRepository.existsById(tmp.ratingID)){
+                assignAttributes(tmp, existingProductRatings.get(tmp.ratingID));
+            }else{
+                throw new ResourceNotFound("ratingID " + tmp.ratingID + " not found");
+            }
+        }
+    }
+
     public void assignAttributes(ProductRatingDto tmp, ProductRatingEntity newEntity) {
         if(tmp.answer != null){
             newEntity.answer = tmp.answer;
@@ -177,4 +151,28 @@ public class ProductRatingService {
             newEntity.score = tmp.score;
         }
     }
+
+
+    public HashMap<Integer, ProductRatingEntity> initProductRatings(ProductEntity product, ProductDto productIn){
+        HashMap<Integer, ProductRatingEntity> newProductRatings = new HashMap<>();
+        RatingArea ratingArea;
+        List<RatingEntity> ratings;
+
+        if(ratingRepository.existsById(productIn.ratings.get(0).ratingID)){
+            ratingArea = ratingRepository.findById(productIn.ratings.get(0).ratingID).get().ratingarea;
+            ratings = ratingRepository.findByRatingarea(ratingArea);
+        }else{
+            throw new ResourceNotFound("ratingID " + productIn.ratings.get(0).ratingID + " not found");
+        }
+
+        for(RatingEntity rating: ratings){
+            ProductRatingEntity productRating = new ProductRatingEntity();
+            productRating.productRatingId = new ProductRatingId(product, rating);
+            newProductRatings.put(rating.id, productRating);
+        }
+
+        return newProductRatings;
+    }
+
+
 }

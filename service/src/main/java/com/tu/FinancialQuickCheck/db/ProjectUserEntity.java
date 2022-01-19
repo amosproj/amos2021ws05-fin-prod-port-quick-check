@@ -30,27 +30,4 @@ public class ProjectUserEntity {
      */
     public ProjectUserEntity(){}
 
-    /**
-     * Compares two project users based on their ID and role.
-     *
-     * @param o Project user which has to be compared.
-     * @return True when the two project users are equal.
-     */
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ProjectUserEntity that = (ProjectUserEntity) o;
-        return projectUserId.equals(that.projectUserId) && role == that.role;
-    }
-
-    /**
-     * Gives back the hashcode value of project user.
-     *
-     * @return Hashcode value of project user.
-     */
-    @Override
-    public int hashCode() {
-        return Objects.hash(projectUserId, role);
-    }
 }

@@ -9,7 +9,6 @@ import java.util.List;
  */
 @Entity
 public class ProductEntity {
-    // TODO: (done: needs review) confirm attribute for overallEconomicRating? --> done, Boolean type passt laut Max B.
     //TODO: (done: needs review) add missing attribute: comment
     //TODO: (prio: medium) (Topic: Dateien abspeichern) add missing attribute: list of resources or something else (?)
 
@@ -26,15 +25,6 @@ public class ProductEntity {
     @Column(name = "name")
     public String name;
 
-    /**
-     * Final score from economic evaluation (high, mid and low).
-     */
-    @Column(name = "overallRating")
-    public Boolean overallEconomicRating;
-
-    /**
-     * Comment(s) about the product entered by user.
-     */
     @Column(name = "comment")
     public String comment;
 

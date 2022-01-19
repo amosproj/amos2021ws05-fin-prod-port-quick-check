@@ -7,10 +7,9 @@ import com.tu.FinancialQuickCheck.dto.ProductDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * The ProductRatingController manages and processes requests for updating product ratings or returning existing ones
- */
+
 @RestController
+@CrossOrigin
 @RequestMapping("products/{productID}/ratings")
 public class ProductRatingController {
 
@@ -60,8 +59,13 @@ public class ProductRatingController {
     //TODO: (done - needs review) change output according to API
     @PostMapping(consumes = "application/json", produces = "application/json")
     public ProductDto createProductRatings(@RequestBody ProductDto productDto, @PathVariable Integer productID) {
+        ProductDto tmp = service.createProductRatings(productDto, productID);
 
-        return service.createProductRatings(productDto, productID);
+        if(tmp == null){
+            throw new ResourceNotFound("productID " + productID + " does not exist" );
+        }else{
+            return tmp;
+        }
     }
 
     /**
@@ -75,8 +79,13 @@ public class ProductRatingController {
     //TODO: (done - needs review) change output according to API
     @PutMapping(consumes = "application/json")
     public ProductDto updateProductRatings(@RequestBody ProductDto productDto, @PathVariable Integer productID) {
+        ProductDto tmp = service.updateProductRatings(productDto, productID);
 
-        return service.updateProductRatings(productDto, productID);
+        if(tmp == null){
+            throw new ResourceNotFound("productID " + productID + " does not exist" );
+        }else{
+            return tmp;
+        }
     }
 
 }

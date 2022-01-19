@@ -148,8 +148,6 @@ components:
         ratingArea:
           type: string
           enum: [ ECONOMIC, COMPLEXITY ]
-    overallEconomicRating:
-      type: boolean
     productRating:
       type: object
       properties:
@@ -178,8 +176,6 @@ components:
         productName:
           type: string
           example: "Optionen"
-        overallEconomicRating:
-          $ref: '#/components/schemas/overallEconomicRating'
         ratings:
           type: array
           items:
@@ -189,8 +185,6 @@ components:
         - ratings
       type: object
       properties:
-        overallEconomicRating:
-          $ref: '#/components/schemas/overallEconomicRating'
         ratings:
           type: array
           items:

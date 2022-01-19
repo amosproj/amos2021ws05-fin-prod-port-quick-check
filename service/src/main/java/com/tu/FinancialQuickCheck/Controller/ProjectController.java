@@ -5,6 +5,7 @@ import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.RatingArea;
 import com.tu.FinancialQuickCheck.Service.ProductService;
 import com.tu.FinancialQuickCheck.Service.ProjectService;
+import com.tu.FinancialQuickCheck.Service.ResultService;
 import com.tu.FinancialQuickCheck.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,9 +16,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.OptionalInt;
 
-/**
- * The ProjectController manages and processes requests for creating & updating projects or adding products to projects
- */
 @CrossOrigin
 @RestController
 @RequestMapping("projects")
@@ -27,6 +25,8 @@ public class ProjectController {
     private ProjectService service;
     @Autowired
     private ProductService productService;
+    @Autowired
+    private ResultService resultService;
 
     /**
      * Constructor for class ProjectController.
@@ -34,34 +34,21 @@ public class ProjectController {
      * @param projectService The different services for the project.
      * @param productService The different services for the products.
      */
-    public ProjectController(ProjectService projectService, ProductService productService){
+    public ProjectController(ProjectService projectService, ProductService productService, ResultService resultService){
 
         this.service = projectService;
         this.productService = productService;
+        this.resultService = resultService;
     }
 
-    /**
-     * This method returns a list of all projects.
-     *
-     * @return List of all projects.
-     */
-    //TODO: (done - need review) --> return empty list or resource not found, what do you prefer?
-    //TODO: (prio: medium) User Management - change output according to api or define new endpoint including role and list of projects for each user
     @GetMapping(produces = "application/json")
     public List<SmallProjectDto> findALL() {
         return service.getAllProjects();
     }
 
-    /**
-     * This method is creating new projects by their name.
-     *
-     * @param projectDto The project data transfer object.
-     * @throws BadRequest When the Input is missing or incorrect.
-     * @return New ProjectEntity in DB.
-     */
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public ProjectDto createByName(@RequestBody ProjectDto projectDto) {
+    public ProjectDto createProject(@RequestBody ProjectDto projectDto) {
         ProjectDto tmp = service.createProject(projectDto);
 
         if (tmp == null) {
@@ -139,12 +126,11 @@ public class ProjectController {
                 int area = Integer.parseInt(productArea.get());
                 tmp = productService.getProductsByProjectIdAndProductAreaId(projectID, area);
             }catch (Exception e){
-                throw new BadRequest("Input missing/incorrect.");
+                throw new BadRequest("Input is missing/incorrect.");
             }
         }
 
         return tmp;
-
     }
 
     /**
@@ -165,13 +151,13 @@ public class ProjectController {
         if(productDto.productArea != null && productDto.productName != null){
             List<ProductDto> tmp = productService.wrapper_createProduct(projectID, productDto);
             if(tmp == null){
-                throw new BadRequest("Input is incorrect/missing");
+                throw new BadRequest("Input is missing/incorrect");
             }else{
 
                 return tmp;
             }
         }else{
-            throw new BadRequest("Input is incorrect/missing");
+            throw new BadRequest("Input is missing/incorrect");
         }
     }
 
@@ -188,7 +174,26 @@ public class ProjectController {
     public List<ProjectUserDto> createProjectUser(@RequestBody List<ProjectUserDto> members,
                                                   @PathVariable int projectID) {
 
-        return service.createProjectUsers(projectID, members);
+        List<ProjectUserDto> tmp = service.createProjectUsers(projectID, members);
+
+        if(tmp == null){
+            throw new ResourceNotFound("projectID " + projectID + " not found");
+        }else{
+            return tmp;
+        }
+    }
+
+    @GetMapping("/{projectID}/results")
+    public List<ResultDto> getResults(@PathVariable int projectID,
+                                       @RequestParam(required = false) Optional<String> productAreaID) {
+
+        List<ResultDto> tmp = resultService.getResults(projectID, productAreaID);
+
+        if(tmp == null){
+            throw new ResourceNotFound("projectID " + projectID + " not found");
+        }else{
+            return tmp;
+        }
     }
 
 }

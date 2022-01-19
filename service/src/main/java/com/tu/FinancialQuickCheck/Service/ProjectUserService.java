@@ -3,6 +3,7 @@ package com.tu.FinancialQuickCheck.Service;
 import com.tu.FinancialQuickCheck.Exceptions.BadRequest;
 import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.db.*;
+import com.tu.FinancialQuickCheck.dto.ListOfProjectUserDto;
 import com.tu.FinancialQuickCheck.dto.ProjectUserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,34 +35,16 @@ public class ProjectUserService {
         this.repository = projectUserRepository;
     }
 
+    //TODO: (prio: high) include in API documentation (Project.yaml)
+    public List<ProjectUserDto> getProjectUsersByProjectId(int projectID) {
+        Optional<ProjectEntity> entity = projectRepository.findById(projectID);
 
-//    public List<ProjectUserDto> getProjectUsersByProjectId(int projectID) {
-//
-//        Optional<ProjectEntity> entity = projectRepository.findById(projectID);
-//
-//        if (entity.isEmpty()) {
-//            throw new ResourceNotFound("projectID " + projectID + " not found");
-//        } else {
-//
-//            Iterable<ProjectUserEntity> entities = entity.get().projectUserEntities;
-//
-//            List<ProjectUserDto> projectUserDtos = new ArrayList<>() {
-//            };
-//
-//            for (ProjectUserEntity tmp : entities) {
-//                projectUserDtos.add(new ProjectUserDto(
-//                        UUID.fromString(tmp.projectUserId.getUser().id),
-//                        tmp.role,
-//                        tmp.projectUserId.getUser().email,
-//                        tmp.projectUserId.getProject().id,
-//                        tmp.projectUserId.getUser().username
-//                ));
-//            }
-//
-//            return projectUserDtos;
-//        }
-//    }
-
+        if (entity.isEmpty()) {
+            return null;
+        } else {
+            return new ListOfProjectUserDto(entity.get().projectUserEntities).projectUsers;
+        }
+    }
 
     /**
      * This method is updating a list of users for projects by its ID.
@@ -94,14 +77,7 @@ public class ProjectUserService {
         }
     }
 
-    /**
-     * This method is updating one user for a project.
-     *
-     * @param projectID The ID of the project for which a user should be updated.
-     * @param u The project user data transfer object.
-     * @throws BadRequest When the user is not assigned to a project.
-     * @return The updated project user entity.
-     */
+
     //TODO: (test)
     public ProjectUserEntity updateProjectUser(int projectID, ProjectUserDto u) {
 
@@ -123,46 +99,39 @@ public class ProjectUserService {
     }
 
 
-    /**
-     * This method acts as a wrapper for deleting users from projects.
-     *
-     * @param projectID The ID of the project for which users should be deleted.
-     * @param projectUsers The project users data transfer object.
-     */
     //TODO: (test)
-    public void wrapperDeleteProjectUser(int projectID, List<ProjectUserDto> projectUsers){
-
+    public Boolean wrapperDeleteProjectUser(int projectID, List<ProjectUserDto> projectUsers){
+        Boolean tmp = Boolean.TRUE;
         for(ProjectUserDto projectUser: projectUsers){
-            deleteProjectUser(projectID, projectUser);
+            if(tmp){
+                tmp = deleteProjectUser(projectID, projectUser);
+            }
         }
+
+        return tmp;
     }
 
 
-    /**
-     * This method is deleting users from projects.
-     *
-     * @param projectID The ID of the project for which users should be deleted.
-     * @param projectUserDto The project users data transfer object.
-     * @throws ResourceNotFound When the user is not assigned to the project.
-     * @throws BadRequest When the input is missing or incorrect.
-     */
-    // TODO: (Max) implement testcases
-    public void deleteProjectUser(int projectID, ProjectUserDto projectUserDto) {
+    // TODO: (test)
+    public Boolean deleteProjectUser(int projectID, ProjectUserDto projectUserDto) {
 
         if (projectUserDto.userID != null) {
-
-            if (!repository.existsById(new ProjectUserId(projectRepository.findById(projectID).get(),
-                userRepository.findById(projectUserDto.userID.toString()).get()))) {
+            ProjectEntity project = projectRepository.findById(projectID).get();
+            UserEntity user = userRepository.findById(projectUserDto.userID.toString()).get();
+            ProjectUserId tmp = new ProjectUserId(project, user);
+            if (!repository.existsById(tmp)) {
                 throw new ResourceNotFound("User is not assigned to project.");
             }else{
 
                 repository.deleteById(new ProjectUserId(
                         projectRepository.getById(projectID),
                         userRepository.getById(projectUserDto.userID.toString())));
+
+                return Boolean.TRUE;
             }
 
-        }else{
-            throw new BadRequest("Input missing/is incorrect");
+        } else {
+            return Boolean.FALSE;
         }
     }
 }
