@@ -1,4 +1,4 @@
-import { createStore, action, thunk } from 'easy-peasy';
+import { createStore, action, thunk, computed } from 'easy-peasy';
 
 import { api } from './utils/apiClient';
 import { ratingArea, score } from './utils/const';
@@ -20,6 +20,11 @@ const productAreaModel = {
       parentID: 0,
     }*/
   ],
+
+  getAreaProducts: computed((state) =>{
+    return (areaID) => state.products.filter(p => p.productArea.id === areaID)
+  }),
+
   set: action((state, products) => {
     state.products = products;
   }),

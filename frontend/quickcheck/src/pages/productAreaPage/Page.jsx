@@ -66,7 +66,8 @@ function AddButton({ onAddProduct }) {
 }
 
 export default function ProductOverview() {
-  const productsAction = useStoreState((state) => state.productList.products);
+  const products = useStoreState((state) => state.productList.products);
+  const getAreaProducts = useStoreState((state) => state.productList.getAreaProducts);
   // const addProductAction = useStoreActions((actions) => actions.productList.addProduct);
   const fetchProducts = useStoreActions((actions) => actions.productList.fetch);
   const createProduct = useStoreActions((actions) => actions.productList.createProduct);
@@ -84,7 +85,7 @@ export default function ProductOverview() {
 
   const updateProducts = () => {
     setEditMode(false);
-    updateAllProducts(productsAction);
+    updateAllProducts(products);
   };
 
   const EditButtons = () => {
@@ -110,16 +111,6 @@ export default function ProductOverview() {
       );
     }
   };
-  /*const addProduct = (productName) => {
-    const prod = {
-      productID: new Date().getMilliseconds(),
-      productName: productName,
-      productArea: {},
-      projectID: new Date().getSeconds(),
-      parentID: 0,
-    };
-    addProductAction(prod);
-  };*/
 
   const addProductAPI = (productName) => {
     const prod = {
@@ -132,26 +123,11 @@ export default function ProductOverview() {
     createProduct(prod);
   };
 
-  /*const updateProduct = (productName) => {
-    const updatedProd = {
-
-      "productName": productName,
-      "comment": "string",
-      "resources":
-
-        [
-          "string"
-        ]
-
-    }
-    //updateProduct(updatedProduct, productID);
-  }*/
-
   return (
     <div>
       <Page title="Product Overview">
         <List spacing={2} w="full">
-          {productsAction.map((product) => (
+          {getAreaProducts(parseInt(productAreaID)).map((product) => (
             <ProductRow
               parentID={0}
               product={product}
