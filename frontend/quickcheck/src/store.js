@@ -58,8 +58,9 @@ const productAreaModel = {
     await api
       .url('/projects/' + newProduct.projectID + '/products')
       .post(newProduct)
-      .json((json) => actions.set(json))
+      .res()
       .catch(console.error);
+    actions.fetch(newProduct.projectID)
   }),
   updateAllProducts: thunk(async (actions, products) => {
     products.map((product) => actions.updateProduct(product));

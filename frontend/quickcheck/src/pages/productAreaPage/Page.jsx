@@ -140,6 +140,7 @@ export default function ProductOverview() {
         <Link href="/results">
           <Button>Generate Results</Button>
         </Link>
+        <p>{JSON.stringify(products)}</p>
       </Page>
     </div>
   );
