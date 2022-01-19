@@ -92,7 +92,6 @@ export default function ProductRow({ product, editMode, projectID }) {
         <Spacer />
 
         <Textarea
-          
           width="30%"
           isDisabled={!editMode}
           value={product.comment !== null ? product.comment : ''}
