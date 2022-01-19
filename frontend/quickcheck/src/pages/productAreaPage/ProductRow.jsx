@@ -116,7 +116,7 @@ export default function ProductRow({ product, editMode }) {
       </Flex>
       <Flex w="75%">
         <VStack mr={5}>
-        <CircularProgress size="40px" value={product.progressEconomic} />
+          <CircularProgress size="40px" value={product.progressEconomic} />
 
           <Link href="/ratings">
             <Button variant="whisper">Economical</Button>
@@ -124,7 +124,7 @@ export default function ProductRow({ product, editMode }) {
         </VStack>
 
         <VStack>
-        <CircularProgress size="40px" value={product.progressComplexity} />
+          <CircularProgress size="40px" value={product.progressComplexity} />
           <Link href="/ratings">
             <Button variant="whisper" href="/ratings">
               Complexity

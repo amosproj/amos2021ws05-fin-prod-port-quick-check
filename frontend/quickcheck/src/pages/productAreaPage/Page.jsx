@@ -33,7 +33,13 @@ export default function ProductOverview() {
       return (
         <HStack>
           {editMode ? <AddProductButton w={16} /> : undefined}
-          <Button size="md" onClick={() => {setEditMode(false); fetchProducts(projectID)}}>
+          <Button
+            size="md"
+            onClick={() => {
+              setEditMode(false);
+              fetchProducts(projectID);
+            }}
+          >
             Cancel
           </Button>
           <Button size="md" onClick={() => updateProducts()}>
