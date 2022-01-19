@@ -6,7 +6,7 @@ import Card from '../../components/Card';
 import RatingTable from './RatingTable';
 import { score } from '../../utils/const';
 import { useStoreActions, useStoreState } from 'easy-peasy';
-import { useParams } from 'react-router-dom';
+
 
 //http://localhost:3000/projects/100/productArea/1/products/100/ratings
 
