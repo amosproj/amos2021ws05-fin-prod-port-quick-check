@@ -7,7 +7,6 @@ import RatingTable from './RatingTable';
 import { score } from '../../utils/const';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 
-
 //http://localhost:3000/projects/100/productArea/1/products/100/ratings
 
 const mockRatings = {
