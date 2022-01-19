@@ -125,7 +125,7 @@ export default function ProductOverview() {
     const prod = {
       productName: productName,
       productArea: {
-        id: '1',
+        id: productAreaID
       },
       projectID: projectID,
     };
