@@ -95,11 +95,11 @@ export default function ProductRow({ product, editMode }) {
     <Card
       layerStyle="card_bordered"
       justifyContent="space-between"
-      direction="column"
+      direction="row"
       // w={(parentID > 0) ? ' 90%' : 'full'}
       _hover={{ boxShadow: '2xl' }}
     >
-      <Flex w="full" mb={3}>
+      <Flex w="25%" mb={3}>
         <Input
           variant="bold"
           align="center"
@@ -111,17 +111,18 @@ export default function ProductRow({ product, editMode }) {
           value={product.productName}
         />
       </Flex>
-      <Flex w="full">
+      <Flex w="75%">
         <Spacer />
         <VStack mr={5}>
-          <CircularProgress size="40px" value={40} />
+        <CircularProgress size="40px" value={product.progressEconomic} />
+
           <Link href="/ratings">
             <Button variant="whisper">Economical</Button>
           </Link>
         </VStack>
 
         <VStack>
-          <CircularProgress size="40px" value={40} />
+        <CircularProgress size="40px" value={product.progressComplexity} />
           <Link href="/ratings">
             <Button variant="whisper" href="/ratings">
               Complexity

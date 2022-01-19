@@ -9,7 +9,7 @@ import ProductRow from './ProductRow';
 
 export default function ProductOverview() {
   const products = useStoreState((state) => state.productList.products);
-  const addProductAction = useStoreActions((actions) => actions.productList.addProduct);
+  // const addProductAction = useStoreActions((actions) => actions.productList.addProduct);
   const fetchProducts = useStoreActions((actions) => actions.productList.fetch);
   const createProduct = useStoreActions((actions) => actions.productList.createProduct);
 
@@ -59,7 +59,12 @@ export default function ProductOverview() {
       <Page title="Product Overview">
         <List spacing={2} w="full">
           {getAreaProducts(parseInt(productAreaID)).map((product) => (
-            <ProductRow product={product} key={product.productID} editMode={editMode}></ProductRow>
+            <ProductRow
+              parentID={0}
+              product={product}
+              key={product.productID}
+              editMode={editMode}
+            ></ProductRow>
           ))}
         </List>
         <EditButtons />
