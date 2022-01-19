@@ -1,5 +1,5 @@
 import { Flex, Input, Spacer, List } from '@chakra-ui/react';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Card from '../../components/Card';
 import Selection from '../../components/Selection';
 
@@ -24,11 +24,7 @@ function RatingRow({ rating, onChangeScore, onChangeComment, onChangeAnswer }) {
           value={rating.rating.criterion}
         />
       </Card>
-      <Card
-        layerStyle="card_bordered"
-        justifyContent="space-between"
-        _hover={{ boxShadow: '2xl' }}
-      >
+      <Card layerStyle="card_bordered" justifyContent="space-between" _hover={{ boxShadow: '2xl' }}>
         <Spacer />
         <Input
           align="center"
@@ -69,8 +65,7 @@ function RatingRow({ rating, onChangeScore, onChangeComment, onChangeAnswer }) {
   );
 }
 
-export default function RatingTable({ ratings, handleChange}) {
-
+export default function RatingTable({ ratings, handleChange }) {
   const handleScoreChange = (rating) => (newRating) => {
     // This is a curried function in JS
     let index = ratings.map((r) => r.rating.criterion).indexOf(rating.rating.criterion);
