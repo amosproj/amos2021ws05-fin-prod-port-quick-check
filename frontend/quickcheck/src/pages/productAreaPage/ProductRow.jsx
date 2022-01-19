@@ -6,7 +6,8 @@ import {
   Spacer,
   Textarea,
   VStack,
-  Box, Flex,
+  Box,
+  Flex,
   Link,
 } from '@chakra-ui/react';
 import React from 'react';
@@ -59,59 +60,57 @@ export default function ProductRow({ product, editMode, projectID }) {
       <Card
         layerStyle="card_bordered"
         justifyContent="space-between"
-        direction='column'
+        direction="column"
         // w={(parentID > 0) ? ' 90%' : 'full'}
         _hover={{ boxShadow: '2xl' }}
       >
-        <Flex w='full' mb={3}>
-        <Input
-          variant='bold'
-          align="center"
-          size="xl"
-          isDisabled={!editMode}
-          onChange={(e) => {
-            setProduct(e.target.value);
-          }}
-          value={product.productName}
-        />
+        <Flex w="full" mb={3}>
+          <Input
+            variant="bold"
+            align="center"
+            size="xl"
+            isDisabled={!editMode}
+            onChange={(e) => {
+              setProduct(e.target.value);
+            }}
+            value={product.productName}
+          />
         </Flex>
-        <Flex w='full'>
+        <Flex w="full">
+          <Spacer />
+          <VStack mr={5}>
+            <CircularProgress size="40px" value={40} />
+            <Link href="/ratings">
+              <Button variant="whisper">Economical</Button>
+            </Link>
+          </VStack>
 
-        <Spacer />
-        <VStack mr={5}>
-          <CircularProgress size="40px" value={40} />
-          <Link href="/ratings">
-            <Button variant="whisper">Economical</Button>
-          </Link>
-        </VStack>
+          <VStack>
+            <CircularProgress size="40px" value={40} />
+            <Link href="/ratings">
+              <Button variant="whisper" href="/ratings">
+                Complexity
+              </Button>
+            </Link>
+          </VStack>
+          <Spacer />
 
-        <VStack>
-          <CircularProgress size="40px" value={40} />
-          <Link href="/ratings">
-            <Button variant="whisper" href="/ratings">
-              Complexity
-            </Button>
-          </Link>
-        </VStack>
-        <Spacer />
+          <Textarea
+            width="50%"
+            isDisabled={!editMode}
+            value={product.comment !== null ? product.comment : ''}
+            onChange={(e) => {
+              handleTextInputChange(e.target.value);
+            }}
+            placeholder="Anmerkung"
+          />
 
-        <Textarea
-          width="50%"
-          isDisabled={!editMode}
-          value={product.comment !== null ? product.comment : ''}
-          onChange={(e) => {
-            handleTextInputChange(e.target.value);
-          }}
-          placeholder="Anmerkung"
-        />
-
-        {editMode ? (
-          <Box ml={3}>
-            <RemoveButton removeProdFct={removeProduct} />
-          </Box>
-        ) : undefined}
+          {editMode ? (
+            <Box ml={3}>
+              <RemoveButton removeProdFct={removeProduct} />
+            </Box>
+          ) : undefined}
         </Flex>
-
       </Card>
     </div>
   );
