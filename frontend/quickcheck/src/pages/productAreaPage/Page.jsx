@@ -110,16 +110,6 @@ export default function ProductOverview() {
       );
     }
   };
-  /*const addProduct = (productName) => {
-    const prod = {
-      productID: new Date().getMilliseconds(),
-      productName: productName,
-      productArea: {},
-      projectID: new Date().getSeconds(),
-      parentID: 0,
-    };
-    addProductAction(prod);
-  };*/
 
   const addProductAPI = (productName) => {
     const prod = {
@@ -132,20 +122,6 @@ export default function ProductOverview() {
     createProduct(prod);
   };
 
-  /*const updateProduct = (productName) => {
-    const updatedProd = {
-
-      "productName": productName,
-      "comment": "string",
-      "resources":
-
-        [
-          "string"
-        ]
-
-    }
-    //updateProduct(updatedProduct, productID);
-  }*/
 
   return (
     <div>
@@ -164,7 +140,6 @@ export default function ProductOverview() {
         <Link href="/results">
           <Button>Generate Results</Button>
         </Link>
-        <p> {JSON.stringify(products)}</p>
       </Page>
     </div>
   );
