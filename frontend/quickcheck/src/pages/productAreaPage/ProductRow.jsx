@@ -95,15 +95,18 @@ export default function ProductRow({ product, editMode }) {
     <Card
       layerStyle="card_bordered"
       justifyContent="space-between"
-      direction="row"
+      direction="column"
       // w={(parentID > 0) ? ' 90%' : 'full'}
       _hover={{ boxShadow: '2xl' }}
     >
+      
+      
+      <Flex direction="row" w='full' justifyContent="space-between">
       <Flex w="25%" mb={3}>
         <Input
           variant="bold"
           align="center"
-          size="xl"
+          size="2xl"
           isDisabled={!editMode}
           onChange={(e) => {
             setProduct(e.target.value);
@@ -112,7 +115,6 @@ export default function ProductRow({ product, editMode }) {
         />
       </Flex>
       <Flex w="75%">
-        <Spacer />
         <VStack mr={5}>
         <CircularProgress size="40px" value={product.progressEconomic} />
 
@@ -140,25 +142,19 @@ export default function ProductRow({ product, editMode }) {
           }}
           placeholder="Anmerkung"
         />
-
-        {editMode ? (
-          <Box ml={3}>
-            <RemoveButton removeProdFct={removeProduct} />
-          </Box>
-        ) : undefined}
       </Flex>
-
-      <Heading size="lg" mt={8} align="left" w="full">
+      </Flex>
+      <Heading size="md" mt={8} align="left" w="full">
         Variants
       </Heading>
-      {/* <Flex w='full' mt={5}> */}
+      <Flex w='full' mt={5}>
       <List w="full">
         {productVariants.map((variant) => (
           // <p>{JSON.stringify(variant)}</p>
           <ProductVariant productVariant={variant} editMode={editMode} key={variant.productID} />
         ))}
       </List>
-      {/* </Flex> */}
+      </Flex>
     </Card>
   );
 }
