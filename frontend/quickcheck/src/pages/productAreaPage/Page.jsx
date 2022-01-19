@@ -2,17 +2,10 @@ import React, { useState, useEffect } from 'react';
 import Page from '../../components/Page';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { useParams } from 'react-router-dom';
-import {
-  List,
-  Button,
-  HStack,
-  Link,
-} from '@chakra-ui/react';
+import { List, Button, HStack, Link } from '@chakra-ui/react';
 
-import AddProductButton from './AddProductButton'
+import AddProductButton from './AddProductButton';
 import ProductRow from './ProductRow';
-
-
 
 export default function ProductOverview() {
   const allItems = useStoreState((state) => state.productList.items);
@@ -75,7 +68,6 @@ export default function ProductOverview() {
     };
     createProduct(prod);
   };
-
 
   return (
     <div>
