@@ -3,76 +3,21 @@ import Page from '../../components/Page';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { useParams } from 'react-router-dom';
 import {
-  Modal,
-  ModalOverlay,
-  ModalHeader,
   List,
-  ModalContent,
-  ModalBody,
-  FormControl,
-  ModalFooter,
-  ModalCloseButton,
   Button,
-  useDisclosure,
   HStack,
-  IconButton,
-  Input,
   Link,
 } from '@chakra-ui/react';
-import { AddIcon } from '@chakra-ui/icons';
 
+import AddProductButton from './AddProductButton'
 import ProductRow from './ProductRow';
 
-function AddButton({ onAddProduct }) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [productName, setProductName] = useState('');
-  const header = 'Add Product';
-  return (
-    <>
-      <IconButton icon={<AddIcon />} variant="primary" size="lg" onClick={onOpen} />
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader color="primary">{header}</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody px={10}>
-            <FormControl>
-              <Input
-                mb={6}
-                placeholder="Product Name"
-                onChange={(e) => setProductName(e.target.value)}
-              />
-            </FormControl>
-          </ModalBody>
-          <ModalFooter py={5} px={10}>
-            <Button
-              variant="primary"
-              mx={3}
-              onClick={(e) => {
-                onAddProduct(productName);
-                onClose();
-              }}
-            >
-              Save
-            </Button>
-            <Button onClick={onClose} variant="wisper">
-              Cancel
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </>
-  );
-}
 
-const filterVariants = (products) => {
-  return products.filter((prod) => prod.parentID === 0);
-};
 
 export default function ProductOverview() {
+  const allItems = useStoreState((state) => state.productList.items);
   const products = useStoreState((state) => state.productList.products);
   const addProductAction = useStoreActions((actions) => actions.productList.addProduct);
-  const setProducts = useStoreActions((actions) => actions.productList.set);
   const fetchProducts = useStoreActions((actions) => actions.productList.fetch);
   const createProduct = useStoreActions((actions) => actions.productList.createProduct);
 
@@ -90,7 +35,7 @@ export default function ProductOverview() {
     if (editMode) {
       return (
         <HStack>
-          {editMode ? <AddButton w={16} onAddProduct={addProductAPI} /> : undefined}
+          {editMode ? <AddProductButton w={16} onAddProduct={addProductAPI} /> : undefined}
           <Button size="md" onClick={() => setEditMode(false)}>
             Cancel
           </Button>
@@ -131,26 +76,12 @@ export default function ProductOverview() {
     createProduct(prod);
   };
 
-  /*const updateProduct = (productName) => {
-    const updatedProd = {
-
-      "productName": productName,
-      "comment": "string",
-      "resources":
-
-        [
-          "string"
-        ]
-
-    }
-    //updateProduct(updatedProduct, productID);
-  }*/
 
   return (
     <div>
       <Page title="Product Overview">
         <List spacing={2} w="full">
-          {filterVariants(products).map((product) => (
+          {products.map((product) => (
             <ProductRow product={product} key={product.productID} editMode={editMode}></ProductRow>
           ))}
         </List>
@@ -158,6 +89,7 @@ export default function ProductOverview() {
         <Link href={`/results/`}>
           <Button>Generate Results</Button>
         </Link>
+        <p>{JSON.stringify(allItems)}</p>)
       </Page>
     </div>
   );
