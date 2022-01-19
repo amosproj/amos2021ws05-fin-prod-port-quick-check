@@ -76,7 +76,7 @@ public class ResultService {
             }
             table.put(p.productRatingId.getProduct().id, tmp);
         }catch (Exception e){
-            throw new BadRequest("Table is Empty or ProductRatingEntity is missing");
+            throw new NullPointerException("Table is Empty or ProductRatingEntity is missing");
         }
 
     }
