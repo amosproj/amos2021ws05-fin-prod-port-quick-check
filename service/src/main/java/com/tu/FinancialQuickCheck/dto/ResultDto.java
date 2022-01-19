@@ -2,9 +2,7 @@ package com.tu.FinancialQuickCheck.dto;
 
 import com.tu.FinancialQuickCheck.Score;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  *
@@ -36,5 +34,20 @@ public class ResultDto {
     public void updateProductInfos(int productID, String productName){
         this.productID = productID;
         this.productName = productName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ResultDto resultDto = (ResultDto) o;
+        return productID == resultDto.productID && Objects.equals(productName, resultDto.productName) && Objects.equals(ratings, resultDto.ratings) && Arrays.equals(scores, resultDto.scores);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(productID, productName, ratings);
+        result = 31 * result + Arrays.hashCode(scores);
+        return result;
     }
 }

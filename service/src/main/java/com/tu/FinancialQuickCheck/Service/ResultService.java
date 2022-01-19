@@ -48,57 +48,67 @@ public class ResultService {
     }
 
     public List<ResultDto> convertEntitiesToResultDtos(List<ProductRatingEntity> productEntities){
+        try {
+            Hashtable<Integer, ResultDto> table = new Hashtable<>();
 
-        Hashtable<Integer, ResultDto> table = new Hashtable<>();
+            for (ProductRatingEntity p : productEntities) {
+                if (p.productRatingId.getProduct().parentProduct == null) {
+                    updateResultRating(table, p);
+                } else {
+                    updateResultScore(table, p);
+                }
 
-        for(ProductRatingEntity p: productEntities) {
-            if (p.productRatingId.getProduct().parentProduct == null) {
-                updateResultRating(table, p);
-            } else {
-                updateResultScore(table, p);
             }
 
+            return new ArrayList<>(table.values());
+        } catch (Exception e){
+            throw new NullPointerException("List<ProductRatingEntity> not initilized.");
         }
-
-        return new ArrayList<>(table.values());
     }
 
     public void updateResultRating(Hashtable<Integer, ResultDto> table, ProductRatingEntity p){
 
-        ResultDto tmp;
         try {
-            tmp = getResultDto(table, p.productRatingId.getProduct().id);
+            ResultDto tmp = getResultDto(table, p.productRatingId.getProduct().id);
             tmp.updateProductInfos(p.productRatingId.getProduct().id, p.productRatingId.getProduct().name);
+            if (RATINGS.contains(p.productRatingId.getRating().id)) {
+                tmp.ratings.add(new ProductRatingDto(p.answer, p.score, p.productRatingId.getRating()));
+            }
+            table.put(p.productRatingId.getProduct().id, tmp);
         }catch (Exception e){
             throw new BadRequest("Table is Empty or ProductRatingEntity is missing");
         }
 
-        if (RATINGS.contains(p.productRatingId.getRating().id)) {
-            tmp.ratings.add(new ProductRatingDto(p.answer, p.score, p.productRatingId.getRating()));
-        }
-        table.put(p.productRatingId.getProduct().id, tmp);
     }
 
     public void updateResultScore(Hashtable<Integer, ResultDto> table, ProductRatingEntity p){
-        ResultDto tmp = getResultDto(table, p.productRatingId.getProduct().parentProduct.id);
-        tmp.updateProductInfos(p.productRatingId.getProduct().parentProduct.id,
-                p.productRatingId.getProduct().parentProduct.name);
+        try {
+            ResultDto tmp = getResultDto(table, p.productRatingId.getProduct().parentProduct.id);
+            tmp.updateProductInfos(p.productRatingId.getProduct().parentProduct.id,
+                    p.productRatingId.getProduct().parentProduct.name);
 
-        if (p.productRatingId.getRating().id == SCORES) {
-            int index = p.score.getValue() - 1;
-            int current_count = tmp.scores[index].count;
-            tmp.scores[index].count = current_count + 1;
+            if (p.productRatingId.getRating().id == SCORES && p.score != null) {
+                int index = p.score.getValue() - 1;
+                int current_count = tmp.scores[index].count;
+                tmp.scores[index].count = current_count + 1;
+            }
+            table.put(p.productRatingId.getProduct().parentProduct.id, tmp);
+        }catch (Exception e){
+            throw new NullPointerException("Table is not initilized, entity p does not have a parent or parent entity does not have a name or id.");
         }
-        table.put(p.productRatingId.getProduct().parentProduct.id, tmp);
     }
 
     public ResultDto getResultDto(Hashtable<Integer, ResultDto> table, Integer productId){
-
-        if (table.containsKey(productId)) {
-            return table.get(productId);
-        } else {
-            return new ResultDto();
+        try {
+            if (table.containsKey(productId)) {
+                return table.get(productId);
+            } else {
+                return new ResultDto();
+            }
+        } catch (Exception e){
+            throw new NullPointerException("Table is not initilized.");
         }
+
     }
 
     // TODO: use if we do not finish the implementation

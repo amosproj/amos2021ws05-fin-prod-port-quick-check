@@ -1,7 +1,6 @@
 package com.tu.FinancialQuickCheck.UnitTests.Service;
 
 import com.tu.FinancialQuickCheck.Exceptions.BadRequest;
-import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.Score;
 import com.tu.FinancialQuickCheck.Service.ResultService;
 import com.tu.FinancialQuickCheck.db.*;
@@ -47,9 +46,10 @@ public class ResultServiceTest {
     private Hashtable<Integer, ResultDto> ResultTable;
     private Hashtable<Integer, ResultDto> ResultTableCopy;
 
+    private List<ProductRatingEntity> listProductRatingEntityForResult;
     private ProductRatingEntity productRatingEntityForResult;
-
-    private ResultDto resultDto1;
+    Hashtable<Integer, ResultDto> emptyTable;
+    int productIdNotInTable = 0;
 
     @BeforeEach
     public void init() {
@@ -79,8 +79,12 @@ public class ResultServiceTest {
                 ratings.add(dto);
 
                 ProductRatingEntity entity = new ProductRatingEntity();
+                ProductEntity parentProductEntity = new ProductEntity();
+                parentProductEntity.id = 99;
+                parentProductEntity.name = "Produkt99";
                 ProductEntity productEntity = new ProductEntity();
                 productEntity.id = 100;
+                productEntity.parentProduct = parentProductEntity;
                 RatingEntity ratingEntity = new RatingEntity();
                 ratingEntity.id = ratingIds[j];
                 ratingEntity.criterion = ratingNames[j];
@@ -96,7 +100,7 @@ public class ResultServiceTest {
             scores[1] = new ScoreDto(Score.MITTEL, 7);
             scores[0] = new ScoreDto(Score.GERING, 0);
 
-            listDtos.add(new ResultDto(i, "productName" + i, ratings, scores));
+            listDtos.add(new ResultDto(100, "productName" + 100, ratings, scores));
         }
 
 
@@ -105,16 +109,10 @@ public class ResultServiceTest {
         scores[1] = new ScoreDto(Score.MITTEL, 7);
         scores[0] = new ScoreDto(Score.GERING, 0);
 
-        resultDto1 = new ResultDto();
-        resultDto1.productID = 1;
-        resultDto1.ratings = ratings;
-        resultDto1.productName = "productName";
-        resultDto1.scores = scores;
-
         ResultTable = new Hashtable<>();
         ResultTableCopy = new Hashtable<>();
-        ResultTable.put(1, resultDto1);
-        ResultTableCopy.put(1, resultDto1);
+        ResultTable.put(listDtos.get(0).productID, listDtos.get(0));
+        ResultTableCopy.put(listDtos.get(0).productID, listDtos.get(0));
 
     }
 
@@ -185,7 +183,22 @@ public class ResultServiceTest {
         assertTrue(actualMessage.contains(expectedMessage));
     }
 
-    /**tests for updateProductRatings()**/
+
+    /**tests for convertEntitiesToResultDtos()**/
+    @Test
+    public void testConvertEntitiesToResultDtos_nullPointerException_emptyRatingEntity(){
+
+        Exception exception = assertThrows(NullPointerException.class,
+                () -> service.convertEntitiesToResultDtos(listProductRatingEntityForResult));
+
+        String expectedMessage = "List<ProductRatingEntity> not initilized.";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+
+    /**tests for updateResultRating()**/
     @Test
     public void testUpdateResultRating_emptyRatingEntity(){
 
@@ -202,11 +215,8 @@ public class ResultServiceTest {
 
     @Test
     public void testUpdateResultRating_emptyTable(){
-
-        Hashtable<Integer, ResultDto> emptyTable_1 = new Hashtable<>();
-
         Exception exception = assertThrows(BadRequest.class,
-                () -> service.updateResultRating(emptyTable_1, productRatingEntityForResult));
+                () -> service.updateResultRating(emptyTable, productRatingEntityForResult));
 
         String expectedMessage = "Table is Empty or ProductRatingEntity is missing";
         String actualMessage = exception.getMessage();
@@ -216,19 +226,126 @@ public class ResultServiceTest {
 
     @Test
     public void testUpdateResultRating_succsess(){
-
-        ResultTable.put(100, resultDto1);
+        int productId = listDtos.get(0).productID;
+        ResultTable.put(productId, listDtos.get(0));
         productRatingEntityForResult = listProductRatingEntities.get(0);
         productRatingEntityForResult.productRatingId.getProduct().name = "newName";
         service.updateResultRating(ResultTable, productRatingEntityForResult);
 
         assertAll("update Result Rating",
-                () -> assertEquals(100, ResultTable.get(100).productID),
-                () -> assertEquals("newName", ResultTable.get(100).productName)
+                () -> assertEquals(productId, ResultTable.get(productId).productID),
+                () -> assertEquals("newName", ResultTable.get(productId).productName)
         );
     }
 
+    /**tests for updateResultScore()**/
+    @Test
+    public void testUpdateResultScore_nullpointerException_tableIsNull(){
+        Exception exception = assertThrows(NullPointerException.class,
+                () -> service.updateResultScore(emptyTable, productRatingEntityForResult));
+        String expectedMessage = "Table is not initilized, entity p does not have a parent or " +
+                "parent entity does not have a name or id.";
+        String actualMessage = exception.getMessage();
 
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    public void testUpdateResultScore_nullpointerException_entityIsNull(){
+        Exception exception = assertThrows(NullPointerException.class,
+                () -> service.updateResultScore(ResultTable, productRatingEntityForResult));
+        String expectedMessage = "Table is not initilized, entity p does not have a parent or " +
+                "parent entity does not have a name or id.";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    public void testUpdateResultScore_success_emptyTable_nothingToUpdate(){
+        emptyTable = new Hashtable<>();
+
+        for(ProductRatingEntity entity: listProductRatingEntities){
+            service.updateResultScore(emptyTable, entity);
+        }
+
+        assertEquals(1, emptyTable.size());
+    }
+
+    @Test
+    public void testUpdateResultScore_success_notEmptyTable_nothingToUpdate(){
+        for(ProductRatingEntity entity: listProductRatingEntities){
+            service.updateResultScore(ResultTable, entity);
+        }
+
+        assertEquals(2, ResultTable.size());
+    }
+
+    @Test
+    public void testUpdateResultScore_success_emptyTable_scoreIsUpdated(){
+        emptyTable = new Hashtable<>();
+        listProductRatingEntities.get(3).score = Score.HOCH;
+
+        for(ProductRatingEntity entity: listProductRatingEntities){
+            service.updateResultScore(emptyTable, entity);
+        }
+
+        assertEquals(1, emptyTable.size());
+        int parentId = listProductRatingEntities.get(0).productRatingId.getProduct().parentProduct.id;
+        assertEquals(1, emptyTable.get(parentId).scores[2].count);
+        assertEquals(0, emptyTable.get(parentId).scores[1].count);
+        assertEquals(0, emptyTable.get(parentId).scores[0].count);
+    }
+
+    @Test
+    public void testUpdateResultScore_success_notEmptyTable_scoreIsUpdated(){
+        listProductRatingEntities.get(3).score = Score.HOCH;
+
+        for(ProductRatingEntity entity: listProductRatingEntities){
+            service.updateResultScore(ResultTable, entity);
+        }
+
+        assertEquals(2, ResultTable.size());
+        int parentId = listProductRatingEntities.get(0).productRatingId.getProduct().parentProduct.id;
+        assertEquals(1, ResultTable.get(parentId).scores[2].count);
+        assertEquals(0, ResultTable.get(parentId).scores[1].count);
+        assertEquals(0, ResultTable.get(parentId).scores[0].count);
+    }
+
+
+    /**tests for getResultDto()**/
+    @Test
+    public void testGetResultDto_nullpointerException_tableIsNull(){
+        Exception exception = assertThrows(NullPointerException.class,
+                () -> service.getResultDto(emptyTable, 100));
+        String expectedMessage = "Table is not initilized.";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    public void testGetResultDto_emptyTable(){
+        emptyTable = new Hashtable<>();
+
+        ResultDto out = service.getResultDto(emptyTable, listDtos.get(0).productID);
+
+        assertEquals(new ResultDto(), out);
+    }
+
+    @Test
+    public void testGetResultDto_productIdNotInTable(){
+        ResultDto out = service.getResultDto(ResultTable, productIdNotInTable);
+
+        assertEquals(new ResultDto(), out);
+    }
+
+    @Test
+    public void testGetResultDto_productIdInTable(){
+        ResultDto out = service.getResultDto(ResultTable, listDtos.get(0).productID);
+
+        assertEquals(listDtos.get(0), out);
+    }
 
 
 }
