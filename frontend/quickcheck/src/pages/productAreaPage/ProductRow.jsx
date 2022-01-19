@@ -70,10 +70,11 @@ function ProductVariant({ productVariant, editMode }) {
 export default function ProductRow({ product, editMode }) {
   const removeProductState = useStoreActions((actions) => actions.productList.removeProduct);
   const changeProductName = useStoreActions((actions) => actions.productList.changeProductName);
-  const changeProductComment = useStoreActions((actions) => actions.productList.changeProductComment);
+  const changeProductComment = useStoreActions(
+    (actions) => actions.productList.changeProductComment
+  );
 
-  const getVariants = useStoreState((state) => state.productList.getVariants)
-
+  const getVariants = useStoreState((state) => state.productList.getVariants);
 
   const productVariants = getVariants(product);
 
@@ -91,17 +92,16 @@ export default function ProductRow({ product, editMode }) {
   };
 
   return (
-    
-      <Card
-        layerStyle="card_bordered"
-        justifyContent="space-between"
-        direction='column'
-        // w={(parentID > 0) ? ' 90%' : 'full'}
-        _hover={{ boxShadow: '2xl' }}
-      >
-        <Flex w='full' mb={3}>
+    <Card
+      layerStyle="card_bordered"
+      justifyContent="space-between"
+      direction="column"
+      // w={(parentID > 0) ? ' 90%' : 'full'}
+      _hover={{ boxShadow: '2xl' }}
+    >
+      <Flex w="full" mb={3}>
         <Input
-          variant='bold'
+          variant="bold"
           align="center"
           size="xl"
           isDisabled={!editMode}
@@ -110,9 +110,8 @@ export default function ProductRow({ product, editMode }) {
           }}
           value={product.productName}
         />
-        </Flex>
-        <Flex w='full'>
-
+      </Flex>
+      <Flex w="full">
         <Spacer />
         <VStack mr={5}>
           <CircularProgress size="40px" value={40} />
