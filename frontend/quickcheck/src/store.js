@@ -60,7 +60,7 @@ const productAreaModel = {
       .post(newProduct)
       .res()
       .catch(console.error);
-    actions.fetch(newProduct.projectID)
+    actions.fetch(newProduct.projectID);
   }),
   updateAllProducts: thunk(async (actions, products) => {
     products.map((product) => actions.updateProduct(product));
