@@ -1,4 +1,5 @@
 import { React, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { Button, HStack, Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 import Page from '../../components/Page';
 import Card from '../../components/Card';

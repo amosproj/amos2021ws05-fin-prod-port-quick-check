@@ -1,0 +1,11 @@
+id,comment,name,parent_product_id,productarea,project
+100,,Dispokredit,,1,100
+101,,Ratenkredit,,1,100
+102,,Ratenkredit Standard,101,1,100
+103,,Ratenkredit Flex,101,1,100
+104,,Ratenkredit 3,101,1,100
+105,,Ratenkredit 4,101,1,100
+106,,Baufinanzierung,,1,100
+107,,Baufinanzierung Standard,106,1,100
+108,,Baufinanzierung Flex,106,1,100
+109,,Baufinanzierung Nachhaltigkeit,106,1,100
