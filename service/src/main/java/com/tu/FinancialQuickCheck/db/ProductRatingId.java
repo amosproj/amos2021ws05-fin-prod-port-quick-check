@@ -6,28 +6,21 @@ import java.util.Objects;
 
 /**
  * Every product rating has an ID for identification.
+ * Rating for a product, for which a productRatingID was given.
  */
 @Embeddable
 public class ProductRatingId implements Serializable {
 
-    //TODO: (done - needs review) remove ...id in Name declarations
-    @ManyToOne(targetEntity = ProductEntity.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = ProductEntity.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "product")
     private ProductEntity product;
 
-    /**
-     * Rating for a product, for which a productRatingID was given.
-     */
-    //TODO: (done - needs review) remove ...id in Name declarations
     //comment: do not change fetchType
     @ManyToOne(targetEntity = RatingEntity.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "rating", updatable = false)
     private RatingEntity rating;
 
 
-    /**
-     * No-argument Constructor for class ProductRatingID.
-     */
     public ProductRatingId(){}
 
     /**
