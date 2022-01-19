@@ -67,7 +67,6 @@ function AddButton({ onAddProduct }) {
 
 export default function ProductOverview() {
   const products = useStoreState((state) => state.productList.products);
-  const getAreaProducts = useStoreState((state) => state.productList.getAreaProducts);
   // const addProductAction = useStoreActions((actions) => actions.productList.addProduct);
   const fetchProducts = useStoreActions((actions) => actions.productList.fetch);
   const createProduct = useStoreActions((actions) => actions.productList.createProduct);
@@ -111,23 +110,48 @@ export default function ProductOverview() {
       );
     }
   };
+  /*const addProduct = (productName) => {
+    const prod = {
+      productID: new Date().getMilliseconds(),
+      productName: productName,
+      productArea: {},
+      projectID: new Date().getSeconds(),
+      parentID: 0,
+    };
+    addProductAction(prod);
+  };*/
 
   const addProductAPI = (productName) => {
     const prod = {
       productName: productName,
       productArea: {
-        id: productAreaID,
+        id: productAreaID
       },
-      projectID: projectID,
+      projectID: projectID
     };
     createProduct(prod);
   };
+
+  /*const updateProduct = (productName) => {
+    const updatedProd = {
+
+      "productName": productName,
+      "comment": "string",
+      "resources":
+
+        [
+          "string"
+        ]
+
+    }
+    //updateProduct(updatedProduct, productID);
+  }*/
 
   return (
     <div>
       <Page title="Product Overview">
         <List spacing={2} w="full">
-          {getAreaProducts(parseInt(productAreaID)).map((product) => (
+          {products.map((product) => (
             <ProductRow
               parentID={0}
               product={product}
@@ -140,6 +164,7 @@ export default function ProductOverview() {
         <Link href="/results">
           <Button>Generate Results</Button>
         </Link>
+        <p> {JSON.stringify(products)}</p>
       </Page>
     </div>
   );
