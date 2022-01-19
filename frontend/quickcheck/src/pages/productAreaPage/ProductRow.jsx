@@ -77,21 +77,21 @@ export default function ProductRow({ product, editMode, projectID }) {
           />
         </Flex>
         <Flex w="full">
-        <Spacer />
-        <VStack mr={5}>
-          <CircularProgress size="40px" value={product.progressEconomic} />
-          <Link href="/ratings">
-            <Button variant="whisper">Economical</Button>
-          </Link>
-        </VStack>
-        <VStack>
-          <CircularProgress size="40px" value={product.progressComplexity} />
-          <Link href="/ratings">
-            <Button variant="whisper" href="/ratings">
-              Complexity
-            </Button>
-          </Link>
-        </VStack>
+          <Spacer />
+          <VStack mr={5}>
+            <CircularProgress size="40px" value={product.progressEconomic} />
+            <Link href="/ratings">
+              <Button variant="whisper">Economical</Button>
+            </Link>
+          </VStack>
+          <VStack>
+            <CircularProgress size="40px" value={product.progressComplexity} />
+            <Link href="/ratings">
+              <Button variant="whisper" href="/ratings">
+                Complexity
+              </Button>
+            </Link>
+          </VStack>
           <Textarea
             width="50%"
             isDisabled={!editMode}
