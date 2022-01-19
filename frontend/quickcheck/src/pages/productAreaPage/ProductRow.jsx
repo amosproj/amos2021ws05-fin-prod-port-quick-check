@@ -92,7 +92,7 @@ export default function ProductRow({ product, editMode, projectID }) {
               </Button>
             </Link>
           </VStack>
-          <Spacer/>
+          <Spacer />
           <Textarea
             width="50%"
             isDisabled={!editMode}
