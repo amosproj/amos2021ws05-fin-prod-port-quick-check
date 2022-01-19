@@ -1,4 +1,4 @@
-import {Flex, Input, Spacer, List, Text, Textarea} from '@chakra-ui/react';
+import { Flex, Input, Spacer, List, Text, Textarea } from '@chakra-ui/react';
 import React from 'react';
 import Card from '../../components/Card';
 import Selection from '../../components/Selection';
@@ -15,7 +15,8 @@ function RatingRow({ rating }) {
         <Spacer />
         <Text>{rating.rating.category}</Text>
         <Spacer />
-        <Textarea isReadOnly={true}
+        <Textarea
+          isReadOnly={true}
           align="center"
           size="md"
           width="100%"
@@ -29,13 +30,7 @@ function RatingRow({ rating }) {
           selected={rating.score}
         ></Selection>
         <Spacer />
-        <Textarea
-          align="center"
-          size="md"
-          width="100%"
-          isReadOnly={true}
-          value={rating.comment}
-        />
+        <Textarea align="center" size="md" width="100%" isReadOnly={true} value={rating.comment} />
         <Spacer />
         <Input
           align="center"
@@ -52,16 +47,12 @@ function RatingRow({ rating }) {
   );
 }
 
-export default function EvaluationTable({  ratings,  }) {
-
-
+export default function EvaluationTable({ ratings }) {
   return (
     <List spacing={2} direction="column" w="full" align="center">
       {ratings.map((rating) => (
         <Flex gridGap={3}>
-          <RatingRow
-            rating={rating}
-          ></RatingRow>
+          <RatingRow rating={rating}></RatingRow>
         </Flex>
       ))}
     </List>

@@ -13,7 +13,7 @@ import TestRange from './pages/TestRange';
 
 import store from './store';
 import theme from './styles/theme';
-import Evaluation from "./pages/evaluationPage/Evaluation";
+import Evaluation from './pages/evaluationPage/Evaluation';
 
 function App() {
   return (
@@ -38,8 +38,8 @@ function App() {
                 element={<Rating />}
               />
               <Route
-                  path="projects/:projectID/productArea/:productAreaID/products/:productID/evaluation"
-                  element={<Evaluation />}
+                path="projects/:projectID/productArea/:productAreaID/products/:productID/evaluation"
+                element={<Evaluation />}
               />
             </Routes>
             <Link to="login"> [Login] </Link>
