@@ -365,4 +365,42 @@ public class ResultServiceTest {
     }
 
 
+    /** tests for ResultDto **/
+    @Test
+    public void testResultDto_updateProductInfos(){
+
+        ResultDto tmpResultDto = listDtos.get(0);
+
+        tmpResultDto.updateProductInfos(42, "newName");
+
+        assertAll("updateResultDto",
+                () -> assertEquals(42, tmpResultDto.productID),
+                () -> assertEquals("newName", tmpResultDto.productName)
+        );
+    }
+
+    @Test
+    public void testResultDto_equals(){
+
+        ResultDto tmpResultDto          = listDtos.get(0);
+        ResultDto tmpResultDtoSame      = listDtos.get(0);
+        ResultDto tmpResultDtoDifferent = listDtos.get(0);
+        tmpResultDtoDifferent.updateProductInfos(66, "differentName");
+
+        //TODO: discuss equals
+        assertTrue(tmpResultDto.equals(tmpResultDtoSame));
+        assertFalse(tmpResultDto.equals(tmpResultDtoDifferent));
+    }
+
+    @Test
+    public void testResultDto_hashCode(){
+
+        ResultDto tmpResultDto = listDtos.get(0);
+        assertEquals((-212165700), tmpResultDto.hashCode());
+        
+
+        tmpResultDto.updateProductInfos(66, "newName");
+        assertEquals((1880436434), tmpResultDto.hashCode());
+    }
+
 }
