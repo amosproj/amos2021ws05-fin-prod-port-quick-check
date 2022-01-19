@@ -26,7 +26,6 @@ export default function AddProductButton({ parentProductID }) {
   const header = 'Add Product';
 
   const createProduct = useStoreActions((actions) => actions.productList.createProduct);
-  const addProductAction = useStoreActions((actions) => actions.productList.addProduct);
 
   const { projectID, productAreaID } = useParams();
 
@@ -39,7 +38,7 @@ export default function AddProductButton({ parentProductID }) {
         id: productAreaID,
       },
     };
-    addProductAction(newProduct);
+    createProduct(newProduct);
   };
 
   return (

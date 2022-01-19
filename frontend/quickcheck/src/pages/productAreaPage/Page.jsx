@@ -9,9 +9,7 @@ import ProductRow from './ProductRow';
 
 export default function ProductOverview() {
   const products = useStoreState((state) => state.productList.products);
-  // const addProductAction = useStoreActions((actions) => actions.productList.addProduct);
   const fetchProducts = useStoreActions((actions) => actions.productList.fetch);
-  const createProduct = useStoreActions((actions) => actions.productList.createProduct);
 
   const getAreaProducts = useStoreState((state) => state.productList.getAreaProducts);
   const updateAllProducts = useStoreActions((actions) => actions.productList.updateAllProducts);
@@ -35,7 +33,7 @@ export default function ProductOverview() {
       return (
         <HStack>
           {editMode ? <AddProductButton w={16} /> : undefined}
-          <Button size="md" onClick={() => setEditMode(false)}>
+          <Button size="md" onClick={() => {setEditMode(false); fetchProducts(projectID)}}>
             Cancel
           </Button>
           <Button size="md" onClick={() => updateProducts()}>
