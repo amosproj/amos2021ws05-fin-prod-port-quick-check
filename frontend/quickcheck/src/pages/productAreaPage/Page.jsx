@@ -24,11 +24,12 @@ export default function ProductOverview() {
     console.log('rendered');
   }, []);
 
+
   const EditButtons = () => {
     if (editMode) {
       return (
         <HStack>
-          {editMode ? <AddProductButton w={16} onAddProduct={addProductAPI} /> : undefined}
+          {editMode ? <AddProductButton w={16} /> : undefined}
           <Button size="md" onClick={() => setEditMode(false)}>
             Cancel
           </Button>
@@ -48,26 +49,7 @@ export default function ProductOverview() {
     }
   };
 
-  const addProduct = (productName) => {
-    const prod = {
-      productName: productName,
-      productArea: {},
-      projectID: new Date().getSeconds(),
-      parentID: 0,
-    };
-    addProductAction(prod);
-  };
 
-  const addProductAPI = (productName) => {
-    const prod = {
-      productName: productName,
-      productArea: {
-        id: '1',
-      },
-      projectID: projectID,
-    };
-    createProduct(prod);
-  };
 
   return (
     <div>

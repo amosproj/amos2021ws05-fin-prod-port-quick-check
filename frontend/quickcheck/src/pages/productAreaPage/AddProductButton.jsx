@@ -20,10 +20,28 @@ import {
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 
-export default function AddProductButton({ onAddProduct }) {
+export default function AddProductButton({ parentProductID }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [productName, setProductName] = useState('');
   const header = 'Add Product';
+
+  const createProduct = useStoreActions((actions) => actions.productList.createProduct);
+  const addProductAction = useStoreActions((actions) => actions.productList.addProduct);
+
+  const { projectID, productAreaID } = useParams();
+
+  const addProduct = (productName) => {
+    const newProduct = {
+      productName: productName,
+      parentID: parentProductID,
+      projectID: projectID,
+      productArea: {
+        id: productAreaID,
+      },
+    };
+    addProductAction(newProduct);
+  };
+
   return (
     <>
       <IconButton icon={<AddIcon />} variant="primary" size="lg" onClick={onOpen} />
@@ -46,7 +64,7 @@ export default function AddProductButton({ onAddProduct }) {
               variant="primary"
               mx={3}
               onClick={(e) => {
-                onAddProduct(productName);
+                addProduct(productName);
                 onClose();
               }}
             >
