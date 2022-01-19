@@ -209,12 +209,11 @@ public class ResultServiceTest {
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
-
-
     }
 
     @Test
     public void testUpdateResultRating_emptyTable(){
+
         Exception exception = assertThrows(BadRequest.class,
                 () -> service.updateResultRating(emptyTable, productRatingEntityForResult));
 
@@ -225,7 +224,25 @@ public class ResultServiceTest {
     }
 
     @Test
+    public void testUpdateResultRating_nothingToUpdate(){
+
+        int productId = listDtos.get(0).productID;
+        String productName = listDtos.get(0).productName;
+        ResultTable.put(productId, listDtos.get(0));
+        productRatingEntityForResult = listProductRatingEntities.get(0);
+        productRatingEntityForResult.productRatingId.getProduct().name = productName;
+        productRatingEntityForResult.productRatingId.getProduct().id = productId;
+        service.updateResultRating(ResultTable, productRatingEntityForResult);
+
+        assertAll("update Result Rating",
+                () -> assertEquals(productId, ResultTable.get(productId).productID),
+                () -> assertEquals(productName, ResultTable.get(productId).productName)
+        );
+    }
+
+    @Test
     public void testUpdateResultRating_succsess(){
+
         int productId = listDtos.get(0).productID;
         ResultTable.put(productId, listDtos.get(0));
         productRatingEntityForResult = listProductRatingEntities.get(0);
