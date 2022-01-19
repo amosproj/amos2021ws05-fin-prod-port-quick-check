@@ -183,11 +183,7 @@ const ratingModel = {
     state.ratings = ratings;
   }),
   update: action((state, updatedProps) => {
-    state.data = { ...state.data, ...updatedProps };
-  }),
-  updateRating: action((state, rating) => {
-    const index = state.data.ratings.map((r) => r.ratingID).indexOf(rating.ratingID); // get index of member with same email. if not found, index=-1
-    state.data.ratings[index] = { ...state.data.ratings[index], ...rating };
+    state.ratings = { ...state.ratings, ...updatedProps };
   }),
 
   // GET all ratings
@@ -197,6 +193,30 @@ const ratingModel = {
       .get()
       .json((json) => actions.set(json))
       .catch(console.error);
+  }),
+
+  createNew: thunk(async (actions, product) => {
+    //console.log('send UPDATE project:', { projectData });
+    actions.set(product);
+    await api
+      .url(`/products/` + String(product.productID) + '/ratings')
+      .post(product)
+      .res(console.log)
+      .catch(console.error);
+
+    actions.set(product);
+  }),
+
+  sendUpdate: thunk(async (actions, product) => {
+    //console.log('send UPDATE project:', { projectData });
+    actions.set(product);
+    await api
+      .url(`/products/` + String(product.productID) + '/ratings')
+      .put(product)
+      .res(console.log)
+      .catch(console.error);
+
+    actions.set(product);
   }),
 };
 
