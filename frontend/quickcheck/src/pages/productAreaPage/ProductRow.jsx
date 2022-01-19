@@ -6,7 +6,7 @@ import {
   Spacer,
   Textarea,
   VStack,
-  Box,
+  Box, Flex,
   Link,
 } from '@chakra-ui/react';
 import React from 'react';
@@ -59,27 +59,31 @@ export default function ProductRow({ product, editMode, projectID }) {
       <Card
         layerStyle="card_bordered"
         justifyContent="space-between"
+        direction='column'
         // w={(parentID > 0) ? ' 90%' : 'full'}
         _hover={{ boxShadow: '2xl' }}
       >
+        <Flex w='full' mb={3}>
         <Input
+          variant='bold'
           align="center"
-          size="md"
-          w="25%"
+          size="xl"
           isDisabled={!editMode}
           onChange={(e) => {
             setProduct(e.target.value);
           }}
           value={product.productName}
         />
+        </Flex>
+        <Flex w='full'>
+
         <Spacer />
-        <VStack>
+        <VStack mr={5}>
           <CircularProgress size="40px" value={40} />
           <Link href="/ratings">
             <Button variant="whisper">Economical</Button>
           </Link>
         </VStack>
-        <Spacer />
 
         <VStack>
           <CircularProgress size="40px" value={40} />
@@ -92,7 +96,7 @@ export default function ProductRow({ product, editMode, projectID }) {
         <Spacer />
 
         <Textarea
-          width="30%"
+          width="50%"
           isDisabled={!editMode}
           value={product.comment !== null ? product.comment : ''}
           onChange={(e) => {
@@ -106,6 +110,8 @@ export default function ProductRow({ product, editMode, projectID }) {
             <RemoveButton removeProdFct={removeProduct} />
           </Box>
         ) : undefined}
+        </Flex>
+
       </Card>
     </div>
   );
