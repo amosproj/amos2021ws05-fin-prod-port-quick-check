@@ -27,11 +27,25 @@ const productAreaModel = {
     return (product) => state.items.filter((p) => p.parentID === product.productID);
   }),
 
+  getAreaProducts: computed((state) => {
+    return (areaID) => state.products.filter((p) => p.productArea.id === areaID);
+  }),
+
   set: action((state, products) => {
     state.items = products;
   }),
   addProduct: action((state, product) => {
     state.items.push(product);
+  }),
+  changeProductName: action((state, product) => {
+    const index = state.products.map((p) => p.productID).indexOf(product.productID);
+    // get index of member with same email. if not found, index=-1
+    state.products[index] = { ...state.products[index], productName: product.productName };
+  }),
+  changeProductComment: action((state, product) => {
+    const index = state.products.map((p) => p.productID).indexOf(product.productID);
+    // get index of member with same email. if not found, index=-1
+    state.products[index] = { ...state.products[index], comment: product.comment };
   }),
   removeProduct: action((state, product) => {
     state.items = state.products.filter((p) => p.productID !== product.productID);
@@ -45,20 +59,23 @@ const productAreaModel = {
       .catch(console.error);
   }),
   createProduct: thunk(async (actions, newProduct) => {
-    //console.log(newProduct);
-    console.log('/products/' + newProduct.projectID + '/products');
+    //console.log(JSON.stringify({projectID, ...newProduct}))
+    console.log(JSON.stringify(newProduct));
     await api
-      .url('/products/' + newProduct.projectID + '/products')
+      .url('/projects/' + newProduct.projectID + '/products')
       .post(newProduct)
       .json((json) => actions.set(json))
       .catch(console.error);
   }),
-  updateProduct: thunk(async (actions, updatedProduct, productID) => {
-    console.log(updatedProduct);
+  updateAllProducts: thunk(async (actions, products) => {
+    products.map((product) => actions.updateProduct(product));
+  }),
+
+  updateProduct: thunk(async (actions, product) => {
     await api
-      .url('/products/' + productID)
-      .put(updatedProduct)
-      .json((json) => actions.set(json))
+      .url('/products/' + product.productID)
+      .put(product)
+      .res()
       .catch(console.error);
   }),
 };

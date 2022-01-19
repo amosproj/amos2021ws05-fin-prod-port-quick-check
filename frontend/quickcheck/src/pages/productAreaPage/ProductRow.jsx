@@ -16,6 +16,7 @@ import React from 'react';
 import Card from '../../components/Card';
 import { DeleteIcon } from '@chakra-ui/icons';
 import { useStoreActions, useStoreState } from 'easy-peasy';
+import { useState } from 'react';
 
 function RemoveButton({ removeProdFct }) {
   return (
@@ -68,7 +69,11 @@ function ProductVariant({ productVariant, editMode }) {
 
 export default function ProductRow({ product, editMode }) {
   const removeProductState = useStoreActions((actions) => actions.productList.removeProduct);
-  const getVariants = useStoreState((state) => state.productList.getVariants);
+  const changeProductName = useStoreActions((actions) => actions.productList.changeProductName);
+  const changeProductComment = useStoreActions((actions) => actions.productList.changeProductComment);
+
+  const getVariants = useStoreState((state) => state.productList.getVariants)
+
 
   const productVariants = getVariants(product);
 
@@ -76,33 +81,45 @@ export default function ProductRow({ product, editMode }) {
     removeProductState(product);
   };
 
+  const setProduct = (productName) => {
+    product.productName = productName;
+    changeProductName(product);
+  };
+  const handleTextInputChange = (comment) => {
+    product.comment = comment;
+    changeProductComment(product);
+  };
+
   return (
-    <Card
-      direction="column"
-      layerStyle="card_bordered"
-      justifyContent="space-between"
-      // w={(parentID > 0) ? ' 90%' : 'full'}
-      _hover={{ boxShadow: '2xl' }}
-    >
-      <Flex w="full">
+    
+      <Card
+        layerStyle="card_bordered"
+        justifyContent="space-between"
+        direction='column'
+        // w={(parentID > 0) ? ' 90%' : 'full'}
+        _hover={{ boxShadow: '2xl' }}
+      >
+        <Flex w='full' mb={3}>
         <Input
+          variant='bold'
           align="center"
-          size="md"
-          w="25%"
+          size="xl"
           isDisabled={!editMode}
           onChange={(e) => {
-            console.log(e.target.value);
+            setProduct(e.target.value);
           }}
           value={product.productName}
         />
+        </Flex>
+        <Flex w='full'>
+
         <Spacer />
-        <VStack>
+        <VStack mr={5}>
           <CircularProgress size="40px" value={40} />
           <Link href="/ratings">
             <Button variant="whisper">Economical</Button>
           </Link>
         </VStack>
-        <Spacer />
 
         <VStack>
           <CircularProgress size="40px" value={40} />
@@ -114,7 +131,16 @@ export default function ProductRow({ product, editMode }) {
         </VStack>
         <Spacer />
 
-        <Textarea width="30%" placeholder="Anmerkung" />
+        <Textarea
+          width="50%"
+          isDisabled={!editMode}
+          value={product.comment !== null ? product.comment : ''}
+          onChange={(e) => {
+            handleTextInputChange(e.target.value);
+          }}
+          placeholder="Anmerkung"
+        />
+
         {editMode ? (
           <Box ml={3}>
             <RemoveButton removeProdFct={removeProduct} />
@@ -122,14 +148,14 @@ export default function ProductRow({ product, editMode }) {
         ) : undefined}
       </Flex>
 
-      <Heading size="lg" mt={8} align="left" w="full" color="yellow">
+      <Heading size="lg" mt={8} align="left" w="full">
         Variants
       </Heading>
       {/* <Flex w='full' mt={5}> */}
       <List w="full">
         {productVariants.map((variant) => (
           // <p>{JSON.stringify(variant)}</p>
-          <ProductVariant productVariant={variant} editMode={editMode} />
+          <ProductVariant productVariant={variant} editMode={editMode} key={variant.productID} />
         ))}
       </List>
       {/* </Flex> */}

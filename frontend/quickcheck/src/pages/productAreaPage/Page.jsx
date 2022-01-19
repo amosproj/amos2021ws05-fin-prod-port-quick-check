@@ -8,12 +8,13 @@ import AddProductButton from './AddProductButton';
 import ProductRow from './ProductRow';
 
 export default function ProductOverview() {
-  const allItems = useStoreState((state) => state.productList.items);
   const products = useStoreState((state) => state.productList.products);
   const addProductAction = useStoreActions((actions) => actions.productList.addProduct);
   const fetchProducts = useStoreActions((actions) => actions.productList.fetch);
   const createProduct = useStoreActions((actions) => actions.productList.createProduct);
 
+  const getAreaProducts = useStoreState((state) => state.productList.getAreaProducts);
+  const updateAllProducts = useStoreActions((actions) => actions.productList.updateAllProducts);
   const [editMode, setEditMode] = useState(false);
 
   const { projectID, productAreaID } = useParams();
@@ -24,6 +25,11 @@ export default function ProductOverview() {
     console.log('rendered');
   }, []);
 
+  const updateProducts = () => {
+    setEditMode(false);
+    updateAllProducts(products);
+  };
+
   const EditButtons = () => {
     if (editMode) {
       return (
@@ -32,7 +38,7 @@ export default function ProductOverview() {
           <Button size="md" onClick={() => setEditMode(false)}>
             Cancel
           </Button>
-          <Button size="md" onClick={() => setEditMode(false)}>
+          <Button size="md" onClick={() => updateProducts()}>
             Confirm
           </Button>
         </HStack>
@@ -52,7 +58,7 @@ export default function ProductOverview() {
     <div>
       <Page title="Product Overview">
         <List spacing={2} w="full">
-          {products.map((product) => (
+          {getAreaProducts(parseInt(productAreaID)).map((product) => (
             <ProductRow product={product} key={product.productID} editMode={editMode}></ProductRow>
           ))}
         </List>
@@ -60,7 +66,6 @@ export default function ProductOverview() {
         <Link href={`/results/`}>
           <Button>Generate Results</Button>
         </Link>
-        <p>{JSON.stringify(allItems)}</p>)
       </Page>
     </div>
   );
