@@ -24,7 +24,6 @@ export default function ProductOverview() {
     console.log('rendered');
   }, []);
 
-
   const EditButtons = () => {
     if (editMode) {
       return (
@@ -48,8 +47,6 @@ export default function ProductOverview() {
       );
     }
   };
-
-
 
   return (
     <div>
