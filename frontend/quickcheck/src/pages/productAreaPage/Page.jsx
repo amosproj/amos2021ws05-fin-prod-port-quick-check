@@ -155,7 +155,7 @@ export default function ProductOverview() {
           ))}
         </List>
         <EditButtons />
-        <Link href="/results">
+        <Link href={`/results/`}>
           <Button>Generate Results</Button>
         </Link>
       </Page>

@@ -1,0 +1,124 @@
+openapi: 3.0.1
+info:
+  version: '0.1'
+  title: "API for AMOS5 Financial QuickCheck"
+  description: defines endpoints for evaluation
+
+paths:
+  /projects/{projectID}/results:
+    get:
+      summary: Returns list of evaluations for all products in project and/or product area
+      parameters:
+        - $ref: '#/components/parameters/projectID'
+        - $ref: '#/components/parameters/productAreaID'
+      responses:
+        200:
+          description: JSON containing data for result page
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/getProductEvaluation'
+        400:
+          $ref: '#/components/responses/400badrequest'
+        404:
+          $ref: '#/components/responses/404notfound'
+        '5XX':
+          $ref: '#/components/responses/5XXserverError'
+
+components:
+  parameters:
+    projectID:
+      name: projectID
+      in: path
+      description: unique project ID
+      required: true
+      schema:
+        type: integer
+    productAreaID:
+      name: productAreaID
+      in: query
+      required: false
+      description: unique product area ID
+      schema:
+        type: integer
+
+  schemas:
+    productId:
+      type: integer
+      example: 29
+    productName:
+      type: string
+      example: "Optionen"
+    ratingID:
+      type: integer
+      example: 111
+    answer:
+      type: string
+      example: "containing values for either y-axis, size of pie or outer circle(= string containing three values)"
+    score:
+      type: string
+      enum: [ HOCH, MITTEL, GERING ]
+    rating:
+      type: object
+      properties:
+        ratingID:
+          $ref: '#/components/schemas/ratingID'
+        category:
+          type: string
+          example: "Komplexitätstreiber oder Gruppierung von Finanzkriterien"
+        criterion:
+          type: string
+          example: "question or criterion to be analysed"
+        ratingArea:
+          type: string
+          enum: [ ECONOMIC, COMPLEXITY ]
+    productRating:
+      type: object
+      properties:
+        rating:
+          $ref: '#/components/schemas/rating'
+        answer:
+          $ref: '#/components/schemas/answer'
+    scores:
+      properties:
+        score:
+          $ref: '#/components/schemas/score'
+        count:
+          type: integer
+          example: 4
+    getProductEvaluation:
+      properties:
+        productId:
+          $ref: '#/components/schemas/productId'
+        productName:
+          $ref: '#/components/schemas/productName'
+        ratings:
+          type: array
+          description: list containing ratings of "Kreditvolumen im Bestand" (= size of pie), "Marge" (= y-axis) and "Kunde" (= outer circle values)
+          items:
+            $ref: "#/components/schemas/productRating"
+        scores:
+          type: array
+          description: aggregated values of field "Gesamteinschätzung wirtschaftlicher Bewertung" for productvariants
+          items:
+            $ref: "#/components/schemas/scores"
+
+  responses:
+    5XXserverError:
+      description: Internal error
+      content:
+        application/json:
+          schema:
+            type: string
+    404notfound:
+      description: resource not found
+    400badrequest:
+      description: Input is missing/incorrect
+      content:
+        application/json:
+          schema:
+            type: string
+    genericError:
+      description: Error

@@ -56,6 +56,21 @@ const productAreaModel = {
   }),
 };
 
+const resultModel = {
+  results: [],
+  set: action((state, results) => {
+    state.results = results;
+  }),
+  fetch: thunk(async (actions, id) => {
+    console.log('/projects/' + id + '/results');
+    await api
+      .url('/projects/' + id + '/results')
+      .get()
+      .json((json) => actions.set(json))
+      .catch(console.error);
+  }),
+};
+
 const projectListModel = {
   items: [], // list of: {"projectID": 2,"projectName": "Mock Project" }
 
@@ -205,6 +220,7 @@ const store = createStore({
   project: projectModel,
   rating: ratingModel,
   productList: productAreaModel,
+  resultList: resultModel,
 });
 
 export default store;

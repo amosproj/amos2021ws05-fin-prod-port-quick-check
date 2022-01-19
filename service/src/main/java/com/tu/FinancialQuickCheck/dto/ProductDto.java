@@ -1,6 +1,5 @@
 package com.tu.FinancialQuickCheck.dto;
 
-
 import com.tu.FinancialQuickCheck.db.ProductAreaEntity;
 import com.tu.FinancialQuickCheck.db.ProductEntity;
 import com.tu.FinancialQuickCheck.db.ProductRatingEntity;
