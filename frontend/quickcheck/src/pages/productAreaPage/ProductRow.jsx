@@ -73,7 +73,7 @@ function ProductVariant({ product, editMode }) {
       </VStack>
       <Spacer />
       <Textarea
-        w='30%'
+        w="30%"
         isDisabled={!editMode}
         value={product.comment !== null ? product.comment : ''}
         onChange={(e) => {

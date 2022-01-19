@@ -26,7 +26,6 @@ export default function ProductOverview() {
   const updateProducts = () => {
     setEditMode(false);
     updateAllProducts(items);
-
   };
 
   const EditButtons = () => {
