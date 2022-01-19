@@ -38,17 +38,15 @@ const productAreaModel = {
     state.items.push(product);
   }),
   changeProductName: action((state, product) => {
-    const index = state.products.map((p) => p.productID).indexOf(product.productID);
-    // get index of member with same email. if not found, index=-1
-    state.products[index] = { ...state.products[index], productName: product.productName };
+    const index = state.items.map((p) => p.productID).indexOf(product.productID);
+    state.items[index] = { ...state.items[index], productName: product.productName };
   }),
   changeProductComment: action((state, product) => {
-    const index = state.products.map((p) => p.productID).indexOf(product.productID);
-    // get index of member with same email. if not found, index=-1
-    state.products[index] = { ...state.products[index], comment: product.comment };
+    const index = state.items.map((p) => p.productID).indexOf(product.productID);
+    state.items[index] = { ...state.items[index], comment: product.comment };
   }),
   removeProduct: action((state, product) => {
-    state.items = state.products.filter((p) => p.productID !== product.productID);
+    state.items = state.items.filter((p) => p.productID !== product.productID);
   }),
   fetch: thunk(async (actions, id) => {
     console.log('/projects/' + id + '/products');

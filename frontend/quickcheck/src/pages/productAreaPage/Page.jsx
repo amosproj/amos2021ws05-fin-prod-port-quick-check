@@ -8,6 +8,7 @@ import AddProductButton from './AddProductButton';
 import ProductRow from './ProductRow';
 
 export default function ProductOverview() {
+  const items = useStoreState((state) => state.productList.items);
   const products = useStoreState((state) => state.productList.products);
   const fetchProducts = useStoreActions((actions) => actions.productList.fetch);
 
@@ -18,14 +19,14 @@ export default function ProductOverview() {
   const { projectID, productAreaID } = useParams();
 
   useEffect(() => {
-    //setProducts(products);
     fetchProducts(projectID);
     console.log('rendered');
   }, []);
 
   const updateProducts = () => {
     setEditMode(false);
-    updateAllProducts(products);
+    updateAllProducts(items);
+
   };
 
   const EditButtons = () => {
