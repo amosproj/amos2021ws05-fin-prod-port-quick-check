@@ -21,8 +21,8 @@ const productAreaModel = {
     }*/
   ],
 
-  getAreaProducts: computed((state) =>{
-    return (areaID) => state.products.filter(p => p.productArea.id === areaID)
+  getAreaProducts: computed((state) => {
+    return (areaID) => state.products.filter((p) => p.productArea.id === areaID);
   }),
 
   set: action((state, products) => {
