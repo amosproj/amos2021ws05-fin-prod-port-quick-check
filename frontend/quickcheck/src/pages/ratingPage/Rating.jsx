@@ -43,21 +43,18 @@ const mockRatings = {
 };
 
 export default function Rating() {
-  const [editMode, setEditMode] = useState(false);
   const [ratingsPerCategory, setRatingsPerCategory] = useState([]);
-  const ratingsData = useStoreState((state) => state.rating.ratings);
-  //const initRatingsData = useStoreActions((actions) => actions.rating.init);
+  const productData = useStoreState((state) => state.rating.ratings);
+  const createNew = useStoreActions((actions) => actions.rating.createNew);
   const setRatingsData = useStoreActions((actions) => actions.rating.set);
   const fetchRatings = useStoreActions((actions) => actions.rating.fetch);
+  const sendRatings = useStoreActions((actions) => actions.rating.sendUpdate);
 
   const { productID } = useParams();
 
   const handleChange = (key) => (value) => {
-    setRatingsData({
-      //set action statt setRatingstData
-      ...ratingsData,
-      [key]: value,
-    });
+    let newProductData = Object.assign({}, productData); // creating copy of state variable jasper
+    setRatingsData(newProductData);
   };
 
   const setRatings = handleChange('ratings');
@@ -73,35 +70,13 @@ export default function Rating() {
         ratingsPerCategory[rating.rating.category] = [rating];
       }
     }
+    setRatingsPerCategory(ratingsPerCategory);
     return ratingsPerCategory;
   }
 
   useEffect(() => {
-    //initRatingsData();
     fetchRatings(productID);
-    //setRatingsData(mockRatings.ratings);
   }, []);
-
-  const EditButtons = () => {
-    if (editMode) {
-      return (
-        <HStack>
-          <Button variant="whisper" size="md" onClick={() => setEditMode(false)}>
-            Cancel
-          </Button>
-          <Button variant="primary" size="md" onClick={() => setEditMode(false)}>
-            Confirm
-          </Button>
-        </HStack>
-      );
-    } else {
-      return (
-        <Button variant="whisper" size="md" onClick={() => setEditMode(true)}>
-          Edit
-        </Button>
-      );
-    }
-  };
 
   function DataTabs({ data }) {
     return (
@@ -116,21 +91,26 @@ export default function Rating() {
             {data.map((complexityDriver) => (
               <TabPanel p={4} key={complexityDriver[0]}>
                 <Card direction="column">
-                  <RatingTable
-                    editMode={editMode}
-                    ratings={complexityDriver[1]}
-                    handleChange={setRatings}
-                  />
+                  <RatingTable ratings={complexityDriver[1]} handleChange={setRatings} />
                 </Card>
               </TabPanel>
             ))}
           </TabPanels>
         </Tabs>
+        <Button
+          variant="whisper"
+          size="md"
+          onClick={() => {
+            sendRatings(productData);
+          }}
+        >
+          Save
+        </Button>
       </Page>
     );
   }
-  if (ratingsData.ratings != undefined) {
-    computeRatingsPerCategory(ratingsData.ratings);
+  if (productData.ratings != undefined) {
+    computeRatingsPerCategory(productData.ratings);
   }
   return <DataTabs data={Object.entries(ratingsPerCategory)} />;
 }

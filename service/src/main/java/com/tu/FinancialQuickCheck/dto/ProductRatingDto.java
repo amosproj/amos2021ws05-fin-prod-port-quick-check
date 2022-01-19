@@ -28,18 +28,16 @@ public class ProductRatingDto {
 
     public ProductRatingDto(String answer, String comment, Score score, RatingEntity rating)
     {
-        convertRatingEntity(rating);
+        this.rating = new RatingDto(rating);
         this.answer = answer;
         this.comment = comment;
         this.score = score;
     }
 
-    private void convertRatingEntity(RatingEntity ratingEntity)
+    public ProductRatingDto(String answer, Score score, RatingEntity rating)
     {
-        this.rating = new RatingDto();
-        rating.id = ratingEntity.id;
-        rating.criterion = ratingEntity.criterion;
-        rating.category = ratingEntity.category;
-        rating.ratingArea = ratingEntity.ratingarea;
+        this.rating = new RatingDto(rating);
+        this.answer = answer;
+        this.score = score;
     }
 }

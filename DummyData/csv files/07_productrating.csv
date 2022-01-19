@@ -1,4 +1,4 @@
-answer,comment,score,productid,ratingid
+answer,comment,score,product,rating
 answer 1,comment 1,0,100,1
 answer 2,comment 2,1,100,2
 answer 3,comment 3,2,100,3
@@ -7,7 +7,7 @@ answer 5,comment 5,1,100,5
 answer 6,comment 6,0,100,6
 answer 7,comment 7,1,100,7
 answer 8,comment 8,2,100,8
-answer 9,comment 9,1,100,9
+answer 9,comment 9,0,100,9
 answer 10,comment 10,2,100,10
 answer 11,comment 11,0,100,11
 answer 12,comment 12,1,100,12
@@ -28,7 +28,7 @@ answer 5,comment 5,1,101,5
 answer 6,comment 6,0,101,6
 answer 7,comment 7,1,101,7
 answer 8,comment 8,2,101,8
-answer 9,comment 9,1,101,9
+answer 9,comment 9,0,101,9
 answer 10,comment 10,2,101,10
 answer 11,comment 11,0,101,11
 answer 12,comment 12,1,101,12
@@ -49,7 +49,7 @@ answer 5,comment 5,1,102,5
 answer 6,comment 6,0,102,6
 answer 7,comment 7,1,102,7
 answer 8,comment 8,2,102,8
-answer 9,comment 9,1,102,9
+answer 9,comment 9,0,102,9
 answer 10,comment 10,2,102,10
 answer 11,comment 11,0,102,11
 answer 12,comment 12,1,102,12
@@ -91,7 +91,7 @@ answer 5,comment 5,1,104,5
 answer 6,comment 6,0,104,6
 answer 7,comment 7,1,104,7
 answer 8,comment 8,2,104,8
-answer 9,comment 9,1,104,9
+answer 9,comment 9,2,104,9
 answer 10,comment 10,2,104,10
 answer 11,comment 11,0,104,11
 answer 12,comment 12,1,104,12
@@ -112,7 +112,7 @@ answer 5,comment 5,1,105,5
 answer 6,comment 6,0,105,6
 answer 7,comment 7,1,105,7
 answer 8,comment 8,2,105,8
-answer 9,comment 9,1,105,9
+answer 9,comment 9,0,105,9
 answer 10,comment 10,2,105,10
 answer 11,comment 11,0,105,11
 answer 12,comment 12,1,105,12
@@ -133,7 +133,7 @@ answer 5,comment 5,1,106,5
 answer 6,comment 6,0,106,6
 answer 7,comment 7,1,106,7
 answer 8,comment 8,2,106,8
-answer 9,comment 9,1,106,9
+answer 9,comment 9,0,106,9
 answer 10,comment 10,2,106,10
 answer 11,comment 11,0,106,11
 answer 12,comment 12,1,106,12
@@ -154,7 +154,7 @@ answer 5,comment 5,1,107,5
 answer 6,comment 6,0,107,6
 answer 7,comment 7,1,107,7
 answer 8,comment 8,2,107,8
-answer 9,comment 9,1,107,9
+answer 9,comment 9,0,107,9
 answer 10,comment 10,2,107,10
 answer 11,comment 11,0,107,11
 answer 12,comment 12,1,107,12
@@ -196,7 +196,7 @@ answer 5,comment 5,1,109,5
 answer 6,comment 6,0,109,6
 answer 7,comment 7,1,109,7
 answer 8,comment 8,2,109,8
-answer 9,comment 9,1,109,9
+answer 9,comment 9,2,109,9
 answer 10,comment 10,2,109,10
 answer 11,comment 11,0,109,11
 answer 12,comment 12,1,109,12
