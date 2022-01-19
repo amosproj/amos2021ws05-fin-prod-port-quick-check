@@ -61,14 +61,10 @@ const productAreaModel = {
   }),
 
   updateProduct: thunk(async (actions, product) => {
-    const put = {
-      productName: product.productName,
-      comment: product.comment,
-    };
     await api
-      .url('/products/' + product.productID + '/')
-      .put(put)
-      .json((json) => actions.set(json))
+      .url('/products/' + product.productID)
+      .put(product)
+      .res()
       .catch(console.error);
   }),
 };
