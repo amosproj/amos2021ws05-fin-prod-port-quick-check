@@ -1,0 +1,10 @@
+INSERT INTO bootdb.product_entity (id, comment, name, parent_product_id, productarea, project) VALUES (100, null, 'Dispokredit', null, 1, 100);
+INSERT INTO bootdb.product_entity (id, comment, name, parent_product_id, productarea, project) VALUES (101, null, 'Ratenkredit', null, 1, 100);
+INSERT INTO bootdb.product_entity (id, comment, name, parent_product_id, productarea, project) VALUES (102, null, 'Ratenkredit Standard', 101, 1, 100);
+INSERT INTO bootdb.product_entity (id, comment, name, parent_product_id, productarea, project) VALUES (103, null, 'Ratenkredit Flex', 101, 1, 100);
+INSERT INTO bootdb.product_entity (id, comment, name, parent_product_id, productarea, project) VALUES (104, null, 'Ratenkredit 3', 101, 1, 100);
+INSERT INTO bootdb.product_entity (id, comment, name, parent_product_id, productarea, project) VALUES (105, null, 'Ratenkredit 4', 101, 1, 100);
+INSERT INTO bootdb.product_entity (id, comment, name, parent_product_id, productarea, project) VALUES (106, null, 'Baufinanzierung', null, 1, 100);
+INSERT INTO bootdb.product_entity (id, comment, name, parent_product_id, productarea, project) VALUES (107, null, 'Baufinanzierung Standard', 106, 1, 100);
+INSERT INTO bootdb.product_entity (id, comment, name, parent_product_id, productarea, project) VALUES (108, null, 'Baufinanzierung Flex', 106, 1, 100);
+INSERT INTO bootdb.product_entity (id, comment, name, parent_product_id, productarea, project) VALUES (109, null, 'Baufinanzierung Nachhaltigkeit', 106, 1, 100);

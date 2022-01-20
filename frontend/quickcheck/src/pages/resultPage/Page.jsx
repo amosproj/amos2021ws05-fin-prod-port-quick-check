@@ -1,9 +1,14 @@
 import React from 'react';
+import { Button, Heading, VStack, Text, Flex, HStack, Spacer, Link } from '@chakra-ui/react';
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+
+import { score } from '../../utils/const';
+import { useStoreActions, useStoreState } from 'easy-peasy';
+
 import Card from '../../components/Card';
 import Page from '../../components/Page';
 import Figure from './Figure';
-import { Button, Heading, VStack, Text, Flex, HStack, Spacer, Link } from '@chakra-ui/react';
-import { useState } from 'react';
 
 const mock = [
   {
@@ -48,7 +53,19 @@ function SourceRow({ source }) {
 }
 
 export default function ResultPage() {
+  const { projectID } = useParams();
+
+  const setResultsData = useStoreActions((actions) => actions.resultList.set);
+  const fetchResults = useStoreActions((actions) => actions.resultList.fetch);
+  const results = useStoreState((state) => state.resultList.results);
+
   const [sources, setSources] = useState(mock);
+  useEffect(() => {
+    //initRatingsData();
+    fetchResults(projectID);
+    //setRatingsData(mockRatings.ratings);
+  }, []);
+  console.log({ results });
   return (
     <div>
       <Page title="Results">
@@ -59,7 +76,7 @@ export default function ResultPage() {
           justifyContent="space-between"
           alignItems="stretch"
         >
-          <Figure></Figure>
+          <Figure results={results}></Figure>
           <Heading size="lg">Sources</Heading>
           {sources.map((source) => (
             <SourceRow source={source} key={source.id} />

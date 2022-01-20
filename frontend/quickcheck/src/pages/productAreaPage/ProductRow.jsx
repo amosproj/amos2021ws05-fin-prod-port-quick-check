@@ -7,12 +7,14 @@ import {
   Textarea,
   VStack,
   Box,
+  Flex,
   Link,
 } from '@chakra-ui/react';
 import React from 'react';
 import Card from '../../components/Card';
 import { DeleteIcon } from '@chakra-ui/icons';
 import { useStoreActions } from 'easy-peasy';
+import { useState } from 'react';
 
 function RemoveButton({ removeProdFct }) {
   return (
@@ -33,11 +35,24 @@ function RemoveButton({ removeProdFct }) {
   );
 }
 
-export default function ProductRow({ product, editMode }) {
+export default function ProductRow({ product, editMode, projectID }) {
   const removeProductState = useStoreActions((actions) => actions.productList.removeProduct);
+  const changeProductName = useStoreActions((actions) => actions.productList.changeProductName);
+  const changeProductComment = useStoreActions(
+    (actions) => actions.productList.changeProductComment
+  );
 
   const removeProduct = () => {
     removeProductState(product);
+  };
+
+  const setProduct = (productName) => {
+    product.productName = productName;
+    changeProductName(product);
+  };
+  const handleTextInputChange = (comment) => {
+    product.comment = comment;
+    changeProductComment(product);
   };
 
   return (
@@ -45,44 +60,55 @@ export default function ProductRow({ product, editMode }) {
       <Card
         layerStyle="card_bordered"
         justifyContent="space-between"
+        direction="row"
         // w={(parentID > 0) ? ' 90%' : 'full'}
         _hover={{ boxShadow: '2xl' }}
       >
-        <Input
-          align="center"
-          size="md"
-          w="25%"
-          isDisabled={!editMode}
-          onChange={(e) => {
-            console.log(e.target.value);
-          }}
-          value={product.productName}
-        />
-        <Spacer />
-        <VStack>
-          <CircularProgress size="40px" value={40} />
-          <Link href="/ratings">
-            <Button variant="whisper">Economical</Button>
-          </Link>
-        </VStack>
-        <Spacer />
+        <Flex w="25%" mb={3}>
+          <Input
+            variant="bold"
+            align="center"
+            size="xl"
+            isDisabled={!editMode}
+            onChange={(e) => {
+              setProduct(e.target.value);
+            }}
+            value={product.productName}
+          />
+        </Flex>
+        <Flex w="75%">
+          <Spacer />
+          <VStack mr={5}>
+            <CircularProgress size="40px" value={product.progressEconomic} />
+            <Link href="/ratings">
+              <Button variant="whisper">Economical</Button>
+            </Link>
+          </VStack>
+          <VStack>
+            <CircularProgress size="40px" value={product.progressComplexity} />
+            <Link href="/ratings">
+              <Button variant="whisper" href="/ratings">
+                Complexity
+              </Button>
+            </Link>
+          </VStack>
+          <Spacer />
+          <Textarea
+            width="50%"
+            isDisabled={!editMode}
+            value={product.comment !== null ? product.comment : ''}
+            onChange={(e) => {
+              handleTextInputChange(e.target.value);
+            }}
+            placeholder="Anmerkung"
+          />
 
-        <VStack>
-          <CircularProgress size="40px" value={40} />
-          <Link href="/ratings">
-            <Button variant="whisper" href="/ratings">
-              Complexity
-            </Button>
-          </Link>
-        </VStack>
-        <Spacer />
-
-        <Textarea bg={'gray.600'} width="30%" placeholder="Anmerkung" />
-        {editMode ? (
-          <Box ml={3}>
-            <RemoveButton removeProdFct={removeProduct} />
-          </Box>
-        ) : undefined}
+          {editMode ? (
+            <Box ml={3}>
+              <RemoveButton removeProdFct={removeProduct} />
+            </Box>
+          ) : undefined}
+        </Flex>
       </Card>
     </div>
   );

@@ -1,0 +1,47 @@
+id,criteria,category,ratingarea
+1,Frequenz (Nachfrage) p.a.,,0
+2,Produktabschlüsse p.a.,,0
+3,Durchschnittliche Losgröße/Stückelung,,0
+4,Kreditvolumen im Bestand,,0
+5,Marge,,0
+6,Schätzung Sachaufwand,Aufwandsschätzung,0
+7,Schätzung Personalaufwand,Aufwandsschätzung,0
+8,Schätzung IT-Aufwand,Aufwandsschätzung,0
+9,Gesamteinschätzung wirtschaftliche Bewertung,,0
+10,Wie viele unterschiedliche Produktschlüssel existieren für das Produkt Dispokredit?,Kundenstruktur,1
+11,Welche Kunden (Einzelkunden/Gemeinschaftskunden) nehmen diese Produktvariante in Anspruch?,Kundenstruktur,1
+12,Wie hoch ist die Anzahl abgeschlossener Kredite für die jeweiligen Produktschlüssel und wie viele entfallen davon auf Einzelkunden und Gemeinschaftskunden?,Kundenstruktur,1
+13,Wie hoch ist das Volumen der abgeschlossenen Kredite für die jeweiligen Produktschlüssel und wie viele entfallen davon auf Einzelkunden und Gemeinschaftskunden?,Kundenstruktur,1
+14,Wie hoch ist die Marge der abgeschlossenen Kredite für die jeweiligen Produktschlüssel? Und wie hoch ist die Marge bei den Kundengruppen Einzelkunden und Gemeinschaftskunden?,Kundenstruktur,1
+15,Wie hoch ist der Deckungsbeitrag der abgeschlossenen Kredite die jeweiligen Produktschlüssel? Und wie hoch ist der Deckungsbeitrag dabei bei den Kundengruppen Einzelkunden und Gemeinschaftskunden?,Kundenstruktur,1
+16,Wie ist die Verteilung des KYC-Scores (z.B. x% grün/gelb/rot) je Produktschlüssel?,Kundenstruktur,1
+17,Wie hoch ist die Ablehnungsquote bei den jeweiligen Produktschlüsseln? Wie verhält sich die Ablehnungsquote bei Einzelkunden und bei Gemeinschaftskunden?,Kundenstruktur,1
+18,Gesamt,Kundenstruktur,1
+19,Gibt es unterschiedliche Ratingmodelle für dieses Produkt?,Kreditrating,1
+20,Wie viele der Produkte sind ausgefallen (historische Betrachtung)?,Kreditrating,1
+21,Wie ist die Ausfallquote des Produkts und der jeweiligen Produktschlüssel?,Kreditrating,1
+22,Gesamt,Kreditrating,1
+23,"Gibt es unterschiedliche Zahlungsbedingungen für das Produkt und die jeweiligen Produktschlüssel und wenn ja, welche?",Zahlungsbedingungen,1
+24,"Werden unterschiedliche Zinsoptionen angeboten und wenn ja, welche? (Z.B. fixe/variable Verzinsung, Verzinsung gem. unterschiedlichen Refernezzinssätzen)",Zahlungsbedingungen,1
+25,"Gibt es unterschiedliche Tilgungsoptionen für das Produkt und die jeweiligen Produktschlüssel, und wenn ja, welche?",Zahlungsbedingungen,1
+26,Gesamt,Zahlungsbedingungen,1
+27,"Gibt Dokumente je Produkt und Produktschlüssel, die immer bei jeder Sicherheit eingereicht werden müssen und wenn je, welche sind das?",Sicherheiten,1
+28,Wie viele Dokumente je Produkt und Produktschlüssel werden im Schnitt je Sicherheitenart angefordert?,Sicherheiten,1
+29,Welche Dokumente werden je Sicherheitenart angefordert?,Sicherheiten,1
+30,Welche Prozessschritte müssen bei der Sicherheitenbewertung durchlaufen werden?,Sicherheiten,1
+31,"Wie erfolgt die Erstellung des Sicherheitenvertrags? (Automatisiert, manuell, bestehende Textbausteine etc.)",Sicherheiten,1
+32,"Wie viele IT-Systeme werden für den gesamten Prozess der Sicherheitenbewertung, -erfassung, -freigabe etc. genutzt?",Sicherheiten,1
+33,Gesamt,Sicherheiten,1
+34,Wie viele unterschiedliche Kreditprozesse gibt es?,Regulatorik,1
+35,"Welche Kriterien entscheiden, über welche der vorhandenen Kreditprozess der Kredit geleitet/entschieden wird?",Regulatorik,1
+36,"Wie sind diese Kriterien definiert (z.B. nach Kreditvolumen, Kundensegment, Ratingklasse etc.)?",Regulatorik,1
+37,Wie viele IT-Systeme/Tools werden in einem Kreditprozess angesprochen?,Regulatorik,1
+38,"Gibt es unterschiedliche Anforderungen an die Prolongation? Z.B. unterschiedliche Arten wie „vereinfachte Prolongation„, „Standardprolongation“ etc.",Regulatorik,1
+39,Wie wird die Einhaltung der Prolongationstermine gesteuert/getrackt?,Regulatorik,1
+40,Wie sind die Kredit-Kompetenzstufen ausgestattet?,Regulatorik,1
+41,Wie viele Kreditfälle werden durch Gremienentscheidungen getroffen?,Regulatorik,1
+42,Gesamt,Regulatorik,1
+43,Wie viele und welche Dokumente muss der Kunde für die Kreditprüfung einreichen?,Dokumentation,1
+44,Wie viele/welche Dokumente/Nachweise müssen je Kreditprodukt vom Kunden eingereicht werden?,Dokumentation,1
+45,Wie viele/welche Dokumente werden dem Kunden nach Vertragsabschluss zugesandt?,Dokumentation,1
+46,Gesamt,Dokumentation,1
