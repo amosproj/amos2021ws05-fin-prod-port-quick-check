@@ -15,7 +15,7 @@ public class RatingEntity {
      * ID of the rating (as primary key).
      */
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int id;
 
     /**

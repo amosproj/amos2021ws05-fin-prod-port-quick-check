@@ -14,7 +14,7 @@ public class ProjectEntity {
      * ID of the project (as primary key).
      */
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int id;
 
     /**
