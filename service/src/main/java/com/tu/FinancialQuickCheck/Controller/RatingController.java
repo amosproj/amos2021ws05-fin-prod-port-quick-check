@@ -10,8 +10,7 @@ import java.util.List;
 
 
 @RestController
-@CrossOrigin
-@RequestMapping("ratings")
+@RequestMapping("/ratings")
 public class RatingController {
 
     private RatingService service;
