@@ -1,0 +1,270 @@
+openapi: '3.0.0'
+info:
+  version: "0.1"
+  title: Schema definitions
+  description: defines schemas for endpoints based on schema_attributes.yaml
+
+paths:
+
+components:
+  schemas:
+    user:
+      type: object
+      properties:
+        userEmail:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/userEmail'
+        userName:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/userName'
+        userID:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/userID'
+    createUser:
+      required:
+        - userEmail
+        - password
+      type: object
+      properties:
+        userEmail:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/userEmail'
+        userName:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/userName'
+        password:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/password'
+
+    getUsers:
+      properties:
+        userID:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/userID'
+        userEmail:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/userEmail'
+        userName:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/userName'
+        role:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/role'
+    assignUser:
+      required:
+        - role
+        - userEmail
+      properties:
+        userEmail:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/userEmail'
+        role:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/role'
+    updateAssignedUser:
+      properties:
+        userID:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/userID'
+        userEmail:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/userEmail'
+        role:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/role'
+    updateUserProject:
+      properties:
+        userID:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/userID'
+        role:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/role'
+    deleteProjectUser:
+      properties:
+        userID:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/userID'
+    members:
+      type: array
+      items:
+        $ref: '#/components/schemas/updateAssignedUser'
+
+    smallProjects:
+      type: object
+      properties:
+        projectID:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/projectID'
+        projectName:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/projectName'
+    createProject:
+      required:
+        - creatorID
+        - projectName
+        - productAreas
+        - members
+      properties:
+        creatorID:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/userID'
+        projectName:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/projectName'
+        productAreas:
+          type: array
+          example: [ 1, 2, 3 ]
+          items:
+            type: integer
+            description: unique identifiers of product areas
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/updateAssignedUser'
+    createdProject:
+      properties:
+        projectID:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/projectID'
+        creatorID:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/userID'
+        projectName:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/projectName'
+        productAreas:
+          type: array
+          items:
+            $ref: 'components_schema_attributes.yaml#/components/schemas/productArea'
+        members:
+          $ref: '#/components/schemas/members'
+    getProject:
+      type: object
+      properties:
+        projectID:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/projectID'
+        creatorID:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/userID'
+        projectName:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/projectName'
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/getUsers'
+        productAreas:
+          type: array
+          items:
+            $ref: 'components_schema_attributes.yaml#/components/schemas/productArea'
+    updateProject:
+      required:
+        - members
+      properties:
+        projectName:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/projectName'
+        productAreas:
+          type: array
+          example: [ 1, 2 ,3 ]
+          items:
+            type: integer
+            description: unique identifiers of product areas
+        members:
+          $ref: '#/components/schemas/members'
+
+    resources:
+      type: array
+      items:
+        $ref: 'components_schema_attributes.yaml#/components/schemas/resource'
+    productVariation:
+      type: object
+      required:
+        - productName
+      properties:
+        productName:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/productName'
+        comment:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/comment'
+        resources:
+          $ref: '#/components/schemas/resources'
+    createProduct:
+      type: object
+      required:
+        - productName
+        - productArea
+      properties:
+        productName:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/productName'
+        productArea:
+          properties:
+            id:
+              $ref: 'components_schema_attributes.yaml#/components/schemas/productAreaID'
+        comment:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/comment'
+        resources:
+          $ref: '#/components/schemas/resources'
+        productVariations:
+          type: array
+          items:
+            $ref: '#/components/schemas/productVariation'
+    getProduct:
+      type: object
+      properties:
+        productID:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/productID'
+        productName:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/productName'
+        productArea:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/productArea'
+        projectID:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/projectID'
+        parentID:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/parentID'
+        progressComplexity:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/progress'
+        progressEconomic:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/progress'
+        comment:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/comment'
+        resources:
+          $ref: '#/components/schemas/resources'
+    updateProduct:
+      type: object
+      properties:
+        productName:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/productName'
+        comment:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/comment'
+        resources:
+          $ref: '#/components/schemas/resources'
+
+    rating:
+      type: object
+      properties:
+        ratingID:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/ratingID'
+        category:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/category'
+        criterion:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/criterion'
+        ratingArea:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/ratingArea'
+    productRating:
+      type: object
+      properties:
+        rating:
+          $ref: '#/components/schemas/rating'
+        answer:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/answer'
+        comment:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/comment'
+        score:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/score'
+    reducedProductRating:
+      type: object
+      properties:
+        ratingID:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/ratingID'
+        answer:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/answer'
+        comment:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/comment'
+        score:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/score'
+    getProductRating:
+      type: object
+      properties:
+        productName:
+          type: string
+          example: "Optionen"
+        ratings:
+          type: array
+          items:
+            $ref: '#/components/schemas/productRating'
+    postProductRating:
+      required:
+        - ratings
+      type: object
+      properties:
+        ratings:
+          type: array
+          items:
+            $ref: '#/components/schemas/reducedProductRating'
+
+
+
+
