@@ -64,7 +64,9 @@ public class ProductRatingService {
                     .stream(entities.spliterator(), false)
                     .collect(Collectors.toList());
 
-            return new ProductDto(productEntity.get(), tmp, true);
+            ProductDto a = new ProductDto(productEntity.get(), tmp, true);
+            System.out.println(a.productID);
+            return a;
         }
     }
 

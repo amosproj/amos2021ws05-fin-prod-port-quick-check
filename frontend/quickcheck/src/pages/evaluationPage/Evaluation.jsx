@@ -31,7 +31,7 @@ export default function Evaluation() {
   }
 
   useEffect(() => {
-    fetchRatings(productID);
+    fetchRatings([productID, 'COMPLEXITY']);
   }, []);
 
   function DataTabs({ data }) {
