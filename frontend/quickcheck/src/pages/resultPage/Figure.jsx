@@ -34,7 +34,7 @@ function ShowPieCharts({ results }) {
     rows[i]['key'] = i;
     for (let j = 0; j < 4 && i * 4 + j < results.length; j++) {
       var index = i * 4 + j;
-      var kundenValues = results[index]['ratings'][2]['answer'].split(' ');
+      var kundenValues = results[index]['ratings'][1]['answer'].split(' ');
       for (let x = 0; x < kundenValues.length; x++) {
         kundenValues[x] = parseFloat(kundenValues[x]);
       }
@@ -91,18 +91,20 @@ function PieChartRow({ row_data }) {
 }
 
 function Figure({ results }) {
+    var data = {
+      click: function ({ chart, element }) {
+        console.log('Box annotation clicked');
+      },
+      datasets: [],
+    };
+if (typeof {results }!== 'undefined'){
   console.log('test0', { results });
   var scores = [1, 2, 3]; //TODO are these the right values?
-  var data = {
-    click: function ({ chart, element }) {
-      console.log('Box annotation clicked');
-    },
-    datasets: [],
-  };
+
 
   for (let i = 0; i < results.length; i++) {
     var complexity = 0;
-    var values = results[i]['ratings'][2]['answer'].split(' ');
+    var values = results[i]['ratings'][1]['answer'].split(' ');
     for (let j = 0; j < values.length; j++) {
       complexity = complexity + parseFloat(values[j]) * scores[j];
     }
@@ -111,13 +113,14 @@ function Figure({ results }) {
       label: results[i]['productName'],
       data: [
         {
-          x: parseFloat(results[i]['ratings'][1]['answer']),
-          y: complexity,
-          r: parseFloat(results[i]['ratings'][0]['answer']) / 10,
+          x: 10,//parseFloat(results[i]['ratings'][1]['answer']),
+          y: 10, //complexity,
+          r: 10, //parseFloat(results[i]['ratings'][0]['answer']) / 10,
         },
       ],
       backgroundColor: colors[i % colors.length],
     };
+  }
   }
   console.log('test1', { results });
   return (

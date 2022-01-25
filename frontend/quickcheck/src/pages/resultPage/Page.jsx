@@ -65,7 +65,7 @@ export default function ResultPage() {
     fetchResults(projectID);
     //setRatingsData(mockRatings.ratings);
   }, []);
-  console.log({ results });
+  console.log("First", { results });
   return (
     <div>
       <Page title="Results">
@@ -76,7 +76,7 @@ export default function ResultPage() {
           justifyContent="space-between"
           alignItems="stretch"
         >
-          <Figure results={results}></Figure>
+          <Figure results={results  }></Figure>
           <Heading size="lg">Sources</Heading>
           {sources.map((source) => (
             <SourceRow source={source} key={source.id} />
