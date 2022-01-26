@@ -49,7 +49,7 @@ export default function Rating() {
   const fetchRatings = useStoreActions((actions) => actions.rating.fetch);
   const sendRatings = useStoreActions((actions) => actions.rating.sendUpdate);
 
-  const { productID } = useParams();
+  const { productID, ratingArea } = useParams();
 
   const handleChange = (key) => (value) => {
     let newProductData = Object.assign({}, productData); // creating copy of state variable jasper
@@ -74,7 +74,7 @@ export default function Rating() {
   }
 
   useEffect(() => {
-    fetchRatings(productID);
+    fetchRatings([productID, ratingArea]);
   }, []);
 
   function DataTabs({ data }) {

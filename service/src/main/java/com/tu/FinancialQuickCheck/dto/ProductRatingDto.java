@@ -26,8 +26,9 @@ public class ProductRatingDto {
         this.score = score;
     }
 
-    public ProductRatingDto(String answer, String comment, Score score, RatingEntity rating)
+    public ProductRatingDto(String answer, String comment, Score score, RatingEntity rating, int ratingID)
     {
+        this.ratingID = ratingID;
         this.rating = new RatingDto(rating);
         this.answer = answer;
         this.comment = comment;
