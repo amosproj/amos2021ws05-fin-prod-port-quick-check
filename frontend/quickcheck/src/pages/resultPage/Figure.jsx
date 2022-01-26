@@ -110,7 +110,7 @@ function PieChartRow({ row_data }) {
 function Figure({ results }) {
     var data = {
       click: function ({ chart, element }) {
-        console.log('Box annotation clicked');
+        console.log(' ');
       },
       datasets: [],
     };
@@ -122,7 +122,7 @@ if (typeof {results }!== 'undefined'){
   for (let i = 0; i < results.length; i++) {
     var complexity = 0;
     var values = results[i]['scores'];
-    console.log(values, "scores")
+    //console.log(values, "scores")
     var total=0
     for (let j = 0; j < values.length; j++) {
         total=total+parseFloat(values[j]["count"])
