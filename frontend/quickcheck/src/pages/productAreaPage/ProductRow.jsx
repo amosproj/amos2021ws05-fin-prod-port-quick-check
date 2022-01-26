@@ -8,7 +8,7 @@ import {
   VStack,
   Progress,
   HStack,
-  Flex, 
+  Flex,
   Heading,
   List,
   Link,
@@ -16,7 +16,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
-import {ArrowForwardIcon} from '@chakra-ui/icons'
+import { ArrowForwardIcon } from '@chakra-ui/icons';
 
 import React from 'react';
 import Card from '../../components/Card';
@@ -69,14 +69,13 @@ export default function ProductRow({ product, editMode }) {
             <CircularProgress size="40px" value={product.progressEconomic} />
 
             <Link href="/ratings">
-              <Button variant="whisper">Economical
-              </Button>
+              <Button variant="whisper">Economical</Button>
             </Link>
           </HStack>
-          
+
           <Spacer />
 
-          <HStack ml='5%'>
+          <HStack ml="5%">
             <CircularProgress size="40px" value={product.progressComplexity} />
             <Link href="/ratings">
               <Button variant="whisper" href="/ratings">
@@ -86,9 +85,7 @@ export default function ProductRow({ product, editMode }) {
           </HStack>
         </Flex>
 
-
-        <Flex w="full" align='center'>
-
+        <Flex w="full" align="center">
           <Button rightIcon={<ArrowForwardIcon />}>Variants ()</Button>
           <Spacer />
 
@@ -103,11 +100,8 @@ export default function ProductRow({ product, editMode }) {
           />
           <Spacer />
           <Button>Upload</Button>
-
-
         </Flex>
       </Flex>
-
 
       <Collapse in={isOpen} w="full" animateOpacity>
         <Flex w="full" mt={5}>

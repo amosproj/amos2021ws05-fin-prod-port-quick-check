@@ -1,15 +1,7 @@
-import {
-    Input,
-    Button,
-    Spacer,
-    Textarea,
-    VStack,
-  } from '@chakra-ui/react';
-  import React from 'react';
-  import Card from '../../components/Card';
-  import { useStoreActions } from 'easy-peasy';
-  
-
+import { Input, Button, Spacer, Textarea, VStack } from '@chakra-ui/react';
+import React from 'react';
+import Card from '../../components/Card';
+import { useStoreActions } from 'easy-peasy';
 
 export default function ProductVariant({ product, editMode }) {
   const changeProductName = useStoreActions((actions) => actions.productList.changeProductName);
