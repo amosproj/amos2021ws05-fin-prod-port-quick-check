@@ -14,12 +14,12 @@ function RatingRow({ rating }) {
       >
         <Spacer />
         <Textarea
-            isReadOnly={true}
-            align="center"
-            size="md"
-            width="100%"
-            placeholder={'catgegory'}
-            value={rating.rating.category}
+          isReadOnly={true}
+          align="center"
+          size="md"
+          width="100%"
+          placeholder={'catgegory'}
+          value={rating.rating.category}
         />
         <Spacer />
         <Textarea
