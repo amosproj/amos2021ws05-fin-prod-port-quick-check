@@ -13,77 +13,8 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import Card from '../../components/Card';
-import { DeleteIcon } from '@chakra-ui/icons';
 import { useStoreActions, useStoreState } from 'easy-peasy';
-
-// function RemoveButton({ removeProdFct }) {
-//   return (
-//     <div>
-//       <IconButton
-//         icon={<DeleteIcon />}
-//         onClick={() => {
-//           removeProdFct();
-//         }}
-//         colorScheme="teal"
-//         variant="outline"
-//         size="md"
-//         color="white"
-//         bg="red.700"
-//         w={10}
-//       />
-//     </div>
-//   );
-// }
-
-function ProductVariant({ product, editMode }) {
-  const changeProductName = useStoreActions((actions) => actions.productList.changeProductName);
-  const changeProductComment = useStoreActions(
-    (actions) => actions.productList.changeProductComment
-  );
-
-  const setProduct = (productName) => {
-    product.productName = productName;
-    changeProductName(product);
-  };
-  const handleTextInputChange = (comment) => {
-    product.comment = comment;
-    changeProductComment(product);
-  };
-
-  return (
-    <Card bg="gray.600" w="full" m={2} justifyContent="space-between">
-      <Input
-        align="center"
-        size="lg"
-        w="25%"
-        isDisabled={!editMode}
-        onChange={(e) => {
-          setProduct(e.target.value);
-        }}
-        value={product.productName}
-      />
-      <Spacer />
-      <VStack>
-        <Button variant="whisper">Economical</Button>
-      </VStack>
-      <Spacer />
-
-      <VStack>
-        <Button variant="whisper">Complexity</Button>
-      </VStack>
-      <Spacer />
-      <Textarea
-        w="30%"
-        isDisabled={!editMode}
-        value={product.comment !== null ? product.comment : ''}
-        onChange={(e) => {
-          handleTextInputChange(e.target.value);
-        }}
-        placeholder="Anmerkung"
-      />
-    </Card>
-  );
-}
+import ProductVariant from './ProductVariant'
 
 export default function ProductRow({ product, editMode }) {
   // const removeProductState = useStoreActions((actions) => actions.productList.removeProduct);
@@ -93,12 +24,7 @@ export default function ProductRow({ product, editMode }) {
   );
 
   const getVariants = useStoreState((state) => state.productList.getVariants);
-
   const productVariants = getVariants(product);
-
-  // const removeProduct = () => {
-  //   removeProductState(product);
-  // };
 
   const setProduct = (productName) => {
     product.productName = productName;
