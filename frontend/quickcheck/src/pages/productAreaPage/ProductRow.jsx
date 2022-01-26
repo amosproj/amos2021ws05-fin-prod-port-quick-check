@@ -16,7 +16,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
-import { ArrowForwardIcon, TriangleUpIcon, TriangleDownIcon } from '@chakra-ui/icons';
+import { TriangleUpIcon, TriangleDownIcon } from '@chakra-ui/icons';
 
 import React from 'react';
 import Card from '../../components/Card';
@@ -106,7 +106,6 @@ export default function ProductRow({ product, editMode }) {
             }}
             placeholder="Anmerkung"
           />
-
           <Button variant="whisper">Upload</Button>
         </Flex>
       </Flex>
