@@ -7,7 +7,6 @@ Chart.register(LineController, LineElement, PointElement, LinearScale, Title, an
 
 function BubbleGraph({ data }) {
   const options = {
-
     scales: {
       y: {
         title: {
@@ -35,18 +34,26 @@ function BubbleGraph({ data }) {
       },
     },
     plugins: {
-        responsive: true,
-        tooltip: {
-            callbacks: {
-        label: function(tooltipItem, data) {
-        //console.log(tooltipItem)
-          var dataset = tooltipItem["dataset"];
-          //console.log(dataset)
-          //var index = tooltipItem.index;
-          return [dataset["label"]+":" , "Margin:"+ dataset["data"][0]["y"]+ ", Cost/Complexity: " + dataset["data"][0]["x"] + ", Volume in Euro: "+ dataset["data"][0]["r"]] ;
-        }
-    }
-},
+      responsive: true,
+      tooltip: {
+        callbacks: {
+          label: function (tooltipItem, data) {
+            //console.log(tooltipItem)
+            var dataset = tooltipItem['dataset'];
+            //console.log(dataset)
+            //var index = tooltipItem.index;
+            return [
+              dataset['label'] + ':',
+              'Margin:' +
+                dataset['data'][0]['y'] +
+                ', Cost/Complexity: ' +
+                dataset['data'][0]['x'] +
+                ', Volume in Euro: ' +
+                dataset['data'][0]['r'],
+            ];
+          },
+        },
+      },
 
       title: {
         display: true,
@@ -84,7 +91,6 @@ function BubbleGraph({ data }) {
             yScaleID: 'y',
             backgroundColor: 'rgba(251, 133, 129, .5)',
             click: function ({ chart, element }) {
-
               console.log('Red Box annotation clicked');
             },
           },

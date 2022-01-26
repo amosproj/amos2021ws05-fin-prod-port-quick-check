@@ -16,22 +16,19 @@ function PieChartGraph({ data_outer, data_inner, title, color, ratings }) {
     labels: [],
     datasets: [
       {
-
-          label: "Client",
-        data: [0],
-        backgroundColor: [green, yellow, red],
-        hoverBackgroundColor: [fullgreen, fullyellow, fullred],
-
-      },
-      {
-
-         label: "Product Variant",
+        label: 'Client',
         data: [0],
         backgroundColor: [green, yellow, red],
         hoverBackgroundColor: [fullgreen, fullyellow, fullred],
       },
       {
-        rating:[],
+        label: 'Product Variant',
+        data: [0],
+        backgroundColor: [green, yellow, red],
+        hoverBackgroundColor: [fullgreen, fullyellow, fullred],
+      },
+      {
+        rating: [],
         label: title,
         data: [1],
         borderWidth: [0],
@@ -42,55 +39,49 @@ function PieChartGraph({ data_outer, data_inner, title, color, ratings }) {
   };
   var options = {
     plugins: {
-            responsive: true,
-            tooltip: {
-                callbacks: {
-            label: function(tooltipItem, data) {
-              var dataset = tooltipItem["dataset"];
-              //var index = tooltipItem.index;
-              var rName="";
-              var to_return= " "+ dataset["label"]
-              if ((dataset["label"] === "Client" ) || (dataset["label"] === "Product Variant" )){
-                  if  (tooltipItem["dataIndex"]===0){
-                      to_return= [to_return + ":" ,  + tooltipItem["formattedValue"] + "% Simple"] ;
-                  }
-                  if  (tooltipItem["dataIndex"]===1){
-                      to_return= [to_return + ":" ,  + tooltipItem["formattedValue"] + "% Medium"] ;
-                  }
-                  if  (tooltipItem["dataIndex"]===2){
-                      to_return= [to_return + ":" ,  + tooltipItem["formattedValue"] + "% Complex"] ;
-                  }
+      responsive: true,
+      tooltip: {
+        callbacks: {
+          label: function (tooltipItem, data) {
+            var dataset = tooltipItem['dataset'];
+            //var index = tooltipItem.index;
+            var rName = '';
+            var to_return = ' ' + dataset['label'];
+            if (dataset['label'] === 'Client' || dataset['label'] === 'Product Variant') {
+              if (tooltipItem['dataIndex'] === 0) {
+                to_return = [to_return + ':', +tooltipItem['formattedValue'] + '% Simple'];
               }
-              else{
-                  //console.log(dataset["rating"][0])
-                  if (typeof (dataset["rating"][0]["score"] )== 'undefined') {
-                       to_return= [(to_return + " Ratings:") ,   "None"];
-                  }
-                  else{
-                      to_return= [to_return + " Ratings:"]
-
-                      for (let x = 0; x < dataset["rating"].length; x++) {
-                          if (dataset["rating"][x]["score"] ==='GERING'){
-                              rName="Simple";
-                          }
-                          else if (dataset["rating"][x]["score"] === 'MITTEL'){
-                              rName="Medium";
-                          }
-                          else if (dataset["rating"][x]["score"] === 'HOCH'){
-                              rName="Complex";
-                          }
-                          else{
-                               rName= dataset["rating"][x]["score"];
-                          }
-                          to_return.push((rName+ " : " + dataset["rating"][x]["count"]));
-
-                      }
-                  }
+              if (tooltipItem['dataIndex'] === 1) {
+                to_return = [to_return + ':', +tooltipItem['formattedValue'] + '% Medium'];
               }
-              return( to_return);
+              if (tooltipItem['dataIndex'] === 2) {
+                to_return = [to_return + ':', +tooltipItem['formattedValue'] + '% Complex'];
+              }
+            } else {
+              //console.log(dataset["rating"][0])
+              if (typeof dataset['rating'][0]['score'] == 'undefined') {
+                to_return = [to_return + ' Ratings:', 'None'];
+              } else {
+                to_return = [to_return + ' Ratings:'];
+
+                for (let x = 0; x < dataset['rating'].length; x++) {
+                  if (dataset['rating'][x]['score'] === 'GERING') {
+                    rName = 'Simple';
+                  } else if (dataset['rating'][x]['score'] === 'MITTEL') {
+                    rName = 'Medium';
+                  } else if (dataset['rating'][x]['score'] === 'HOCH') {
+                    rName = 'Complex';
+                  } else {
+                    rName = dataset['rating'][x]['score'];
+                  }
+                  to_return.push(rName + ' : ' + dataset['rating'][x]['count']);
+                }
+              }
             }
-        }
-    },
+            return to_return;
+          },
+        },
+      },
       title: {
         display: true,
         text: 'Pie Chart',
@@ -116,8 +107,7 @@ function PieChartGraph({ data_outer, data_inner, title, color, ratings }) {
   ChartData['datasets'][1]['data'] = data_inner;
   ChartData['datasets'][2]['backgroundColor'] = color;
   ChartData['datasets'][2]['hoverBackgroundColor'] = color;
-  ChartData['datasets'][2]['rating'] =ratings;
-
+  ChartData['datasets'][2]['rating'] = ratings;
 
   return <Pie data={ChartData} options={options} />;
 }

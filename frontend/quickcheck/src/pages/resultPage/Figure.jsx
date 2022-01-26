@@ -32,39 +32,37 @@ function ShowPieCharts({ results }) {
       var index = i * 4 + j;
       var kundenValues = results[index]['ratings'][0]['answer'].split(' ');
       //var kundenValues= [2,3,4] // mock
-      var kundenTotal=0
+      var kundenTotal = 0;
       for (let x = 0; x < kundenValues.length; x++) {
-        kundenTotal= kundenTotal+parseFloat(kundenValues[x]);
-        }
+        kundenTotal = kundenTotal + parseFloat(kundenValues[x]);
+      }
 
-    for (let x = 0; x < kundenValues.length; x++) {
-        kundenValues[x] = (parseFloat(kundenValues[x]) /kundenTotal ) * 100;
+      for (let x = 0; x < kundenValues.length; x++) {
+        kundenValues[x] = (parseFloat(kundenValues[x]) / kundenTotal) * 100;
       }
       var ratingValues = results[index]['scores']; //
 
       //var ratingValues= [{'count':"1"},{'count': "2"}, {'count': "3"}]; //mock
-      var ratingTotal=0;
-       rows[i][j] = [];
+      var ratingTotal = 0;
+      rows[i][j] = [];
 
       for (let x = 0; x < ratingValues.length; x++) {
-          //console.log("rating", ratingValues[x]['count'])
-        ratingTotal= ratingTotal + ratingValues[x]['count'];
-        }
-        if (ratingTotal===0){
-            ratingValues=[0]
-        }
-      for (let x = 0; x < ratingValues.length; x++) {
-        ratingValues[x] = (parseFloat(ratingValues[x]['count'])/ ratingTotal ) * 100;
+        //console.log("rating", ratingValues[x]['count'])
+        ratingTotal = ratingTotal + ratingValues[x]['count'];
       }
-
+      if (ratingTotal === 0) {
+        ratingValues = [0];
+      }
+      for (let x = 0; x < ratingValues.length; x++) {
+        ratingValues[x] = (parseFloat(ratingValues[x]['count']) / ratingTotal) * 100;
+      }
 
       rows[i][j]['key'] = { index };
       rows[i][j][0] = colors[index % colors.length];
       rows[i][j][1] = results[index]['productName'];
-      rows[i][j][2] =kundenValues;
+      rows[i][j][2] = kundenValues;
       rows[i][j][3] = ratingValues;
-      rows[i][j][4] =results[index]['scores'];
-
+      rows[i][j][4] = results[index]['scores'];
     }
   }
 
@@ -108,47 +106,45 @@ function PieChartRow({ row_data }) {
 }
 
 function Figure({ results }) {
-    var data = {
-      click: function ({ chart, element }) {
-        console.log(' ');
-      },
-      datasets: [],
-    };
-if (typeof {results }!== 'undefined'){
-  //console.log('test0', { results });
-  var scores = [1, 2, 3];
+  var data = {
+    click: function ({ chart, element }) {
+      console.log(' ');
+    },
+    datasets: [],
+  };
+  if (typeof { results } !== 'undefined') {
+    //console.log('test0', { results });
+    var scores = [1, 2, 3];
 
-
-  for (let i = 0; i < results.length; i++) {
-    var complexity = 0;
-    var values = results[i]['scores'];
-    //console.log(values, "scores")
-    var total=0
-    for (let j = 0; j < values.length; j++) {
-        total=total+parseFloat(values[j]["count"])
-      complexity = complexity + parseFloat(values[j]["count"]) * scores[j];
-    }
-    //console.log(values, complexity, i , "complexity")
-    if (total===0){
-        complexity=1 //TODO what here?
-    }
-    else{
+    for (let i = 0; i < results.length; i++) {
+      var complexity = 0;
+      var values = results[i]['scores'];
+      //console.log(values, "scores")
+      var total = 0;
+      for (let j = 0; j < values.length; j++) {
+        total = total + parseFloat(values[j]['count']);
+        complexity = complexity + parseFloat(values[j]['count']) * scores[j];
+      }
+      //console.log(values, complexity, i , "complexity")
+      if (total === 0) {
+        complexity = 1; //TODO what here?
+      } else {
         complexity = complexity / total;
-    }
-    complexity=parseFloat(results[i]['ratings'][2]['answer']) / complexity;
+      }
+      complexity = parseFloat(results[i]['ratings'][2]['answer']) / complexity;
 
-    data['datasets'][i] = {
-      label: results[i]['productName'],
-      data: [
-        {
-          y: parseFloat(results[i]['ratings'][1]['answer']),
-          x:  complexity,
-          r: parseFloat(results[i]['ratings'][2]['answer']) ,
-        },
-      ],
-      backgroundColor: colors[i % colors.length],
-    };
-  }
+      data['datasets'][i] = {
+        label: results[i]['productName'],
+        data: [
+          {
+            y: parseFloat(results[i]['ratings'][1]['answer']),
+            x: complexity,
+            r: parseFloat(results[i]['ratings'][2]['answer']),
+          },
+        ],
+        backgroundColor: colors[i % colors.length],
+      };
+    }
   }
   //console.log('test1', { results });
   return (
