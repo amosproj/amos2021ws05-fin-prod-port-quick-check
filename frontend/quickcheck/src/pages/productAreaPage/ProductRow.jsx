@@ -8,7 +8,7 @@ import {
   VStack,
   Progress,
   HStack,
-  Flex, 
+  Flex,
   Heading,
   List,
   Link,
@@ -16,7 +16,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
-import {ArrowForwardIcon} from '@chakra-ui/icons'
+import { ArrowForwardIcon, TriangleUpIcon, TriangleDownIcon } from '@chakra-ui/icons';
 
 import React from 'react';
 import Card from '../../components/Card';
@@ -51,7 +51,7 @@ export default function ProductRow({ product, editMode }) {
       // w={(parentID > 0) ? ' 90%' : 'full'}
       _hover={{ boxShadow: '2xl' }}
     >
-      <Flex direction="column" w="full" justifyContent="space-between" onClick={onToggle}>
+      <Flex direction="column" w="full" justifyContent="space-between">
         <Flex w="full" mb={3}>
           <Input
             variant="bold"
@@ -69,30 +69,35 @@ export default function ProductRow({ product, editMode }) {
             <CircularProgress size="40px" value={product.progressEconomic} />
 
             <Link href="/ratings">
-              <Button variant="whisper">Economical
-              </Button>
+              <Button variant="secondary">Economical</Button>
             </Link>
           </HStack>
-          
+
           <Spacer />
 
-          <HStack ml='5%'>
+          <HStack ml="5%">
             <CircularProgress size="40px" value={product.progressComplexity} />
             <Link href="/ratings">
-              <Button variant="whisper" href="/ratings">
+              <Button variant="secondary" href="/ratings">
                 Complexity
               </Button>
             </Link>
           </HStack>
         </Flex>
 
-
-        <Flex w="full" align='center'>
-
-          <Button rightIcon={<ArrowForwardIcon />}>Variants ()</Button>
+        <Flex w="full">
+          <Button
+            mt={'full'}
+            variant="whisper"
+            onClick={onToggle}
+            rightIcon={isOpen ? <TriangleUpIcon /> : <TriangleDownIcon />}
+          >
+            Variants ({productVariants.length})
+          </Button>
           <Spacer />
 
           <Textarea
+            mr={5}
             width="50%"
             isReadOnly={!editMode}
             value={product.comment !== null ? product.comment : ''}
@@ -101,13 +106,10 @@ export default function ProductRow({ product, editMode }) {
             }}
             placeholder="Anmerkung"
           />
-          <Spacer />
-          <Button>Upload</Button>
 
-
+          <Button variant="whisper">Upload</Button>
         </Flex>
       </Flex>
-
 
       <Collapse in={isOpen} w="full" animateOpacity>
         <Flex w="full" mt={5}>
