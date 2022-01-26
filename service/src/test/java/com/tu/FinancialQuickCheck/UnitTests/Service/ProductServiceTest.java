@@ -35,6 +35,10 @@ public class ProductServiceTest {
     ProjectRepository projectRepository;
     @Mock
     ProductAreaRepository productAreaRepository;
+    @Mock
+    RatingRepository ratingRepository;
+    @Mock
+    ProductRatingRepository productRatingRepository;
 
     private ProductService service;
 
@@ -65,7 +69,7 @@ public class ProductServiceTest {
         log.info("@BeforeEach - setup for Tests in ProductServiceTest.class");
 
         // init ProjectService
-        service = new ProductService(repository, projectRepository, productAreaRepository);
+        service = new ProductService(repository, projectRepository, productAreaRepository,ratingRepository,productRatingRepository);
         // init empty test object
         emptyProductDto = new ProductDto();
         // init necessary information for test objects

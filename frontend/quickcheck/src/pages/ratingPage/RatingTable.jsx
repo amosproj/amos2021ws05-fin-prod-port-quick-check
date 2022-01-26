@@ -1,4 +1,4 @@
-import { Flex, Input, Spacer, List } from '@chakra-ui/react';
+import {Flex, Input, Spacer, List, Textarea} from '@chakra-ui/react';
 import React, { useState } from 'react';
 import Card from '../../components/Card';
 import Selection from '../../components/Selection';
@@ -13,15 +13,13 @@ function RatingRow({ rating, onChangeScore, onChangeComment, onChangeAnswer }) {
         _hover={{ boxShadow: '2xl' }}
         align="center"
       >
-        <Input
-          align="center"
-          size="md"
-          w="100%"
-          isDisabled={true}
-          onChange={(e) => {
-            console.log(e.target.value);
-          }}
-          value={rating.rating.criterion}
+        <Textarea
+            isReadOnly={true}
+            align="center"
+            size="md"
+            width="100%"
+            placeholder={'Frage'}
+            value={rating.rating.criterion}
         />
       </Card>
       <Card layerStyle="card_bordered" justifyContent="space-between" _hover={{ boxShadow: '2xl' }}>
