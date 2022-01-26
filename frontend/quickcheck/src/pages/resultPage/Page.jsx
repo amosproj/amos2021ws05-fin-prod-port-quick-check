@@ -55,7 +55,7 @@ function SourceRow({ source }) {
 export default function ResultPage() {
   const { projectID } = useParams();
 
-  const setResultsData = useStoreActions((actions) => actions.resultList.set);
+  //const setResultsData = useStoreActions((actions) => actions.resultList.set);
   const fetchResults = useStoreActions((actions) => actions.resultList.fetch);
   const results = useStoreState((state) => state.resultList.results);
 

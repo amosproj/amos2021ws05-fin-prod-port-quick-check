@@ -1,6 +1,5 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
-import { Chart, LineController, LineElement, PointElement, LinearScale, Title, getContext } from 'chart.js';
+import { Chart, LineController, LineElement, PointElement, LinearScale, Title } from 'chart.js';
 import { Bubble } from 'react-chartjs-2';
 import annotationPlugin from 'chartjs-plugin-annotation';
 
@@ -43,7 +42,7 @@ function BubbleGraph({ data }) {
         //console.log(tooltipItem)
           var dataset = tooltipItem["dataset"];
           //console.log(dataset)
-          var index = tooltipItem.index;
+          //var index = tooltipItem.index;
           return [dataset["label"]+":" , "Margin:"+ dataset["data"][0]["y"]+ ", Cost/Complexity: " + dataset["data"][0]["x"] + ", Volume in Euro: "+ dataset["data"][0]["r"]] ;
         }
     }

@@ -5,10 +5,6 @@ import Card from '../../components/Card';
 import PieChartGraph from './PieChart';
 import BubbleGraph from './BubbleChart';
 
-const testdata = [0, 3, 2];
-const testdata2 = [3, 5, 4];
-const testdata3 = [1, 2, 3];
-const testdata4 = [3, 2, 1];
 var colors = [
   'rgba(255,72,166)',
   'rgba(147,213,34)',
@@ -27,28 +23,48 @@ const CircleIcon = (props) => (
 );
 
 function ShowPieCharts({ results }) {
-  console.log('test', { results });
+  //console.log('test', { results });
   var rows = [];
   for (let i = 0; i < results.length / 4; i++) {
     rows[i] = [];
     rows[i]['key'] = i;
     for (let j = 0; j < 4 && i * 4 + j < results.length; j++) {
       var index = i * 4 + j;
-      var kundenValues = results[index]['ratings'][1]['answer'].split(' ');
+      var kundenValues = results[index]['ratings'][0]['answer'].split(' ');
+      //var kundenValues= [2,3,4] // mock
+      var kundenTotal=0
       for (let x = 0; x < kundenValues.length; x++) {
-        kundenValues[x] = parseFloat(kundenValues[x]);
+        kundenTotal= kundenTotal+parseFloat(kundenValues[x]);
+        }
+
+    for (let x = 0; x < kundenValues.length; x++) {
+        kundenValues[x] = (parseFloat(kundenValues[x]) /kundenTotal ) * 100;
       }
-      var ratingValues = results[index]['scores'];
+      var ratingValues = results[index]['scores']; //
+
+      //var ratingValues= [{'count':"1"},{'count': "2"}, {'count': "3"}]; //mock
+      var ratingTotal=0;
+       rows[i][j] = [];
 
       for (let x = 0; x < ratingValues.length; x++) {
-        ratingValues[x] = parseFloat(ratingValues[x]['count']);
+          //console.log("rating", ratingValues[x]['count'])
+        ratingTotal= ratingTotal + ratingValues[x]['count'];
+        }
+        if (ratingTotal===0){
+            ratingValues=[0]
+        }
+      for (let x = 0; x < ratingValues.length; x++) {
+        ratingValues[x] = (parseFloat(ratingValues[x]['count'])/ ratingTotal ) * 100;
       }
-      rows[i][j] = [];
+
+
       rows[i][j]['key'] = { index };
       rows[i][j][0] = colors[index % colors.length];
       rows[i][j][1] = results[index]['productName'];
-      rows[i][j][2] = kundenValues;
-      rows[i][j][3] = testdata4; //TODO add backend input
+      rows[i][j][2] =kundenValues;
+      rows[i][j][3] = ratingValues;
+      rows[i][j][4] =results[index]['scores'];
+
     }
   }
 
@@ -83,6 +99,7 @@ function PieChartRow({ row_data }) {
             data_inner={pie[3]}
             color={pie[0]}
             title={pie[1]}
+            ratings={pie[4]}
           ></PieChartGraph>
         </Flex>
       ))}
@@ -98,31 +115,42 @@ function Figure({ results }) {
       datasets: [],
     };
 if (typeof {results }!== 'undefined'){
-  console.log('test0', { results });
-  var scores = [1, 2, 3]; //TODO are these the right values?
+  //console.log('test0', { results });
+  var scores = [1, 2, 3];
 
 
   for (let i = 0; i < results.length; i++) {
     var complexity = 0;
-    var values = results[i]['ratings'][1]['answer'].split(' ');
+    var values = results[i]['scores'];
+    console.log(values, "scores")
+    var total=0
     for (let j = 0; j < values.length; j++) {
-      complexity = complexity + parseFloat(values[j]) * scores[j];
+        total=total+parseFloat(values[j]["count"])
+      complexity = complexity + parseFloat(values[j]["count"]) * scores[j];
     }
-    complexity = complexity / 100;
+    //console.log(values, complexity, i , "complexity")
+    if (total===0){
+        complexity=1 //TODO what here?
+    }
+    else{
+        complexity = complexity / total;
+    }
+    complexity=parseFloat(results[i]['ratings'][2]['answer']) / total;
+
     data['datasets'][i] = {
       label: results[i]['productName'],
       data: [
         {
-          x: 10,//parseFloat(results[i]['ratings'][1]['answer']),
-          y: 10, //complexity,
-          r: 10, //parseFloat(results[i]['ratings'][0]['answer']) / 10,
+          y: parseFloat(results[i]['ratings'][1]['answer']),
+          x:  complexity,
+          r: parseFloat(results[i]['ratings'][2]['answer']) ,
         },
       ],
       backgroundColor: colors[i % colors.length],
     };
   }
   }
-  console.log('test1', { results });
+  //console.log('test1', { results });
   return (
     <div>
       <Card alignItems="center" bg="gray.100">
