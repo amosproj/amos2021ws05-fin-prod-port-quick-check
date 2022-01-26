@@ -223,7 +223,7 @@ const ratingModel = {
   // GET all ratings
   fetch: thunk(async (actions, tmp) => {
     await api
-      .url('/products/' + tmp[0]+ '/ratings?ratingArea='+tmp[1].toUpperCase())
+      .url('/products/' + tmp[0] + '/ratings?ratingArea=' + tmp[1].toUpperCase())
       .get()
       .json((json) => actions.set(json))
       .catch(console.error);
@@ -233,7 +233,7 @@ const ratingModel = {
     //console.log('send UPDATE project:', { projectData });
     actions.set(product);
     await api
-      .url('/products/'+product.productID+'/ratings')
+      .url('/products/' + product.productID + '/ratings')
       .put(product)
       .res(console.log)
       .catch(console.error);
