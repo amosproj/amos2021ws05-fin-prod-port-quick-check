@@ -16,7 +16,7 @@ public class ProductEntity {
      * ID of the product (as primary key).
      */
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int id;
 
     /**

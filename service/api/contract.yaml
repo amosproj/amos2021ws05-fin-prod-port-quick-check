@@ -1,0 +1,399 @@
+openapi: '3.0.0'
+info:
+  version: "0.3"
+  title: API for AMOS5 Financial QuickCheck
+  description: defines endpoints for resource "Project"
+
+paths:
+  /productareas:
+    get:
+      summary: retrieves all available product areas
+      responses:
+        200:
+          description: JSON containing list of all product areas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'components_schema_attributes.yaml#/components/schemas/productArea'
+        404:
+          $ref: 'components_responses.yaml#/components/responses/404notfound'
+
+  /ratings:
+    get:
+      summary: retrieve data for economic and/or complexity rating
+      parameters:
+        - $ref: 'components_parameters.yaml#/components/parameters/ratingArea'
+      responses:
+        200:
+          description: JSON containing all ratings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'components_schemas.yaml#/components/schemas/rating'
+        404:
+          $ref: 'components_responses.yaml#/components/responses/404notfound'
+        '5XX':
+          $ref: 'components_responses.yaml#/components/responses/5XXserverError'
+
+  /projects:
+    get:
+      summary: retrieves all projects
+      responses:
+        200:
+          description: JSON containing all projects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'components_schemas.yaml#/components/schemas/smallProjects'
+        '5XX':
+          $ref: 'components_responses.yaml#/components/responses/5XXserverError'
+    post:
+      summary: creates a new project
+      requestBody:
+        description: Project object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: 'components_schemas.yaml#/components/schemas/createProject'
+      responses:
+        201:
+          description: JSON containing project meta data
+          content:
+            application/json:
+              schema:
+                $ref: 'components_schemas.yaml#/components/schemas/createdProject'
+        400:
+          $ref: 'components_responses.yaml#/components/responses/400badrequest'
+        '5XX':
+          $ref: 'components_responses.yaml#/components/responses/5XXserverError'
+
+  /projects/{projectID}:
+    get:
+      summary: returns project with given projectID
+      parameters:
+        - $ref: 'components_parameters.yaml#/components/parameters/projectID'
+      responses:
+        200:
+          description: JSON containing project meta data
+          content:
+            application/json:
+              schema:
+                $ref: 'components_schemas.yaml#/components/schemas/getProject'
+        404:
+          $ref: 'components_responses.yaml#/components/responses/404notfound'
+        '5XX':
+          $ref: 'components_responses.yaml#/components/responses/5XXserverError'
+    put:
+      summary: updates project with given projectID
+      parameters:
+        - $ref: 'components_parameters.yaml#/components/parameters/projectID'
+      requestBody:
+        description: Project object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: 'components_schemas.yaml#/components/schemas/updateProject'
+      responses:
+        200:
+          description: JSON containing project meta data
+          content:
+            application/json:
+              schema:
+                $ref: 'components_schemas.yaml#/components/schemas/getProject'
+        400:
+          $ref: 'components_responses.yaml#/components/responses/400badrequest'
+        404:
+          $ref: 'components_responses.yaml#/components/responses/404notfound'
+        '5XX':
+          $ref: 'components_responses.yaml#/components/responses/5XXserverError'
+
+  /projects/{projectID}/users:
+    post:
+      summary: assigns users to projectID
+      parameters:
+        - $ref: 'components_parameters.yaml#/components/parameters/projectID'
+      requestBody:
+        description: JSON containing user data
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'components_schemas.yaml#/components/schemas/assignUser'
+      responses:
+        201:
+          description: JSON containing assigned project members project meta data
+          content:
+            application/json:
+              schema:
+                $ref: 'components_schemas.yaml#/components/schemas/members'
+        400:
+          $ref: 'components_responses.yaml#/components/responses/400badrequest'
+        404:
+          $ref: 'components_responses.yaml#/components/responses/404notfound'
+        '5XX':
+          $ref: 'components_responses.yaml#/components/responses/5XXserverError'
+    put:
+      summary: updates users for projectID
+      parameters:
+        - $ref: 'components_parameters.yaml#/components/parameters/projectID'
+      requestBody:
+        description: JSON containing user data
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'components_schemas.yaml#/components/schemas/updateUserProject'
+      responses:
+        200:
+          description: JSON containing assigned project members project meta data
+          content:
+            application/json:
+              schema:
+                $ref: 'components_schemas.yaml#/components/schemas/members'
+        400:
+          $ref: 'components_responses.yaml#/components/responses/400badrequest'
+        404:
+          $ref: 'components_responses.yaml#/components/responses/404notfound'
+        '5XX':
+          $ref: 'components_responses.yaml#/components/responses/5XXserverError'
+    delete:
+      summary: unassigns user from project
+      parameters:
+        - $ref: 'components_parameters.yaml#/components/parameters/projectID'
+      requestBody:
+        description: JSON containing user data
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'components_schemas.yaml#/components/schemas/deleteProjectUser'
+      responses:
+        200:
+          description: "users successfully unassigned from project"
+        400:
+          $ref: 'components_responses.yaml#/components/responses/400badrequest'
+        404:
+          $ref: 'components_responses.yaml#/components/responses/404notfound'
+        '5XX':
+          $ref: 'components_responses.yaml#/components/responses/5XXserverError'
+
+  /projects/{projectID}/products:
+    get:
+      summary: retrieves all products of given projectID
+      parameters:
+        - $ref: 'components_parameters.yaml#/components/parameters/projectID'
+        - $ref: 'components_parameters.yaml#/components/parameters/productAreaID'
+      responses:
+        200:
+          description: JSON containing list of products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'components_schemas.yaml#/components/schemas/getProduct'
+        404:
+          $ref: 'components_responses.yaml#/components/responses/404notfound'
+        '5XX':
+          $ref: 'components_responses.yaml#/components/responses/5XXserverError'
+    post:
+      summary: creates a new product for projectID
+      parameters:
+        - $ref: 'components_parameters.yaml#/components/parameters/projectID'
+      requestBody:
+        description: JSON containing product data
+        content:
+          application/json:
+            schema:
+              $ref: 'components_schemas.yaml#/components/schemas/createProduct'
+      responses:
+        201:
+          description: JSON containing product data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'components_schemas.yaml#/components/schemas/getProduct'
+        404:
+          $ref: 'components_responses.yaml#/components/responses/404notfound'
+        '5XX':
+          $ref: 'components_responses.yaml#/components/responses/5XXserverError'
+
+  /products/{productID}:
+    get:
+      summary: retrieve data for one single product
+      parameters:
+        - $ref: 'components_parameters.yaml#/components/parameters/productID'
+      responses:
+        200:
+          description: JSON containing updated product data
+          content:
+            application/json:
+              schema:
+                $ref: 'components_schemas.yaml#/components/schemas/getProduct'
+        404:
+          $ref: 'components_responses.yaml#/components/responses/404notfound'
+        '5XX':
+          $ref: 'components_responses.yaml#/components/responses/5XXserverError'
+    put:
+      summary: updates product with given productID
+      parameters:
+        - $ref: 'components_parameters.yaml#/components/parameters/productID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: 'components_schemas.yaml#/components/schemas/updateProduct'
+      responses:
+        200:
+          description: Update successful
+        400:
+          $ref: 'components_responses.yaml#/components/responses/400badrequest'
+        404:
+          $ref: 'components_responses.yaml#/components/responses/404notfound'
+        '5XX':
+          $ref: 'components_responses.yaml#/components/responses/5XXserverError'
+
+  /products/{productID}/ratings:
+    get:
+      summary: retrieve data for economic and/or complexity rating for projectID
+      parameters:
+        - $ref: 'components_parameters.yaml#/components/parameters/productID'
+        - $ref: 'components_parameters.yaml#/components/parameters/ratingArea'
+      responses:
+        200:
+          description: JSON containing all ratings for productID
+          content:
+            application/json:
+              schema:
+                $ref: 'components_schemas.yaml#/components/schemas/getProductRating'
+        404:
+          $ref: 'components_responses.yaml#/components/responses/404notfound'
+        '5XX':
+          $ref: 'components_responses.yaml#/components/responses/5XXserverError'
+    post:
+      summary: create data for economic or complexity rating
+      parameters:
+        - $ref: 'components_parameters.yaml#/components/parameters/productID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: 'components_schemas.yaml#/components/schemas/postProductRating'
+      responses:
+        201:
+          description: JSON containing all ratings for productID
+          content:
+            application/json:
+              schema:
+                $ref: 'components_schemas.yaml#/components/schemas/postProductRating'
+        404:
+          $ref: 'components_responses.yaml#/components/responses/404notfound'
+        '5XX':
+          $ref: 'components_responses.yaml#/components/responses/5XXserverError'
+    put:
+      summary: updates data for economic or complexity rating
+      parameters:
+        - $ref: 'components_parameters.yaml#/components/parameters/productID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: 'components_schemas.yaml#/components/schemas/postProductRating'
+      responses:
+        200:
+          description: JSON containing all ratings for productID
+          content:
+            application/json:
+              schema:
+                $ref: 'components_schemas.yaml#/components/schemas/postProductRating'
+        400:
+          $ref: 'components_responses.yaml#/components/responses/400badrequest'
+        404:
+          $ref: 'components_responses.yaml#/components/responses/404notfound'
+        '5XX':
+          $ref: 'components_responses.yaml#/components/responses/5XXserverError'
+
+  /users:
+    get:
+      summary: retrieve list of all users
+      responses:
+        200:
+          description: JSON containing list of all users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'components_schemas.yaml#/components/schemas/user'
+        '5XX':
+          $ref: 'components_responses.yaml#/components/responses/5XXserverError'
+    post:
+      summary: creates a new user
+      requestBody:
+        description: JSON containing user data
+        content:
+          application/json:
+            schema:
+              $ref: 'components_schemas.yaml#/components/schemas/createUser'
+      responses:
+        201:
+          description: JSON containing user data
+          content:
+            application/json:
+              schema:
+                $ref: 'components_schemas.yaml#/components/schemas/createUser'
+        '5XX':
+          $ref: 'components_responses.yaml#/components/responses/5XXserverError'
+
+  /users/email/{userEmail}:
+    get:
+      summary: retrieve user data based on email
+      parameters:
+        - $ref: 'components_parameters.yaml#/components/parameters/userEmail'
+      responses:
+        200:
+          description: JSON containing list of all users
+          content:
+            application/json:
+              schema:
+                $ref: 'components_schemas.yaml#/components/schemas/user'
+        400:
+          $ref: 'components_responses.yaml#/components/responses/400badrequest'
+        404:
+          $ref: 'components_responses.yaml#/components/responses/404notfound'
+        '5XX':
+          $ref: 'components_responses.yaml#/components/responses/5XXserverError'
+    put:
+      summary: updates user with given email adress
+      parameters:
+        - $ref: 'components_parameters.yaml#/components/parameters/userEmail'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: 'components_schemas.yaml#/components/schemas/user'
+      responses:
+        200:
+          description: User update successsful.
+        404:
+          $ref: 'components_responses.yaml#/components/responses/404notfound'
+        '5XX':
+          $ref: 'components_responses.yaml#/components/responses/5XXserverError'
+
