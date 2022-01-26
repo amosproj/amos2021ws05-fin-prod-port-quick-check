@@ -135,7 +135,7 @@ if (typeof {results }!== 'undefined'){
     else{
         complexity = complexity / total;
     }
-    complexity=parseFloat(results[i]['ratings'][2]['answer']) / total;
+    complexity=parseFloat(results[i]['ratings'][2]['answer']) / complexity;
 
     data['datasets'][i] = {
       label: results[i]['productName'],
