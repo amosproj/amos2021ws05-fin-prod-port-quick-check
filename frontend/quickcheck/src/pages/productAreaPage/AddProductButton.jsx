@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import Page from '../../components/Page';
-import { useStoreState, useStoreActions } from 'easy-peasy';
+import React, { useState } from 'react';
+import { useStoreActions } from 'easy-peasy';
 import { useParams } from 'react-router-dom';
 import {
   Modal,
