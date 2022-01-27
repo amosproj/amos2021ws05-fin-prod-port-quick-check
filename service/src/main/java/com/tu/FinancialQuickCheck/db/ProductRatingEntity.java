@@ -30,11 +30,11 @@ public class ProductRatingEntity {
     @Column(name = "comment")
     public String comment;
 
-    @Column(name = "ratingid")
-    public int ratingId;
-
-    @Column(name = "productid")
-    public int productId;
+//    @Column(name = "ratingid")
+//    public int ratingId;
+//
+//    @Column(name = "productid")
+//    public int productId;
 
     public ProductRatingEntity(){}
 }

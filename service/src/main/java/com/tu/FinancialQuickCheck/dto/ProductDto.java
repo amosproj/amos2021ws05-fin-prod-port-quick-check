@@ -20,8 +20,8 @@ public class ProductDto {
     public ProductAreaDto productArea;
     public int projectID;
     public int parentID;
-    public int progressComplexity;
-    public int progressEconomic;
+    public float progressComplexity;
+    public float progressEconomic;
     public List<ProductRatingDto> ratings;
     public List<ProductDto> productVariations;
     public String comment;
@@ -72,15 +72,14 @@ public class ProductDto {
         this.ratings = convertProductRatingEntities(productRatingEntities, getOrPostPut);
     }
 
-    public ProductDto(ProductEntity product){
+    public ProductDto(ProductEntity product, float[] progress){
         this.productID = product.id;
         this.productName = product.name;
         this.productArea = new ProductAreaDto(product.productarea);
         this.projectID = product.project.id;
         this.parentID = convertParentEntity(product.parentProduct);
-        //TODO: (prio: medium) replace 42 values with calculation for progress bars
-        this.progressComplexity = 42;
-        this.progressEconomic = 42;
+        this.progressComplexity = progress[1];
+        this.progressEconomic = progress[0];
         this.comment = product.comment;
         this.resources = new ArrayList<>();
     }
@@ -97,7 +96,7 @@ public class ProductDto {
                             entity.comment,
                             entity.score,
                             entity.productRatingId.getRating(),
-                            entity.ratingId));
+                            entity.productRatingId.getRating().id));
             }
         }else{
             for(ProductRatingEntity entity : productRatingEntities){

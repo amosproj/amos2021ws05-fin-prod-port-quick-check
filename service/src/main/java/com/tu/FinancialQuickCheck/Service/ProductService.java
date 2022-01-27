@@ -8,11 +8,8 @@ import com.tu.FinancialQuickCheck.dto.ProductDto;
 import com.tu.FinancialQuickCheck.dto.ProductRatingDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.lang.Math.*;
+import java.util.*;
 
 /**
  * The ProductService class performs service tasks and defines the logic for the product. This includes creating,
@@ -26,6 +23,9 @@ public class ProductService {
     private ProductAreaRepository productAreaRepository;
     private RatingRepository ratingRepository;
     private ProductRatingRepository productRatingRepository;
+
+    public static final Integer[] SET_VALUES = new Integer[] {4, 5, 9, 10};
+    public static final Set<Integer> VALUES_ECONOMIC = new HashSet<>(Arrays.asList(SET_VALUES));
 
     /*public ProductService(ProductRepository productRepository, ProjectRepository projectRepository,
                           ProductAreaRepository productAreaRepository) {
@@ -57,7 +57,8 @@ public class ProductService {
         if (productEntity.isEmpty()) {
             return null;
         }else{
-            return new ProductDto(productEntity.get());
+            float[] progress = calculateProductProgress(productEntity.get());
+            return new ProductDto(productEntity.get(), progress);
         }
     }
 
@@ -141,15 +142,15 @@ public class ProductService {
 
             entities = repository.saveAllAndFlush(entities);
 
-            List<ProductDto> ps = getProductsByProjectIdAndProductAreaId(projectID, productDto.productArea.id);
-            for (ProductEntity entity : entities)
-            {
-                for (ProductDto p : ps) {
-                    if(p.productName.equals(entity.name)){
-                        createProductRatings(p, entity.id);
-                    }
-                }
-            }
+//            List<ProductDto> ps = getProductsByProjectIdAndProductAreaId(projectID, productDto.productArea.id);
+//            for (ProductEntity entity : entities)
+//            {
+//                for (ProductDto p : ps) {
+//                    if(p.productName.equals(entity.name)){
+//                        createProductRatings(p, entity.id);
+//                    }
+//                }
+//            }
 
 
             return createdProducts;
@@ -258,7 +259,8 @@ public class ProductService {
             Iterable<ProductEntity> productEntities = repository.findByProject(projectRepository.findById(projectID).get());
             for(ProductEntity tmp : productEntities){
                 if(!tmp.name.equals("DUMMY")){
-                    ProductDto addProduct = new ProductDto(tmp);
+                    float[] progress = calculateProductProgress(tmp);
+                    ProductDto addProduct = new ProductDto(tmp, progress);
                     productsByProject.add(addProduct);
                 }
             }
@@ -286,11 +288,40 @@ public class ProductService {
 
         for(ProductEntity tmp : productEntities){
             if(!tmp.name.equals("DUMMY")) {
-                productsByProjectAndProductArea.add(new ProductDto(tmp));
+                float[] progress = calculateProductProgress(tmp);
+                productsByProjectAndProductArea.add(new ProductDto(tmp, progress));
             }
         }
 
         return productsByProjectAndProductArea;
+    }
+
+    public float[] calculateProductProgress(ProductEntity product){
+
+        float[] progressValues = new float[2];
+        int[] counter = new int[2];
+
+        for(ProductRatingEntity tmp: product.productRatingEntities){
+            if(tmp.productRatingId.getRating().ratingarea == RatingArea.ECONOMIC){
+                counter[0] += 1;
+                if(VALUES_ECONOMIC.contains(tmp.productRatingId.getRating().id) && tmp.answer != null && tmp.score != null){
+                    progressValues[0] += 1;
+                }
+            }else{
+                counter[1] += 1;
+                if(tmp.answer != null){
+                    progressValues[1] += 1;
+                }
+            }
+        }
+
+        float tmpEconomicProgress = Math.round((progressValues[0] / counter[0]) * 100);
+        float tmpComplexityProgress = Math.round((progressValues[1] / counter[1]) * 100);
+
+        progressValues[0] = tmpEconomicProgress;
+        progressValues[1] = tmpComplexityProgress;
+
+        return progressValues;
     }
 
 
@@ -349,9 +380,9 @@ public class ProductService {
         for(RatingEntity rating: ratings){
             ProductRatingEntity productRating = new ProductRatingEntity();
             productRating.productRatingId = new ProductRatingId(product, rating);
-            productRating.ratingId = rating.id;
-            productRating.productId = product.id;
-            newProductRatings.put(rating.id, productRating);
+//            productRating.ratingId = rating.id;
+//            productRating.productId = product.id;
+            newProductRatings.put(productRating.productRatingId.getRating().id, productRating);
         }
 
         return newProductRatings;
