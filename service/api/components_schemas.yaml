@@ -1,11 +1,3 @@
-openapi: '3.0.0'
-info:
-  version: "0.1"
-  title: Schema definitions
-  description: defines schemas for endpoints based on schema_attributes.yaml
-
-paths:
-
 components:
   schemas:
     user:
