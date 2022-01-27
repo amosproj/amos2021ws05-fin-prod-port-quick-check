@@ -4,7 +4,7 @@ components:
       type: string
       format: email
       description: unique identifier of user
-      example: "max.mustermann@mustermann.com"
+      example: "max@mustermann.com"
     userID:
       type: string
       format: uuid
@@ -34,7 +34,7 @@ components:
     productID:
       type: integer
       description: unique identifier of product
-      example: "100"
+      example: "99"
     productName:
       type: string
       description: name of the product for display purposes
@@ -76,7 +76,7 @@ components:
     criterion:
       type: string
       description: a question or criteria to be analysed in economic or complexity rating
-      example: "Kredivolumen im Bestand"
+      example: "Kreditvolumen im Bestand"
     ratingArea:
       type: string
       description: assigns rating to economic analysis or complexity analysis

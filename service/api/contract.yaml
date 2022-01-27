@@ -7,10 +7,10 @@ info:
 paths:
   /productareas:
     get:
-      summary: retrieves all available product areas
+      summary: retrieves all product areas
       responses:
         200:
-          description: JSON containing list of all product areas
+          description: returns list of product area objects
           content:
             application/json:
               schema:
@@ -22,12 +22,12 @@ paths:
 
   /ratings:
     get:
-      summary: retrieve data for economic and/or complexity rating
+      summary: retrieves all ratings for economic and/or complexity rating area
       parameters:
         - $ref: 'components_parameters.yaml#/components/parameters/ratingArea'
       responses:
         200:
-          description: JSON containing all ratings
+          description: returns list of rating objects
           content:
             application/json:
               schema:
@@ -44,7 +44,7 @@ paths:
       summary: retrieves all projects
       responses:
         200:
-          description: JSON containing all projects
+          description: returns list of project objects
           content:
             application/json:
               schema:
@@ -56,7 +56,7 @@ paths:
     post:
       summary: creates a new project
       requestBody:
-        description: Project object
+        description: project object
         required: true
         content:
           application/json:
@@ -64,7 +64,7 @@ paths:
               $ref: 'components_schemas.yaml#/components/schemas/createProject'
       responses:
         201:
-          description: JSON containing project meta data
+          description: returns list of project objects containing project meta data
           content:
             application/json:
               schema:
@@ -76,12 +76,12 @@ paths:
 
   /projects/{projectID}:
     get:
-      summary: returns project with given projectID
+      summary: retrieves one project
       parameters:
         - $ref: 'components_parameters.yaml#/components/parameters/projectID'
       responses:
         200:
-          description: JSON containing project meta data
+          description: returns project object containing project meta data
           content:
             application/json:
               schema:
@@ -91,11 +91,11 @@ paths:
         '5XX':
           $ref: 'components_responses.yaml#/components/responses/5XXserverError'
     put:
-      summary: updates project with given projectID
+      summary: updates one project
       parameters:
         - $ref: 'components_parameters.yaml#/components/parameters/projectID'
       requestBody:
-        description: Project object
+        description: project object
         required: true
         content:
           application/json:
@@ -103,7 +103,7 @@ paths:
               $ref: 'components_schemas.yaml#/components/schemas/updateProject'
       responses:
         200:
-          description: JSON containing project meta data
+          description: returns project object containing project meta data
           content:
             application/json:
               schema:
@@ -121,7 +121,7 @@ paths:
       parameters:
         - $ref: 'components_parameters.yaml#/components/parameters/projectID'
       requestBody:
-        description: JSON containing user data
+        description: list of user objects
         content:
           application/json:
             schema:
@@ -130,7 +130,7 @@ paths:
                 $ref: 'components_schemas.yaml#/components/schemas/assignUser'
       responses:
         201:
-          description: JSON containing assigned project members project meta data
+          description: returns list of user objects
           content:
             application/json:
               schema:
@@ -146,7 +146,7 @@ paths:
       parameters:
         - $ref: 'components_parameters.yaml#/components/parameters/projectID'
       requestBody:
-        description: JSON containing user data
+        description: list of user objects
         content:
           application/json:
             schema:
@@ -155,7 +155,7 @@ paths:
                 $ref: 'components_schemas.yaml#/components/schemas/updateUserProject'
       responses:
         200:
-          description: JSON containing assigned project members project meta data
+          description: returns list of user objects
           content:
             application/json:
               schema:
@@ -167,11 +167,11 @@ paths:
         '5XX':
           $ref: 'components_responses.yaml#/components/responses/5XXserverError'
     delete:
-      summary: unassigns user from project
+      summary: unassigns users from project
       parameters:
         - $ref: 'components_parameters.yaml#/components/parameters/projectID'
       requestBody:
-        description: JSON containing user data
+        description: list of user objects
         content:
           application/json:
             schema:
@@ -180,7 +180,29 @@ paths:
                 $ref: 'components_schemas.yaml#/components/schemas/deleteProjectUser'
       responses:
         200:
-          description: "users successfully unassigned from project"
+          description: success
+        400:
+          $ref: 'components_responses.yaml#/components/responses/400badrequest'
+        404:
+          $ref: 'components_responses.yaml#/components/responses/404notfound'
+        '5XX':
+          $ref: 'components_responses.yaml#/components/responses/5XXserverError'
+
+  /projects/{projectID}/results:
+    get:
+      summary: retrieves list of evaluations for all products in project and/or product area
+      parameters:
+        - $ref: 'components_parameters.yaml#/components/parameters/projectID'
+        - $ref: 'components_parameters.yaml#/components/parameters/productAreaID'
+      responses:
+        200:
+          description: returns list of result objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'components_schemas.yaml#/components/schemas/getProductEvaluation'
         400:
           $ref: 'components_responses.yaml#/components/responses/400badrequest'
         404:
@@ -196,7 +218,7 @@ paths:
         - $ref: 'components_parameters.yaml#/components/parameters/productAreaID'
       responses:
         200:
-          description: JSON containing list of products
+          description: returns list of product objects
           content:
             application/json:
               schema:
@@ -212,14 +234,14 @@ paths:
       parameters:
         - $ref: 'components_parameters.yaml#/components/parameters/projectID'
       requestBody:
-        description: JSON containing product data
+        description: product object
         content:
           application/json:
             schema:
               $ref: 'components_schemas.yaml#/components/schemas/createProduct'
       responses:
         201:
-          description: JSON containing product data
+          description: returns a list of product objects
           content:
             application/json:
               schema:
@@ -233,12 +255,12 @@ paths:
 
   /products/{productID}:
     get:
-      summary: retrieve data for one single product
+      summary: retrieves data for one product
       parameters:
         - $ref: 'components_parameters.yaml#/components/parameters/productID'
       responses:
         200:
-          description: JSON containing updated product data
+          description: returns a product object
           content:
             application/json:
               schema:
@@ -253,6 +275,7 @@ paths:
         - $ref: 'components_parameters.yaml#/components/parameters/productID'
       requestBody:
         required: true
+        description: product object
         content:
           application/json:
             schema:
@@ -269,13 +292,13 @@ paths:
 
   /products/{productID}/ratings:
     get:
-      summary: retrieve data for economic and/or complexity rating for projectID
+      summary: retrieves all data for economic and/or complexity rating for productID
       parameters:
         - $ref: 'components_parameters.yaml#/components/parameters/productID'
         - $ref: 'components_parameters.yaml#/components/parameters/ratingArea'
       responses:
         200:
-          description: JSON containing all ratings for productID
+          description: returns list of ratings for productID
           content:
             application/json:
               schema:
@@ -296,7 +319,7 @@ paths:
               $ref: 'components_schemas.yaml#/components/schemas/postProductRating'
       responses:
         201:
-          description: JSON containing all ratings for productID
+          description: returns list of rating objects for productID
           content:
             application/json:
               schema:
@@ -317,7 +340,7 @@ paths:
               $ref: 'components_schemas.yaml#/components/schemas/postProductRating'
       responses:
         200:
-          description: JSON containing all ratings for productID
+          description: returns list of rating objects for productID
           content:
             application/json:
               schema:
@@ -331,10 +354,10 @@ paths:
 
   /users:
     get:
-      summary: retrieve list of all users
+      summary: retrieves list of all users
       responses:
         200:
-          description: JSON containing list of all users
+          description: returns list of user objects
           content:
             application/json:
               schema:
@@ -346,18 +369,18 @@ paths:
     post:
       summary: creates a new user
       requestBody:
-        description: JSON containing user data
+        description: user object
         content:
           application/json:
             schema:
               $ref: 'components_schemas.yaml#/components/schemas/createUser'
       responses:
         201:
-          description: JSON containing user data
+          description: returns user object
           content:
             application/json:
               schema:
-                $ref: 'components_schemas.yaml#/components/schemas/createUser'
+                $ref: 'components_schemas.yaml#/components/schemas/user'
         '5XX':
           $ref: 'components_responses.yaml#/components/responses/5XXserverError'
 
@@ -368,7 +391,7 @@ paths:
         - $ref: 'components_parameters.yaml#/components/parameters/userEmail'
       responses:
         200:
-          description: JSON containing list of all users
+          description: returns user object
           content:
             application/json:
               schema:
@@ -385,15 +408,60 @@ paths:
         - $ref: 'components_parameters.yaml#/components/parameters/userEmail'
       requestBody:
         required: true
+        description: user object
         content:
           application/json:
             schema:
-              $ref: 'components_schemas.yaml#/components/schemas/user'
+              $ref: 'components_schemas.yaml#/components/schemas/updateUser'
       responses:
         200:
-          description: User update successsful.
+          description: Update successsful.
         404:
           $ref: 'components_responses.yaml#/components/responses/404notfound'
         '5XX':
           $ref: 'components_responses.yaml#/components/responses/5XXserverError'
+
+components:
+  schemas:
+    userID:
+      $ref: 'components_schema_attributes.yaml#/components/schemas/userID'
+    userEmail:
+      $ref: 'components_schema_attributes.yaml#/components/schemas/userEmail'
+    userName:
+      $ref: 'components_schema_attributes.yaml#/components/schemas/userName'
+    password:
+      $ref: 'components_schema_attributes.yaml#/components/schemas/password'
+    role:
+      $ref: 'components_schema_attributes.yaml#/components/schemas/role'
+    creatorID:
+      $ref: 'components_schema_attributes.yaml#/components/schemas/userID'
+    projectID:
+      $ref: 'components_schema_attributes.yaml#/components/schemas/projectID'
+    projectName:
+      $ref: 'components_schema_attributes.yaml#/components/schemas/projectName'
+    productID:
+      $ref: 'components_schema_attributes.yaml#/components/schemas/productID'
+    productName:
+      $ref: 'components_schema_attributes.yaml#/components/schemas/productName'
+    productArea:
+        $ref: 'components_schema_attributes.yaml#/components/schemas/productArea'
+    parentID:
+      $ref: 'components_schema_attributes.yaml#/components/schemas/parentID'
+    resource:
+      $ref: 'components_schema_attributes.yaml#/components/schemas/resource'
+    ratingID:
+      $ref: 'components_schema_attributes.yaml#/components/schemas/ratingID'
+    category:
+      $ref: 'components_schema_attributes.yaml#/components/schemas/category'
+    criterion:
+      $ref: 'components_schema_attributes.yaml#/components/schemas/criterion'
+    ratingArea:
+      $ref: 'components_schema_attributes.yaml#/components/schemas/ratingArea'
+    answer:
+      $ref: 'components_schema_attributes.yaml#/components/schemas/answer'
+    comment:
+      $ref: 'components_schema_attributes.yaml#/components/schemas/comment'
+    score:
+      $ref: 'components_schema_attributes.yaml#/components/schemas/score'
+
 

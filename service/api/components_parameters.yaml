@@ -4,35 +4,41 @@ components:
       name: userEmail
       in: path
       required: true
+      description: unique identifier of user in form of an email address
       schema:
         $ref: 'components_schema_attributes.yaml#/components/schemas/userEmail'
     userID:
       name: userID
       in: path
       required: true
+      description: unique identifier of user in form of a UUID
       schema:
         $ref: 'components_schema_attributes.yaml#/components/schemas/userID'
     projectID:
       name: projectID
       in: path
       required: true
+      description: unique identifier of project
       schema:
         $ref: 'components_schema_attributes.yaml#/components/schemas/projectID'
     productAreaID:
       name: productAreaID
       in: query
       required: false
+      description: unique identifier of product area
       schema:
         $ref: 'components_schema_attributes.yaml#/components/schemas/productAreaID'
     productID:
       in: path
       name: productID
       required: true
+      description: unique identifier of product
       schema:
         $ref: 'components_schema_attributes.yaml#/components/schemas/productID'
     ratingArea:
       in: query
       name: ratingArea
       required: false
+      description: attribute assigning rating to either complexity or economic rating area
       schema:
         $ref: 'components_schema_attributes.yaml#/components/schemas/ratingArea'

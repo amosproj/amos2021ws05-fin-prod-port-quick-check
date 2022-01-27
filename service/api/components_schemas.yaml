@@ -1,28 +1,31 @@
-openapi: '3.0.0'
-info:
-  version: "0.1"
-  title: Schema definitions
-  description: defines schemas for endpoints based on schema_attributes.yaml
-
-paths:
-
 components:
   schemas:
     user:
       type: object
       properties:
+        userID:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/userID'
         userEmail:
           $ref: 'components_schema_attributes.yaml#/components/schemas/userEmail'
         userName:
           $ref: 'components_schema_attributes.yaml#/components/schemas/userName'
-        userID:
-          $ref: 'components_schema_attributes.yaml#/components/schemas/userID'
     createUser:
       required:
         - userEmail
         - password
       type: object
       properties:
+        userEmail:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/userEmail'
+        userName:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/userName'
+        password:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/password'
+    updateUser:
+      type: object
+      properties:
+        userID:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/userID'
         userEmail:
           $ref: 'components_schema_attributes.yaml#/components/schemas/userEmail'
         userName:
@@ -177,6 +180,8 @@ components:
           $ref: 'components_schema_attributes.yaml#/components/schemas/comment'
         resources:
           $ref: '#/components/schemas/resources'
+        parentID:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/parentID'
         productVariations:
           type: array
           items:
@@ -264,6 +269,30 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/reducedProductRating'
+
+    scores:
+      properties:
+        score:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/score'
+        count:
+          type: integer
+          example: 4
+    getProductEvaluation:
+      properties:
+        productID:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/productID'
+        productName:
+          $ref: 'components_schema_attributes.yaml#/components/schemas/productName'
+        ratings:
+          type: array
+          description: list containing ratings of "Kreditvolumen im Bestand" (= size of pie), "Marge" (= y-axis) and "Kunde" (= outer circle values)
+          items:
+            $ref: '#/components/schemas/productRating'
+        scores:
+          type: array
+          description: aggregated values of field "Gesamteinschätzung wirtschaftlicher Bewertung" for productvariants
+          items:
+            $ref: '#/components/schemas/scores'
 
 
 
