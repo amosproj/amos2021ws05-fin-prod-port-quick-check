@@ -2,15 +2,15 @@ package com.tu.FinancialQuickCheck.Service;
 
 import com.tu.FinancialQuickCheck.Exceptions.BadRequest;
 import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
-import com.tu.FinancialQuickCheck.db.ProductAreaRepository;
-import com.tu.FinancialQuickCheck.db.ProductEntity;
-import com.tu.FinancialQuickCheck.db.ProductRepository;
-import com.tu.FinancialQuickCheck.db.ProjectRepository;
+import com.tu.FinancialQuickCheck.RatingArea;
+import com.tu.FinancialQuickCheck.db.*;
 import com.tu.FinancialQuickCheck.dto.ProductDto;
+import com.tu.FinancialQuickCheck.dto.ProductRatingDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,14 +24,26 @@ public class ProductService {
     private ProductRepository repository;
     private ProjectRepository projectRepository;
     private ProductAreaRepository productAreaRepository;
+    private RatingRepository ratingRepository;
+    private ProductRatingRepository productRatingRepository;
 
-    public ProductService(ProductRepository productRepository, ProjectRepository projectRepository,
+    /*public ProductService(ProductRepository productRepository, ProjectRepository projectRepository,
                           ProductAreaRepository productAreaRepository) {
         this.repository = productRepository;
         this.projectRepository = projectRepository;
         this.productAreaRepository = productAreaRepository;
-    }
+    }*/
 
+
+    public ProductService(ProductRepository productRepository, ProjectRepository projectRepository,
+                          ProductAreaRepository productAreaRepository, RatingRepository ratingRepository,
+                          ProductRatingRepository productRatingRepositor) {
+        this.repository = productRepository;
+        this.projectRepository = projectRepository;
+        this.productAreaRepository = productAreaRepository;
+        this.ratingRepository= ratingRepository;
+        this.productRatingRepository = productRatingRepositor;
+    }
     /**
      * This method is finding product data transfer objects by its product ID.
      *
@@ -90,7 +102,22 @@ public class ProductService {
         {
             List<ProductEntity> entities = new ArrayList<>();
 
-            ProductEntity newProduct = createProductEntity(projectID, productDto.productArea.id, productDto, false, null);
+            //check if product is a varaint
+            boolean isProductVariant = false;
+            ProductEntity parentEntity = null;
+            if(productDto.parentID != 0){
+
+                isProductVariant = true;
+                Optional<ProductEntity> parentEntityOptional = Optional.of(new ProductEntity());
+                if(repository.existsById(productDto.parentID)){
+                    parentEntityOptional = repository.findById(productDto.parentID);
+                    parentEntity = parentEntityOptional.get();
+                }else{
+                    throw new BadRequest("Parent Id does not exist");
+                }
+            }
+
+            ProductEntity newProduct = createProductEntity(projectID, productDto.productArea.id, productDto, isProductVariant, parentEntity);
             if(newProduct != null){
                 entities.add(newProduct);
             }else{
@@ -114,6 +141,15 @@ public class ProductService {
 
             entities = repository.saveAllAndFlush(entities);
 
+            List<ProductDto> ps = getProductsByProjectIdAndProductAreaId(projectID, productDto.productArea.id);
+            for (ProductEntity entity : entities)
+            {
+                for (ProductDto p : ps) {
+                    if(p.productName.equals(entity.name)){
+                        createProductRatings(p, entity.id);
+                    }
+                }
+            }
 
 
             return createdProducts;
@@ -269,6 +305,57 @@ public class ProductService {
 //            repository.deleteById(productID);
 //        }
 //    }
+
+
+    @Transactional
+    public ProductDto createProductRatings(ProductDto productDto, int productID){
+        //Step 1: check if productRatings can be created
+        if (!repository.existsById(productID)) {
+            return null;
+        } else {
+            ProductEntity product = repository.getById(productID);
+            System.out.println(product.id);
+
+            //Step 2: ensure for each ratingEntity is a productRatingEntity created
+            HashMap<Integer, ProductRatingEntity> newProductRatings = initProductRatings(product, productDto);
+
+            //Step 3: persist to db
+            List<ProductRatingEntity> tmp = new ArrayList<>(newProductRatings.values());
+            productRatingRepository.saveAll(tmp);
+
+            return new ProductDto(product, tmp, false);
+        }
+    }
+
+    public HashMap<Integer, ProductRatingEntity> initProductRatings(ProductEntity product, ProductDto productIn){
+        HashMap<Integer, ProductRatingEntity> newProductRatings = new HashMap<>();
+        RatingArea ratingArea;
+        List<RatingEntity> ratings;
+
+        if(productIn.ratings != null) {
+            if (ratingRepository.existsById(productIn.ratings.get(0).ratingID)) {
+                ratingArea = ratingRepository.findById(productIn.ratings.get(0).ratingID).get().ratingarea;
+                ratings = ratingRepository.findByRatingarea(ratingArea);
+            } else {
+                throw new ResourceNotFound("ratingID " + productIn.ratings.get(0).ratingID + " not found");
+            }
+        }
+        else
+        {
+            ratings = ratingRepository.findByRatingarea(RatingArea.ECONOMIC);
+            ratings.addAll(ratingRepository.findByRatingarea(RatingArea.COMPLEXITY));
+        }
+
+        for(RatingEntity rating: ratings){
+            ProductRatingEntity productRating = new ProductRatingEntity();
+            productRating.productRatingId = new ProductRatingId(product, rating);
+            productRating.ratingId = rating.id;
+            productRating.productId = product.id;
+            newProductRatings.put(rating.id, productRating);
+        }
+
+        return newProductRatings;
+    }
 
 
 }

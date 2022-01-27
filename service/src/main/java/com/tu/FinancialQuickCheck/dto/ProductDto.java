@@ -63,7 +63,12 @@ public class ProductDto {
 
     public ProductDto(ProductEntity product, List<ProductRatingEntity> productRatingEntities, Boolean getOrPostPut)
     {
+        this.comment = product.comment;
+        this.projectID = product.project.id;
+        this.productID = product.id;
         this.productName = product.name;
+        this.productArea = new ProductAreaDto(product.productarea);
+        this.parentID = convertParentEntity(product.parentProduct);
         this.ratings = convertProductRatingEntities(productRatingEntities, getOrPostPut);
     }
 
@@ -91,7 +96,8 @@ public class ProductDto {
                             entity.answer,
                             entity.comment,
                             entity.score,
-                            entity.productRatingId.getRating()));
+                            entity.productRatingId.getRating(),
+                            entity.ratingId));
             }
         }else{
             for(ProductRatingEntity entity : productRatingEntities){

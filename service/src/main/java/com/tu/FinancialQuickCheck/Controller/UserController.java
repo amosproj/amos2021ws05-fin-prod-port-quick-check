@@ -15,9 +15,9 @@ import java.util.UUID;
  * The UserController manages and processes requests for creating, updating or finding users
  */
 
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("users")
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired

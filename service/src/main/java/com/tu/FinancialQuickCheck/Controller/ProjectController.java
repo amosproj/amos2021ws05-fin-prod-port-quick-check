@@ -16,9 +16,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.OptionalInt;
 
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("projects")
+@RequestMapping("/projects")
 public class ProjectController {
 
     @Autowired

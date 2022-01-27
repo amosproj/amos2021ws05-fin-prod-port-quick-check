@@ -38,7 +38,7 @@ function App() {
                 element={<ResultPage />}
               />
               <Route
-                path="projects/:projectID/productArea/:productAreaID/products/:productID/ratings"
+                path="projects/:projectID/productArea/:productAreaID/products/:productID/ratings/:ratingArea"
                 element={<Rating />}
               />
               <Route
