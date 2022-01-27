@@ -7,9 +7,9 @@ import com.tu.FinancialQuickCheck.dto.ProductAreaDto;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("productareas")
+@RequestMapping("/productareas")
 public class ProductAreaController {
 
     private ProductAreaService service;

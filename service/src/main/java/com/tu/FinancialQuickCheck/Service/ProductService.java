@@ -102,7 +102,22 @@ public class ProductService {
         {
             List<ProductEntity> entities = new ArrayList<>();
 
-            ProductEntity newProduct = createProductEntity(projectID, productDto.productArea.id, productDto, false, null);
+            //check if product is a varaint
+            boolean isProductVariant = false;
+            ProductEntity parentEntity = null;
+            if(productDto.parentID != 0){
+
+                isProductVariant = true;
+                Optional<ProductEntity> parentEntityOptional = Optional.of(new ProductEntity());
+                if(repository.existsById(productDto.parentID)){
+                    parentEntityOptional = repository.findById(productDto.parentID);
+                    parentEntity = parentEntityOptional.get();
+                }else{
+                    throw new BadRequest("Parent Id does not exist");
+                }
+            }
+
+            ProductEntity newProduct = createProductEntity(projectID, productDto.productArea.id, productDto, isProductVariant, parentEntity);
             if(newProduct != null){
                 entities.add(newProduct);
             }else{
