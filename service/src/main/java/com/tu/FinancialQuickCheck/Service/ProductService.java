@@ -349,8 +349,8 @@ public class ProductService {
         for(RatingEntity rating: ratings){
             ProductRatingEntity productRating = new ProductRatingEntity();
             productRating.productRatingId = new ProductRatingId(product, rating);
-            productRating.ratingId = rating.id;
-            productRating.productId = product.id;
+//            productRating.ratingId = rating.id;
+//            productRating.productId = product.id;
             newProductRatings.put(rating.id, productRating);
         }
 

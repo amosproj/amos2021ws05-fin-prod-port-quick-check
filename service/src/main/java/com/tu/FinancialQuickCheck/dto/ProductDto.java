@@ -97,7 +97,7 @@ public class ProductDto {
                             entity.comment,
                             entity.score,
                             entity.productRatingId.getRating(),
-                            entity.ratingId));
+                            entity.productRatingId.getRating().id));
             }
         }else{
             for(ProductRatingEntity entity : productRatingEntities){
