@@ -23,23 +23,23 @@ import ProductVariant from './ProductVariant';
 
 export default function ProductRow({ product, editMode }) {
   const { isOpen, onToggle } = useDisclosure();
-  // const removeProductState = useStoreActions((actions) => actions.productList.removeProduct);
-  const changeProductName = useStoreActions((actions) => actions.productList.changeProductName);
-  const changeProductComment = useStoreActions(
-    (actions) => actions.productList.changeProductComment
-  );
+
+  const updateProductName = useStoreActions((actions) => actions.productList.updateProductName);
+  const updateProduct = useStoreActions((actions) => actions.productList.updateProduct);
+  const updateProductComment = useStoreActions((actions) => actions.productList.updateProductComment  );
 
   const getVariants = useStoreState((state) => state.productList.getVariants);
   const productVariants = getVariants(product);
 
-  const setProduct = (productName) => {
-    product.productName = productName;
-    changeProductName(product);
+  const setName = (newName) => {
+    setValidName(newName!=='')
+    updateProductName({productID: product.productID, newName});
+
   };
-  const handleTextInputChange = (comment) => {
-    product.comment = comment;
-    changeProductComment(product);
+  const setComment = (newComment) => {
+    updateProductComment({productID: product.productID, newComment});
   };
+
 
   return (
     <Card
@@ -58,7 +58,7 @@ export default function ProductRow({ product, editMode }) {
           size="2xl"
           isDisabled={!editMode}
           onChange={(e) => {
-            setProduct(e.target.value);
+            setName(e.target.value);
           }}
           value={product.productName}
         />
@@ -88,7 +88,7 @@ export default function ProductRow({ product, editMode }) {
             isReadOnly={!editMode}
             value={product.comment !== null ? product.comment : ''}
             onChange={(e) => {
-              handleTextInputChange(e.target.value);
+              setComment(e.target.value);
             }}
             placeholder="Anmerkung"
           />

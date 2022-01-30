@@ -37,13 +37,15 @@ const productAreaModel = {
   addProduct: action((state, product) => {
     state.items.push(product);
   }),
-  changeProductName: action((state, product) => {
-    const index = state.items.map((p) => p.productID).indexOf(product.productID);
-    state.items[index] = { ...state.items[index], productName: product.productName };
+
+
+  updateProductName: action((state, {productID, newName}) => {
+    const index = state.items.map((p) => p.productID).indexOf(productID);
+    state.items[index] = { ...state.items[index], productName: newName };
   }),
-  changeProductComment: action((state, product) => {
-    const index = state.items.map((p) => p.productID).indexOf(product.productID);
-    state.items[index] = { ...state.items[index], comment: product.comment };
+  updateProductComment: action((state, {productID, newComment}) => {
+    const index = state.items.map((p) => p.productID).indexOf(productID);
+    state.items[index] = { ...state.items[index], comment: newComment };
   }),
   removeProduct: action((state, product) => {
     state.items = state.items.filter((p) => p.productID !== product.productID);

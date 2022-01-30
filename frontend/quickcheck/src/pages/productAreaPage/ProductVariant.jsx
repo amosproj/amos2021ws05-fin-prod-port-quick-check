@@ -4,19 +4,19 @@ import Card from '../../components/Card';
 import { useStoreActions } from 'easy-peasy';
 
 export default function ProductVariant({ product, editMode }) {
-  const changeProductName = useStoreActions((actions) => actions.productList.changeProductName);
-  const changeProductComment = useStoreActions(
-    (actions) => actions.productList.changeProductComment
+  const [validName, setValidName] = useState(true);
+  const updateProductName = useStoreActions((actions) => actions.productList.updateProductName);
+  const updateProductComment = useStoreActions(
+    (actions) => actions.productList.updateProductComment
   );
   const bg = useColorModeValue('gray.100', 'gray.600');
 
-  const setProduct = (productName) => {
-    product.productName = productName;
-    changeProductName(product);
+  const setName = (newName) => {
+    setValidName(newName!=='')
+    updateProductName({productID: product.productID, newName});
   };
-  const handleTextInputChange = (comment) => {
-    product.comment = comment;
-    changeProductComment(product);
+  const setComment = (newComment) => {
+    updateProductComment({productID: product.productID, newComment});
   };
 
   return (
@@ -39,7 +39,7 @@ export default function ProductVariant({ product, editMode }) {
           mr={1}
           isDisabled={!editMode}
           onChange={(e) => {
-            setProduct(e.target.value);
+            setName(e.target.value);
           }}
           value={product.productName}
         />
@@ -48,7 +48,7 @@ export default function ProductVariant({ product, editMode }) {
           isReadOnly={!editMode}
           value={product.comment !== null ? product.comment : ''}
           onChange={(e) => {
-            handleTextInputChange(e.target.value);
+            setComment(e.target.value);
           }}
           placeholder="Anmerkung"
         />
