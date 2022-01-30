@@ -1,4 +1,4 @@
-import { Input, Button, Spacer, Textarea, VStack, Flex, useColorModeValue } from '@chakra-ui/react';
+import { Input, Button, Spacer, Textarea, VStack, Link, Flex, useColorModeValue } from '@chakra-ui/react';
 import {React, useState} from 'react';
 import Card from '../../components/Card';
 import { useStoreActions } from 'easy-peasy';
@@ -58,10 +58,14 @@ export default function ProductVariant({ product, editMode }) {
         <Flex w="50%">
           <Spacer />
 
-          <Button variant="whisper">Economical</Button>
+          <Link href={`/projects/${product.projectID}/productArea/${product.productArea.id}/products/${product.productID}/ratings/economic`}>
+              <Button variant="whisper">Economical</Button>
+            </Link>
           <Spacer />
 
-          <Button variant="whisper">Complexity</Button>
+          <Link href={`/projects/${product.projectID}/productArea/${product.productArea.id}/products/${product.productID}/ratings/complexity`}>
+              <Button variant="whisper">Complexity</Button>
+            </Link>
           <Spacer />
         </Flex>
         <Flex w="50%">

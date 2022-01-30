@@ -4,7 +4,6 @@ import {
   CircularProgress,
   Spacer,
   Textarea,
-  HStack,
   VStack,
   Flex,
   List,
@@ -12,7 +11,6 @@ import {
   Collapse,
   useDisclosure,
 } from '@chakra-ui/react';
-
 
 import { TriangleUpIcon, TriangleDownIcon } from '@chakra-ui/icons';
 
@@ -39,7 +37,6 @@ export default function ProductRow({ product, editMode }) {
   const setComment = (newComment) => {
     updateProductComment({productID: product.productID, newComment});
   };
-
 
   return (
     <Card
@@ -68,16 +65,15 @@ export default function ProductRow({ product, editMode }) {
 
           <VStack>
             <CircularProgress size="40px" value={product.progressEconomic} />
-
-            <Link href="/ratings">
+            <Link href={`/projects/${product.projectID}/productArea/${product.productArea.id}/products/${product.productID}/ratings/economic`}>
               <Button variant="whisper">Economical</Button>
             </Link>
           </VStack>
 
           <VStack ml="5%">
             <CircularProgress size="40px" value={product.progressComplexity} />
-            <Link href="/ratings">
-              <Button variant="whisper" href="/ratings">
+            <Link href={`/projects/${product.projectID}/productArea/${product.productArea.id}/products/${product.productID}/ratings/complexity`}>
+              <Button variant="whisper">
                 Complexity
               </Button>
             </Link>
