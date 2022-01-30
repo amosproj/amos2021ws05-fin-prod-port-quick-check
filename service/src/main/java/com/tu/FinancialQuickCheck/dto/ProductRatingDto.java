@@ -1,6 +1,7 @@
 package com.tu.FinancialQuickCheck.dto;
 
 import com.tu.FinancialQuickCheck.Score;
+import com.tu.FinancialQuickCheck.db.ProductRatingEntity;
 import com.tu.FinancialQuickCheck.db.RatingEntity;
 
 /**
@@ -18,21 +19,13 @@ public class ProductRatingDto {
 
     public ProductRatingDto(){}
 
-    public ProductRatingDto(String answer, String comment, Score score, int ratingID)
+    public ProductRatingDto(ProductRatingEntity entity)
     {
-        this.ratingID = ratingID;
-        this.answer = answer;
-        this.comment = comment;
-        this.score = score;
-    }
-
-    public ProductRatingDto(String answer, String comment, Score score, RatingEntity rating, int ratingID)
-    {
-        this.ratingID = ratingID;
-        this.rating = new RatingDto(rating);
-        this.answer = answer;
-        this.comment = comment;
-        this.score = score;
+        this.ratingID = entity.productRatingId.getRating().id;
+        this.rating = new RatingDto(entity.productRatingId.getRating());
+        this.answer = entity.answer;
+        this.comment = entity.comment;
+        this.score = entity.score;
     }
 
     public ProductRatingDto(String answer, Score score, RatingEntity rating)

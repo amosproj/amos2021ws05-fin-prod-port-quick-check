@@ -12,9 +12,6 @@ import java.util.List;
  */
 public class ProductDto {
 
-    // TODO: (done - needs review) add progressComplexity and progressEconomic to necessary constructors
-    // TODO: (done - needs review) add comment to necessary constructors
-    // TODO: (done - needs review) add List of resources to necessary constructors
     public int  productID;
     public String productName;
     public ProductAreaDto productArea;
@@ -60,18 +57,18 @@ public class ProductDto {
         this.parentID = convertParentEntity(parent);
     }
 
-
-    public ProductDto(ProductEntity product, List<ProductRatingEntity> productRatingEntities, Boolean getOrPostPut)
+    // used for ProductRatings
+    public ProductDto(ProductEntity product, List<ProductRatingEntity> productRatingEntities)
     {
         this.comment = product.comment;
         this.projectID = product.project.id;
         this.productID = product.id;
         this.productName = product.name;
-        this.productArea = new ProductAreaDto(product.productarea);
         this.parentID = convertParentEntity(product.parentProduct);
-        this.ratings = convertProductRatingEntities(productRatingEntities, getOrPostPut);
+        this.ratings = convertProductRatingEntities(productRatingEntities);
     }
 
+    // used in ProductService
     public ProductDto(ProductEntity product, float[] progress){
         this.productID = product.id;
         this.productName = product.name;
@@ -85,33 +82,15 @@ public class ProductDto {
     }
 
 
-    private List<ProductRatingDto> convertProductRatingEntities(List<ProductRatingEntity> productRatingEntities,
-                                                                Boolean getOrPostPut) {
+    private List<ProductRatingDto> convertProductRatingEntities(List<ProductRatingEntity> productRatingEntities) {
         List<ProductRatingDto> tmp = new ArrayList<>();
 
-        if(getOrPostPut){
-            for(ProductRatingEntity entity : productRatingEntities){
-                tmp.add(new ProductRatingDto(
-                            entity.answer,
-                            entity.comment,
-                            entity.score,
-                            entity.productRatingId.getRating(),
-                            entity.productRatingId.getRating().id));
-            }
-        }else{
-            for(ProductRatingEntity entity : productRatingEntities){
-                tmp.add(new ProductRatingDto(
-                        entity.answer,
-                        entity.comment,
-                        entity.score,
-                        entity.productRatingId.getRating().id));
-            }
+        for(ProductRatingEntity entity : productRatingEntities){
+                tmp.add(new ProductRatingDto(entity));
         }
-
         return tmp;
     }
 
-    //TODO: (done - review needed) change returned parent-id to 0 if no parent exist
     private int convertParentEntity(ProductEntity parentEntity) {
         if(parentEntity != null){
             return parentEntity.id;
