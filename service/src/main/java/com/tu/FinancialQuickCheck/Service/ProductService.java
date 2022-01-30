@@ -27,13 +27,6 @@ public class ProductService {
     public static final Integer[] SET_VALUES = new Integer[] {4, 5, 9, 10};
     public static final Set<Integer> VALUES_ECONOMIC = new HashSet<>(Arrays.asList(SET_VALUES));
 
-    /*public ProductService(ProductRepository productRepository, ProjectRepository projectRepository,
-                          ProductAreaRepository productAreaRepository) {
-        this.repository = productRepository;
-        this.projectRepository = projectRepository;
-        this.productAreaRepository = productAreaRepository;
-    }*/
-
 
     public ProductService(ProductRepository productRepository, ProjectRepository projectRepository,
                           ProductAreaRepository productAreaRepository, RatingRepository ratingRepository,
@@ -142,15 +135,15 @@ public class ProductService {
 
             entities = repository.saveAllAndFlush(entities);
 
-//            List<ProductDto> ps = getProductsByProjectIdAndProductAreaId(projectID, productDto.productArea.id);
-//            for (ProductEntity entity : entities)
-//            {
-//                for (ProductDto p : ps) {
-//                    if(p.productName.equals(entity.name)){
-//                        createProductRatings(p, entity.id);
-//                    }
-//                }
-//            }
+            List<ProductDto> ps = getProductsByProjectIdAndProductAreaId(projectID, productDto.productArea.id);
+            for (ProductEntity entity : entities)
+            {
+                for (ProductDto p : ps) {
+                    if(p.productName.equals(entity.name)){
+                        createProductRatings(p, entity.id);
+                    }
+                }
+            }
 
 
             return createdProducts;
@@ -354,7 +347,7 @@ public class ProductService {
             List<ProductRatingEntity> tmp = new ArrayList<>(newProductRatings.values());
             productRatingRepository.saveAll(tmp);
 
-            return new ProductDto(product, tmp, false);
+            return new ProductDto(product, tmp);
         }
     }
 
@@ -380,8 +373,6 @@ public class ProductService {
         for(RatingEntity rating: ratings){
             ProductRatingEntity productRating = new ProductRatingEntity();
             productRating.productRatingId = new ProductRatingId(product, rating);
-//            productRating.ratingId = rating.id;
-//            productRating.productId = product.id;
             newProductRatings.put(productRating.productRatingId.getRating().id, productRating);
         }
 
