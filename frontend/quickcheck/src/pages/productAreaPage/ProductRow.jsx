@@ -97,15 +97,14 @@ export default function ProductRow({ product, editMode }) {
         </Flex>
 
         <Flex w="full">
-          {/* {productVariants.length !== 0 ?           : undefined} */}
-          <AddProductButton mr={2}/>
+          {editMode ? <AddProductButton parentProductID={product.productID} mr={2}/> : undefined}
           <Button
             variant="link"
             size='lg'
             shadow={0}
             onClick={onToggle}
             rightIcon={isOpen ? <TriangleUpIcon /> : <TriangleDownIcon />}
-            mr={2}
+            px={5}
           >
             Variants ({productVariants.length})
           </Button>

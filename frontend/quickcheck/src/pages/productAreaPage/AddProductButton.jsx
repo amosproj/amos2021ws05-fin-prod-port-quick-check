@@ -42,7 +42,7 @@ export default function AddProductButton({ parentProductID, ...rest}) {
 
   return (
     <>
-      <IconButton icon={<AddIcon />} variant="primary"  onClick={onOpen} {...rest} />
+      <IconButton icon={<AddIcon />} variant="primary"  aria-label='Add Product' onClick={onOpen} {...rest} />
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>

@@ -20,13 +20,15 @@ export default function ProductVariant({ product, editMode }) {
   };
 
   return (
-    <Card bg={bg} w="full" m={2} justifyContent="space-between" direction="column">
+    <Card bg={bg} w="full" m={2} justifyContent="space-between" direction="column" _hover={{ boxShadow: 'lg' }} >
       <Flex direction="row" w="full" mb={1}>
         <Input
           align="center"
           size="lg"
+          variant="bold"
           w="50%"
-          bg={useColorModeValue('gray.100', 'gray.500')}
+          borderColor={'gray.500'}
+          borderWidth={editMode? 1: 0}
           mr={1}
           isDisabled={!editMode}
           onChange={(e) => {
