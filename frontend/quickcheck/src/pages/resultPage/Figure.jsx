@@ -25,13 +25,26 @@ const CircleIcon = (props) => (
 function ShowPieCharts({ results }) {
   //console.log('test', { results });
   var rows = [];
+  var kundenValues=[0,0,0]
+  var index=0;
   for (let i = 0; i < results.length / 4; i++) {
     rows[i] = [];
     rows[i]['key'] = i;
+    kundenValues=[0,0,0]
     for (let j = 0; j < 4 && i * 4 + j < results.length; j++) {
-      var index = i * 4 + j;
-      var kundenValues = results[index]['ratings'][0]['answer'].split(' ');
-      //var kundenValues= [2,3,4] // mock
+         index = i * 4 + j;
+        for (let r=0; r< results[j]["ratings"].length; r++){
+            if (results[j]["ratings"][r]["rating"]["criterion"]=='Kunde'){
+                var kundenValuesTmp=results[j]["ratings"][r]["answer"].split(', ');
+                for (let k=0; k<kundenValuesTmp.length; k++ ){
+                    kundenValues[k]=parseFloat(kundenValuesTmp[k]);
+                }
+                //console.log(kundenValues);
+                //results[i]["ratings"][r]["answer"]=kundenValues;
+            }
+        }
+
+
       var kundenTotal = 0;
       for (let x = 0; x < kundenValues.length; x++) {
         kundenTotal = kundenTotal + parseFloat(kundenValues[x]);
@@ -56,7 +69,7 @@ function ShowPieCharts({ results }) {
       for (let x = 0; x < ratingValues.length; x++) {
         ratingValues[x] = (parseFloat(ratingValues[x]['count']) / ratingTotal) * 100;
       }
-
+      console.log(kundenValues);
       rows[i][j]['key'] = { index };
       rows[i][j][0] = colors[index % colors.length];
       rows[i][j][1] = results[index]['productName'];
@@ -64,8 +77,9 @@ function ShowPieCharts({ results }) {
       rows[i][j][3] = ratingValues;
       rows[i][j][4] = results[index]['scores'];
     }
-  }
 
+  }
+console.log(rows)
   return (
     <Flex
       flexDirection="column"
@@ -115,9 +129,24 @@ function Figure({ results }) {
   if (typeof { results } !== 'undefined') {
     //console.log('test0', { results });
     var scores = [1, 2, 3];
-
+    var marge=0;
+    var kreditvolumen=0;
+    var kundenValues=[0,0,0]
     for (let i = 0; i < results.length; i++) {
+        for (let r=0; r< results[i]["ratings"].length; r++){
+            //console.log(results[i]["ratings"][r]["rating"]["criterion"])
+            if (results[i]["ratings"][r]["rating"]["criterion"]=="Marge"){
+                marge=parseFloat(results[i]["ratings"][r]["answer"]);
+                //console.log(marge)
+            }
+            if (results[i]["ratings"][r]["rating"]["criterion"]=="Kreditvolumen im Bestand"){
+                kreditvolumen=parseFloat(results[i]["ratings"][r]["answer"]);
+                //console.log(kreditvolumen)
+            }
+
+        }
       var complexity = 0;
+
       var values = results[i]['scores'];
       //console.log(values, "scores")
       var total = 0;
@@ -127,7 +156,7 @@ function Figure({ results }) {
       }
       //console.log(values, complexity, i , "complexity")
       if (total === 0) {
-        complexity = 1; //TODO what here?
+        complexity = 1;
       } else {
         complexity = complexity / total;
       }
@@ -137,9 +166,9 @@ function Figure({ results }) {
         label: results[i]['productName'],
         data: [
           {
-            y: parseFloat(results[i]['ratings'][1]['answer']),
+            y: marge,
             x: complexity,
-            r: parseFloat(results[i]['ratings'][2]['answer']),
+            r: kreditvolumen
           },
         ],
         backgroundColor: colors[i % colors.length],
