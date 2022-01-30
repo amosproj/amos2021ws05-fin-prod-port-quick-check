@@ -302,6 +302,27 @@ public class ProductServiceTest {
        }
     }
 
+    @Test
+    public void testCreateProductVariation_1(){
+
+        // Step 1: provide knowledge
+        when(repository.existsById(1)).thenReturn(true);
+        when(repository.findById(1)).thenReturn(Optional.ofNullable(preProductEntity));
+        when(repository.existsByProjectAndProductarea(
+                projectRepository.getById(1),
+                productAreaRepository.getById(1))).thenReturn(true);
+
+        when(projectRepository.findById(1)).thenReturn(Optional.of(preProjectEntity));
+
+        fullProductDto.productID = 666;
+        fullProductDto.parentID = 1;
+        List<ProductDto> out = service.wrapper_createProduct(1, fullProductDto);
+
+        List<ProductDto> emptyList = new ArrayList<>();
+        assertNotEquals(emptyList, out);
+
+    }
+
     //TODO: implement when multiple creations is posible
     @Test
     @Disabled

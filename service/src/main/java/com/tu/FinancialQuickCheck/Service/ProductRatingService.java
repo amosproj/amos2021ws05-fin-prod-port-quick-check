@@ -65,7 +65,6 @@ public class ProductRatingService {
                     .collect(Collectors.toList());
 
             ProductDto a = new ProductDto(productEntity.get(), tmp, true);
-            System.out.println(a.productID);
             return a;
         }
     }

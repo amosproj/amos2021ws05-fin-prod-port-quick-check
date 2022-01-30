@@ -1,0 +1,14 @@
+components:
+  responses:
+    5XXserverError:
+      description: Internal error
+    404notfound:
+      description: Resource does not exist.
+    403forbidden:
+      description: User is not authorized to access this resource
+    401unauthorized:
+      description: User not authenticated
+    400badrequest:
+      description: Input is missing/incorrect.
+    genericError:
+      description: Error

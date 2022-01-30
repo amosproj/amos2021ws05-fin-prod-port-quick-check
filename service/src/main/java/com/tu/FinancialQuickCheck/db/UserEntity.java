@@ -14,8 +14,6 @@ public class UserEntity {
      * ID of user (as primary key).
      */
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    @Column(name = "id")
     public String id;
 
     /**

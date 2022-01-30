@@ -1,0 +1,97 @@
+components:
+  schemas:
+    userEmail:
+      type: string
+      format: email
+      description: unique identifier of user
+      example: "max@mustermann.com"
+    userID:
+      type: string
+      format: uuid
+      description: unique identifier of user
+      example: "0fef539d-69be-4013-9380-6a12c3534c67"
+    userName:
+      type: string
+      description: a name of the user for display purposes
+      example: "Max Mustermann"
+    password:
+      type: string
+      description: user pw for login, no restrictions about length or characters currently
+      example: "ajdvcbwocdnxa"
+    role:
+      type: string
+      description: assigned project role to a user
+      enum: [ CLIENT, PROJECT_MANAGER, ADMIN ]
+      example: PROJECT_MANAGER
+    projectID:
+      type: integer
+      description: unique identifier of project
+      example: 10
+    projectName:
+      type: string
+      description: a name of the project for display purposes
+      example: "DKB"
+    productID:
+      type: integer
+      description: unique identifier of product
+      example: "99"
+    productName:
+      type: string
+      description: name of the product for display purposes
+      example: "Optionen"
+    productAreaID:
+      type: integer
+      description: unique identifier of product area
+      example: "6"
+    productArea:
+      properties:
+        id:
+          type: integer
+          description: unique identifier of product area
+          example: "6"
+        name:
+          type: string
+          example: "Kredit"
+        category:
+          type: string
+          example: "Privat"
+    parentID:
+      type: integer
+      description: unique identifier of parent product, return value of 0 indicates that product does not have a parent
+      example: "100"
+    progress:
+      type: integer
+      example: 23
+      description: returns a value between 0 and 100, which indicates the progress of the rating
+    resource:
+      type: string
+    ratingID:
+      type: integer
+      description: unique identifier of a rating
+      example: 4
+    category:
+      type: string
+      description: grouping of ratings within ECONOMIC or COMPLEXITY ratingArea
+      example: ""
+    criterion:
+      type: string
+      description: a question or criteria to be analysed in economic or complexity rating
+      example: "Kreditvolumen im Bestand"
+    ratingArea:
+      type: string
+      description: assigns rating to economic analysis or complexity analysis
+      enum: [ ECONOMIC, COMPLEXITY ]
+      example: ECONOMIC
+    answer:
+      type: string
+      description: an answer to a product rating
+      example: "700 Mio. EUR"
+    comment:
+      type: string
+      description: a comment to a product rating or a product
+      example: "some comment"
+    score:
+      type: string
+      description: a score to a product rating
+      enum: [ HOCH, MITTEL, GERING ]
+      example: GERING
