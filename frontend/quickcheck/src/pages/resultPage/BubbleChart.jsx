@@ -5,10 +5,14 @@ import annotationPlugin from 'chartjs-plugin-annotation';
 
 Chart.register(LineController, LineElement, PointElement, LinearScale, Title, annotationPlugin);
 
-function BubbleGraph({ data }) {
-  const options = {
+function BubbleGraph({ data, minbY, maxbY, minbX, maxbX }) {
+//console.log("limits", minbY, maxbY, minbX, maxbX)
+
+  var options = {
     scales: {
       y: {
+          max: maxbY,
+            min: minbY,
         title: {
           display: true,
           text: 'Margin',
@@ -21,6 +25,8 @@ function BubbleGraph({ data }) {
         },
       },
       x: {
+          max: maxbX,
+            min: minbX,
         title: {
           display: true,
           text: 'Cost/Complexity',
@@ -48,8 +54,8 @@ function BubbleGraph({ data }) {
                 dataset['data'][0]['y'] +
                 ', Cost/Complexity: ' +
                 dataset['data'][0]['x'] +
-                ', Volume in Euro: ' +
-                dataset['data'][0]['r'],
+                ', Volume in Euro (Millions): ' +
+                dataset['data'][0]['volume'],
             ];
           },
         },
@@ -69,11 +75,11 @@ function BubbleGraph({ data }) {
           green: {
             drawTime: 'beforeDatasetsDraw',
             type: 'box',
-            xMin: 0,
-            xMax: -200,
+            xMin: minbX,
+            xMax: (maxbX-minbX)/2,
             xScaleID: 'x',
-            yMin: 0,
-            yMax: 200,
+            yMin: (maxbY-minbY)/2,
+            yMax: maxbY,
             yScaleID: 'y',
             backgroundColor: 'rgba(218, 247, 166, .5)',
             click: function ({ chart, element }) {
@@ -83,30 +89,34 @@ function BubbleGraph({ data }) {
           red: {
             drawTime: 'beforeDatasetsDraw',
             type: 'box',
-            xMin: 0,
-            xMax: 200,
+            xMin: (maxbX-minbX)/2,
+            xMax: maxbX,
             xScaleID: 'x',
-            yMin: 0,
-            yMax: -200,
+            yMin: minbY,
+            yMax: (maxbY- minbY)/2,
             yScaleID: 'y',
-            backgroundColor: 'rgba(251, 133, 129, .5)',
+            backgroundColor: 'rgba(251, 133, 129, .2)',
             click: function ({ chart, element }) {
               console.log('Red Box annotation clicked');
             },
           },
           scale: {
+              drawTime: 'afterDatasetsDraw',
             type: 'label',
-            xValue: -10,
-            yValue: 180,
+            color: 'rgba(60, 179, 113, .7)',
+            xValue: .9*( (maxbX-minbX)/2),
+            yValue: .9 * maxbY,
             content: ['Scale', ''],
             font: {
               size: 10,
+              style: 'inherit',
             },
           },
           review1: {
             type: 'label',
-            xValue: 189,
-            yValue: 180,
+            color: 'rgba(255, 165, 0 )',
+            xValue: .9 *maxbX,
+            yValue: .9 * maxbY,
             content: ['Review', ''],
             font: {
               size: 10,
@@ -114,8 +124,9 @@ function BubbleGraph({ data }) {
           },
           review2: {
             type: 'label',
-            xValue: -11,
-            yValue: -195,
+            color: 'rgba(255, 165, 0 )',
+            xValue: .9 * ((maxbX-minbX)/2),
+            yValue: 1.1* minbY ,
             content: ['Review', ''],
             font: {
               size: 10,
@@ -123,8 +134,8 @@ function BubbleGraph({ data }) {
           },
           ds: {
             type: 'label',
-            xValue: 175,
-            yValue: -180,
+            xValue: .9 * maxbX,
+            yValue:  minbY+ .7,
             color: 'rgba(239, 65, 56, .7 )',
             content: ['Discontinuation', 'Strategy'],
             font: {
@@ -136,6 +147,8 @@ function BubbleGraph({ data }) {
       },
     },
   };
+
+
   var myChart = <Bubble data={data} options={options} />;
 
   return myChart;

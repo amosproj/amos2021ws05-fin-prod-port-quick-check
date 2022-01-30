@@ -58,23 +58,24 @@ function PieChartGraph({ data_outer, data_inner, title, color, ratings }) {
                 to_return = [to_return + ':', +tooltipItem['formattedValue'] + '% Complex'];
               }
             } else {
-              //console.log(dataset["rating"][0])
-              if (typeof dataset['rating'][0]['score'] == 'undefined') {
+              //console.log("rating ", dataset)
+              if (dataset["rating"]=='unfinished'){
+                  to_return = [to_return + ":", "Evaluation not yet completed."];
+              }
+              else if (dataset["rating"] == null) {
                 to_return = [to_return + ' Ratings:', 'None'];
               } else {
                 to_return = [to_return + ' Ratings:'];
 
                 for (let x = 0; x < dataset['rating'].length; x++) {
-                  if (dataset['rating'][x]['score'] === 'GERING') {
+                  if (x ==0) {
                     rName = 'Simple';
-                  } else if (dataset['rating'][x]['score'] === 'MITTEL') {
+                } else if (x==1 ) {
                     rName = 'Medium';
-                  } else if (dataset['rating'][x]['score'] === 'HOCH') {
+                } else if  (x==2 ) {
                     rName = 'Complex';
-                  } else {
-                    rName = dataset['rating'][x]['score'];
                   }
-                  to_return.push(rName + ' : ' + dataset['rating'][x]['count']);
+                  to_return.push(rName + ' : ' + dataset['rating'][x]);
                 }
               }
             }
