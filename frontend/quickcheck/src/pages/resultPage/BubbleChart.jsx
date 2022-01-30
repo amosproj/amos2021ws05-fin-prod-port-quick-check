@@ -6,13 +6,13 @@ import annotationPlugin from 'chartjs-plugin-annotation';
 Chart.register(LineController, LineElement, PointElement, LinearScale, Title, annotationPlugin);
 
 function BubbleGraph({ data, minbY, maxbY, minbX, maxbX }) {
-//console.log("limits", minbY, maxbY, minbX, maxbX)
+  //console.log("limits", minbY, maxbY, minbX, maxbX)
 
   var options = {
     scales: {
       y: {
-          max: maxbY,
-            min: minbY,
+        max: maxbY,
+        min: minbY,
         title: {
           display: true,
           text: 'Margin',
@@ -25,8 +25,8 @@ function BubbleGraph({ data, minbY, maxbY, minbX, maxbX }) {
         },
       },
       x: {
-          max: maxbX,
-            min: minbX,
+        max: maxbX,
+        min: minbX,
         title: {
           display: true,
           text: 'Cost/Complexity',
@@ -76,9 +76,9 @@ function BubbleGraph({ data, minbY, maxbY, minbX, maxbX }) {
             drawTime: 'beforeDatasetsDraw',
             type: 'box',
             xMin: minbX,
-            xMax: (maxbX-minbX)/2,
+            xMax: (maxbX - minbX) / 2,
             xScaleID: 'x',
-            yMin: (maxbY-minbY)/2,
+            yMin: (maxbY - minbY) / 2,
             yMax: maxbY,
             yScaleID: 'y',
             backgroundColor: 'rgba(218, 247, 166, .5)',
@@ -89,11 +89,11 @@ function BubbleGraph({ data, minbY, maxbY, minbX, maxbX }) {
           red: {
             drawTime: 'beforeDatasetsDraw',
             type: 'box',
-            xMin: (maxbX-minbX)/2,
+            xMin: (maxbX - minbX) / 2,
             xMax: maxbX,
             xScaleID: 'x',
             yMin: minbY,
-            yMax: (maxbY- minbY)/2,
+            yMax: (maxbY - minbY) / 2,
             yScaleID: 'y',
             backgroundColor: 'rgba(251, 133, 129, .2)',
             click: function ({ chart, element }) {
@@ -101,11 +101,11 @@ function BubbleGraph({ data, minbY, maxbY, minbX, maxbX }) {
             },
           },
           scale: {
-              drawTime: 'afterDatasetsDraw',
+            drawTime: 'afterDatasetsDraw',
             type: 'label',
             color: 'rgba(60, 179, 113, .7)',
-            xValue: .9*( (maxbX-minbX)/2),
-            yValue: .9 * maxbY,
+            xValue: 0.9 * ((maxbX - minbX) / 2),
+            yValue: 0.9 * maxbY,
             content: ['Scale', ''],
             font: {
               size: 10,
@@ -115,8 +115,8 @@ function BubbleGraph({ data, minbY, maxbY, minbX, maxbX }) {
           review1: {
             type: 'label',
             color: 'rgba(255, 165, 0 )',
-            xValue: .9 *maxbX,
-            yValue: .9 * maxbY,
+            xValue: 0.9 * maxbX,
+            yValue: 0.9 * maxbY,
             content: ['Review', ''],
             font: {
               size: 10,
@@ -125,8 +125,8 @@ function BubbleGraph({ data, minbY, maxbY, minbX, maxbX }) {
           review2: {
             type: 'label',
             color: 'rgba(255, 165, 0 )',
-            xValue: .9 * ((maxbX-minbX)/2),
-            yValue: 1.1* minbY ,
+            xValue: 0.9 * ((maxbX - minbX) / 2),
+            yValue: 1.1 * minbY,
             content: ['Review', ''],
             font: {
               size: 10,
@@ -134,8 +134,8 @@ function BubbleGraph({ data, minbY, maxbY, minbX, maxbX }) {
           },
           ds: {
             type: 'label',
-            xValue: .9 * maxbX,
-            yValue:  minbY+ .7,
+            xValue: 0.9 * maxbX,
+            yValue: minbY + 0.7,
             color: 'rgba(239, 65, 56, .7 )',
             content: ['Discontinuation', 'Strategy'],
             font: {
@@ -147,7 +147,6 @@ function BubbleGraph({ data, minbY, maxbY, minbX, maxbX }) {
       },
     },
   };
-
 
   var myChart = <Bubble data={data} options={options} />;
 

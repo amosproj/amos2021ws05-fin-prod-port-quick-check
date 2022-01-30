@@ -54,14 +54,13 @@ function SourceRow({ source }) {
 
 export default function ResultPage() {
   const { projectID } = useParams();
-const fetchResults = useStoreActions((actions) => actions.resultList.fetch);
+  const fetchResults = useStoreActions((actions) => actions.resultList.fetch);
   //const setResultsData = useStoreActions((actions) => actions.resultList.set);
 
   const results = useStoreState((state) => state.resultList.results);
 
   const [sources, setSources] = useState(mock);
   useEffect(() => {
-
     //initRatingsData();
     fetchResults(projectID);
     //setRatingsData(mockRatings.ratings);
