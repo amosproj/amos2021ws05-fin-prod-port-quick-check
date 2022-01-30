@@ -142,15 +142,15 @@ public class ProductService {
 
             entities = repository.saveAllAndFlush(entities);
 
-            List<ProductDto> ps = getProductsByProjectIdAndProductAreaId(projectID, productDto.productArea.id);
-            for (ProductEntity entity : entities)
-            {
-                for (ProductDto p : ps) {
-                    if(p.productName.equals(entity.name)){
-                        createProductRatings(p, entity.id);
-                    }
-                }
-            }
+//            List<ProductDto> ps = getProductsByProjectIdAndProductAreaId(projectID, productDto.productArea.id);
+//            for (ProductEntity entity : entities)
+//            {
+//                for (ProductDto p : ps) {
+//                    if(p.productName.equals(entity.name)){
+//                        createProductRatings(p, entity.id);
+//                    }
+//                }
+//            }
 
 
             return createdProducts;
@@ -259,7 +259,8 @@ public class ProductService {
             Iterable<ProductEntity> productEntities = repository.findByProject(projectRepository.findById(projectID).get());
             for(ProductEntity tmp : productEntities){
                 if(!tmp.name.equals("DUMMY")){
-                    ProductDto addProduct = new ProductDto(tmp);
+                    float[] progress = calculateProductProgress(tmp);
+                    ProductDto addProduct = new ProductDto(tmp, progress);
                     productsByProject.add(addProduct);
                 }
             }
