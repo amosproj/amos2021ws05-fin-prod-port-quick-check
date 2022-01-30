@@ -10,7 +10,7 @@ public class ListOfRatingDto {
 
     public List<RatingDto> ratings;
 
-    public ListOfRatingDto(){}
+//    public ListOfRatingDto(){}
 
     public ListOfRatingDto(List<RatingEntity> ratingEntities)
     {
