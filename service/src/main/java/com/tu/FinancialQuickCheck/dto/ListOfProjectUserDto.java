@@ -9,8 +9,6 @@ public class ListOfProjectUserDto {
 
     public List<ProjectUserDto> projectUsers;
 
-//    public ListOfProjectUserDto(){}
-
     public ListOfProjectUserDto(Iterable<ProjectUserEntity> projectUserEntities){
 
         this.projectUsers = new ArrayList<>();
