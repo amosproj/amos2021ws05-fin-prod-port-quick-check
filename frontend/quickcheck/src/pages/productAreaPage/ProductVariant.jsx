@@ -1,15 +1,15 @@
 import { Input, Button, Spacer, Textarea, VStack, Flex, useColorModeValue } from '@chakra-ui/react';
-import React from 'react';
+import {React, useState} from 'react';
 import Card from '../../components/Card';
 import { useStoreActions } from 'easy-peasy';
 
 export default function ProductVariant({ product, editMode }) {
+  const bg = useColorModeValue('gray.100', 'gray.600');
   const [validName, setValidName] = useState(true);
   const updateProductName = useStoreActions((actions) => actions.productList.updateProductName);
   const updateProductComment = useStoreActions(
     (actions) => actions.productList.updateProductComment
   );
-  const bg = useColorModeValue('gray.100', 'gray.600');
 
   const setName = (newName) => {
     setValidName(newName!=='')
@@ -37,6 +37,7 @@ export default function ProductVariant({ product, editMode }) {
           borderColor={'gray.500'}
           borderWidth={editMode ? 1 : 0}
           mr={1}
+          isInvalid={!validName}
           isDisabled={!editMode}
           onChange={(e) => {
             setName(e.target.value);

@@ -13,21 +13,21 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
+
 import { TriangleUpIcon, TriangleDownIcon } from '@chakra-ui/icons';
 
 import AddProductButton from './AddProductButton';
-import React from 'react';
+import React, {useState} from 'react';
 import Card from '../../components/Card';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import ProductVariant from './ProductVariant';
 
 export default function ProductRow({ product, editMode }) {
   const { isOpen, onToggle } = useDisclosure();
-
+  
+  const [validName, setValidName] = useState(true);
   const updateProductName = useStoreActions((actions) => actions.productList.updateProductName);
-  const updateProduct = useStoreActions((actions) => actions.productList.updateProduct);
   const updateProductComment = useStoreActions((actions) => actions.productList.updateProductComment  );
-
   const getVariants = useStoreState((state) => state.productList.getVariants);
   const productVariants = getVariants(product);
 
@@ -47,7 +47,6 @@ export default function ProductRow({ product, editMode }) {
       justifyContent="space-between"
       direction="column"
       pb={5}
-      // w={(parentID > 0) ? ' 90%' : 'full'}
       _hover={{ boxShadow: '2xl' }}
     >
       <Flex direction="column" w="full" justifyContent="space-between">
@@ -56,6 +55,8 @@ export default function ProductRow({ product, editMode }) {
           variant="bold"
           align="center"
           size="2xl"
+          borderWidth={editMode? 1 : 0}
+          isInvalid={!validName}
           isDisabled={!editMode}
           onChange={(e) => {
             setName(e.target.value);

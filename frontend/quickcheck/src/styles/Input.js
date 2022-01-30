@@ -26,9 +26,11 @@ export const Input = {
   baseStyle: {
     field: {
       _disabled: { bg: 'transparent' },
+      _invalid: { borderColor: 'red' },
     },
     addon: {
       _disabled: { bg: 'transparent' },
+      _invalid: { borderColor: 'red' },
     },
   },
   // Styles for the size variations
