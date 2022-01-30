@@ -14,7 +14,7 @@ public class ProductAreaEntity {
      * ID of the product areas (as primary key).
      */
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public int id;
 
     /**

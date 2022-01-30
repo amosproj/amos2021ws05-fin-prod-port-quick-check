@@ -13,7 +13,14 @@ function RatingRow({ rating }) {
         _hover={{ boxShadow: '2xl' }}
       >
         <Spacer />
-        <Text>{rating.rating.category}</Text>
+        <Textarea
+          isReadOnly={true}
+          align="center"
+          size="md"
+          width="100%"
+          placeholder={'catgegory'}
+          value={rating.rating.category}
+        />
         <Spacer />
         <Textarea
           isReadOnly={true}

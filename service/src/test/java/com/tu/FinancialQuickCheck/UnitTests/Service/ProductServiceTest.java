@@ -35,6 +35,10 @@ public class ProductServiceTest {
     ProjectRepository projectRepository;
     @Mock
     ProductAreaRepository productAreaRepository;
+    @Mock
+    RatingRepository ratingRepository;
+    @Mock
+    ProductRatingRepository productRatingRepository;
 
     private ProductService service;
 
@@ -65,7 +69,7 @@ public class ProductServiceTest {
         log.info("@BeforeEach - setup for Tests in ProductServiceTest.class");
 
         // init ProjectService
-        service = new ProductService(repository, projectRepository, productAreaRepository);
+        service = new ProductService(repository, projectRepository, productAreaRepository,ratingRepository,productRatingRepository);
         // init empty test object
         emptyProductDto = new ProductDto();
         // init necessary information for test objects
@@ -296,6 +300,27 @@ public class ProductServiceTest {
                    () -> assertNull(productDtoOut.ratings)
            );
        }
+    }
+
+    @Test
+    public void testCreateProductVariation_1(){
+
+        // Step 1: provide knowledge
+        when(repository.existsById(1)).thenReturn(true);
+        when(repository.findById(1)).thenReturn(Optional.ofNullable(preProductEntity));
+        when(repository.existsByProjectAndProductarea(
+                projectRepository.getById(1),
+                productAreaRepository.getById(1))).thenReturn(true);
+
+        when(projectRepository.findById(1)).thenReturn(Optional.of(preProjectEntity));
+
+        fullProductDto.productID = 666;
+        fullProductDto.parentID = 1;
+        List<ProductDto> out = service.wrapper_createProduct(1, fullProductDto);
+
+        List<ProductDto> emptyList = new ArrayList<>();
+        assertNotEquals(emptyList, out);
+
     }
 
     //TODO: implement when multiple creations is posible

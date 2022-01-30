@@ -150,9 +150,10 @@ public class ProjectService {
                 repository.flush();
 
                 // assign new users to project
-                entity.projectUserEntities = assignMembersToProject(projectDto.members, entity);
+                List<ProjectUserEntity> newUsers = assignMembersToProject(projectDto.members, entity);
+                entity.projectUserEntities.addAll(newUsers);
 
-                repository.saveAndFlush(entity);
+                repository.save(entity);
                 return new ProjectDto(entity);
             }
         }

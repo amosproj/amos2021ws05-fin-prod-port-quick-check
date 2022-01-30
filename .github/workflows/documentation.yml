@@ -32,7 +32,7 @@ jobs:
         with:
           generator: html
           output: swagger-ui
-          spec-file: service/api/Project.yaml
+          spec-file: service/api/contract.yaml
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:

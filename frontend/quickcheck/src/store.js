@@ -221,31 +221,19 @@ const ratingModel = {
   }),
 
   // GET all ratings
-  fetch: thunk(async (actions, productID) => {
+  fetch: thunk(async (actions, tmp) => {
     await api
-      .url('/products/' + productID + '/ratings')
+      .url('/products/' + tmp[0] + '/ratings?ratingArea=' + tmp[1].toUpperCase())
       .get()
       .json((json) => actions.set(json))
       .catch(console.error);
-  }),
-
-  createNew: thunk(async (actions, product) => {
-    //console.log('send UPDATE project:', { projectData });
-    actions.set(product);
-    await api
-      .url(`/products/` + String(product.productID) + '/ratings')
-      .post(product)
-      .res(console.log)
-      .catch(console.error);
-
-    actions.set(product);
   }),
 
   sendUpdate: thunk(async (actions, product) => {
     //console.log('send UPDATE project:', { projectData });
     actions.set(product);
     await api
-      .url(`/products/` + String(product.productID) + '/ratings')
+      .url('/products/' + product.productID + '/ratings')
       .put(product)
       .res(console.log)
       .catch(console.error);

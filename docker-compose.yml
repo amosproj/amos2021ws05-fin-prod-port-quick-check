@@ -7,7 +7,7 @@ services:
     command: "--default-authentication-plugin=mysql_native_password"
     restart: always
     volumes:
-      - ./DummyData/sqlFiles:/docker-entrypoint-initdb.d
+      - ./DummyData/sqlfiles:/docker-entrypoint-initdb.d
     environment:
       - "MYSQL_ROOT_PASSWORD=secret"
       -  "MYSQL_DATABASE=bootdb"
@@ -25,6 +25,9 @@ services:
       - ./service/pom.xml:/app/pom.xml
     ports:
       - "8080:8080"
+    depends_on:
+      - database
+
   frontend:
     build: ./frontend
     container_name: frontend
