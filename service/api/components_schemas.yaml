@@ -293,6 +293,14 @@ components:
           description: aggregated values of field "Gesamteinschätzung wirtschaftlicher Bewertung" for productvariants
           items:
             $ref: '#/components/schemas/scores'
+        counts:
+          type: array
+          description: aggregated values of field "Gesamteinschätzung wirtschaftlicher Bewertung" for productvariants in ascending order of scores
+          example: [4, 3, 2]
+          items:
+            type: integer
+
+
 
 
 

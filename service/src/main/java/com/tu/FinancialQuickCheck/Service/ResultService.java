@@ -60,6 +60,10 @@ public class ResultService {
 
             }
 
+            for(Integer key: table.keySet()){
+                table.get(key).setCounts();
+            }
+
             return new ArrayList<>(table.values());
         } catch (Exception e){
             throw new NullPointerException("List<ProductRatingEntity> not initilized.");
