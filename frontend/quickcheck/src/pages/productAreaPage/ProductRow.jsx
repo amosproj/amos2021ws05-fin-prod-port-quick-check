@@ -41,8 +41,6 @@ export default function ProductRow({ product, editMode }) {
     changeProductComment(product);
   };
 
-  
-
   return (
     <Card
       layerStyle="card_bordered"
@@ -97,10 +95,10 @@ export default function ProductRow({ product, editMode }) {
         </Flex>
 
         <Flex w="full">
-          {editMode ? <AddProductButton parentProductID={product.productID} mr={2}/> : undefined}
+          {editMode ? <AddProductButton parentProductID={product.productID} mr={2} /> : undefined}
           <Button
             variant="link"
-            size='lg'
+            size="lg"
             shadow={0}
             onClick={onToggle}
             rightIcon={isOpen ? <TriangleUpIcon /> : <TriangleDownIcon />}
@@ -109,25 +107,22 @@ export default function ProductRow({ product, editMode }) {
             Variants ({productVariants.length})
           </Button>
 
-          
           <Spacer />
 
           <Button variant="whisper">Upload Reference</Button>
         </Flex>
       </Flex>
-      <Flex w='full'>
-      <Collapse in={isOpen} w="100%" animateOpacity style={{width: '100%'}}>
-
-        <Flex w="full" mt={5}>
-          <List w="full">
-            {productVariants.map((variant) => (
-              // <p>{JSON.stringify(variant)}</p>
-              <ProductVariant product={variant} editMode={editMode} key={variant.productID} />
-            ))}
-          </List>
-        </Flex>
-        
-      </Collapse>
+      <Flex w="full">
+        <Collapse in={isOpen} w="100%" animateOpacity style={{ width: '100%' }}>
+          <Flex w="full" mt={5}>
+            <List w="full">
+              {productVariants.map((variant) => (
+                // <p>{JSON.stringify(variant)}</p>
+                <ProductVariant product={variant} editMode={editMode} key={variant.productID} />
+              ))}
+            </List>
+          </Flex>
+        </Collapse>
       </Flex>
     </Card>
   );

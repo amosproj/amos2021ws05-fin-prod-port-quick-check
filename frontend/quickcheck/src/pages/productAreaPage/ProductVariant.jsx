@@ -20,7 +20,14 @@ export default function ProductVariant({ product, editMode }) {
   };
 
   return (
-    <Card bg={bg} w="full" m={2} justifyContent="space-between" direction="column" _hover={{ boxShadow: 'lg' }} >
+    <Card
+      bg={bg}
+      w="full"
+      m={2}
+      justifyContent="space-between"
+      direction="column"
+      _hover={{ boxShadow: 'lg' }}
+    >
       <Flex direction="row" w="full" mb={1}>
         <Input
           align="center"
@@ -28,7 +35,7 @@ export default function ProductVariant({ product, editMode }) {
           variant="bold"
           w="50%"
           borderColor={'gray.500'}
-          borderWidth={editMode? 1: 0}
+          borderWidth={editMode ? 1 : 0}
           mr={1}
           isDisabled={!editMode}
           onChange={(e) => {
@@ -49,10 +56,10 @@ export default function ProductVariant({ product, editMode }) {
       <Flex direction="row" w="full">
         <Flex w="50%">
           <Spacer />
-          
+
           <Button variant="whisper">Economical</Button>
           <Spacer />
-          
+
           <Button variant="whisper">Complexity</Button>
           <Spacer />
         </Flex>
