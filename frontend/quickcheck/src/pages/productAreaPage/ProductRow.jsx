@@ -15,27 +15,28 @@ import {
 import { TriangleUpIcon, TriangleDownIcon } from '@chakra-ui/icons';
 
 import AddProductButton from './AddProductButton';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Card from '../../components/Card';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import ProductVariant from './ProductVariant';
 
 export default function ProductRow({ product, editMode }) {
   const { isOpen, onToggle } = useDisclosure();
-  
+
   const [validName, setValidName] = useState(true);
   const updateProductName = useStoreActions((actions) => actions.productList.updateProductName);
-  const updateProductComment = useStoreActions((actions) => actions.productList.updateProductComment  );
+  const updateProductComment = useStoreActions(
+    (actions) => actions.productList.updateProductComment
+  );
   const getVariants = useStoreState((state) => state.productList.getVariants);
   const productVariants = getVariants(product);
 
   const setName = (newName) => {
-    setValidName(newName!=='')
-    updateProductName({productID: product.productID, newName});
-
+    setValidName(newName !== '');
+    updateProductName({ productID: product.productID, newName });
   };
   const setComment = (newComment) => {
-    updateProductComment({productID: product.productID, newComment});
+    updateProductComment({ productID: product.productID, newComment });
   };
 
   return (
@@ -52,7 +53,7 @@ export default function ProductRow({ product, editMode }) {
           variant="bold"
           align="center"
           size="2xl"
-          borderWidth={editMode? 1 : 0}
+          borderWidth={editMode ? 1 : 0}
           isInvalid={!validName}
           isDisabled={!editMode}
           onChange={(e) => {
@@ -65,17 +66,19 @@ export default function ProductRow({ product, editMode }) {
 
           <VStack>
             <CircularProgress size="40px" value={product.progressEconomic} />
-            <Link href={`/projects/${product.projectID}/productArea/${product.productArea.id}/products/${product.productID}/ratings/economic`}>
+            <Link
+              href={`/projects/${product.projectID}/productArea/${product.productArea.id}/products/${product.productID}/ratings/economic`}
+            >
               <Button variant="whisper">Economical</Button>
             </Link>
           </VStack>
 
           <VStack ml="5%">
             <CircularProgress size="40px" value={product.progressComplexity} />
-            <Link href={`/projects/${product.projectID}/productArea/${product.productArea.id}/products/${product.productID}/ratings/complexity`}>
-              <Button variant="whisper">
-                Complexity
-              </Button>
+            <Link
+              href={`/projects/${product.projectID}/productArea/${product.productArea.id}/products/${product.productID}/ratings/complexity`}
+            >
+              <Button variant="whisper">Complexity</Button>
             </Link>
           </VStack>
 

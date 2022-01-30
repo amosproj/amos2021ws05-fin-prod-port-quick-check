@@ -1,5 +1,14 @@
-import { Input, Button, Spacer, Textarea, VStack, Link, Flex, useColorModeValue } from '@chakra-ui/react';
-import {React, useState} from 'react';
+import {
+  Input,
+  Button,
+  Spacer,
+  Textarea,
+  VStack,
+  Link,
+  Flex,
+  useColorModeValue,
+} from '@chakra-ui/react';
+import { React, useState } from 'react';
 import Card from '../../components/Card';
 import { useStoreActions } from 'easy-peasy';
 
@@ -12,11 +21,11 @@ export default function ProductVariant({ product, editMode }) {
   );
 
   const setName = (newName) => {
-    setValidName(newName!=='')
-    updateProductName({productID: product.productID, newName});
+    setValidName(newName !== '');
+    updateProductName({ productID: product.productID, newName });
   };
   const setComment = (newComment) => {
-    updateProductComment({productID: product.productID, newComment});
+    updateProductComment({ productID: product.productID, newComment });
   };
 
   return (
@@ -58,14 +67,18 @@ export default function ProductVariant({ product, editMode }) {
         <Flex w="50%">
           <Spacer />
 
-          <Link href={`/projects/${product.projectID}/productArea/${product.productArea.id}/products/${product.productID}/ratings/economic`}>
-              <Button variant="whisper">Economical</Button>
-            </Link>
+          <Link
+            href={`/projects/${product.projectID}/productArea/${product.productArea.id}/products/${product.productID}/ratings/economic`}
+          >
+            <Button variant="whisper">Economical</Button>
+          </Link>
           <Spacer />
 
-          <Link href={`/projects/${product.projectID}/productArea/${product.productArea.id}/products/${product.productID}/ratings/complexity`}>
-              <Button variant="whisper">Complexity</Button>
-            </Link>
+          <Link
+            href={`/projects/${product.projectID}/productArea/${product.productArea.id}/products/${product.productID}/ratings/complexity`}
+          >
+            <Button variant="whisper">Complexity</Button>
+          </Link>
           <Spacer />
         </Flex>
         <Flex w="50%">
