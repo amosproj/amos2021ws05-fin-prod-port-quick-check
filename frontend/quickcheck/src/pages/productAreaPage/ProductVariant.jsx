@@ -1,4 +1,4 @@
-import { Input, Button, Spacer, Textarea, VStack, Flex } from '@chakra-ui/react';
+import { Input, Button, Spacer, Textarea, VStack, Flex, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 import Card from '../../components/Card';
 import { useStoreActions } from 'easy-peasy';
@@ -8,6 +8,7 @@ export default function ProductVariant({ product, editMode }) {
   const changeProductComment = useStoreActions(
     (actions) => actions.productList.changeProductComment
   );
+  const bg = useColorModeValue('gray.100', 'gray.600');
 
   const setProduct = (productName) => {
     product.productName = productName;
@@ -19,12 +20,14 @@ export default function ProductVariant({ product, editMode }) {
   };
 
   return (
-    <Card bg="gray.600" w="full" m={2} justifyContent="space-between" direction="column">
+    <Card bg={bg} w="full" m={2} justifyContent="space-between" direction="column">
       <Flex direction="row" w="full" mb={1}>
         <Input
           align="center"
           size="lg"
           w="50%"
+          bg={useColorModeValue('gray.100', 'gray.500')}
+          mr={1}
           isDisabled={!editMode}
           onChange={(e) => {
             setProduct(e.target.value);

@@ -15,6 +15,7 @@ import {
 
 import { TriangleUpIcon, TriangleDownIcon } from '@chakra-ui/icons';
 
+import AddProductButton from './AddProductButton';
 import React from 'react';
 import Card from '../../components/Card';
 import { useStoreActions, useStoreState } from 'easy-peasy';
@@ -40,11 +41,14 @@ export default function ProductRow({ product, editMode }) {
     changeProductComment(product);
   };
 
+  
+
   return (
     <Card
       layerStyle="card_bordered"
       justifyContent="space-between"
       direction="column"
+      pb={5}
       // w={(parentID > 0) ? ' 90%' : 'full'}
       _hover={{ boxShadow: '2xl' }}
     >
@@ -93,6 +97,8 @@ export default function ProductRow({ product, editMode }) {
         </Flex>
 
         <Flex w="full">
+          {/* {productVariants.length !== 0 ?           : undefined} */}
+          <AddProductButton mr={2}/>
           <Button
             variant="link"
             size='lg'
@@ -103,7 +109,8 @@ export default function ProductRow({ product, editMode }) {
           >
             Variants ({productVariants.length})
           </Button>
-          <Button variant="primary">Add Variant</Button>
+
+          
           <Spacer />
 
           <Button variant="whisper">Upload Reference</Button>
