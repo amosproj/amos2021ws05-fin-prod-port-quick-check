@@ -1,4 +1,4 @@
-import { Input, Button, Spacer, Textarea, VStack } from '@chakra-ui/react';
+import { Input, Button, Spacer, Textarea, VStack, Flex } from '@chakra-ui/react';
 import React from 'react';
 import Card from '../../components/Card';
 import { useStoreActions } from 'easy-peasy';
@@ -19,36 +19,43 @@ export default function ProductVariant({ product, editMode }) {
   };
 
   return (
-    <Card bg="gray.600" w="full" m={2} justifyContent="space-between">
-      <Input
-        align="center"
-        size="lg"
-        w="25%"
-        isDisabled={!editMode}
-        onChange={(e) => {
-          setProduct(e.target.value);
-        }}
-        value={product.productName}
-      />
-      <Spacer />
-      <VStack>
-        <Button variant="whisper">Economical</Button>
-      </VStack>
-      <Spacer />
-
-      <VStack>
-        <Button variant="whisper">Complexity</Button>
-      </VStack>
-      <Spacer />
-      <Textarea
-        w="30%"
-        isReadOnly={!editMode}
-        value={product.comment !== null ? product.comment : ''}
-        onChange={(e) => {
-          handleTextInputChange(e.target.value);
-        }}
-        placeholder="Anmerkung"
-      />
+    <Card bg="gray.600" w="full" m={2} justifyContent="space-between" direction="column">
+      <Flex direction="row" w="full" mb={1}>
+        <Input
+          align="center"
+          size="lg"
+          w="50%"
+          isDisabled={!editMode}
+          onChange={(e) => {
+            setProduct(e.target.value);
+          }}
+          value={product.productName}
+        />
+        <Textarea
+          w="50%"
+          isReadOnly={!editMode}
+          value={product.comment !== null ? product.comment : ''}
+          onChange={(e) => {
+            handleTextInputChange(e.target.value);
+          }}
+          placeholder="Anmerkung"
+        />
+      </Flex>
+      <Flex direction="row" w="full">
+        <Flex w="50%">
+          <Spacer />
+          
+          <Button variant="whisper">Economical</Button>
+          <Spacer />
+          
+          <Button variant="whisper">Complexity</Button>
+          <Spacer />
+        </Flex>
+        <Flex w="50%">
+          <Spacer />
+          <Button variant="whisper">Upload Reference</Button>
+        </Flex>
+      </Flex>
     </Card>
   );
 }

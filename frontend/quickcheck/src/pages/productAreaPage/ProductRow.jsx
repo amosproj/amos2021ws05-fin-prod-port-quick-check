@@ -1,15 +1,12 @@
 import {
   Input,
-  IconButton,
   Button,
   CircularProgress,
   Spacer,
   Textarea,
-  VStack,
-  Progress,
   HStack,
+  VStack,
   Flex,
-  Heading,
   List,
   Link,
   Collapse,
@@ -52,52 +49,39 @@ export default function ProductRow({ product, editMode }) {
       _hover={{ boxShadow: '2xl' }}
     >
       <Flex direction="column" w="full" justifyContent="space-between">
+        <Input
+          mb={1}
+          variant="bold"
+          align="center"
+          size="2xl"
+          isDisabled={!editMode}
+          onChange={(e) => {
+            setProduct(e.target.value);
+          }}
+          value={product.productName}
+        />
         <Flex w="full" mb={3}>
-          <Input
-            variant="bold"
-            align="center"
-            size="2xl"
-            isDisabled={!editMode}
-            onChange={(e) => {
-              setProduct(e.target.value);
-            }}
-            value={product.productName}
-          />
           <Spacer />
 
-          <HStack>
+          <VStack>
             <CircularProgress size="40px" value={product.progressEconomic} />
 
             <Link href="/ratings">
-              <Button variant="secondary">Economical</Button>
+              <Button variant="whisper">Economical</Button>
             </Link>
-          </HStack>
+          </VStack>
 
-          <Spacer />
-
-          <HStack ml="5%">
+          <VStack ml="5%">
             <CircularProgress size="40px" value={product.progressComplexity} />
             <Link href="/ratings">
-              <Button variant="secondary" href="/ratings">
+              <Button variant="whisper" href="/ratings">
                 Complexity
               </Button>
             </Link>
-          </HStack>
-        </Flex>
+          </VStack>
 
-        <Flex w="full">
-          <Button
-            mt={'full'}
-            variant="whisper"
-            onClick={onToggle}
-            rightIcon={isOpen ? <TriangleUpIcon /> : <TriangleDownIcon />}
-          >
-            Variants ({productVariants.length})
-          </Button>
           <Spacer />
-
           <Textarea
-            mr={5}
             width="50%"
             isReadOnly={!editMode}
             value={product.comment !== null ? product.comment : ''}
@@ -106,11 +90,28 @@ export default function ProductRow({ product, editMode }) {
             }}
             placeholder="Anmerkung"
           />
-          <Button variant="whisper">Upload</Button>
+        </Flex>
+
+        <Flex w="full">
+          <Button
+            variant="link"
+            size='lg'
+            shadow={0}
+            onClick={onToggle}
+            rightIcon={isOpen ? <TriangleUpIcon /> : <TriangleDownIcon />}
+            mr={2}
+          >
+            Variants ({productVariants.length})
+          </Button>
+          <Button variant="primary">Add Variant</Button>
+          <Spacer />
+
+          <Button variant="whisper">Upload Reference</Button>
         </Flex>
       </Flex>
+      <Flex w='full'>
+      <Collapse in={isOpen} w="100%" animateOpacity style={{width: '100%'}}>
 
-      <Collapse in={isOpen} w="full" animateOpacity>
         <Flex w="full" mt={5}>
           <List w="full">
             {productVariants.map((variant) => (
@@ -119,7 +120,9 @@ export default function ProductRow({ product, editMode }) {
             ))}
           </List>
         </Flex>
+        
       </Collapse>
+      </Flex>
     </Card>
   );
 }
