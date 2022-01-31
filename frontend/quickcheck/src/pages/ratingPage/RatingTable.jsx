@@ -2,8 +2,26 @@ import { Flex, Input, Spacer, List, Textarea } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import Card from '../../components/Card';
 import Selection from '../../components/Selection';
+import {useStoreActions, useStoreState} from "easy-peasy";
 
-function RatingRow({ rating, onChangeScore, onChangeComment, onChangeAnswer }) {
+function RatingRow({ rating, onChangeScore }) {
+  const changeRatingAnswer = useStoreActions(
+      (actions) => actions.product_rating.changeAnswer
+  );
+  const changeRatingCommet = useStoreActions(
+      (actions) => actions.product_rating.changeComment
+  );
+  const productData = useStoreState((state) => state.product_rating.product);
+
+  const handleAnswerChange = (newRating) => {
+    rating.answer = newRating;
+    changeRatingAnswer(rating);
+  };
+  const handleCommentChange = (newRating) => {
+    rating.comment = newRating;
+    changeRatingCommet(rating);
+  };
+
   return (
     <div>
       <Card
@@ -24,13 +42,15 @@ function RatingRow({ rating, onChangeScore, onChangeComment, onChangeAnswer }) {
       </Card>
       <Card layerStyle="card_bordered" justifyContent="space-between" _hover={{ boxShadow: '2xl' }}>
         <Spacer />
-        <Input
+        <Textarea
           align="center"
           size="md"
           width="100%"
           placeholder={'Anwort'}
           value={rating.answer}
-          onChange={onChangeAnswer}
+          onChange={(e) => {
+            handleAnswerChange(e.target.value);
+          }}
         />
         <Spacer />
         <Selection
@@ -39,13 +59,15 @@ function RatingRow({ rating, onChangeScore, onChangeComment, onChangeAnswer }) {
           onChange={onChangeScore}
         ></Selection>
         <Spacer />
-        <Input
+        <Textarea
           align="center"
           size="md"
           width="100%"
           placeholder={'Anmerkungen'}
           value={rating.comment}
-          onChange={onChangeComment}
+          onChange={(e) => {
+            handleCommentChange(e.target.value);
+          }}
         />
         <Spacer />
         <Input
@@ -64,24 +86,12 @@ function RatingRow({ rating, onChangeScore, onChangeComment, onChangeAnswer }) {
 }
 
 export default function RatingTable({ ratings, handleChange }) {
+
+
   const handleScoreChange = (rating) => (newRating) => {
     // This is a curried function in JS
     let index = ratings.map((r) => r.rating.criterion).indexOf(rating.rating.criterion);
     rating.score = newRating;
-    ratings[index] = rating;
-    handleChange(ratings);
-  };
-
-  const handleCommentChange = (rating) => (newRating) => {
-    let index = ratings.map((r) => r.rating.criterion).indexOf(rating.rating.criterion);
-    rating.comment = newRating.target.value;
-    ratings[index] = rating;
-    handleChange(ratings);
-  };
-
-  const handleAnswerChange = (rating) => (newRating) => {
-    let index = ratings.map((r) => r.rating.criterion).indexOf(rating.rating.criterion);
-    rating.answer = newRating.target.value;
     ratings[index] = rating;
     handleChange(ratings);
   };
@@ -93,8 +103,6 @@ export default function RatingTable({ ratings, handleChange }) {
           <RatingRow
             rating={rating}
             onChangeScore={handleScoreChange(rating)}
-            onChangeComment={handleCommentChange(rating)}
-            onChangeAnswer={handleAnswerChange(rating)}
           ></RatingRow>
         </Flex>
       ))}

@@ -43,7 +43,7 @@ const mockRatings = {
 
 export default function Rating() {
   const [ratingsPerCategory, setRatingsPerCategory] = useState([]);
-  const productData = useStoreState((state) => state.rating.ratings);
+  const productData = useStoreState((state) => state.rating.product);
   const createNew = useStoreActions((actions) => actions.rating.createNew);
   const setRatingsData = useStoreActions((actions) => actions.rating.set);
   const fetchRatings = useStoreActions((actions) => actions.rating.fetch);
@@ -108,7 +108,7 @@ export default function Rating() {
       </Page>
     );
   }
-  if (productData.ratings != undefined) {
+  if (productData.ratings != undefined && productData.productID != -1) {
     computeRatingsPerCategory(productData.ratings);
   }
   return <DataTabs data={Object.entries(ratingsPerCategory)} />;

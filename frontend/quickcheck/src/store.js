@@ -191,13 +191,54 @@ const projectModel = {
   }),
 };
 
+const product_rating = {
+  product : {
+      productID: 0,
+      ratingID: 0,
+      ratings: [{
+        ratingID: 10,
+        answer: 'test answer',
+        comment: 'test comment',
+        score: score.gering,
+        rating:{
+          category: 'Treiber 1',
+          criterion: 'test frage',
+          ratingArea: ratingArea.ECONOMIC,
+        },
+      }],
+    },
+  changeAnswer:action((state,rat) => {
+    let index = state.product.ratings.map((r) => r.ratingID).indexOf(rat.ratingID);
+    state.product.ratings[index] = {...state.product.ratings[index], answer: rat.answer};
+  }),
+
+  changeComment:action((state,rat) => {
+    let index = state.product.ratings.map((r) => r.ratingID).indexOf(rat.ratingID);
+    state.product.ratings[index] = {...state.product.ratings[index], comment: rat.comment};
+  }),
+}
+
 const ratingModel = {
-  ratings: [],
+  product : {
+    productID: -1,
+    ratingID: 0,
+    ratings: [{
+      ratingID: 10,
+      answer: 'test answer',
+      comment: 'test comment',
+      score: score.gering,
+      rating:{
+        category: 'Treiber 1',
+        criterion: 'test frage',
+        ratingArea: ratingArea.ECONOMIC,
+      },
+    }],
+  },
 
   init: action((state, payload) => {
-    state.ratings = [
+    state.product = [
       {
-        productID: 0,
+        productID: -1,
         ratingID: 0,
         answer: 'test answer',
         comment: 'test comment',
@@ -214,10 +255,15 @@ const ratingModel = {
 
   // general actions
   set: action((state, ratings) => {
-    state.ratings = ratings;
+    state.product = ratings;
   }),
   update: action((state, updatedProps) => {
-    state.ratings = { ...state.ratings, ...updatedProps };
+    state.product = { ...state.product, ...updatedProps };
+  }),
+
+  changeAnswer:action((state,rat) => {
+    let index = state.product.ratings.map((r) => r.ratingID).indexOf(rat.ratingID);
+    state.product.ratings[index] = {...state.product.ratings[index], answer: rat.answer};
   }),
 
   // GET all ratings
@@ -248,6 +294,7 @@ const store = createStore({
   rating: ratingModel,
   productList: productAreaModel,
   resultList: resultModel,
+  product_rating:product_rating,
 });
 
 export default store;
