@@ -9,7 +9,7 @@ import ProductRow from './ProductRow';
 
 export default function ProductOverview() {
   const items = useStoreState((state) => state.productList.items);
-  const products = useStoreState((state) => state.productList.products);
+  //const products = useStoreState((state) => state.productList.products);
   const fetchProducts = useStoreActions((actions) => actions.productList.fetch);
 
   const getAreaProducts = useStoreState((state) => state.productList.getAreaProducts);

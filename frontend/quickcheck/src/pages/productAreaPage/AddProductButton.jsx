@@ -5,7 +5,6 @@ import {
   Modal,
   ModalOverlay,
   ModalHeader,
-  List,
   ModalContent,
   ModalBody,
   FormControl,
@@ -13,7 +12,6 @@ import {
   ModalCloseButton,
   Button,
   useDisclosure,
-  HStack,
   IconButton,
   Input,
 } from '@chakra-ui/react';
@@ -23,9 +21,7 @@ export default function AddProductButton({ parentProductID, ...rest }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [productName, setProductName] = useState('');
   const header = 'Add Product';
-
   const createProduct = useStoreActions((actions) => actions.productList.createProduct);
-
   const { projectID, productAreaID } = useParams();
 
   const addProduct = (productName) => {
