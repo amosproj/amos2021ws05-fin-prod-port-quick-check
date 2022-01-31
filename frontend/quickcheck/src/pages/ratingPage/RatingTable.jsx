@@ -2,15 +2,11 @@ import { Flex, Input, Spacer, List, Textarea } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import Card from '../../components/Card';
 import Selection from '../../components/Selection';
-import {useStoreActions, useStoreState} from "easy-peasy";
+import { useStoreActions, useStoreState } from 'easy-peasy';
 
 function RatingRow({ rating, onChangeScore }) {
-  const changeRatingAnswer = useStoreActions(
-      (actions) => actions.product_rating.changeAnswer
-  );
-  const changeRatingCommet = useStoreActions(
-      (actions) => actions.product_rating.changeComment
-  );
+  const changeRatingAnswer = useStoreActions((actions) => actions.product_rating.changeAnswer);
+  const changeRatingCommet = useStoreActions((actions) => actions.product_rating.changeComment);
   const productData = useStoreState((state) => state.product_rating.product);
 
   const handleAnswerChange = (newRating) => {
@@ -86,8 +82,6 @@ function RatingRow({ rating, onChangeScore }) {
 }
 
 export default function RatingTable({ ratings, handleChange }) {
-
-
   const handleScoreChange = (rating) => (newRating) => {
     // This is a curried function in JS
     let index = ratings.map((r) => r.rating.criterion).indexOf(rating.rating.criterion);
@@ -100,10 +94,7 @@ export default function RatingTable({ ratings, handleChange }) {
     <List spacing={2} direction="column" w="full" align="center">
       {ratings.map((rating) => (
         <Flex gridGap={3}>
-          <RatingRow
-            rating={rating}
-            onChangeScore={handleScoreChange(rating)}
-          ></RatingRow>
+          <RatingRow rating={rating} onChangeScore={handleScoreChange(rating)}></RatingRow>
         </Flex>
       ))}
     </List>

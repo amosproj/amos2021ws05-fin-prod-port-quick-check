@@ -79,7 +79,7 @@ export default function Rating() {
 
   function DataTabs({ data }) {
     return (
-      <Page title={ratingArea + "-Rating"}>
+      <Page title={ratingArea + '-Rating'}>
         <Tabs>
           <TabList>
             {data.map((complexityDriver) => (
