@@ -18,15 +18,6 @@ function RatingRow({ rating }) {
           align="center"
           size="md"
           width="100%"
-          placeholder={'catgegory'}
-          value={rating.rating.category}
-        />
-        <Spacer />
-        <Textarea
-          isReadOnly={true}
-          align="center"
-          size="md"
-          width="100%"
           placeholder={'Frage'}
           value={rating.rating.criterion}
         />
@@ -34,6 +25,7 @@ function RatingRow({ rating }) {
         <Selection
           options={['GERING', 'MITTEL', 'HOCH']}
           isDisabled={true}
+          w="50%"
           selected={rating.score}
         ></Selection>
         <Spacer />
@@ -42,7 +34,7 @@ function RatingRow({ rating }) {
         <Input
           align="center"
           size="md"
-          w="100%"
+          w="20%"
           isDisabled={true}
           onChange={(e) => {
             console.log(e.target.value);
