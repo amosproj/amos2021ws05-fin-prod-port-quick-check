@@ -5,12 +5,12 @@ import Card from '../../components/Card';
 import PieChartGraph from './PieChart';
 import BubbleGraph from './BubbleChart';
 
-var colors = [
-  'rgba(255,72,166)',
-  'rgba(147,213,34)',
-  'rgba(41,213,255)',
-  'rgba(82,8,129)',
-  'rgba(1,24,56)',
+export var colors = [
+  'rgba(255,72,166, .7)',
+  'rgba(147,213,34, .7)',
+  'rgba(41,213,255, .7)',
+  'rgba(82,8,129, .7)',
+  'rgba(1,24,56, .7)',
 ];
 var yellow = 'rgba(255, 195, 0, .7)';
 var green = 'rgba(131, 239, 56, .7 )';
@@ -183,6 +183,7 @@ function Figure({ results }) {
         complexity = complexity / total;
       }
       //complexity = parseFloat(results[i]['ratings'][2]['answer']) / complexity;
+
        complexity = kreditvolumen/ complexity;
       if (marge>maxbY){
           maxbY=marge;
@@ -204,11 +205,11 @@ function Figure({ results }) {
         label: results[i]['productName'],
         data: [
           {
-            y: marge,
-            x: complexity,
+            y: marge,//.toFixed(2),
+            x: complexity.toFixed(2),
             //r: kreditradius,
-            r: kreditvolumen,
-            volume: kreditvolumen
+            r: kreditvolumen,//.toFixed(2),
+            volume: kreditvolumen,//.toFixed(2)
           },
 
         ],

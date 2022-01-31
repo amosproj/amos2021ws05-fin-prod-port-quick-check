@@ -9,7 +9,7 @@ import { useStoreActions, useStoreState } from 'easy-peasy';
 import Card from '../../components/Card';
 import Page from '../../components/Page';
 import Figure from './Figure';
-
+import {colors} from './Figure';
 const mock = [
   {
     name: 'Interview 1',
@@ -30,6 +30,7 @@ const mock = [
     name: 'Paper 1',
     author: 'Olaf Scholz',
     id: 3,
+
   },
 ];
 
@@ -41,11 +42,11 @@ function SourceRow({ source }) {
       </Heading>
       <Spacer />
       <VStack p={2}>
-        <Text fontWeight="bolder" fontSize="md">
+        <Text fontWeight="bolder" fontSize="md" color={source.color}>
           {source.author}
         </Text>
         <Text fontSize="small" color="gray.400">
-          Author
+          Product Area
         </Text>
       </VStack>
     </Card>
@@ -66,6 +67,13 @@ const fetchResults = useStoreActions((actions) => actions.resultList.fetch);
     fetchResults(projectID);
     //setRatingsData(mockRatings.ratings);
   }, []);
+ if (results !=null & results.length!==0){
+for (let s=0; s<sources.length; s++){
+    console.log(results)
+    sources[s]["color"]=colors[s%colors.length];
+    sources[s]["author"]=results[s%results.length]['productName'];
+}
+}
   console.log('First', { results });
   return (
     <div>

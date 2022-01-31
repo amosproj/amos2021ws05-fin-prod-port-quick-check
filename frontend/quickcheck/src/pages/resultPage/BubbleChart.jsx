@@ -29,7 +29,7 @@ function BubbleGraph({ data, minbY, maxbY, minbX, maxbX }) {
             min: minbX,
         title: {
           display: true,
-          text: 'Cost/Complexity',
+          text: 'Economic Value/Complexity',
           align: 'end',
         },
         ticks: {
@@ -52,7 +52,7 @@ function BubbleGraph({ data, minbY, maxbY, minbX, maxbX }) {
               dataset['label'] + ':',
               'Margin:' +
                 dataset['data'][0]['y'] +
-                ', Cost/Complexity: ' +
+                ', Economic Value/Complexity: ' +
                 dataset['data'][0]['x'] +
                 ', Volume in Euro (Millions): ' +
                 dataset['data'][0]['volume'],
