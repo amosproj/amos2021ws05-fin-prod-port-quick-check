@@ -108,7 +108,7 @@ export default function ProductRow({ product, editMode }) {
           </Button>
 
           <Spacer />
-          <Button leftIcon={<AttachmentIcon/>} variant="whisper"> Reference</Button>
+          <Button leftIcon={<AttachmentIcon/>} size="sm" variant="whisper"> Reference</Button>
         </Flex>
       </Flex>
       <Flex w="full">
@@ -116,7 +116,6 @@ export default function ProductRow({ product, editMode }) {
           <Flex w="full" mt={5}>
             <List w="full">
               {productVariants.map((variant) => (
-                // <p>{JSON.stringify(variant)}</p>
                 <ProductVariant product={variant} editMode={editMode} key={variant.productID} />
               ))}
             </List>
