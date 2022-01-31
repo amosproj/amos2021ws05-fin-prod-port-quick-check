@@ -13,8 +13,6 @@ public class ListOfProductAreaDto {
 
     public List<ProductAreaDto> productAreas;
 
-    public ListOfProductAreaDto(){}
-
     public ListOfProductAreaDto(Iterable<ProductAreaEntity> productAreaEntities){
 
         this.productAreas = new ArrayList<>();

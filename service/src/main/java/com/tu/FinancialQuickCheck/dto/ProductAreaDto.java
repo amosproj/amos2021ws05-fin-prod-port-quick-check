@@ -37,9 +37,11 @@ public class ProductAreaDto {
     }
 
     public ProductAreaDto(ProductAreaEntity productAreaEntity){
-        this.id = productAreaEntity.id;
-        this.name = productAreaEntity.name;
-        this.category = productAreaEntity.category;
+        if(productAreaEntity != null){
+            this.id = productAreaEntity.id;
+            this.name = productAreaEntity.name;
+            this.category = productAreaEntity.category;
+        }
     }
 
     @Override

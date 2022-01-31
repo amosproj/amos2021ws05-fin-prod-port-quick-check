@@ -9,7 +9,7 @@ import { useStoreActions, useStoreState } from 'easy-peasy';
 import Card from '../../components/Card';
 import Page from '../../components/Page';
 import Figure from './Figure';
-
+import { colors } from './Figure';
 const mock = [
   {
     name: 'Interview 1',
@@ -41,11 +41,11 @@ function SourceRow({ source }) {
       </Heading>
       <Spacer />
       <VStack p={2}>
-        <Text fontWeight="bolder" fontSize="md">
+        <Text fontWeight="bolder" fontSize="md" color={source.color}>
           {source.author}
         </Text>
         <Text fontSize="small" color="gray.400">
-          Author
+          Product
         </Text>
       </VStack>
     </Card>
@@ -54,9 +54,9 @@ function SourceRow({ source }) {
 
 export default function ResultPage() {
   const { projectID } = useParams();
-
-  const setResultsData = useStoreActions((actions) => actions.resultList.set);
   const fetchResults = useStoreActions((actions) => actions.resultList.fetch);
+  //const setResultsData = useStoreActions((actions) => actions.resultList.set);
+
   const results = useStoreState((state) => state.resultList.results);
 
   const [sources, setSources] = useState(mock);
@@ -65,7 +65,14 @@ export default function ResultPage() {
     fetchResults(projectID);
     //setRatingsData(mockRatings.ratings);
   }, []);
-  console.log({ results });
+  if ((results != null) & (results.length !== 0)) {
+    for (let s = 0; s < sources.length; s++) {
+      console.log(results);
+      sources[s]['color'] = colors[s % colors.length];
+      sources[s]['author'] = results[s % results.length]['productName'];
+    }
+  }
+  console.log('First', { results });
   return (
     <div>
       <Page title="Results">

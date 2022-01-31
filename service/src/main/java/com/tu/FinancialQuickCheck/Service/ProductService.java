@@ -5,14 +5,10 @@ import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.RatingArea;
 import com.tu.FinancialQuickCheck.db.*;
 import com.tu.FinancialQuickCheck.dto.ProductDto;
-import com.tu.FinancialQuickCheck.dto.ProductRatingDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * The ProductService class performs service tasks and defines the logic for the product. This includes creating,
@@ -27,12 +23,8 @@ public class ProductService {
     private RatingRepository ratingRepository;
     private ProductRatingRepository productRatingRepository;
 
-    /*public ProductService(ProductRepository productRepository, ProjectRepository projectRepository,
-                          ProductAreaRepository productAreaRepository) {
-        this.repository = productRepository;
-        this.projectRepository = projectRepository;
-        this.productAreaRepository = productAreaRepository;
-    }*/
+    public static final Integer[] SET_VALUES = new Integer[] {4, 5, 9, 10};
+    public static final Set<Integer> VALUES_ECONOMIC = new HashSet<>(Arrays.asList(SET_VALUES));
 
 
     public ProductService(ProductRepository productRepository, ProjectRepository projectRepository,
@@ -44,12 +36,12 @@ public class ProductService {
         this.ratingRepository= ratingRepository;
         this.productRatingRepository = productRatingRepositor;
     }
+
     /**
-     * This method is finding product data transfer objects by its product ID.
+     * Retrieves product entity from db based on productID.
      *
-     * @param productID The ID of the product for which the data transfer object has to be found.
-     * @throws ResourceNotFound When there is no product ID found.
-     * @return The product data transfer object belonging to the product ID.
+     * @param productID unique identifier of product entity
+     * @return ProductDto if product enity exists else null
      */
     public ProductDto findById(int productID) {
         Optional<ProductEntity> productEntity = repository.findById(productID);
@@ -57,18 +49,19 @@ public class ProductService {
         if (productEntity.isEmpty()) {
             return null;
         }else{
-            return new ProductDto(productEntity.get());
+            float[] progress = calculateProductRatingProgress(productEntity.get());
+            return new ProductDto(productEntity.get(), progress);
         }
     }
 
     /**
-     * This method is creating a list products for a project.
+     * Adds a product entity and its children to db and adds emptu product ratings for added product entities.
      *
-     * @param projectID The ID of the project for which a product should be created.
-     * @param productDto The product data transfer object.
-     * @return A list of created products for a project.
+     * @param projectID unique identifier of project entity
+     * @param productDto contains product information
+     * @return list of created products if successful else null
      */
-    public List<ProductDto> wrapper_createProduct(int projectID, ProductDto productDto){
+    public List<ProductDto> wrapperCreateProduct(int projectID, ProductDto productDto){
         List<ProductDto> out = new ArrayList<>();
         List<ProductDto> tmp = createProduct(projectID, productDto);
         if(tmp != null){
@@ -76,48 +69,31 @@ public class ProductService {
                 ProductDto dtoOut = findById(dto.productID);
                 out.add(dtoOut);
             }
-
             return out;
         }else{
             return null;
         }
-
     }
 
     /**
-     * This method is creating a list products for a project.
+     * Adds a product entity and its children to db or adds a product variatin to db.
      *
-     * @param projectID The ID of the project for which a product should be created.
-     * @param productDto The product data transfer object.
-     * @throws ResourceNotFound When the projectID or projectAreaID does not exist.
-     * @return A list of created products for a project.
+     * @param projectID unique identifier of project entity
+     * @param productDto contains product information
+     * @throws ResourceNotFound when project entity with projectID or product area entity with productAreaID does not exist
+     * @return list of created products
      */
-    //TODO: (done - needs review) change return to List
     @Transactional
-    public List<ProductDto>  createProduct(int projectID, ProductDto productDto){
-
+    public List<ProductDto> createProduct(int projectID, ProductDto productDto){
         if(repository.existsByProjectAndProductarea(
                 projectRepository.getById(projectID),
                 productAreaRepository.getById(productDto.productArea.id)))
         {
             List<ProductEntity> entities = new ArrayList<>();
 
-            //check if product is a varaint
-            boolean isProductVariant = false;
-            ProductEntity parentEntity = null;
-            if(productDto.parentID != 0){
+            ProductEntity parentEntity = getParentEntity(productDto);
 
-                isProductVariant = true;
-                Optional<ProductEntity> parentEntityOptional = Optional.of(new ProductEntity());
-                if(repository.existsById(productDto.parentID)){
-                    parentEntityOptional = repository.findById(productDto.parentID);
-                    parentEntity = parentEntityOptional.get();
-                }else{
-                    throw new BadRequest("Parent Id does not exist");
-                }
-            }
-
-            ProductEntity newProduct = createProductEntity(projectID, productDto.productArea.id, productDto, isProductVariant, parentEntity);
+            ProductEntity newProduct = createProductEntity(projectID, productDto.productArea.id, productDto, productDto.isProductVariant(), parentEntity);
             if(newProduct != null){
                 entities.add(newProduct);
             }else{
@@ -135,22 +111,15 @@ public class ProductService {
                 }
             }
 
+            repository.saveAllAndFlush(entities);
+
             //TODO: Product Area is missing in entity produces a nullpoint exception
             List<ProductDto> createdProducts = new ArrayList<>();
-            //entities.forEach(entity -> createdProducts.add(new ProductDto(entity)));
+//            entities.forEach(entity -> createdProducts.add(new ProductDto(entity)));
 
-            entities = repository.saveAllAndFlush(entities);
-
-            List<ProductDto> ps = getProductsByProjectIdAndProductAreaId(projectID, productDto.productArea.id);
-            for (ProductEntity entity : entities)
-            {
-                for (ProductDto p : ps) {
-                    if(p.productName.equals(entity.name)){
-                        createProductRatings(p, entity.id);
-                    }
-                }
+            for(ProductEntity tmp: entities){
+                createProductRatings(tmp.id);
             }
-
 
             return createdProducts;
 
@@ -160,60 +129,81 @@ public class ProductService {
     }
 
     /**
-     * This method is creating product entities with attributes like name, project or comment in database.
+     * Retrieve parent entity of a product
      *
-     * @param projectID The project ID for which a product entity should be created.
-     * @param productAreaID The ID of the product area which has to be created for a product.
-     * @param dto The product data transfer object.
-     * @param isProductVariant When the product is a variant of another product (e.g. dispo credit and dispo credit flex).
-     * @param parentEntity When the product is a variant, it needs to have a parent entity.
-     * @return A new product entity for database.
+     * @param productDto contains product information
+     * @throws BadRequest if parent entity with parentID does not exist
+     * @return parent product entity
      */
-    public ProductEntity createProductEntity(int projectID, int productAreaID, ProductDto dto, Boolean isProductVariant, ProductEntity parentEntity){
+    /**
+     * Retrieves parent entity of product from db
+     *
+     * @param productDto contains product information
+     * @return product entity only if productDto has a parent entity else null
+     */
+    public ProductEntity getParentEntity(ProductDto productDto){
+        ProductEntity parentEntity = null;
+        if(productDto.parentID != 0){
+            Optional<ProductEntity> parentEntityOptional = repository.findById(productDto.parentID);
+            if(parentEntityOptional.isPresent()){
+                parentEntity = parentEntityOptional.get();
+            }else{
+                throw new BadRequest("Parent Id does not exist");
+            }
+        }
+        return parentEntity;
+    }
 
+
+    /**
+     * Creates a product entity.
+     *
+     * @param projectID unique identifier of project entity
+     * @param productAreaID unique identifier of product area entity
+     * @param dto contains product information
+     * @param isProductVariation True if dto has a parent product
+     * @param parent
+     * @return product entity if attribute name is provided and is at least one character long else null
+     */
+    public ProductEntity createProductEntity(int projectID, int productAreaID, ProductDto dto, Boolean isProductVariation,ProductEntity parent){
         if(dto.productName != null && !dto.productName.isBlank()) {
             ProductEntity newProduct = new ProductEntity();
             newProduct.name = dto.productName;
             newProduct.project = projectRepository.findById(projectID).get();
             newProduct.productarea = productAreaRepository.getById(productAreaID);
             if (dto.comment != null) {newProduct.comment = dto.comment;}
-            if(isProductVariant) {newProduct.parentProduct = parentEntity;}
+            if(isProductVariation) {newProduct.parentProduct = parent;}
             return newProduct;
         }else{
             return null;
         }
     }
 
-
     /**
-     * This method is updating product information by the products ID.
+     * Updates attributes name and comment of product entity.
      *
-     * @param productDto The product data transfer object.
-     * @param productID The ID of the product which information have to be updated.
-     * @throws ResourceNotFound When the product ID is not found.
-     * @return The product data transfer object with updated information.
+     * @param productDto contain product information
+     * @param productID unique identifier of product
+     * @return updated product if exists else null
      */
     public ProductDto updateById(ProductDto productDto, int productID) {
-
         if (!repository.existsById(productID)) {
             return null;
         }else{
-            repository.findById(productID).map(
-                    product -> {
-                        updateProductName(product, productDto);
-                        updateProductComment(product, productDto);
-                        return repository.save(product);
-                    });
+            ProductEntity product = repository.findById(productID).get();
+            updateProductName(product, productDto);
+            updateProductComment(product, productDto);
+            repository.save(product);
 
-            return productDto;
+            return new ProductDto(product);
         }
     }
 
     /**
-     * This method is updating the comment for a specific product.
+     * Updates attributes comment of product entity.
      *
-     * @param currentEntity The entity of the product before the comment is updated.
-     * @param updateDto The new product data transfer object with updated comment.
+     * @param currentEntity object that is updated
+     * @param updateDto contains product information for update
      */
     private void updateProductComment(ProductEntity currentEntity, ProductDto updateDto) {
         if (updateDto.comment != null) {
@@ -227,11 +217,11 @@ public class ProductService {
 
 
     /**
-     * This method is updating the name for a specific product.
+     * Updates attributes name of product entity.
      *
-     * @param currentEntity The entity of the product before the name is updated.
-     * @param updateDto The new product data transfer object with updated name.
-     * @throws BadRequest When the input is missing or incorrect.
+     * @param currentEntity object that is updated
+     * @param updateDto contains product information for update
+     * @throws BadRequest if product name is empty
      */
     private void updateProductName(ProductEntity currentEntity, ProductDto updateDto) {
         if (updateDto.productName != null){
@@ -245,11 +235,11 @@ public class ProductService {
 
 
     /**
-     * This method is giving back a list of products for a specific project by its ID.
+     * Retrieve all product entities from db for project entity with projectID.
      *
-     * @param projectID The ID of the project for which products should be returned.
-     * @throws BadRequest When the project ID does not exist.
-     * @return A list of product data transfer objects for a specific project by its ID.
+     * @param projectID unique identifier of project entity
+     * @throws ResourceNotFound When the project ID does not exist.
+     * @return list of products
      */
     public List<ProductDto> getProductsByProjectId(int projectID){
 
@@ -258,7 +248,8 @@ public class ProductService {
             Iterable<ProductEntity> productEntities = repository.findByProject(projectRepository.findById(projectID).get());
             for(ProductEntity tmp : productEntities){
                 if(!tmp.name.equals("DUMMY")){
-                    ProductDto addProduct = new ProductDto(tmp);
+                    float[] progress = calculateProductRatingProgress(tmp);
+                    ProductDto addProduct = new ProductDto(tmp, progress);
                     productsByProject.add(addProduct);
                 }
             }
@@ -270,27 +261,74 @@ public class ProductService {
 
 
     /**
-     * This method gives back a list of products based on the projectID and product area ID.
+     * Retrieve all product entities from db for project entity with projectID and
+     * product area entity with product area ID.
      *
-     * @param projectID The project ID for which products should be returned.
-     * @param projectAreaID The project area ID for which products should be returned.
-     * @return A list of products for a specific project ID and product area ID.
+     * @param projectID unique identifier of project entity
+     * @param projectAreaID unique identifier of product area entity
+     * @throws ResourceNotFound When the project ID does not exist.
+     * @return list of products
      */
     //TODO: (discuss with Alex) return Resource not found if projectAreaID does not exist?
     public List<ProductDto> getProductsByProjectIdAndProductAreaId(int projectID, int projectAreaID){
+        if(projectRepository.existsById(projectID)){
+            List<ProductDto> productsByProjectAndProductArea = new ArrayList<>();
+            Iterable<ProductEntity> productEntities = repository.findByProjectAndProductarea(
+                    projectRepository.findById(projectID).get(),
+                    productAreaRepository.getById(projectAreaID));
 
-        List<ProductDto> productsByProjectAndProductArea = new ArrayList<>();
-        Iterable<ProductEntity> productEntities = repository.findByProjectAndProductarea(
-                projectRepository.findById(projectID).get(),
-                productAreaRepository.getById(projectAreaID));
-
-        for(ProductEntity tmp : productEntities){
-            if(!tmp.name.equals("DUMMY")) {
-                productsByProjectAndProductArea.add(new ProductDto(tmp));
+            for(ProductEntity tmp : productEntities){
+                if(!tmp.name.equals("DUMMY")) {
+                    float[] progress = calculateProductRatingProgress(tmp);
+                    productsByProjectAndProductArea.add(new ProductDto(tmp, progress));
+                }
             }
+            return productsByProjectAndProductArea;
+        }else{
+            throw new ResourceNotFound("project " + projectID + " does not exist.");
         }
+    }
 
-        return productsByProjectAndProductArea;
+    /**
+     * Calculates progress of economic and complexity evaluation.
+     *
+     * complexity progress = attributes answer and score are not null
+     * economic progress = attributes answer and score of ratings with id in VALUES_ECONOMIC is not null
+     *
+     * @param product entity for whom the progress is calculated
+     * @return array of length 2, array[0] = economic progress, array[1] = complexity progress,
+     */
+    public float[] calculateProductRatingProgress(ProductEntity product){
+
+        float[] progressValues = new float[2];
+        int[] counter = new int[2];
+
+        if(product.productRatingEntities == null || product.productRatingEntities.isEmpty()){
+            progressValues[0] = 0.0f;
+            progressValues[1] = 0.0f;
+            return progressValues;
+        }else{
+            for(ProductRatingEntity tmp: product.productRatingEntities){
+                if(tmp.productRatingId.getRating().ratingarea == RatingArea.ECONOMIC){
+                    if(VALUES_ECONOMIC.contains(tmp.productRatingId.getRating().id)) {
+                        counter[0] += 1;
+                        if (tmp.answer != null && tmp.score != null) {
+                            progressValues[0] += 1;
+                        }
+                    }
+                }else{
+                    counter[1] += 1;
+                    if(tmp.answer != null && tmp.score != null){
+                        progressValues[1] += 1;
+                    }
+                }
+            }
+
+            progressValues[0] = Math.round((progressValues[0] / counter[0]) * 100);
+            progressValues[1] = Math.round((progressValues[1] / counter[1]) * 100);
+
+            return progressValues;
+        }
     }
 
 
@@ -306,56 +344,51 @@ public class ProductService {
 //        }
 //    }
 
-
+    /**
+     * Adds for one product all existing ratings to db.
+     *
+     * @param productID unique identifier of product entity
+     * @throws ResourceNotFound when db table rating has no entries
+     * @return product with created product ratings
+     */
     @Transactional
-    public ProductDto createProductRatings(ProductDto productDto, int productID){
+    public ProductDto createProductRatings(int productID){
         //Step 1: check if productRatings can be created
         if (!repository.existsById(productID)) {
             return null;
         } else {
             ProductEntity product = repository.getById(productID);
-            System.out.println(product.id);
 
             //Step 2: ensure for each ratingEntity is a productRatingEntity created
-            HashMap<Integer, ProductRatingEntity> newProductRatings = initProductRatings(product, productDto);
+            List<ProductRatingEntity> newProductRatings = initProductRatings(product);
 
             //Step 3: persist to db
-            List<ProductRatingEntity> tmp = new ArrayList<>(newProductRatings.values());
-            productRatingRepository.saveAll(tmp);
+            productRatingRepository.saveAll(newProductRatings);
 
-            return new ProductDto(product, tmp, false);
+            return new ProductDto(product, newProductRatings);
         }
     }
 
-    public HashMap<Integer, ProductRatingEntity> initProductRatings(ProductEntity product, ProductDto productIn){
-        HashMap<Integer, ProductRatingEntity> newProductRatings = new HashMap<>();
-        RatingArea ratingArea;
-        List<RatingEntity> ratings;
+    /**
+     * Creates product rating entities for product entity and all existing rating entities in db.
+     *
+     * @param product entity to whom ratings are assigned
+     * @return list of created product rating entities
+     */
+    public List<ProductRatingEntity> initProductRatings(ProductEntity product){
+        List<ProductRatingEntity> newProductRatings = new ArrayList<>();
+        List<RatingEntity> ratings = ratingRepository.findAll();
 
-        if(productIn.ratings != null) {
-            if (ratingRepository.existsById(productIn.ratings.get(0).ratingID)) {
-                ratingArea = ratingRepository.findById(productIn.ratings.get(0).ratingID).get().ratingarea;
-                ratings = ratingRepository.findByRatingarea(ratingArea);
-            } else {
-                throw new ResourceNotFound("ratingID " + productIn.ratings.get(0).ratingID + " not found");
-            }
-        }
-        else
-        {
-            ratings = ratingRepository.findByRatingarea(RatingArea.ECONOMIC);
-            ratings.addAll(ratingRepository.findByRatingarea(RatingArea.COMPLEXITY));
+        if(ratings.isEmpty()){
+            throw new ResourceNotFound("Ratings not initilized.");
         }
 
         for(RatingEntity rating: ratings){
             ProductRatingEntity productRating = new ProductRatingEntity();
             productRating.productRatingId = new ProductRatingId(product, rating);
-//            productRating.ratingId = rating.id;
-//            productRating.productId = product.id;
-            newProductRatings.put(rating.id, productRating);
+            newProductRatings.add(productRating);
         }
 
         return newProductRatings;
     }
-
-
 }

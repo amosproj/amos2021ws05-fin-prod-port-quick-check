@@ -10,8 +10,6 @@ public class ListOfUserDto {
 
     public List<UserDto> users;
 
-    public ListOfUserDto(){}
-
     public ListOfUserDto(Iterable<UserEntity> userEntities){
 
         this.users = new ArrayList<>();

@@ -55,18 +55,15 @@ public class HelloWorldControllerIntegrationTest {
                     String.class);
 
             assertThat(response.getStatusCode()).isEqualTo(HttpStatus.METHOD_NOT_ALLOWED);
-
-//            System.out.println("Response Status: " + response.getStatusCode());
         }
     }
 
 
-//    @Test
-//    public void notAllowedHTTPMethodPOST() throws Exception {
-//        assertThat(this.restTemplate.postForObject(
-//                "http://localhost:" + port + "/helloworld",
-//                null, String.class)
-//        ).contains("405");
-//    }
-
+    @Test
+    public void notAllowedHTTPMethodPOST() throws Exception {
+        assertThat(this.restTemplate.postForObject(
+                "http://localhost:" + port + "/helloworld",
+                null, String.class)
+        ).contains("405");
+    }
 }
