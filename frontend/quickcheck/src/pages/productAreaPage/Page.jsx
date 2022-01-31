@@ -70,10 +70,11 @@ export default function ProductOverview() {
             ></ProductRow>
           ))}
         </List>
-        <HStack><EditButtons />
-        <Link href={`${productAreaID}/results`}>
-          <Button>Generate Results</Button>
-        </Link>
+        <HStack>
+          <EditButtons />
+          <Link href={`${productAreaID}/results`}>
+            <Button>Generate Results</Button>
+          </Link>
         </HStack>
       </Page>
     </div>

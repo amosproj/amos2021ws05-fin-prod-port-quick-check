@@ -72,7 +72,9 @@ export default function ProductVariant({ product, editMode }) {
             <Link
               href={`/projects/${product.projectID}/productArea/${product.productArea.id}/products/${product.productID}/ratings/complexity`}
             >
-              <Button size="sm" variant="whisper">Complexity</Button>
+              <Button size="sm" variant="whisper">
+                Complexity
+              </Button>
             </Link>
           </HStack>
         </VStack>
@@ -87,12 +89,13 @@ export default function ProductVariant({ product, editMode }) {
         />
         <IconButton variant="whisper" icon={<AttachmentIcon />} />
       </Flex>
-      <Flex w="full" justifyContent={"flex-end"} mt="1">
+      <Flex w="full" justifyContent={'flex-end'} mt="1">
         <Link
           href={`/projects/${product.projectID}/productArea/${product.productArea.id}/products/${product.productID}/evaluation`}
         >
-
-          <Button size="xs" variant="whisper">Evaluation</Button>
+          <Button size="xs" variant="whisper">
+            Evaluation
+          </Button>
         </Link>
       </Flex>
     </Card>

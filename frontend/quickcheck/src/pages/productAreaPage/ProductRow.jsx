@@ -62,7 +62,7 @@ export default function ProductRow({ product, editMode }) {
           }}
           value={product.productName}
         />
-        <Flex w="full" mb={3} alignItems={"center"}>
+        <Flex w="full" mb={3} alignItems={'center'}>
           <Spacer />
 
           <VStack>
@@ -114,7 +114,9 @@ export default function ProductRow({ product, editMode }) {
           <Link
             href={`/projects/${product.projectID}/productArea/${product.productArea.id}/products/${product.productID}/evaluation`}
           >
-            <Button size="sm" variant="whisper">Evaluation</Button>
+            <Button size="sm" variant="whisper">
+              Evaluation
+            </Button>
           </Link>
         </Flex>
       </Flex>
