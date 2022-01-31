@@ -56,7 +56,7 @@ export default function ProductVariant({ product, editMode }) {
           }}
           value={product.productName}
         />
-        <VStack>
+        <VStack mx={1}>
           <HStack>
             <CircularProgress size="35px" value={product.progressEconomic} />
             <Link
