@@ -2,7 +2,7 @@ openapi: '3.0.0'
 info:
   version: "0.3"
   title: API for AMOS5 Financial QuickCheck
-  description: defines endpoints for resource "Project"
+  description: defines all endpoints for financial quickcheck application
 
 paths:
   /productareas:

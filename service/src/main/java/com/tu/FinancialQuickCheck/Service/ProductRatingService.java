@@ -64,8 +64,7 @@ public class ProductRatingService {
                     .stream(entities.spliterator(), false)
                     .collect(Collectors.toList());
 
-            ProductDto a = new ProductDto(productEntity.get(), tmp, true);
-            return a;
+            return new ProductDto(productEntity.get(), tmp);
         }
     }
 
@@ -89,7 +88,7 @@ public class ProductRatingService {
             List<ProductRatingEntity> tmp = new ArrayList<>(newProductRatings.values());
             repository.saveAll(tmp);
 
-            return new ProductDto(product, tmp, false);
+            return new ProductDto(product, tmp);
         }
     }
 
@@ -124,7 +123,7 @@ public class ProductRatingService {
 
             repository.saveAll(updates);
 
-            return new ProductDto(productEntity , updates, false);
+            return new ProductDto(productEntity , updates);
         }
     }
 

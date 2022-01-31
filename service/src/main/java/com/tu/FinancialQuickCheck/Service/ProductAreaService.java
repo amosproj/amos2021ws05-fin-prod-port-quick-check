@@ -4,9 +4,7 @@ import com.tu.FinancialQuickCheck.db.ProductAreaEntity;
 import com.tu.FinancialQuickCheck.db.ProductAreaRepository;
 import com.tu.FinancialQuickCheck.dto.ListOfProductAreaDto;
 import com.tu.FinancialQuickCheck.dto.ProductAreaDto;
-
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 /**
