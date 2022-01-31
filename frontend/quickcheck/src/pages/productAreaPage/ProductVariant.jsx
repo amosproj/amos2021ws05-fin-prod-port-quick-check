@@ -8,6 +8,7 @@ import {
   useColorModeValue,
   VStack,
   HStack,
+  IconButton,
 } from '@chakra-ui/react';
 import { React, useState } from 'react';
 import { AttachmentIcon } from '@chakra-ui/icons';
@@ -58,7 +59,7 @@ export default function ProductVariant({ product, editMode }) {
         />
         <VStack>
           <HStack>
-          <CircularProgress size="35px" value={product.progressEconomic} />
+            <CircularProgress size="35px" value={product.progressEconomic} />
             <Link
               href={`/projects/${product.projectID}/productArea/${product.productArea.id}/products/${product.productID}/ratings/economic`}
             >
@@ -66,12 +67,12 @@ export default function ProductVariant({ product, editMode }) {
             </Link>
           </HStack>
           <HStack>
-          <CircularProgress size="35px" value={product.progressComplexity} />
-          <Link
-            href={`/projects/${product.projectID}/productArea/${product.productArea.id}/products/${product.productID}/ratings/complexity`}
-          >
-            <Button size="sm" variant="whisper">Complexity</Button>
-          </Link>
+            <CircularProgress size="35px" value={product.progressComplexity} />
+            <Link
+              href={`/projects/${product.projectID}/productArea/${product.productArea.id}/products/${product.productID}/ratings/complexity`}
+            >
+              <Button size="sm" variant="whisper">Complexity</Button>
+            </Link>
           </HStack>
         </VStack>
         <Textarea
@@ -83,9 +84,15 @@ export default function ProductVariant({ product, editMode }) {
           }}
           placeholder="Anmerkung"
         />
+        <IconButton variant="whisper" icon={<AttachmentIcon />} />
       </Flex>
       <Flex w="full" justifyContent={"flex-end"} mt="1">
-        <Button size="xs" leftIcon={<AttachmentIcon />} variant="whisper">Reference</Button>
+        <Link
+          href={`/projects/${product.projectID}/productArea/${product.productArea.id}/products/${product.productID}/evaluation`}
+        >
+
+          <Button size="xs" variant="whisper">Evaluation</Button>
+        </Link>
       </Flex>
     </Card>
   );

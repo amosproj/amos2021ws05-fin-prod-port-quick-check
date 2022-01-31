@@ -9,7 +9,6 @@ import ProductRow from './ProductRow';
 
 export default function ProductOverview() {
   const items = useStoreState((state) => state.productList.items);
-  //const products = useStoreState((state) => state.productList.products);
   const fetchProducts = useStoreActions((actions) => actions.productList.fetch);
 
   const getAreaProducts = useStoreState((state) => state.productList.getAreaProducts);
@@ -71,10 +70,11 @@ export default function ProductOverview() {
             ></ProductRow>
           ))}
         </List>
-        <EditButtons />
+        <HStack><EditButtons />
         <Link href={`${productAreaID}/results`}>
           <Button>Generate Results</Button>
         </Link>
+        </HStack>
       </Page>
     </div>
   );

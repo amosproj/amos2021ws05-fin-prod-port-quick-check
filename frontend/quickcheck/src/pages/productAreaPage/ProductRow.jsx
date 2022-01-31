@@ -10,6 +10,7 @@ import {
   Link,
   Collapse,
   useDisclosure,
+  IconButton,
 } from '@chakra-ui/react';
 
 import { TriangleUpIcon, TriangleDownIcon } from '@chakra-ui/icons';
@@ -61,7 +62,7 @@ export default function ProductRow({ product, editMode }) {
           }}
           value={product.productName}
         />
-        <Flex w="full" mb={3}>
+        <Flex w="full" mb={3} alignItems={"center"}>
           <Spacer />
 
           <VStack>
@@ -81,10 +82,10 @@ export default function ProductRow({ product, editMode }) {
               <Button variant="whisper">Complexity</Button>
             </Link>
           </VStack>
-
           <Spacer />
           <Textarea
             width="50%"
+            mr="3"
             isReadOnly={!editMode}
             value={product.comment !== null ? product.comment : ''}
             onChange={(e) => {
@@ -92,6 +93,8 @@ export default function ProductRow({ product, editMode }) {
             }}
             placeholder="Anmerkung"
           />
+
+          <IconButton variant="whisper" icon={<AttachmentIcon />} />
         </Flex>
 
         <Flex w="full">
@@ -108,7 +111,11 @@ export default function ProductRow({ product, editMode }) {
           </Button>
 
           <Spacer />
-          <Button leftIcon={<AttachmentIcon/>} size="sm" variant="whisper"> Reference</Button>
+          <Link
+            href={`/projects/${product.projectID}/productArea/${product.productArea.id}/products/${product.productID}/evaluation`}
+          >
+            <Button size="sm" variant="whisper">Evaluation</Button>
+          </Link>
         </Flex>
       </Flex>
       <Flex w="full">
