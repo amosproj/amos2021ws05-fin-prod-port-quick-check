@@ -39,8 +39,7 @@ export default function ProductVariant({ product, editMode }) {
       direction="column"
       _hover={{ boxShadow: 'lg' }}
     >
-      <Flex direction="row" w="full" justifyContent="space-between" alignItems={"center"}>
-
+      <Flex direction="row" w="full" justifyContent="space-between" alignItems={'center'}>
         <Input
           align="center"
           size="lg"
@@ -58,20 +57,24 @@ export default function ProductVariant({ product, editMode }) {
         />
         <VStack>
           <HStack>
-          <CircularProgress size="35px" value={product.progressEconomic} />
+            <CircularProgress size="35px" value={product.progressEconomic} />
             <Link
               href={`/projects/${product.projectID}/productArea/${product.productArea.id}/products/${product.productID}/ratings/economic`}
             >
-              <Button size="sm" variant="whisper">Economical</Button>
+              <Button size="sm" variant="whisper">
+                Economical
+              </Button>
             </Link>
           </HStack>
           <HStack>
-          <CircularProgress size="35px" value={product.progressComplexity} />
-          <Link
-            href={`/projects/${product.projectID}/productArea/${product.productArea.id}/products/${product.productID}/ratings/complexity`}
-          >
-            <Button size="sm" variant="whisper">Complexity</Button>
-          </Link>
+            <CircularProgress size="35px" value={product.progressComplexity} />
+            <Link
+              href={`/projects/${product.projectID}/productArea/${product.productArea.id}/products/${product.productID}/ratings/complexity`}
+            >
+              <Button size="sm" variant="whisper">
+                Complexity
+              </Button>
+            </Link>
           </HStack>
         </VStack>
         <Textarea
@@ -84,8 +87,10 @@ export default function ProductVariant({ product, editMode }) {
           placeholder="Anmerkung"
         />
       </Flex>
-      <Flex w="full" justifyContent={"flex-end"} mt="1">
-        <Button size="xs" leftIcon={<AttachmentIcon />} variant="whisper">Reference</Button>
+      <Flex w="full" justifyContent={'flex-end'} mt="1">
+        <Button size="xs" leftIcon={<AttachmentIcon />} variant="whisper">
+          Reference
+        </Button>
       </Flex>
     </Card>
   );
