@@ -292,7 +292,7 @@ public class ProductService {
      * economic progress = attributes answer and score of ratings with id in VALUES_ECONOMIC is not null
      *
      * @param product entity for whom the progress is calculated
-     * @return list of products
+     * @return array of length 2, array[0] = economic progress, array[1] = complexity progress,
      */
     public float[] calculateProductRatingProgress(ProductEntity product){
 
@@ -306,9 +306,11 @@ public class ProductService {
         }else{
             for(ProductRatingEntity tmp: product.productRatingEntities){
                 if(tmp.productRatingId.getRating().ratingarea == RatingArea.ECONOMIC){
-                    counter[0] += 1;
-                    if(VALUES_ECONOMIC.contains(tmp.productRatingId.getRating().id) && tmp.answer != null && tmp.score != null){
-                        progressValues[0] += 1;
+                    if(VALUES_ECONOMIC.contains(tmp.productRatingId.getRating().id)) {
+                        counter[0] += 1;
+                        if (tmp.answer != null && tmp.score != null) {
+                            progressValues[0] += 1;
+                        }
                     }
                 }else{
                     counter[1] += 1;

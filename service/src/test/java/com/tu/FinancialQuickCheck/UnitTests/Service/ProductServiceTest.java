@@ -159,8 +159,6 @@ public class ProductServiceTest {
         productRatingEntity = new ProductRatingEntity();
         entity = new ProductEntity();
         entity.name = name;
-        //TODO: anpassen
-//        entity.productarea = 1;
         entity.project = projectEntity;
         entity.productRatingEntities = new ArrayList<>();
         ratingEntities = new ArrayList<>();
@@ -653,7 +651,7 @@ public class ProductServiceTest {
 
 
     /**
-     * tests for GetProductsByProjectIdAndProductAreaId()
+     * tests for getProductsByProjectIdAndProductAreaId()
      */
     @Test
     public void testGetProductsByProjectIdAndProductAreaId_resourceNotFound_projectID() {
@@ -701,6 +699,38 @@ public class ProductServiceTest {
         assertNotEquals(productEntities.size(), out.size());
         out.forEach( product -> assertNotEquals("DUMMY", product.productName));
     }
+
+    /**
+     * tests for calculateProductRatingProgress()
+     */
+    @Test
+    public void testCalculateProductRatingProgress_productRatingEntitiesIsNull(){
+
+        float[] out = service.calculateProductRatingProgress(preProductEntity);
+
+        assertEquals(0.0f, out[0]);
+        assertEquals(0.0f, out[1]);
+    }
+
+    @Test
+    public void testCalculateProductRatingProgress_productRatingEntitiesIsEmpty(){
+        preProductEntity.productRatingEntities = new ArrayList<>();
+
+        float[] out = service.calculateProductRatingProgress(preProductEntity);
+
+        assertEquals(0.0f, out[0]);
+        assertEquals(0.0f, out[1]);
+    }
+
+    @Test
+    public void testCalculateProductRatingProgress_productRatingEntitiesExist(){
+
+        float[] out = service.calculateProductRatingProgress(entity);
+
+        assertEquals(100.0f, out[0]);
+        assertEquals(100.0f, out[1]);
+    }
+
 
     /**
      * tests for createProductRatings()
