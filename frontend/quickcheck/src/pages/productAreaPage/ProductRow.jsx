@@ -1,115 +1,136 @@
 import {
   Input,
-  IconButton,
   Button,
   CircularProgress,
   Spacer,
   Textarea,
   VStack,
-  Box,
   Flex,
+  List,
   Link,
+  Collapse,
+  useDisclosure,
+  IconButton,
 } from '@chakra-ui/react';
-import React from 'react';
+
+import { TriangleUpIcon, TriangleDownIcon } from '@chakra-ui/icons';
+import { AttachmentIcon } from '@chakra-ui/icons';
+import AddProductButton from './AddProductButton';
+import React, { useState } from 'react';
 import Card from '../../components/Card';
-import { DeleteIcon } from '@chakra-ui/icons';
-import { useStoreActions } from 'easy-peasy';
-import { useState } from 'react';
+import { useStoreActions, useStoreState } from 'easy-peasy';
+import ProductVariant from './ProductVariant';
 
-function RemoveButton({ removeProdFct }) {
-  return (
-    <div>
-      <IconButton
-        icon={<DeleteIcon />}
-        onClick={() => {
-          removeProdFct();
-        }}
-        colorScheme="teal"
-        variant="outline"
-        size="md"
-        color="white"
-        bg="red.700"
-        w={10}
-      />
-    </div>
+export default function ProductRow({ product, editMode }) {
+  const { isOpen, onToggle } = useDisclosure();
+
+  const [validName, setValidName] = useState(true);
+  const updateProductName = useStoreActions((actions) => actions.productList.updateProductName);
+  const updateProductComment = useStoreActions(
+    (actions) => actions.productList.updateProductComment
   );
-}
+  const getVariants = useStoreState((state) => state.productList.getVariants);
+  const productVariants = getVariants(product);
 
-export default function ProductRow({ product, editMode, projectID }) {
-  const removeProductState = useStoreActions((actions) => actions.productList.removeProduct);
-  const changeProductName = useStoreActions((actions) => actions.productList.changeProductName);
-  const changeProductComment = useStoreActions(
-    (actions) => actions.productList.changeProductComment
-  );
-
-  const removeProduct = () => {
-    removeProductState(product);
+  const setName = (newName) => {
+    setValidName(newName !== '');
+    updateProductName({ productID: product.productID, newName });
   };
-
-  const setProduct = (productName) => {
-    product.productName = productName;
-    changeProductName(product);
-  };
-  const handleTextInputChange = (comment) => {
-    product.comment = comment;
-    changeProductComment(product);
+  const setComment = (newComment) => {
+    updateProductComment({ productID: product.productID, newComment });
   };
 
   return (
-    <div>
-      <Card
-        layerStyle="card_bordered"
-        justifyContent="space-between"
-        direction="row"
-        // w={(parentID > 0) ? ' 90%' : 'full'}
-        _hover={{ boxShadow: '2xl' }}
-      >
-        <Flex w="25%" mb={3}>
-          <Input
-            variant="bold"
-            align="center"
-            size="xl"
-            isDisabled={!editMode}
-            onChange={(e) => {
-              setProduct(e.target.value);
-            }}
-            value={product.productName}
-          />
-        </Flex>
-        <Flex w="75%">
+    <Card
+      layerStyle="card_bordered"
+      justifyContent="space-between"
+      direction="column"
+      pb={5}
+      _hover={{ boxShadow: '2xl' }}
+    >
+      <Flex direction="column" w="full" justifyContent="space-between">
+        <Input
+          mb={1}
+          variant="bold"
+          align="center"
+          size="2xl"
+          borderWidth={editMode ? 1 : 0}
+          isInvalid={!validName}
+          isDisabled={!editMode}
+          onChange={(e) => {
+            setName(e.target.value);
+          }}
+          value={product.productName}
+        />
+        <Flex w="full" mb={3} alignItems={'center'}>
           <Spacer />
-          <VStack mr={5}>
+
+          <VStack>
             <CircularProgress size="40px" value={product.progressEconomic} />
-            <Link href="/ratings">
+            <Link
+              href={`/projects/${product.projectID}/productArea/${product.productArea.id}/products/${product.productID}/ratings/economic`}
+            >
               <Button variant="whisper">Economical</Button>
             </Link>
           </VStack>
-          <VStack>
+
+          <VStack ml="5%">
             <CircularProgress size="40px" value={product.progressComplexity} />
-            <Link href="/ratings">
-              <Button variant="whisper" href="/ratings">
-                Complexity
-              </Button>
+            <Link
+              href={`/projects/${product.projectID}/productArea/${product.productArea.id}/products/${product.productID}/ratings/complexity`}
+            >
+              <Button variant="whisper">Complexity</Button>
             </Link>
           </VStack>
           <Spacer />
           <Textarea
             width="50%"
-            isDisabled={!editMode}
+            mr="3"
+            isReadOnly={!editMode}
             value={product.comment !== null ? product.comment : ''}
             onChange={(e) => {
-              handleTextInputChange(e.target.value);
+              setComment(e.target.value);
             }}
             placeholder="Anmerkung"
           />
 
-          {editMode ? (
-            <Box ml={3}>
-              <RemoveButton removeProdFct={removeProduct} />
-            </Box>
-          ) : undefined}
+          <IconButton variant="whisper" icon={<AttachmentIcon />} />
         </Flex>
-      </Card>
-    </div>
+
+        <Flex w="full">
+          {editMode ? <AddProductButton parentProductID={product.productID} mr={2} /> : undefined}
+          <Button
+            variant="link"
+            size="lg"
+            shadow={0}
+            onClick={onToggle}
+            rightIcon={isOpen ? <TriangleUpIcon /> : <TriangleDownIcon />}
+            px={5}
+          >
+            Variants ({productVariants.length})
+          </Button>
+
+          <Spacer />
+          <Link
+            href={`/projects/${product.projectID}/productArea/${product.productArea.id}/products/${product.productID}/evaluation`}
+          >
+            <Button size="sm" variant="whisper">
+              Evaluation
+            </Button>
+          </Link>
+        </Flex>
+      </Flex>
+      <Flex w="full">
+        <Collapse in={isOpen} w="100%" animateOpacity style={{ width: '100%' }}>
+          <Flex w="full" mt={5}>
+            <List w="full">
+              {productVariants.map((variant) => (
+                <ProductVariant product={variant} editMode={editMode} key={variant.productID} />
+              ))}
+            </List>
+          </Flex>
+        </Collapse>
+      </Flex>
+    </Card>
   );
 }
