@@ -8,7 +8,7 @@ import { ratingArea, score } from './utils/const';
 // first define the store model, then add actions to change the stored state and add 'thunks' for actions with side effects (e.g. api calls)
 
 const productAreaModel = {
-  products: [
+  items: [
     /*{
       productID: 0,
       productName: '',
@@ -21,28 +21,33 @@ const productAreaModel = {
     }*/
   ],
 
+  products: computed((state) => state.items.filter((p) => p.parentID === 0)),
+
+  getVariants: computed((state) => {
+    return (product) => state.items.filter((p) => p.parentID === product.productID);
+  }),
+
   getAreaProducts: computed((state) => {
     return (areaID) => state.products.filter((p) => p.productArea.id === areaID);
   }),
 
   set: action((state, products) => {
-    state.products = products;
+    state.items = products;
   }),
   addProduct: action((state, product) => {
-    state.products.push(product);
+    state.items.push(product);
   }),
-  changeProductName: action((state, product) => {
-    const index = state.products.map((p) => p.productID).indexOf(product.productID);
-    // get index of member with same email. if not found, index=-1
-    state.products[index] = { ...state.products[index], productName: product.productName };
+
+  updateProductName: action((state, { productID, newName }) => {
+    const index = state.items.map((p) => p.productID).indexOf(productID);
+    state.items[index] = { ...state.items[index], productName: newName };
   }),
-  changeProductComment: action((state, product) => {
-    const index = state.products.map((p) => p.productID).indexOf(product.productID);
-    // get index of member with same email. if not found, index=-1
-    state.products[index] = { ...state.products[index], comment: product.comment };
+  updateProductComment: action((state, { productID, newComment }) => {
+    const index = state.items.map((p) => p.productID).indexOf(productID);
+    state.items[index] = { ...state.items[index], comment: newComment };
   }),
   removeProduct: action((state, product) => {
-    state.products = state.products.filter((p) => p.productID !== product.productID);
+    state.items = state.items.filter((p) => p.productID !== product.productID);
   }),
   fetch: thunk(async (actions, id) => {
     console.log('/projects/' + id + '/products');

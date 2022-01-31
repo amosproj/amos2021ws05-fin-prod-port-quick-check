@@ -1,14 +1,14 @@
-answer,comment,score,product,rating
+answer,comment,score,productid,ratingid
 answer 1,comment 1,0,100,1
 answer 2,comment 2,1,100,2
 answer 3,comment 3,2,100,3
-answer 4,comment 4,2,100,4
-answer 5,comment 5,1,100,5
+10 Mio EUR,comment 4,2,100,4
+1.5 %,comment 5,1,100,5
 answer 6,comment 6,0,100,6
 answer 7,comment 7,1,100,7
 answer 8,comment 8,2,100,8
-answer 9,comment 9,0,100,9
-answer 10,comment 10,2,100,10
+,,0,100,9
+"5, 10, 85",,,100,10
 answer 11,comment 11,0,100,11
 answer 12,comment 12,1,100,12
 answer 13,comment 13,2,100,13
@@ -23,13 +23,13 @@ answer 21,comment 21,0,100,21
 answer 1,comment 1,0,101,1
 answer 2,comment 2,1,101,2
 answer 3,comment 3,2,101,3
-answer 4,comment 4,2,101,4
-answer 5,comment 5,1,101,5
+20 Mio EUR,comment 4,2,101,4
+5.0 %,comment 5,1,101,5
 answer 6,comment 6,0,101,6
 answer 7,comment 7,1,101,7
 answer 8,comment 8,2,101,8
-answer 9,comment 9,0,101,9
-answer 10,comment 10,2,101,10
+,,2,101,9
+"12, 5, 83",,,101,10
 answer 11,comment 11,0,101,11
 answer 12,comment 12,1,101,12
 answer 13,comment 13,2,101,13
@@ -44,13 +44,13 @@ answer 21,comment 21,0,101,21
 answer 1,comment 1,0,102,1
 answer 2,comment 2,1,102,2
 answer 3,comment 3,2,102,3
-answer 4,comment 4,2,102,4
-answer 5,comment 5,1,102,5
+5 Mio EUR,comment 4,2,102,4
+0.5 %,comment 5,1,102,5
 answer 6,comment 6,0,102,6
 answer 7,comment 7,1,102,7
 answer 8,comment 8,2,102,8
-answer 9,comment 9,0,102,9
-answer 10,comment 10,2,102,10
+,,1,102,9
+"62, 25, 13",,,102,10
 answer 11,comment 11,0,102,11
 answer 12,comment 12,1,102,12
 answer 13,comment 13,2,102,13
@@ -65,13 +65,13 @@ answer 21,comment 21,0,102,21
 answer 1,comment 1,0,103,1
 answer 2,comment 2,1,103,2
 answer 3,comment 3,2,103,3
-answer 4,comment 4,2,103,4
-answer 5,comment 5,1,103,5
+80 Mio EUR,comment 4,2,103,4
+10 %,comment 5,1,103,5
 answer 6,comment 6,0,103,6
 answer 7,comment 7,1,103,7
 answer 8,comment 8,2,103,8
-answer 9,comment 9,1,103,9
-answer 10,comment 10,2,103,10
+,,2,103,9
+"42, 13, 45",,,103,10
 answer 11,comment 11,0,103,11
 answer 12,comment 12,1,103,12
 answer 13,comment 13,2,103,13
@@ -86,13 +86,13 @@ answer 21,comment 21,0,103,21
 answer 1,comment 1,0,104,1
 answer 2,comment 2,1,104,2
 answer 3,comment 3,2,104,3
-answer 4,comment 4,2,104,4
-answer 5,comment 5,1,104,5
+60 Mio EUR,comment 4,2,104,4
+3 %,comment 5,1,104,5
 answer 6,comment 6,0,104,6
 answer 7,comment 7,1,104,7
 answer 8,comment 8,2,104,8
-answer 9,comment 9,2,104,9
-answer 10,comment 10,2,104,10
+,,0,104,9
+"30, 54, 16",,,104,10
 answer 11,comment 11,0,104,11
 answer 12,comment 12,1,104,12
 answer 13,comment 13,2,104,13
@@ -107,13 +107,13 @@ answer 21,comment 21,0,104,21
 answer 1,comment 1,0,105,1
 answer 2,comment 2,1,105,2
 answer 3,comment 3,2,105,3
-answer 4,comment 4,2,105,4
-answer 5,comment 5,1,105,5
+95 Mio EUR,comment 4,2,105,4
+7.5 %,comment 5,1,105,5
 answer 6,comment 6,0,105,6
 answer 7,comment 7,1,105,7
 answer 8,comment 8,2,105,8
-answer 9,comment 9,0,105,9
-answer 10,comment 10,2,105,10
+,,1,105,9
+"84, 16, 0",,,105,10
 answer 11,comment 11,0,105,11
 answer 12,comment 12,1,105,12
 answer 13,comment 13,2,105,13
@@ -128,13 +128,13 @@ answer 21,comment 21,0,105,21
 answer 1,comment 1,0,106,1
 answer 2,comment 2,1,106,2
 answer 3,comment 3,2,106,3
-answer 4,comment 4,2,106,4
-answer 5,comment 5,1,106,5
+70 Mio EUR,comment 4,2,106,4
+6 %,comment 5,1,106,5
 answer 6,comment 6,0,106,6
 answer 7,comment 7,1,106,7
 answer 8,comment 8,2,106,8
-answer 9,comment 9,0,106,9
-answer 10,comment 10,2,106,10
+,,2,106,9
+"46, 15, 39",,,106,10
 answer 11,comment 11,0,106,11
 answer 12,comment 12,1,106,12
 answer 13,comment 13,2,106,13
@@ -149,13 +149,13 @@ answer 21,comment 21,0,106,21
 answer 1,comment 1,0,107,1
 answer 2,comment 2,1,107,2
 answer 3,comment 3,2,107,3
-answer 4,comment 4,2,107,4
-answer 5,comment 5,1,107,5
+100 Mio EUR,comment 4,2,107,4
+20 %,comment 5,1,107,5
 answer 6,comment 6,0,107,6
 answer 7,comment 7,1,107,7
 answer 8,comment 8,2,107,8
-answer 9,comment 9,0,107,9
-answer 10,comment 10,2,107,10
+,,1,107,9
+"21, 38, 41",,,107,10
 answer 11,comment 11,0,107,11
 answer 12,comment 12,1,107,12
 answer 13,comment 13,2,107,13
@@ -170,13 +170,13 @@ answer 21,comment 21,0,107,21
 answer 1,comment 1,0,108,1
 answer 2,comment 2,1,108,2
 answer 3,comment 3,2,108,3
-answer 4,comment 4,2,108,4
-answer 5,comment 5,1,108,5
+200 Mio EUR,comment 4,2,108,4
+4 %,comment 5,1,108,5
 answer 6,comment 6,0,108,6
 answer 7,comment 7,1,108,7
 answer 8,comment 8,2,108,8
-answer 9,comment 9,1,108,9
-answer 10,comment 10,2,108,10
+,,1,108,9
+"85, 5, 10",,,108,10
 answer 11,comment 11,0,108,11
 answer 12,comment 12,1,108,12
 answer 13,comment 13,2,108,13
@@ -191,13 +191,13 @@ answer 21,comment 21,0,108,21
 answer 1,comment 1,0,109,1
 answer 2,comment 2,1,109,2
 answer 3,comment 3,2,109,3
-answer 4,comment 4,2,109,4
-answer 5,comment 5,1,109,5
+150 Mio EUR,comment 4,2,109,4
+13 %,comment 5,1,109,5
 answer 6,comment 6,0,109,6
 answer 7,comment 7,1,109,7
 answer 8,comment 8,2,109,8
-answer 9,comment 9,2,109,9
-answer 10,comment 10,2,109,10
+,,0,109,9
+"70, 15, 15",,,109,10
 answer 11,comment 11,0,109,11
 answer 12,comment 12,1,109,12
 answer 13,comment 13,2,109,13
