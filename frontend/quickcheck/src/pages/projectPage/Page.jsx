@@ -69,8 +69,8 @@ export default function Project() {
   };
 
   return (
-    <Page title="Manage Project">
-      <VStack>
+    <Page title="Manage Project" >
+      <VStack w="full">
         <Card layerStyle="card_bar" justifyContent="center">
           <Heading variant="upper" size="md" mr={3} align="center">
             Project:
