@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 
 import { TriangleUpIcon, TriangleDownIcon } from '@chakra-ui/icons';
-import { AttachmentIcon } from '@chakra-ui/icons'
+import { AttachmentIcon } from '@chakra-ui/icons';
 import AddProductButton from './AddProductButton';
 import React, { useState } from 'react';
 import Card from '../../components/Card';
@@ -108,7 +108,10 @@ export default function ProductRow({ product, editMode }) {
           </Button>
 
           <Spacer />
-          <Button leftIcon={<AttachmentIcon/>} variant="whisper"> Reference</Button>
+          <Button leftIcon={<AttachmentIcon />} variant="whisper">
+            {' '}
+            Reference
+          </Button>
         </Flex>
       </Flex>
       <Flex w="full">

@@ -1,12 +1,4 @@
-import {
-  Input,
-  Button,
-  Spacer,
-  Textarea,
-  Link,
-  Flex,
-  useColorModeValue,
-} from '@chakra-ui/react';
+import { Input, Button, Spacer, Textarea, Link, Flex, useColorModeValue } from '@chakra-ui/react';
 import { React, useState } from 'react';
 import { AttachmentIcon } from '@chakra-ui/icons';
 import Card from '../../components/Card';
@@ -83,7 +75,9 @@ export default function ProductVariant({ product, editMode }) {
         </Flex>
         <Flex w="50%">
           <Spacer />
-          <Button leftIcon={<AttachmentIcon/>} variant="whisper">Reference</Button>
+          <Button leftIcon={<AttachmentIcon />} variant="whisper">
+            Reference
+          </Button>
         </Flex>
       </Flex>
     </Card>
