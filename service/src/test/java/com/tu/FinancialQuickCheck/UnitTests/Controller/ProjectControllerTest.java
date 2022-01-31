@@ -229,7 +229,7 @@ public class ProjectControllerTest {
         int projectID = 1;
 
         // provide knowledge
-        when(productService.wrapper_createProduct(projectID, productDto)).thenReturn(null);
+        when(productService.wrapperCreateProduct(projectID, productDto)).thenReturn(null);
 
         // execute test method and assert
         Exception exception;
@@ -247,7 +247,7 @@ public class ProjectControllerTest {
         int projectID = 1;
 
         // provide knowledge
-        when(productService.wrapper_createProduct(projectID, productDto)).thenReturn(listProductDtos);
+        when(productService.wrapperCreateProduct(projectID, productDto)).thenReturn(listProductDtos);
 
         // execute test method and assert
         List<ProductDto> out = controller.createProduct(projectID, productDto);

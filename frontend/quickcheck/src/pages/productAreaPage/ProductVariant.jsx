@@ -40,8 +40,7 @@ export default function ProductVariant({ product, editMode }) {
       direction="column"
       _hover={{ boxShadow: 'lg' }}
     >
-      <Flex direction="row" w="full" justifyContent="space-between" alignItems={"center"}>
-
+      <Flex direction="row" w="full" justifyContent="space-between" alignItems={'center'}>
         <Input
           align="center"
           size="lg"
@@ -63,7 +62,9 @@ export default function ProductVariant({ product, editMode }) {
             <Link
               href={`/projects/${product.projectID}/productArea/${product.productArea.id}/products/${product.productID}/ratings/economic`}
             >
-              <Button size="sm" variant="whisper">Economical</Button>
+              <Button size="sm" variant="whisper">
+                Economical
+              </Button>
             </Link>
           </HStack>
           <HStack>
