@@ -9,7 +9,7 @@ import { useStoreActions, useStoreState } from 'easy-peasy';
 import Card from '../../components/Card';
 import Page from '../../components/Page';
 import Figure from './Figure';
-import {colors} from './Figure';
+import { colors } from './Figure';
 const mock = [
   {
     name: 'Interview 1',
@@ -30,7 +30,6 @@ const mock = [
     name: 'Paper 1',
     author: 'Olaf Scholz',
     id: 3,
-
   },
 ];
 
@@ -66,13 +65,13 @@ export default function ResultPage() {
     fetchResults(projectID);
     //setRatingsData(mockRatings.ratings);
   }, []);
- if (results !=null & results.length!==0){
-for (let s=0; s<sources.length; s++){
-    console.log(results)
-    sources[s]["color"]=colors[s%colors.length];
-    sources[s]["author"]=results[s%results.length]['productName'];
-}
-}
+  if ((results != null) & (results.length !== 0)) {
+    for (let s = 0; s < sources.length; s++) {
+      console.log(results);
+      sources[s]['color'] = colors[s % colors.length];
+      sources[s]['author'] = results[s % results.length]['productName'];
+    }
+  }
   console.log('First', { results });
   return (
     <div>

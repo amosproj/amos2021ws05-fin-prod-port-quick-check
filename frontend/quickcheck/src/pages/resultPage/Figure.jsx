@@ -199,13 +199,12 @@ function Figure({ results }) {
         label: results[i]['productName'],
         data: [
           {
-            y: marge,//.toFixed(2),
+            y: marge, //.toFixed(2),
             x: complexity.toFixed(2),
             //r: kreditradius,
 
-            r: kreditvolumen,//.toFixed(2),
-            volume: kreditvolumen,//.toFixed(2)
-
+            r: kreditvolumen, //.toFixed(2),
+            volume: kreditvolumen, //.toFixed(2)
           },
         ],
         backgroundColor: colors[i % colors.length],
