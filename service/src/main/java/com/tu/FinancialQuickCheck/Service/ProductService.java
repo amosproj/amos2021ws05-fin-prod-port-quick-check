@@ -68,7 +68,6 @@ public class ProductService {
             for(ProductDto dto: tmp){
                 ProductDto dtoOut = findById(dto.productID);
                 out.add(dtoOut);
-                createProductRatings(dtoOut.productID);
             }
             return out;
         }else{
@@ -112,11 +111,16 @@ public class ProductService {
                 }
             }
 
-            entities = repository.saveAllAndFlush(entities);
+            repository.saveAllAndFlush(entities);
 
             //TODO: Product Area is missing in entity produces a nullpoint exception
             List<ProductDto> createdProducts = new ArrayList<>();
 //            entities.forEach(entity -> createdProducts.add(new ProductDto(entity)));
+
+            for(ProductEntity tmp: entities){
+                createProductRatings(tmp.id);
+            }
+
             return createdProducts;
 
         }else {
