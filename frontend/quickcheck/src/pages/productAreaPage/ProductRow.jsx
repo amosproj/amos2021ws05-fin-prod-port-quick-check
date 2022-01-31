@@ -108,14 +108,7 @@ export default function ProductRow({ product, editMode }) {
           </Button>
 
           <Spacer />
-<<<<<<< HEAD
           <Button leftIcon={<AttachmentIcon/>} size="sm" variant="whisper"> Reference</Button>
-=======
-          <Button leftIcon={<AttachmentIcon />} variant="whisper">
-            {' '}
-            Reference
-          </Button>
->>>>>>> 126cf677def1a9e24212b00498480b7b468e4c34
         </Flex>
       </Flex>
       <Flex w="full">

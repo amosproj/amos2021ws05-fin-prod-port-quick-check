@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import {
   Input,
   Button,
@@ -10,9 +9,6 @@ import {
   VStack,
   HStack,
 } from '@chakra-ui/react';
-=======
-import { Input, Button, Spacer, Textarea, Link, Flex, useColorModeValue } from '@chakra-ui/react';
->>>>>>> 126cf677def1a9e24212b00498480b7b468e4c34
 import { React, useState } from 'react';
 import { AttachmentIcon } from '@chakra-ui/icons';
 import Card from '../../components/Card';
@@ -88,35 +84,8 @@ export default function ProductVariant({ product, editMode }) {
           placeholder="Anmerkung"
         />
       </Flex>
-<<<<<<< HEAD
       <Flex w="full" justifyContent={"flex-end"} mt="1">
         <Button size="xs" leftIcon={<AttachmentIcon />} variant="whisper">Reference</Button>
-=======
-      <Flex direction="row" w="full">
-        <Flex w="50%">
-          <Spacer />
-
-          <Link
-            href={`/projects/${product.projectID}/productArea/${product.productArea.id}/products/${product.productID}/ratings/economic`}
-          >
-            <Button variant="whisper">Economical</Button>
-          </Link>
-          <Spacer />
-
-          <Link
-            href={`/projects/${product.projectID}/productArea/${product.productArea.id}/products/${product.productID}/ratings/complexity`}
-          >
-            <Button variant="whisper">Complexity</Button>
-          </Link>
-          <Spacer />
-        </Flex>
-        <Flex w="50%">
-          <Spacer />
-          <Button leftIcon={<AttachmentIcon />} variant="whisper">
-            Reference
-          </Button>
-        </Flex>
->>>>>>> 126cf677def1a9e24212b00498480b7b468e4c34
       </Flex>
     </Card>
   );
