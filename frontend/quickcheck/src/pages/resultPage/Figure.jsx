@@ -26,30 +26,28 @@ function ShowPieCharts({ results }) {
   //console.log('test', { results });
   var rows = [];
 
-  var index=0;
+  var index = 0;
   for (let i = 0; i < results.length / 4; i++) {
     rows[i] = [];
     rows[i]['key'] = i;
- var kundenValues=[0,0,0]
+    var kundenValues = [0, 0, 0];
     for (let j = 0; j < 4 && i * 4 + j < results.length; j++) {
-         index = i * 4 + j;
-         kundenValues=[0,0,0]
-         var unfinishedFlag=0;
+      index = i * 4 + j;
+      kundenValues = [0, 0, 0];
+      var unfinishedFlag = 0;
 
-        for (let r=0; r< results[j]["ratings"].length; r++){
-            if (results[j]["ratings"][r]["answer"]==null){
-                unfinishedFlag=1
-            }
-            else if (results[j]["ratings"][r]["rating"]["criterion"]=='Kunde'){
-                var kundenValuesTmp=results[j]["ratings"][r]["answer"].split(', ');
-                for (let k=0; k<kundenValuesTmp.length; k++ ){
-                    kundenValues[k]=parseFloat(kundenValuesTmp[k]);
-                }
-                //console.log("kundenValues", kundenValues);
-                //results[i]["ratings"][r]["answer"]=kundenValues;
-            }
+      for (let r = 0; r < results[j]['ratings'].length; r++) {
+        if (results[j]['ratings'][r]['answer'] == null) {
+          unfinishedFlag = 1;
+        } else if (results[j]['ratings'][r]['rating']['criterion'] == 'Kunde') {
+          var kundenValuesTmp = results[j]['ratings'][r]['answer'].split(', ');
+          for (let k = 0; k < kundenValuesTmp.length; k++) {
+            kundenValues[k] = parseFloat(kundenValuesTmp[k]);
+          }
+          //console.log("kundenValues", kundenValues);
+          //results[i]["ratings"][r]["answer"]=kundenValues;
         }
-
+      }
 
       var kundenTotal = 0;
       for (let x = 0; x < kundenValues.length; x++) {
@@ -60,7 +58,7 @@ function ShowPieCharts({ results }) {
         kundenValues[x] = (parseFloat(kundenValues[x]) / kundenTotal) * 100;
       }
       var ratingValues = results[index]['counts']; //
-      var adaptedRatingValues=[0,0,0]
+      var adaptedRatingValues = [0, 0, 0];
       var ratingTotal = 0;
       rows[i][j] = [];
 
@@ -70,26 +68,23 @@ function ShowPieCharts({ results }) {
       }
       if (ratingTotal === 0) {
         adaptedRatingValues = [0];
+      } else {
+        for (let x = 0; x < ratingValues.length; x++) {
+          adaptedRatingValues[x] = (parseFloat(ratingValues[x]) / ratingTotal) * 100;
+        }
       }
-      else{
-      for (let x = 0; x < ratingValues.length; x++) {
-        adaptedRatingValues[x] = (parseFloat(ratingValues[x]) / ratingTotal) * 100;
-      }
-    }
       //console.log(kundenValues, j, index);
       rows[i][j]['key'] = { index };
       rows[i][j][0] = colors[index % colors.length];
       rows[i][j][1] = results[index]['productName'];
       rows[i][j][2] = kundenValues;
       rows[i][j][3] = adaptedRatingValues;
-      if (unfinishedFlag==1){
-          rows[i][j][4] = "unfinished";
-      }
-      else{
-           rows[i][j][4] = results[index]['counts'];
+      if (unfinishedFlag == 1) {
+        rows[i][j][4] = 'unfinished';
+      } else {
+        rows[i][j][4] = results[index]['counts'];
       }
     }
-
   }
 
   return (
@@ -132,11 +127,11 @@ function PieChartRow({ row_data }) {
 }
 
 function Figure({ results }) {
-    var maxbX=0;
-    var maxbY=0;
-    var minbX=100;
-    var minbY=100;
-    var maxR=0;
+  var maxbX = 0;
+  var maxbY = 0;
+  var minbX = 100;
+  var minbY = 100;
+  var maxR = 0;
   var data = {
     click: function ({ chart, element }) {
       console.log(' ');
@@ -146,27 +141,26 @@ function Figure({ results }) {
   if (results !== null) {
     //console.log('test0', { results });
     var scores = [1, 2, 3];
-    var marge=0;
+    var marge = 0;
 
-    var kreditradius=0;
-    var kreditvolumen=0;
-    var kundenValues=[0,0,0]
+    var kreditradius = 0;
+    var kreditvolumen = 0;
+    var kundenValues = [0, 0, 0];
     for (let i = 0; i < results.length; i++) {
-        for (let r=0; r< results[i]["ratings"].length; r++){
-            //console.log(results[i]["ratings"][r]["rating"]["criterion"])
-            if (results[i]["ratings"][r]["rating"]["criterion"]=="Marge"){
-                marge=parseFloat(results[i]["ratings"][r]["answer"]);
-                //console.log(marge)
-            }
-            if (results[i]["ratings"][r]["rating"]["criterion"]=="Kreditvolumen im Bestand"){
-                kreditvolumen=parseFloat(results[i]["ratings"][r]["answer"]);
-                kreditradius=kreditvolumen/3.14;
-                kreditradius=Math.sqrt(kreditradius)
-                //kreditradius=kreditradius*10
-                //console.log(kreditvolumen)
-            }
-
+      for (let r = 0; r < results[i]['ratings'].length; r++) {
+        //console.log(results[i]["ratings"][r]["rating"]["criterion"])
+        if (results[i]['ratings'][r]['rating']['criterion'] == 'Marge') {
+          marge = parseFloat(results[i]['ratings'][r]['answer']);
+          //console.log(marge)
         }
+        if (results[i]['ratings'][r]['rating']['criterion'] == 'Kreditvolumen im Bestand') {
+          kreditvolumen = parseFloat(results[i]['ratings'][r]['answer']);
+          kreditradius = kreditvolumen / 3.14;
+          kreditradius = Math.sqrt(kreditradius);
+          //kreditradius=kreditradius*10
+          //console.log(kreditvolumen)
+        }
+      }
       var complexity = 0;
 
       var values = results[i]['scores'];
@@ -184,23 +178,23 @@ function Figure({ results }) {
       }
       //complexity = parseFloat(results[i]['ratings'][2]['answer']) / complexity;
 
-       complexity = kreditvolumen/ complexity;
-      if (marge>maxbY){
-          maxbY=marge;
+      complexity = kreditvolumen / complexity;
+      if (marge > maxbY) {
+        maxbY = marge;
       }
-      if (marge<minbY){
-          minbY=marge;
+      if (marge < minbY) {
+        minbY = marge;
       }
-      if (complexity>maxbX){
-          maxbX=complexity
+      if (complexity > maxbX) {
+        maxbX = complexity;
       }
-     if (complexity<minbX){
-          minbX=complexity
-         console.log("minbx", minbX)
-     }
-    if (kreditradius>maxR){
-        maxR=kreditradius;
-    }
+      if (complexity < minbX) {
+        minbX = complexity;
+        console.log('minbx', minbX);
+      }
+      if (kreditradius > maxR) {
+        maxR = kreditradius;
+      }
       data['datasets'][i] = {
         label: results[i]['productName'],
         data: [
@@ -208,21 +202,22 @@ function Figure({ results }) {
             y: marge,//.toFixed(2),
             x: complexity.toFixed(2),
             //r: kreditradius,
+
             r: kreditvolumen,//.toFixed(2),
             volume: kreditvolumen,//.toFixed(2)
-          },
 
+          },
         ],
         backgroundColor: colors[i % colors.length],
       };
     }
   }
-  maxbX=parseInt(maxbX+maxR);
-  maxbY=parseInt(maxbY+maxR);
-  minbX=parseInt(minbX-maxR);
-  minbY=parseInt(minbY-maxR);
-  minbY=0;
-  minbX=0;
+  maxbX = parseInt(maxbX + maxR);
+  maxbY = parseInt(maxbY + maxR);
+  minbX = parseInt(minbX - maxR);
+  minbY = parseInt(minbY - maxR);
+  minbY = 0;
+  minbX = 0;
   //console.log('test1', { results });
   return (
     <div>
@@ -234,7 +229,13 @@ function Figure({ results }) {
           justifyContent="space-between"
           alignItems="stretch"
         >
-          <BubbleGraph data={data} minbX={minbX} maxbX={maxbX} minbY={minbY} maxbY={maxbY}></BubbleGraph>
+          <BubbleGraph
+            data={data}
+            minbX={minbX}
+            maxbX={maxbX}
+            minbY={minbY}
+            maxbY={maxbY}
+          ></BubbleGraph>
           <ShowPieCharts results={results} />
         </Flex>
       </Card>
