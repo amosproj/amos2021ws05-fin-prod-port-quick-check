@@ -764,7 +764,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testCreateProductRatings_test() {
+    public void testCreateProductRatings_resourceNotFound_ratingsNotInitilizedInDB() {
         // Step 0: init test object
         int productID = 1;
         ratingEntities = new ArrayList<>();
@@ -774,12 +774,15 @@ public class ProductServiceTest {
         when(repository.getById(productID)).thenReturn(entity);
         when(ratingRepository.findAll()).thenReturn(ratingEntities);
 
-        // Step 2: Execute updateProject()
-        ProductDto out = service.createProductRatings(productID);
 
-        // Step 3: assert exception
-        assertEquals(createDto.productName , out.productName);
-        assertEquals(0, out.ratings.size());
+        // Step 2: Execute updateProject()
+        Exception exception = assertThrows(ResourceNotFound.class,
+                () -> service.createProductRatings(productID));
+
+        String expectedMessage = "Ratings not initilized.";
+        String actualMessage = exception.getMessage();
+
+        assertEquals(expectedMessage, actualMessage);
     }
 
     @Test

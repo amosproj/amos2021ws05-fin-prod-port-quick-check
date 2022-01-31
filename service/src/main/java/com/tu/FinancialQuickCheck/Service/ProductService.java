@@ -344,6 +344,7 @@ public class ProductService {
      * Adds for one product all existing ratings to db.
      *
      * @param productID unique identifier of product entity
+     * @throws ResourceNotFound when db table rating has no entries
      * @return product with created product ratings
      */
     @Transactional
@@ -373,6 +374,10 @@ public class ProductService {
     public List<ProductRatingEntity> initProductRatings(ProductEntity product){
         List<ProductRatingEntity> newProductRatings = new ArrayList<>();
         List<RatingEntity> ratings = ratingRepository.findAll();
+
+        if(ratings.isEmpty()){
+            throw new ResourceNotFound("Ratings not initilized.");
+        }
 
         for(RatingEntity rating: ratings){
             ProductRatingEntity productRating = new ProductRatingEntity();
