@@ -1,6 +1,5 @@
 package com.tu.FinancialQuickCheck.dto;
 
-import com.tu.FinancialQuickCheck.db.ProductAreaEntity;
 import com.tu.FinancialQuickCheck.db.ProductEntity;
 import com.tu.FinancialQuickCheck.db.ProductRatingEntity;
 import java.util.ArrayList;
@@ -27,36 +26,6 @@ public class ProductDto {
 
     public ProductDto(){}
 
-
-    public ProductDto(String name, ProductAreaDto productArea){
-        this.productName = name;
-        this.productArea = productArea;
-    }
-
-
-    public ProductDto(int id, int projectID, ProductAreaEntity productArea){
-        this.productID = id;
-        this.projectID = projectID;
-        this.productArea = new ProductAreaDto(productArea);
-    }
-
-
-    public ProductDto(int id, String name, int projectID, ProductAreaEntity productArea, ProductEntity parent){
-        this.productID = id;
-        this.productName = name;
-        this.projectID = projectID;
-        this.productArea = new ProductAreaDto(productArea);
-        this.parentID = convertParentEntity(parent);
-    }
-
-
-    public ProductDto(int id, String name, int projectID, ProductEntity parent){
-        this.productID = id;
-        this.productName = name;
-        this.projectID = projectID;
-        this.parentID = convertParentEntity(parent);
-    }
-
     // used for ProductRatings
     public ProductDto(ProductEntity product, List<ProductRatingEntity> productRatingEntities)
     {
@@ -68,7 +37,7 @@ public class ProductDto {
         this.ratings = convertProductRatingEntities(productRatingEntities);
     }
 
-    // used in ProductService
+    // used in ProductService to get products
     public ProductDto(ProductEntity product, float[] progress){
         this.productID = product.id;
         this.productName = product.name;
@@ -81,6 +50,18 @@ public class ProductDto {
         this.resources = new ArrayList<>();
     }
 
+    // used in ProductService to created products
+    public ProductDto(ProductEntity product){
+        this.productID = product.id;
+        this.productName = product.name;
+        this.productArea = new ProductAreaDto(product.productarea);
+        this.projectID = product.project.id;
+        this.parentID = convertParentEntity(product.parentProduct);
+        this.progressComplexity = 0;
+        this.progressEconomic = 0;
+        this.comment = product.comment;
+        this.resources = new ArrayList<>();
+    }
 
     private List<ProductRatingDto> convertProductRatingEntities(List<ProductRatingEntity> productRatingEntities) {
         List<ProductRatingDto> tmp = new ArrayList<>();
@@ -91,11 +72,18 @@ public class ProductDto {
         return tmp;
     }
 
-    private int convertParentEntity(ProductEntity parentEntity) {
+    public int convertParentEntity(ProductEntity parentEntity) {
         if(parentEntity != null){
             return parentEntity.id;
         }else{
             return 0;
         }
+    }
+
+    public boolean isProductVariant(){
+        if(this.parentID != 0){
+            return Boolean.TRUE;
+        }
+        return Boolean.FALSE;
     }
 }
