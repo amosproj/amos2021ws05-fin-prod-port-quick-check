@@ -250,7 +250,7 @@ function Figure({ results }) {
           justifyContent="space-between"
           alignItems="stretch"
         >
-          <Heading size="sm">Bubble Size = Volume in EUR </Heading>
+          <Text size="sm">Bubble Size = Volume in EUR </Text>
 
           <Flex
             flexDirection="row"
