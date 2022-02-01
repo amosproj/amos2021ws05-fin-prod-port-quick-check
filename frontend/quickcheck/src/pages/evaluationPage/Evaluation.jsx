@@ -36,7 +36,7 @@ export default function Evaluation() {
   function DataTabs({ data }) {
     return (
       <Page title="Evaluation" backref={`/projects/${projectID}/productArea/${productAreaID}`}>
-        <Tabs>
+        <Tabs w="full">
           <TabList>
             {data.map((complexityDriver) => (
               <Tab key={complexityDriver[1]}>{complexityDriver[0]}</Tab>
