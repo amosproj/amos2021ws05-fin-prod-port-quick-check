@@ -58,7 +58,6 @@ const productAreaModel = {
       .catch(console.error);
   }),
   createProduct: thunk(async (actions, newProduct) => {
-    //console.log(JSON.stringify({projectID, ...newProduct}))
     console.log(JSON.stringify(newProduct));
     await api
       .url('/projects/' + newProduct.projectID + '/products')
