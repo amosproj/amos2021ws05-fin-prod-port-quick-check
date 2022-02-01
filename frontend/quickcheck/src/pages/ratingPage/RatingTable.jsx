@@ -1,8 +1,9 @@
-import { Flex, Input, Spacer, List, Textarea } from '@chakra-ui/react';
+import {Flex, Input, Spacer, List, Textarea, IconButton} from '@chakra-ui/react';
 import React, { useState } from 'react';
 import Card from '../../components/Card';
 import Selection from '../../components/Selection';
 import { useStoreActions, useStoreState } from 'easy-peasy';
+import {AttachmentIcon} from "@chakra-ui/icons";
 
 function RatingRow({ rating, onChangeScore }) {
   const changeRatingAnswer = useStoreActions((actions) => actions.product_rating.changeAnswer);
@@ -66,16 +67,7 @@ function RatingRow({ rating, onChangeScore }) {
           }}
         />
         <Spacer />
-        <Input
-          align="center"
-          size="md"
-          w="25%"
-          isDisabled={true}
-          onChange={(e) => {
-            console.log(e.target.value);
-          }}
-          value={'Upload'}
-        />
+        <IconButton variant="whisper" icon={<AttachmentIcon />} />
       </Card>
     </div>
   );

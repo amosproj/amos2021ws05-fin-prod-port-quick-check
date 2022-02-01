@@ -11,7 +11,7 @@ import { useParams } from 'react-router-dom';
 
 export default function Evaluation() {
   const [ratingsPerCategory, setRatingsPerCategory] = useState([]);
-  const productData = useStoreState((state) => state.rating.ratings);
+  const productData = useStoreState((state) => state.rating.product);
   const fetchRatings = useStoreActions((actions) => actions.rating.fetch);
 
   const { productID } = useParams();
@@ -56,7 +56,7 @@ export default function Evaluation() {
       </Page>
     );
   }
-  if (productData.ratings != undefined) {
+  if (productData.ratings != undefined && productData.productID != -1) {
     computeEvaluationPerCategory(productData.ratings);
   }
   return <DataTabs data={Object.entries(ratingsPerCategory)} />;
