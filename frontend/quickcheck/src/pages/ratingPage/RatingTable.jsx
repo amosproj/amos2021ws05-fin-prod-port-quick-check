@@ -54,7 +54,7 @@ function RatingRow({ rating, onChangeScore }) {
         </VStack>
 
         <Selection
-          w="12.5%"
+          w="125px"
           options={['GERING', 'MITTEL', 'HOCH']}
           selected={rating.score}
           onChange={onChangeScore}

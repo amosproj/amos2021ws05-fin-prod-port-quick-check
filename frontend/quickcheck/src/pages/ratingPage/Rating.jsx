@@ -56,13 +56,13 @@ export default function Rating() {
         title={capitalizeFirst(ratingArea) + ' Rating'}
         backref={`/projects/${projectID}/productArea/${productAreaID}`}
       >
-        <Tabs>
-          <TabList w="full">
+        <Tabs w="full">
+          <TabList >
             {data.map((complexityDriver) => (
               <Tab key={complexityDriver[1]}>{complexityDriver[0]}</Tab>
             ))}
           </TabList>
-          <TabPanels w="full">
+          <TabPanels >
             {data.map((complexityDriver) => (
               <TabPanel p={4} key={complexityDriver[0]}>
                 <Card direction="column">
