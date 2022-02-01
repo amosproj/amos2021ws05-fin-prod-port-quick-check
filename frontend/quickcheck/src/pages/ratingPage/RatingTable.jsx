@@ -1,9 +1,9 @@
-import {Flex, Input, Spacer, List, Textarea, IconButton} from '@chakra-ui/react';
+import { Flex, Input, Text, Spacer, List, Textarea, IconButton, HStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import Card from '../../components/Card';
 import Selection from '../../components/Selection';
 import { useStoreActions, useStoreState } from 'easy-peasy';
-import {AttachmentIcon} from "@chakra-ui/icons";
+import { AttachmentIcon } from "@chakra-ui/icons";
 
 function RatingRow({ rating, onChangeScore }) {
   const changeRatingAnswer = useStoreActions((actions) => actions.product_rating.changeAnswer);
@@ -11,10 +11,8 @@ function RatingRow({ rating, onChangeScore }) {
   const productData = useStoreState((state) => state.product_rating.product);
 
   const handleAnswerChange = (newRating) => {
-    if (rating.ratingID == 10)
-    {
-      if(newRating.match("^[1-9]\\d{0,2}(?:,\\d{0,2}(?:,\\d{0,2})?)?$") == null)
-      {
+    if (rating.ratingID == 10) {
+      if (newRating.match("^[1-9]\\d{0,2}(?:,\\d{0,2}(?:,\\d{0,2})?)?$") == null) {
         alert("Falsches Format")
       }
       else {
@@ -33,56 +31,51 @@ function RatingRow({ rating, onChangeScore }) {
   };
 
   return (
-    <div>
-      <Card
-        layerStyle="card_bordered"
-        justifyContent="space-between"
-        // w={(parentID > 0) ? ' 90%' : 'full'}
-        _hover={{ boxShadow: '2xl' }}
-        align="center"
-      >
-        <Textarea
+    <Card
+      layerStyle="card_bordered"
+      justifyContent="space-between"
+      // w={(parentID > 0) ? ' 90%' : 'full'}
+      direction="column"
+    >
+      <Flex direction="row" justifyContent={"space-between"} w="full" mb={2}>
+        {/* <Input
           isReadOnly={true}
           align="center"
-          size="md"
-          width="100%"
           placeholder={'Frage'}
+          w="full"
           value={rating.rating.criterion}
-        />
-      </Card>
-      <Card layerStyle="card_bordered" justifyContent="space-between" _hover={{ boxShadow: '2xl' }}>
-        <Spacer />
+        /> */}
+        <Text>{rating.rating.criterion}</Text>
+      </Flex>
+      <Flex direction="row" justifyContent={"space-between"} w="full" mb={2} alignItems={"center"}>
         <Textarea
           align="center"
-          size="md"
-          width="100%"
+          w="40%"
           placeholder={'Anwort'}
           value={rating.answer}
           onChange={(e) => {
             handleAnswerChange(e.target.value);
           }}
         />
-        <Spacer />
+
         <Selection
           options={['GERING', 'MITTEL', 'HOCH']}
+          w="12.5%"
           selected={rating.score}
           onChange={onChangeScore}
         ></Selection>
-        <Spacer />
-        <Textarea
-          align="center"
-          size="md"
-          width="100%"
-          placeholder={'Anmerkungen'}
-          value={rating.comment}
-          onChange={(e) => {
-            handleCommentChange(e.target.value);
-          }}
-        />
-        <Spacer />
-        <IconButton variant="whisper" icon={<AttachmentIcon />} />
-      </Card>
-    </div>
+        <HStack w="40%">
+          <Textarea
+            placeholder={'Anmerkungen'}
+            value={rating.comment}
+            onChange={(e) => {
+              handleCommentChange(e.target.value);
+            }}
+          />
+          <IconButton variant="whisper" icon={<AttachmentIcon />} />
+        </HStack>
+      </Flex>
+    </Card>
   );
 }
 

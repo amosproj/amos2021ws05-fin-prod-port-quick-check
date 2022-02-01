@@ -84,13 +84,13 @@ export default function Rating() {
   function DataTabs({ data }) {
     return (
       <Page title={toTitles(ratingArea) + ' Rating'}>
-        <Tabs>
+        <Tabs w="full">
           <TabList>
             {data.map((complexityDriver) => (
               <Tab key={complexityDriver[1]}>{complexityDriver[0]}</Tab>
             ))}
           </TabList>
-          <TabPanels>
+          <TabPanels w="full">
             {data.map((complexityDriver) => (
               <TabPanel p={4} key={complexityDriver[0]}>
                 <Card direction="column">
