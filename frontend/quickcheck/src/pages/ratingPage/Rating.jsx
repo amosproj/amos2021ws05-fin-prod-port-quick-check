@@ -3,17 +3,16 @@ import { useParams } from 'react-router-dom';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import { Button, Link, Tabs, TabList, TabPanels, Tab, TabPanel, HStack } from '@chakra-ui/react';
 
-import { score } from '../../utils/const';
 import Page from '../../components/Page';
 import Card from '../../components/Card';
 import RatingTable from './RatingTable';
 
 //http://localhost:3000/projects/100/productArea/1/products/100/ratings
 
-function toTitles(s) {
-  return s.replace(/\w\S*/g, function (t) {
-    return t.charAt(0).toUpperCase() + t.substr(1).toLowerCase();
-  });
+function capitalizeFirst(str) {
+  const first = str.charAt(0);
+  const rest = str.substr(1);
+  return first.toUpperCase() + rest;
 }
 
 export default function Rating() {
@@ -54,7 +53,7 @@ export default function Rating() {
   function DataTabs({ data }) {
     return (
       <Page
-        title={toTitles(ratingArea) + ' Rating'}
+        title={capitalizeFirst(ratingArea) + ' Rating'}
         backref={`/projects/${projectID}/productArea/${productAreaID}`}
       >
         <Tabs>
