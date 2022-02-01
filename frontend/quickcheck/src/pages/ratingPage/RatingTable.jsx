@@ -11,8 +11,21 @@ function RatingRow({ rating, onChangeScore }) {
   const productData = useStoreState((state) => state.product_rating.product);
 
   const handleAnswerChange = (newRating) => {
-    rating.answer = newRating;
-    changeRatingAnswer(rating);
+    if (rating.ratingID == 10)
+    {
+      if(newRating.match("^[1-9]\\d{0,2}(?:,\\d{0,2}(?:,\\d{0,2})?)?$") == null)
+      {
+        alert("Falsches Format")
+      }
+      else {
+        rating.answer = newRating;
+        changeRatingAnswer(rating);
+      }
+    }
+    else {
+      rating.answer = newRating;
+      changeRatingAnswer(rating);
+    }
   };
   const handleCommentChange = (newRating) => {
     rating.comment = newRating;
