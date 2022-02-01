@@ -70,7 +70,7 @@ export default function ProductRow({ product, editMode }) {
             <Link
               href={`/projects/${product.projectID}/productArea/${product.productArea.id}/products/${product.productID}/ratings/economic`}
             >
-              <Button variant="whisper">Economical</Button>
+              <Button variant="whisper">Economic</Button>
             </Link>
           </VStack>
 
