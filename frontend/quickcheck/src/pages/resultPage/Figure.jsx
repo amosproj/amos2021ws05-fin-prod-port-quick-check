@@ -126,7 +126,7 @@ function PieChartRow({ row_data }) {
   );
 }
 
-function  Figure({ results }) {
+function Figure({ results }) {
   var maxbX = 0;
   var maxbY = 0;
   var minbX = 100;
@@ -238,7 +238,9 @@ function  Figure({ results }) {
           <ShowPieCharts results={results} />
         </Flex>
       </Card>
-      <Heading mt={5} mb={1} size="lg" >Legend</Heading>
+      <Heading mt={5} mb={1} size="lg">
+        Legend
+      </Heading>
 
       <Card alignItems="center">
         <Flex
