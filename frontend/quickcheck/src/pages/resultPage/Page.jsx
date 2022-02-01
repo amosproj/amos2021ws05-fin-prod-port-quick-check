@@ -36,11 +36,11 @@ const mock = [
 function SourceRow({ source }) {
   return (
     <Card layerStyle={'card_bordered'}>
-      <Flex direction="row" justifyContent={"space-between"} w="full" alignItems={"center"}>
+      <Flex direction="row" justifyContent={'space-between'} w="full" alignItems={'center'}>
         <Heading color="primary" size="md" align="center" maxW="50%">
           {source.name}
         </Heading>
-        <Flex direction={"column"} w="10%">
+        <Flex direction={'column'} w="10%">
           <VStack>
             <Text fontWeight="bolder" fontSize="md" color={source.color}>
               {source.author}
