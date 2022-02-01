@@ -57,7 +57,7 @@ export default function Rating() {
         backref={`/projects/${projectID}/productArea/${productAreaID}`}
       >
         <Tabs>
-          <TabList>
+          <TabList w="full">
             {data.map((complexityDriver) => (
               <Tab key={complexityDriver[1]}>{complexityDriver[0]}</Tab>
             ))}
