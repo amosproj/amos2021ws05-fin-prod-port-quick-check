@@ -1,4 +1,4 @@
-import { Flex, Input, Text, Spacer, List, Textarea, IconButton, HStack } from '@chakra-ui/react';
+import { Flex, Input, Text, Spacer, List, Textarea, IconButton, HStack, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import Card from '../../components/Card';
 import Selection from '../../components/Selection';
@@ -37,45 +37,42 @@ function RatingRow({ rating, onChangeScore }) {
       // w={(parentID > 0) ? ' 90%' : 'full'}
       direction="column"
     >
-      <Flex direction="row" justifyContent={"space-between"} w="full" mb={2}>
-        {/* <Input
-          isReadOnly={true}
-          align="center"
-          placeholder={'Frage'}
-          w="full"
-          value={rating.rating.criterion}
-        /> */}
-        <Text>{rating.rating.criterion}</Text>
+      <Flex direction="row" justifyContent={"space-between"} w="full" mb={4}>
+        <Text fontSize='xl'>{rating.rating.criterion}</Text>
       </Flex>
       <Flex direction="row" justifyContent={"space-between"} w="full" mb={2} alignItems={"center"}>
-        <Textarea
-          align="center"
-          w="40%"
-          placeholder={'Anwort'}
-          value={rating.answer}
-          onChange={(e) => {
-            handleAnswerChange(e.target.value);
-          }}
-        />
+        <VStack w="40%" alignItems={"left"} spacing="0">
+          <Text fontSize={"sm"}>Answer</Text>
+          <Textarea
+            align="center"
+            placeholder={'Answer'}
+            value={rating.answer}
+            onChange={(e) => {
+              handleAnswerChange(e.target.value);
+            }}
+          />
+        </VStack>
 
         <Selection
-          options={['GERING', 'MITTEL', 'HOCH']}
           w="12.5%"
+          options={['GERING', 'MITTEL', 'HOCH']}
           selected={rating.score}
           onChange={onChangeScore}
-        ></Selection>
-        <HStack w="40%">
+        >
+        </Selection>
+        <VStack w="40%" alignItems={"left"} spacing="0">
+          <Text fontSize={"sm"}>Comment</Text>
           <Textarea
-            placeholder={'Anmerkungen'}
+            placeholder={'Comment'}
             value={rating.comment}
             onChange={(e) => {
               handleCommentChange(e.target.value);
             }}
           />
-          <IconButton variant="whisper" icon={<AttachmentIcon />} />
-        </HStack>
+        </VStack>
+        <IconButton variant="whisper" icon={<AttachmentIcon />} />
       </Flex>
-    </Card>
+    </Card >
   );
 }
 
