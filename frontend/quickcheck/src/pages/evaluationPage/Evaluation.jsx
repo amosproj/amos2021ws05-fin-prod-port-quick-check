@@ -3,7 +3,6 @@ import { Button, Link, Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-u
 import Page from '../../components/Page';
 import Card from '../../components/Card';
 import EvaluationTable from './EvaluationTable';
-import { score } from '../../utils/const';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import { useParams } from 'react-router-dom';
 
@@ -17,7 +16,7 @@ export default function Evaluation() {
   const { projectID, productAreaID, productID } = useParams();
 
   function computeEvaluationPerCategory(ratings) {
-    if (ratings.length === 0 || Object.keys(ratingsPerCategory).length != 0) {
+    if (ratings.length === 0 || Object.keys(ratingsPerCategory).length !== 0) {
       return [];
     }
     for (const rating of ratings) {
