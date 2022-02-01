@@ -87,7 +87,7 @@ export default function ResultPage() {
           alignItems="stretch"
         >
           <Figure results={results}></Figure>
-          <Heading size="lg">Sources</Heading>
+          <Heading size="lg" mt={5}>Sources</Heading>
           {sources.map((source) => (
             <SourceRow source={source} key={source.id} />
           ))}
