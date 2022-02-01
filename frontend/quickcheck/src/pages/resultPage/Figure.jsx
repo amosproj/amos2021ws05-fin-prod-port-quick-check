@@ -240,7 +240,7 @@ function Figure({ results }) {
       </Card>
       <Heading>Legend</Heading>
 
-      <Card alignItems="center" bg="gray.600">
+      <Card alignItems="center">
         <Flex
           flexDirection="column"
           w="full"

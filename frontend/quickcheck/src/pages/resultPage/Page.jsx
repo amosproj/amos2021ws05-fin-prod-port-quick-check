@@ -35,19 +35,22 @@ const mock = [
 
 function SourceRow({ source }) {
   return (
-    <Card bg={'gray.600'} layerStyle={'card_bordered'}>
-      <Heading color="primary" size="md" align="center" w="40%" maxW="50%">
-        {source.name}
-      </Heading>
-      <Spacer />
-      <VStack p={2}>
-        <Text fontWeight="bolder" fontSize="md" color={source.color}>
-          {source.author}
-        </Text>
-        <Text fontSize="small" color="gray.400">
-          Product
-        </Text>
-      </VStack>
+    <Card layerStyle={'card_bordered'}>
+      <Flex direction="row" justifyContent={"space-between"} w="full" alignItems={"center"}>
+        <Heading color="primary" size="md" align="center" maxW="50%">
+          {source.name}
+        </Heading>
+        <Flex direction={"column"} w="10%">
+          <VStack>
+            <Text fontWeight="bolder" fontSize="md" color={source.color}>
+              {source.author}
+            </Text>
+            <Text fontSize="small" color="gray.400">
+              Product
+            </Text>
+          </VStack>
+        </Flex>
+      </Flex>
     </Card>
   );
 }
