@@ -72,7 +72,7 @@ export default function ProductOverview() {
         </List>
         <HStack>
           <EditButtons />
-          <Link href={`${productAreaID}/results`}>
+          <Link href={`/projects/${projectID}/productArea/${productAreaID}/results`}>
             <Button>Generate Results</Button>
           </Link>
         </HStack>

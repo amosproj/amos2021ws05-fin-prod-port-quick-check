@@ -1,5 +1,5 @@
 import { React, useEffect, useState } from 'react';
-import { Button, HStack, Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
+import { Button, Link, Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 import Page from '../../components/Page';
 import Card from '../../components/Card';
 import EvaluationTable from './EvaluationTable';
@@ -14,7 +14,7 @@ export default function Evaluation() {
   const productData = useStoreState((state) => state.rating.product);
   const fetchRatings = useStoreActions((actions) => actions.rating.fetch);
 
-  const { productID } = useParams();
+  const { productID, projectID, productAreaID } = useParams();
 
   function computeEvaluationPerCategory(ratings) {
     if (ratings.length === 0 || Object.keys(ratingsPerCategory).length != 0) {
@@ -53,6 +53,9 @@ export default function Evaluation() {
             ))}
           </TabPanels>
         </Tabs>
+        <Link href={`/projects/${projectID}/productArea/${productAreaID}/`}>
+            <Button variant="whisper">Back</Button>
+          </Link>
       </Page>
     );
   }
