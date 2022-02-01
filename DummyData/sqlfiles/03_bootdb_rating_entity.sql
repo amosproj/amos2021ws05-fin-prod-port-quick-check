@@ -7,7 +7,7 @@ INSERT INTO bootdb.rating_entity (id, category, criterion, ratingarea) VALUES (6
 INSERT INTO bootdb.rating_entity (id, category, criterion, ratingarea) VALUES (7, 'Aufwandsschätzung', 'Schätzung Personalaufwand', 0);
 INSERT INTO bootdb.rating_entity (id, category, criterion, ratingarea) VALUES (8, 'Aufwandsschätzung', 'Schätzung IT-Aufwand', 0);
 INSERT INTO bootdb.rating_entity (id, category, criterion, ratingarea) VALUES (9, null, 'Gesamteinschätzung wirtschaftliche Bewertung', 0);
-INSERT INTO bootdb.rating_entity (id, category, criterion, ratingarea) VALUES (10, null, 'Kunde', 0);
+INSERT INTO bootdb.rating_entity (id, category, criterion, ratingarea) VALUES (10, null, 'Kunden Komplexität in Prozenz (Eingabeformat: % Gering, % Mittel, % Hoch)', 0);
 INSERT INTO bootdb.rating_entity (id, category, criterion, ratingarea) VALUES (11, 'Kundenstruktur', 'Wie viele unterschiedliche Produktschlüssel existieren für das Produkt Dispokredit?', 1);
 INSERT INTO bootdb.rating_entity (id, category, criterion, ratingarea) VALUES (12, 'Kundenstruktur', 'Welche Kunden (Einzelkunden/Gemeinschaftskunden) nehmen diese Produktvariante in Anspruch?', 1);
 INSERT INTO bootdb.rating_entity (id, category, criterion, ratingarea) VALUES (13, 'Kundenstruktur', 'Wie hoch ist die Anzahl abgeschlossener Kredite für die jeweiligen Produktschlüssel und wie viele entfallen davon auf Einzelkunden und Gemeinschaftskunden?', 1);
