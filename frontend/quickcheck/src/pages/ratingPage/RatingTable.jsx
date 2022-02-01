@@ -8,6 +8,7 @@ import {AttachmentIcon} from "@chakra-ui/icons";
 function RatingRow({ rating, onChangeScore }) {
   const changeRatingAnswer = useStoreActions((actions) => actions.product_rating.changeAnswer);
   const changeRatingCommet = useStoreActions((actions) => actions.product_rating.changeComment);
+  const changeRatingScore = useStoreActions((actions) => actions.product_rating.changeScore);
   const productData = useStoreState((state) => state.product_rating.product);
 
   const handleAnswerChange = (newRating) => {
@@ -29,6 +30,11 @@ function RatingRow({ rating, onChangeScore }) {
   };
   const handleCommentChange = (newRating) => {
     rating.comment = newRating;
+    changeRatingCommet(rating);
+  };
+
+  const handleScoreChange = (newRating) => {
+    rating.score = newRating;
     changeRatingCommet(rating);
   };
 
@@ -66,7 +72,9 @@ function RatingRow({ rating, onChangeScore }) {
         <Selection
           options={['GERING', 'MITTEL', 'HOCH']}
           selected={rating.score}
-          onChange={onChangeScore}
+          onChange={(e) => {
+            handleScoreChange(e);
+          }}
         ></Selection>
         <Spacer />
         <Textarea

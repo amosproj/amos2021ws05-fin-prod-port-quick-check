@@ -223,6 +223,11 @@ const product_rating = {
     let index = state.product.ratings.map((r) => r.ratingID).indexOf(rat.ratingID);
     state.product.ratings[index] = { ...state.product.ratings[index], comment: rat.comment };
   }),
+
+  changeScore: action((state, rat) => {
+    let index = state.product.ratings.map((r) => r.ratingID).indexOf(rat.ratingID);
+    state.product.ratings[index] = { ...state.product.ratings[index], score: rat.score };
+  }),
 };
 
 const ratingModel = {
