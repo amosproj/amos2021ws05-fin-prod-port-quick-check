@@ -1,7 +1,6 @@
 package com.tu.FinancialQuickCheck.IntegrationTests;
 
 import com.tu.FinancialQuickCheck.db.*;
-import com.tu.FinancialQuickCheck.dto.ProjectUserDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,6 +39,8 @@ public class ProjectControllerIntegrationTest {
     @Autowired
     private ProductRatingRepository productRatingRepository;
 
+    @Autowired
+    private ProjectUserRepository projectUserRepository;
 
     private String host = "http://localhost:";
     private String projects = "/projects";
@@ -48,9 +49,9 @@ public class ProjectControllerIntegrationTest {
 
     HttpHeaders header = new HttpHeaders();
 
-    String jsonStringEmpty = "{}";
-    String jsonStringIncorrectFormat = "{\"category\":\"PRIVAT\", \"name\":\"KREDIT\"}";
-    String jsonStringIncorrectData =
+    private String jsonStringEmpty = "{}";
+    private String jsonStringIncorrectFormat = "{\"category\":\"PRIVAT\", \"name\":\"KREDIT\"}";
+    private String jsonStringIncorrectData =
             "{" +
             "\"projectID\":\"66\"," +
             " \"creatorID\":\"666\", " +
@@ -58,13 +59,18 @@ public class ProjectControllerIntegrationTest {
             "\"members\" : [404]" +
             "\"productAreas\" : [404]" +
             "}";
-    String jsonStringCorrect =
+    private String jsonStringCorrect =
             "{" +
                     "\"projectID\":\"66\"," +
                     " \"creatorID\":\"666\", " +
                     "\"projectName:\" : \"Test Project\"," +
-                    "\"members\" : [6]" +
                     "\"productAreas\" : [12]" +
+                    "\"members\": [\n" +
+                        "{\n" +
+                        "\"userEmail\": \"alex@amos.de\",\n" +
+                        "\"userName\": \"exampleUsername@web.de\",\n" +
+                        "\"role\": \"CLIENT\"\n" +
+                        "},\n" +
                     "}";
 
     private ProductAreaEntity tmpArea;
@@ -79,10 +85,12 @@ public class ProjectControllerIntegrationTest {
     private ProductAreaEntity afterAreaEntity;
     private ProjectEntity afterEntity;
     private ProductEntity afterProductEntity;
-    private ProjectUserRepository projectUserRepository;
 
-    //@BeforeEach
+
+    @BeforeEach
     public void init(){
+
+        header.setContentType(MediaType.APPLICATION_JSON);
 
         //create Product Area
         tmpArea = new ProductAreaEntity();
@@ -159,12 +167,12 @@ public class ProjectControllerIntegrationTest {
 
         tmpProjectUser.projectUserId = tmpUserID;
 
-        projectUserRepository.save(tmpProjectUser);
+        //projectUserRepository.save(tmpProjectUser);
 
 
     }
 
-    //@AfterEach
+    @AfterEach
     public void reset(){
         repository.delete(afterEntity);
         productAreaRepository.delete(afterAreaEntity);
@@ -174,6 +182,8 @@ public class ProjectControllerIntegrationTest {
 
     @Test
     public void testCreateProject_1_noRequestBody(){
+
+        header.setContentType(MediaType.APPLICATION_JSON);
 
         ResponseEntity<String> response = restTemplate.exchange(
                 host + port + projects,
@@ -226,6 +236,7 @@ public class ProjectControllerIntegrationTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
+    //TODO: (alex) from here swrite new Tests
     @Test
     public void putProjectIdExists() throws Exception {
 
