@@ -1,7 +1,8 @@
 import { React, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useStoreActions, useStoreState } from 'easy-peasy';
-import { Button, Link, Tabs, TabList, TabPanels, Tab, TabPanel, HStack } from '@chakra-ui/react';
+import { Button, Tabs, TabList, TabPanels, Tab, TabPanel, HStack } from '@chakra-ui/react';
+import { notification } from '../../utils/notification';
 
 import Page from '../../components/Page';
 import Card from '../../components/Card';
@@ -78,6 +79,7 @@ export default function Rating() {
             size="md"
             onClick={() => {
               sendRatings(productData);
+              notification("Rating Saved!", "", "success")
             }}
           >
             Save
