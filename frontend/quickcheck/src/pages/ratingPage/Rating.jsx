@@ -1,7 +1,7 @@
 import { React, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useStoreActions, useStoreState } from 'easy-peasy';
-import { Button, HStack, Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
+import { Button, Link, Tabs, TabList, TabPanels, Tab, TabPanel, HStack } from '@chakra-ui/react';
 
 import { score } from '../../utils/const';
 import Page from '../../components/Page';
@@ -50,7 +50,7 @@ export default function Rating() {
   const fetchRatings = useStoreActions((actions) => actions.rating.fetch);
   const sendRatings = useStoreActions((actions) => actions.rating.sendUpdate);
 
-  const { productID, ratingArea } = useParams();
+  const { productID, ratingArea, productAreaID, projectID } = useParams();
 
   const handleChange = (key) => (value) => {
     let newProductData = Object.assign({}, productData); // creating copy of state variable jasper
@@ -97,15 +97,24 @@ export default function Rating() {
             ))}
           </TabPanels>
         </Tabs>
-        <Button
-          variant="whisper"
-          size="md"
-          onClick={() => {
-            sendRatings(productData);
-          }}
-        >
-          Save
-        </Button>
+        <HStack>
+
+          <Button
+            variant="whisper"
+            size="md"
+            onClick={() => {
+              sendRatings(productData);
+            }}
+          >
+            Save
+          </Button>
+          <Link href={`/projects/${projectID}/productArea/${productAreaID}/products/${productID}/evaluation`}>
+            <Button variant={"whisper"}>Evaluation</Button>
+          </Link>
+          <Link href={`/projects/${projectID}/productArea/${productAreaID}/`}>
+            <Button variant="whisper">Back</Button>
+          </Link>
+        </HStack>
       </Page>
     );
   }
