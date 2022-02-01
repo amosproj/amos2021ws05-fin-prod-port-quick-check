@@ -63,7 +63,7 @@ export default function Rating() {
               <Tab key={complexityDriver[1]}>{complexityDriver[0]}</Tab>
             ))}
           </TabList>
-          <TabPanels>
+          <TabPanels w="full">
             {data.map((complexityDriver) => (
               <TabPanel p={4} key={complexityDriver[0]}>
                 <Card direction="column">
