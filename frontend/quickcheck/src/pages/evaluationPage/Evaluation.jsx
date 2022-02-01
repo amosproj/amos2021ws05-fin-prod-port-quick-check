@@ -1,5 +1,5 @@
 import { React, useEffect, useState } from 'react';
-import { Button, HStack, Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
+import { Button, Link, Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 import Page from '../../components/Page';
 import Card from '../../components/Card';
 import EvaluationTable from './EvaluationTable';
@@ -53,6 +53,9 @@ export default function Evaluation() {
             ))}
           </TabPanels>
         </Tabs>
+        <Link href={`/projects/${projectID}/productArea/${productAreaID}/`}>
+            <Button variant="whisper">Back</Button>
+          </Link>
       </Page>
     );
   }
