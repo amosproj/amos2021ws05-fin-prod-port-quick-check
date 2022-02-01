@@ -1,0 +1,14 @@
+POST localhost:8080/projects/100/products
+Content-Type: application/json
+
+{
+  "productName": "Product Variant",
+  "productArea": {
+    "id": "1"
+  },
+  "comment": "comment for product variant",
+  "resources": [
+    "string"
+  ],
+  "parentID": "111"
+}
