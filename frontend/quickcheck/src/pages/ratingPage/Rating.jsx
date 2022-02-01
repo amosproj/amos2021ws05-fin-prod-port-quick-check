@@ -10,45 +10,15 @@ import RatingTable from './RatingTable';
 
 //http://localhost:3000/projects/100/productArea/1/products/100/ratings
 
-function toTitles(s) { return s.replace(/\w\S*/g, function (t) { return t.charAt(0).toUpperCase() + t.substr(1).toLowerCase(); }); }
-
-
-const mockRatings = {
-  ratings: [
-    {
-      answer: 'test answer',
-      comment: 'test comment',
-      score: score.gering,
-      rating: {
-        category: 'Treiber 1',
-        criterion: 'test frage',
-      },
-    },
-    {
-      answer: 'test answer',
-      comment: 'test comment',
-      score: score.gering,
-      rating: {
-        category: 'Treiber 1',
-        criterion: 'test frage 1',
-      },
-    },
-    {
-      answer: '',
-      comment: '',
-      score: score.mittel,
-      rating: {
-        category: 'Treiber 2',
-        criterion: 'Wer bin ich',
-      },
-    },
-  ],
-};
+function toTitles(s) {
+  return s.replace(/\w\S*/g, function (t) {
+    return t.charAt(0).toUpperCase() + t.substr(1).toLowerCase();
+  });
+}
 
 export default function Rating() {
   const [ratingsPerCategory, setRatingsPerCategory] = useState([]);
   const productData = useStoreState((state) => state.rating.product);
-  const createNew = useStoreActions((actions) => actions.rating.createNew);
   const setRatingsData = useStoreActions((actions) => actions.rating.set);
   const fetchRatings = useStoreActions((actions) => actions.rating.fetch);
   const sendRatings = useStoreActions((actions) => actions.rating.sendUpdate);
@@ -63,7 +33,7 @@ export default function Rating() {
   const setRatings = handleChange('ratings');
 
   function computeRatingsPerCategory(ratings) {
-    if (ratings.length === 0 || Object.keys(ratingsPerCategory).length != 0) {
+    if (ratings.length === 0 || Object.keys(ratingsPerCategory).length !== 0) {
       return [];
     }
     for (const rating of ratings) {
@@ -83,7 +53,10 @@ export default function Rating() {
 
   function DataTabs({ data }) {
     return (
-      <Page title={toTitles(ratingArea) + ' Rating'}  backref={`/projects/${projectID}/productArea/${productAreaID}`}>
+      <Page
+        title={toTitles(ratingArea) + ' Rating'}
+        backref={`/projects/${projectID}/productArea/${productAreaID}`}
+      >
         <Tabs>
           <TabList>
             {data.map((complexityDriver) => (
@@ -101,7 +74,6 @@ export default function Rating() {
           </TabPanels>
         </Tabs>
         <HStack>
-
           <Button
             variant="whisper"
             size="md"
