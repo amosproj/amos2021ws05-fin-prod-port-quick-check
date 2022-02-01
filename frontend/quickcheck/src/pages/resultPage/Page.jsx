@@ -56,7 +56,7 @@ function SourceRow({ source }) {
 }
 
 export default function ResultPage() {
-  const { projectID } = useParams();
+  const { projectID, productAreaID} = useParams();
   const fetchResults = useStoreActions((actions) => actions.resultList.fetch);
   //const setResultsData = useStoreActions((actions) => actions.resultList.set);
 
@@ -78,7 +78,7 @@ export default function ResultPage() {
   console.log('First', { results });
   return (
     <div>
-      <Page title="Results">
+      <Page title="Results" backref={`/projects/${projectID}/productArea/${productAreaID}`}>
         <Flex
           flexDirection="column"
           w="full"

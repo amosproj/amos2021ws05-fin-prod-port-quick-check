@@ -59,7 +59,7 @@ export default function ProductOverview() {
 
   return (
     <div>
-      <Page title="Product Overview">
+      <Page title="Product Overview" backref={`/projects/${projectID}`}>
         <List spacing={2} w="full">
           {getAreaProducts(parseInt(productAreaID)).map((product) => (
             <ProductRow
