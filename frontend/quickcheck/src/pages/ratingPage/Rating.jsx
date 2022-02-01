@@ -83,8 +83,8 @@ export default function Rating() {
 
   function DataTabs({ data }) {
     return (
-      <Page title={toTitles(ratingArea) + ' Rating'}>
-        <Tabs w="full">
+      <Page title={toTitles(ratingArea) + ' Rating'}  backref={`/projects/${projectID}/productArea/${productAreaID}`}>
+        <Tabs>
           <TabList>
             {data.map((complexityDriver) => (
               <Tab key={complexityDriver[1]}>{complexityDriver[0]}</Tab>

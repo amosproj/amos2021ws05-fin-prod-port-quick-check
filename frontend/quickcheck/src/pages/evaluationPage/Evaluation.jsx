@@ -14,7 +14,7 @@ export default function Evaluation() {
   const productData = useStoreState((state) => state.rating.product);
   const fetchRatings = useStoreActions((actions) => actions.rating.fetch);
 
-  const { productID, projectID, productAreaID } = useParams();
+  const { projectID, productAreaID, productID } = useParams();
 
   function computeEvaluationPerCategory(ratings) {
     if (ratings.length === 0 || Object.keys(ratingsPerCategory).length != 0) {
@@ -36,7 +36,7 @@ export default function Evaluation() {
 
   function DataTabs({ data }) {
     return (
-      <Page title="Evaluation">
+      <Page title="Evaluation" backref={`/projects/${projectID}/productArea/${productAreaID}`}>
         <Tabs>
           <TabList>
             {data.map((complexityDriver) => (
