@@ -52,9 +52,6 @@ export default function Evaluation() {
             ))}
           </TabPanels>
         </Tabs>
-        <Link href={`/projects/${projectID}/productArea/${productAreaID}/`}>
-            <Button variant="whisper">Back</Button>
-          </Link>
       </Page>
     );
   }

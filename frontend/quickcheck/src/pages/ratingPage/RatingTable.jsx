@@ -1,5 +1,4 @@
 import { Flex, Input, Text, Spacer, List, Textarea, IconButton, HStack, VStack } from '@chakra-ui/react';
-import React, { useState } from 'react';
 import Card from '../../components/Card';
 import Selection from '../../components/Selection';
 import { useStoreActions, useStoreState } from 'easy-peasy';
@@ -55,6 +54,7 @@ function RatingRow({ rating, onChangeScore }) {
 
         <Selection
           w="125px"
+          mb="5"
           options={['GERING', 'MITTEL', 'HOCH']}
           selected={rating.score}
           onChange={onChangeScore}

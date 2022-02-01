@@ -77,7 +77,6 @@ export default function ResultPage() {
   }
   console.log('First', { results });
   return (
-    <div>
       <Page title="Results" backref={`/projects/${projectID}/productArea/${productAreaID}`}>
         <Flex
           flexDirection="column"
@@ -94,13 +93,7 @@ export default function ResultPage() {
             <SourceRow source={source} key={source.id} />
           ))}
         </Flex>
-        <HStack>
           <Button> Export Results </Button>
-          <Link href={'/projects'}>
-            <Button> Back</Button>
-          </Link>
-        </HStack>
       </Page>
-    </div>
   );
 }

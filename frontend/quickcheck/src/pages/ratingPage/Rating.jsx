@@ -82,9 +82,6 @@ export default function Rating() {
           >
             Save
           </Button>
-          <Link href={`/../../projects/${projectID}/productArea/${productAreaID}/`}>
-            <Button variant="whisper">Back</Button>
-          </Link>
         </HStack>
       </Page>
     );
