@@ -238,9 +238,11 @@ function Figure({ results }) {
           <ShowPieCharts results={results} />
         </Flex>
       </Card>
-      <Heading>Legend</Heading>
+      <Heading mt={5} mb={1} size="lg">
+        Legend
+      </Heading>
 
-      <Card alignItems="center" bg="gray.600">
+      <Card alignItems="center">
         <Flex
           flexDirection="column"
           w="full"
@@ -248,7 +250,7 @@ function Figure({ results }) {
           justifyContent="space-between"
           alignItems="stretch"
         >
-          <Text>Bubble Size = Volume in EUR </Text>
+          <Text size="sm">Bubble Size = Volume in EUR </Text>
 
           <Flex
             flexDirection="row"
