@@ -66,7 +66,7 @@ export default function Rating() {
           <TabPanels>
             {data.map((complexityDriver) => (
               <TabPanel p={4} key={complexityDriver[0]}>
-                  <RatingTable ratings={complexityDriver[1]} handleChange={setRatings} />
+                <RatingTable ratings={complexityDriver[1]} handleChange={setRatings} />
               </TabPanel>
             ))}
           </TabPanels>
