@@ -4,6 +4,7 @@ import com.tu.FinancialQuickCheck.Role;
 import com.tu.FinancialQuickCheck.db.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,9 @@ public class ProjectControllerIntegrationTest {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private RatingRepository ratingRepository;
+
     private String host = "http://localhost:";
     private String projects = "/projects";
     private String projectIDExistsNot = "/0";
@@ -65,14 +69,15 @@ public class ProjectControllerIntegrationTest {
             "\"productAreas\" : [404]" +
             "}";
     private String jsonStringCorrect;
-
     private String jsonStringUpdateCorrect;
+    private String jsonStringProductCorrect;
 
 
 
     private ProductAreaEntity tmpArea;
     private ProductEntity tmpProduct;
-    private ProductRatingEntity tmpRating;
+    private ProductRatingEntity tmpProductRating;
+    private RatingEntity tmpRating;
     private ProductRatingId tmpRatingID;
     private UserEntity tmpUser;
     private UserEntity tmpUpdatedUser;
@@ -93,6 +98,7 @@ public class ProjectControllerIntegrationTest {
         projectUserRepository.deleteAll();
         userRepository.deleteAll();
         repository.deleteAll();
+        productRepository.deleteAll();
 
         header.setContentType(MediaType.APPLICATION_JSON);
 
@@ -110,41 +116,6 @@ public class ProjectControllerIntegrationTest {
         afterAreaEntity.name = tmpAreout.get(0).name;
         afterAreaEntity.category = tmpAreout.get(0).category;
 
-        //create ratingID
-        tmpRatingID = new ProductRatingId();
-
-        //create Product Ratings
-        tmpRating = new ProductRatingEntity();
-        tmpRating.productRatingId = tmpRatingID;
-        tmpRating.comment = "example rating Comment";
-        tmpRating.score = null;
-
-        List<ProductRatingEntity> tmpRatingList = new ArrayList<>();
-        tmpRatingList.add(tmpRating);
-
-        //create Product
-        tmpProduct = new ProductEntity();
-        tmpProduct.id = 24;
-        tmpProduct.name = "exampleProduct";
-        tmpProduct.productarea = tmpArea;
-        tmpProduct.comment = "example Product Comment";
-        tmpProduct.project = tmp;
-        tmpProduct.productRatingEntities = tmpRatingList;
-
-        List<ProductEntity> tmpProductList = new ArrayList<>();
-        tmpProductList.add(tmpProduct);
-
-        productRepository.save(tmpProduct);
-
-        List<ProductEntity> tmpProductOut = productRepository.findAll();
-        afterProductEntity = new ProductEntity();
-        afterProductEntity.id = tmpProductOut.get(0).id;
-        afterProductEntity.name = tmpProductOut.get(0).name;
-        afterProductEntity.parentProduct = tmpProductOut.get(0).parentProduct;
-        afterProductEntity.productarea = tmpProductOut.get(0).productarea;
-        afterProductEntity.comment = tmpProductOut.get(0).comment;
-
-
         //create Project
         tmp = new ProjectEntity();
         tmp.id = 1;
@@ -161,14 +132,58 @@ public class ProjectControllerIntegrationTest {
         afterEntity.creatorID = out.get(0).creatorID;
         afterEntity.productEntities = out.get(0).productEntities;
 
-        //create User
+        //create Product
+        /**tmpProduct = new ProductEntity();
+        //tmpProduct.id = 1;
+        tmpProduct.name = "exampleProduct";
+        tmpProduct.productarea = tmpArea;
+        tmpProduct.comment = "exampleProductComment";
+        tmpProduct.project = tmp;
+        //tmpProduct.productRatingEntities = tmpRatingList;
+
+        List<ProductEntity> tmpProductList = new ArrayList<>();
+        tmpProductList.add(tmpProduct);
+
+        productRepository.save(tmpProduct);
+
+        List<ProductEntity> tmpProductOut = productRepository.findAll();
+        afterProductEntity = new ProductEntity();
+        afterProductEntity.id = tmpProductOut.get(0).id;
+        afterProductEntity.name = tmpProductOut.get(0).name;
+        afterProductEntity.parentProduct = tmpProductOut.get(0).parentProduct;
+        afterProductEntity.productarea = tmpProductOut.get(0).productarea;
+        afterProductEntity.comment = tmpProductOut.get(0).comment;
+
+        //create Ratings
+        tmpRating = new RatingEntity();
+
+        ratingRepository.save(tmpRating);
+
+        //create ratingID
+        tmpRatingID = new ProductRatingId();
+        tmpRatingID.setProduct(tmpProduct);
+        tmpRatingID.setRating(tmpRating);
+
+        //create Product Ratings
+        tmpProductRating = new ProductRatingEntity();
+        tmpProductRating.productRatingId = tmpRatingID;
+        tmpProductRating.comment = "exampleProductRatingComment";
+        tmpProductRating.score = null;
+
+        List<ProductRatingEntity> tmpRatingList = new ArrayList<>();
+        tmpRatingList.add(tmpProductRating);
+
+        productRatingRepository.save(tmpProductRating);**/
+
+
+        //create User 1
         tmpUser = new UserEntity();
 
         tmpUser.id = "185fd119-ac2a-42ab-a1bf-8a891003ab0e";
         tmpUser.username = "exampleUsername";
         tmpUser.email = "exampleUsername@web.de";
 
-        //create User
+        //create User 2
         tmpUpdatedUser = new UserEntity();
 
         tmpUpdatedUser.id = "185fd119-ac2a-42ab-a1bf-8a891003ab0e";
@@ -176,7 +191,7 @@ public class ProjectControllerIntegrationTest {
         tmpUpdatedUser.email = "updatedUsername@web.de";
 
         userRepository.save(tmpUser);
-        userRepository.save(tmpUpdatedUser);
+        //userRepository.save(tmpUpdatedUser);
 
         //create Project User
         tmpProjectUser = new ProjectUserEntity();
@@ -221,6 +236,15 @@ public class ProjectControllerIntegrationTest {
                         "\"role\" : \"CLIENT\"" +
                         "}]" +
                         "}";
+
+        jsonStringProductCorrect =
+                "{" +
+                        "\"productID\" : 42," +
+                        "\"productName\" : \"exampleProduct\"," +
+                        "\"productArea\" : {\"id\": " + afterAreaEntity.id + "}," +
+                        "\"projectID\" : \"" + afterEntity.id + "\"" +
+                        "}";
+
     }
 
     @AfterEach
@@ -228,6 +252,10 @@ public class ProjectControllerIntegrationTest {
         productAreaRepository.deleteAll();
         projectUserRepository.deleteAll();
         userRepository.deleteAll();
+        userRepository.deleteAll();
+        productRatingRepository.deleteAll();
+        productRepository.deleteAll();
+        ratingRepository.deleteAll();
         repository.deleteAll(repository.findAll());
     }
 
@@ -448,9 +476,35 @@ public class ProjectControllerIntegrationTest {
     }
 
     @Test
+    @Disabled
     public void testGETFindProductsByProject(){
 
+        //TODO: initialisierung von Producten hinbekommen dann Tests schrieben
 
     }
+
+    @Test
+    public void testPOSTCreateProduct() {
+
+        HttpEntity<String> request = new HttpEntity<>(jsonStringProductCorrect, header);
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                host + port + projects + "/" + afterEntity.id + "/products",
+                HttpMethod.POST,
+                request,
+                String.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+
+
+    @Test
+    @Disabled
+    public void testPOSTCreateProjectUser() {
+
+        //TODO:
+
+    }
+
 
 }
