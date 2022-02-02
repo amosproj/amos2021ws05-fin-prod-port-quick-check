@@ -46,12 +46,6 @@ function App() {
                 element={<Evaluation />}
               />
             </Routes>
-            <Link to="login"> [Login] </Link>
-            <Link to="projects"> [Projects] </Link>
-            <Link to="products"> [Products] </Link>
-            <Link to="ratings"> [Ratings] </Link>
-            <Link to="evaluation"> [Evaluation] </Link>
-            <Link to="results"> [Results] </Link>
           </Router>
         </StoreProvider>
       </ChakraProvider>

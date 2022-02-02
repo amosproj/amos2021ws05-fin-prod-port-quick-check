@@ -38,6 +38,7 @@ function RatingRow({ rating }) {
 
         <Selection
           w="125px"
+          mb="5"
           options={['GERING', 'MITTEL', 'HOCH']}
           selected={rating.score}
           onChange={handleUpdateScore}

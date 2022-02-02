@@ -39,7 +39,7 @@ export default function ProjectOverview() {
   }, []);
 
   return (
-    <Page title="Your Projects" backref='/'>
+    <Page title="Your Projects" backref="/">
       <List spacing={3} mx={2} w="full">
         {projectList.map((project) => (
           <ProjectCard project={project} key={project.projectID} />
