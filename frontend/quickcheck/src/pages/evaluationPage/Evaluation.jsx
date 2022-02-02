@@ -3,7 +3,6 @@ import { Button, Link, Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-u
 import Page from '../../components/Page';
 import Card from '../../components/Card';
 import EvaluationTable from './EvaluationTable';
-import { score } from '../../utils/const';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import { useParams } from 'react-router-dom';
 
@@ -14,10 +13,10 @@ export default function Evaluation() {
   const productData = useStoreState((state) => state.rating.product);
   const fetchRatings = useStoreActions((actions) => actions.rating.fetch);
 
-  const { productID, projectID, productAreaID } = useParams();
+  const { projectID, productAreaID, productID } = useParams();
 
   function computeEvaluationPerCategory(ratings) {
-    if (ratings.length === 0 || Object.keys(ratingsPerCategory).length != 0) {
+    if (ratings.length === 0 || Object.keys(ratingsPerCategory).length !== 0) {
       return [];
     }
     for (const rating of ratings) {
@@ -36,8 +35,8 @@ export default function Evaluation() {
 
   function DataTabs({ data }) {
     return (
-      <Page title="Evaluation">
-        <Tabs>
+      <Page title="Evaluation" backref={`/projects/${projectID}/productArea/${productAreaID}`}>
+        <Tabs w="full">
           <TabList>
             {data.map((complexityDriver) => (
               <Tab key={complexityDriver[1]}>{complexityDriver[0]}</Tab>
@@ -53,9 +52,6 @@ export default function Evaluation() {
             ))}
           </TabPanels>
         </Tabs>
-        <Link href={`/projects/${projectID}/productArea/${productAreaID}/`}>
-            <Button variant="whisper">Back</Button>
-          </Link>
       </Page>
     );
   }

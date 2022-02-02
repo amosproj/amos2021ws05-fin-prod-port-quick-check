@@ -56,7 +56,7 @@ function SourceRow({ source }) {
 }
 
 export default function ResultPage() {
-  const { projectID } = useParams();
+  const { projectID, productAreaID } = useParams();
   const fetchResults = useStoreActions((actions) => actions.resultList.fetch);
   //const setResultsData = useStoreActions((actions) => actions.resultList.set);
 
@@ -77,30 +77,23 @@ export default function ResultPage() {
   }
   console.log('First', { results });
   return (
-    <div>
-      <Page title="Results">
-        <Flex
-          flexDirection="column"
-          w="full"
-          gridGap={1}
-          justifyContent="space-between"
-          alignItems="stretch"
-        >
-          <Figure results={results}></Figure>
-          <Heading size="lg" mt={5}>
-            Sources
-          </Heading>
-          {sources.map((source) => (
-            <SourceRow source={source} key={source.id} />
-          ))}
-        </Flex>
-        <HStack>
-          <Button> Export Results </Button>
-          <Link href={'/projects'}>
-            <Button> Back</Button>
-          </Link>
-        </HStack>
-      </Page>
-    </div>
+    <Page title="Results" backref={`/projects/${projectID}/productArea/${productAreaID}`}>
+      <Flex
+        flexDirection="column"
+        w="full"
+        gridGap={1}
+        justifyContent="space-between"
+        alignItems="stretch"
+      >
+        <Figure results={results}></Figure>
+        <Heading size="lg" mt={5}>
+          Sources
+        </Heading>
+        {sources.map((source) => (
+          <SourceRow source={source} key={source.id} />
+        ))}
+      </Flex>
+      <Button> Export Results </Button>
+    </Page>
   );
 }
