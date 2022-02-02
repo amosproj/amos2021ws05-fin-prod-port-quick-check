@@ -12,7 +12,6 @@ import UploadButton from '../../components/Upload';
 function RatingRow({ rating }) {
   const updateRating = useStoreActions((actions) => actions.rating.updateRating);
 
-
   const updateRatingAttribute = (key) => (value) => {
     let change = {};
     if (rating.ratingID == 10 && key === 'answer') {
@@ -20,12 +19,11 @@ function RatingRow({ rating }) {
         alert('Falsches Format');
       } else {
         change[key] = value;
-        updateRating({ratingID: rating.ratingID, ...change});
+        updateRating({ ratingID: rating.ratingID, ...change });
       }
-    }
-    else {
+    } else {
       change[key] = value;
-      updateRating({ratingID: rating.ratingID, ...change});
+      updateRating({ ratingID: rating.ratingID, ...change });
     }
   };
 
