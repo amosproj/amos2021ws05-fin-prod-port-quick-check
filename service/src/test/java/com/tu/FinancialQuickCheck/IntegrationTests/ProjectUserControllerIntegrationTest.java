@@ -46,7 +46,6 @@ public class ProjectUserControllerIntegrationTest {
     List<UserEntity> usersEntities;
     List<ProjectUserEntity> entities;
 
-
     UserEntity userNotAssignedToProject;
 
     @BeforeEach
