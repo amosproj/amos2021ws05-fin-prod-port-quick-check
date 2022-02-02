@@ -1,65 +1,93 @@
-import { Flex, Input, Spacer, List, Textarea } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import {
+  Flex,
+  Input,
+  Text,
+  Spacer,
+  List,
+  Textarea,
+  IconButton,
+  HStack,
+  VStack,
+} from '@chakra-ui/react';
 import Card from '../../components/Card';
 import Selection from '../../components/Selection';
+import { useStoreActions, useStoreState } from 'easy-peasy';
+import { AttachmentIcon } from '@chakra-ui/icons';
 
-function RatingRow({ rating, onChangeScore, onChangeComment, onChangeAnswer }) {
+function RatingRow({ rating, onChangeScore }) {
+  const changeRatingAnswer = useStoreActions((actions) => actions.product_rating.changeAnswer);
+  const changeRatingCommet = useStoreActions((actions) => actions.product_rating.changeComment);
+  const changeRatingScore = useStoreActions((actions) => actions.product_rating.changeScore);
+  const productData = useStoreState((state) => state.product_rating.product);
+
+  const handleAnswerChange = (newRating) => {
+    if (rating.ratingID == 10) {
+      if (newRating.match('^[1-9]\\d{0,2}(?:,\\d{0,2}(?:,\\d{0,2})?)?$') == null) {
+        alert('Falsches Format');
+      } else {
+        rating.answer = newRating;
+        changeRatingAnswer(rating);
+      }
+    } else {
+      rating.answer = newRating;
+      changeRatingAnswer(rating);
+    }
+  };
+  const handleCommentChange = (newRating) => {
+    rating.comment = newRating;
+    changeRatingCommet(rating);
+  };
+
+  const handleScoreChange = (newRating) => {
+    rating.score = newRating;
+    changeRatingCommet(rating);
+  };
+
   return (
-    <div>
-      <Card
-        layerStyle="card_bordered"
-        justifyContent="space-between"
-        // w={(parentID > 0) ? ' 90%' : 'full'}
-        _hover={{ boxShadow: '2xl' }}
-        align="center"
-      >
-        <Textarea
-          isReadOnly={true}
-          align="center"
-          size="md"
-          width="100%"
-          placeholder={'Frage'}
-          value={rating.rating.criterion}
-        />
-      </Card>
-      <Card layerStyle="card_bordered" justifyContent="space-between" _hover={{ boxShadow: '2xl' }}>
-        <Spacer />
-        <Input
-          align="center"
-          size="md"
-          width="100%"
-          placeholder={'Anwort'}
-          value={rating.answer}
-          onChange={onChangeAnswer}
-        />
-        <Spacer />
+    <Card
+      layerStyle="card_bordered"
+      justifyContent="space-between"
+      // w={(parentID > 0) ? ' 90%' : 'full'}
+      direction="column"
+    >
+      <Flex direction="row" justifyContent={'space-between'} w="full" mb={4}>
+        <Text fontSize="xl">{rating.rating.criterion}</Text>
+      </Flex>
+      <Flex direction="row" justifyContent={'space-between'} w="full" mb={2} alignItems={'center'}>
+        <VStack w="40%" alignItems={'left'} spacing="0">
+          <Text fontSize={'sm'}>Answer</Text>
+          <Textarea
+            align="center"
+            placeholder={'Answer'}
+            value={rating.answer}
+            onChange={(e) => {
+              handleAnswerChange(e.target.value);
+            }}
+          />
+        </VStack>
+
         <Selection
+          w="125px"
+          mb="5"
           options={['GERING', 'MITTEL', 'HOCH']}
           selected={rating.score}
-          onChange={onChangeScore}
-        ></Selection>
-        <Spacer />
-        <Input
-          align="center"
-          size="md"
-          width="100%"
-          placeholder={'Anmerkungen'}
-          value={rating.comment}
-          onChange={onChangeComment}
-        />
-        <Spacer />
-        <Input
-          align="center"
-          size="md"
-          w="25%"
-          isDisabled={true}
           onChange={(e) => {
-            console.log(e.target.value);
+            handleScoreChange(e);
           }}
-          value={'Upload'}
-        />
-      </Card>
-    </div>
+        ></Selection>
+        <VStack w="40%" alignItems={'left'} spacing="0">
+          <Text fontSize={'sm'}>Comment</Text>
+          <Textarea
+            placeholder={'Comment'}
+            value={rating.comment}
+            onChange={(e) => {
+              handleCommentChange(e.target.value);
+            }}
+          />
+        </VStack>
+        <IconButton variant="whisper" icon={<AttachmentIcon />} />
+      </Flex>
+    </Card>
   );
 }
 
@@ -72,30 +100,11 @@ export default function RatingTable({ ratings, handleChange }) {
     handleChange(ratings);
   };
 
-  const handleCommentChange = (rating) => (newRating) => {
-    let index = ratings.map((r) => r.rating.criterion).indexOf(rating.rating.criterion);
-    rating.comment = newRating.target.value;
-    ratings[index] = rating;
-    handleChange(ratings);
-  };
-
-  const handleAnswerChange = (rating) => (newRating) => {
-    let index = ratings.map((r) => r.rating.criterion).indexOf(rating.rating.criterion);
-    rating.answer = newRating.target.value;
-    ratings[index] = rating;
-    handleChange(ratings);
-  };
-
   return (
     <List spacing={2} direction="column" w="full" align="center">
       {ratings.map((rating) => (
         <Flex gridGap={3}>
-          <RatingRow
-            rating={rating}
-            onChangeScore={handleScoreChange(rating)}
-            onChangeComment={handleCommentChange(rating)}
-            onChangeAnswer={handleAnswerChange(rating)}
-          ></RatingRow>
+          <RatingRow rating={rating} onChangeScore={handleScoreChange(rating)}></RatingRow>
         </Flex>
       ))}
     </List>

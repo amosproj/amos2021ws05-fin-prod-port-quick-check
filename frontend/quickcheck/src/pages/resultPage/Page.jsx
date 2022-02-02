@@ -35,25 +35,28 @@ const mock = [
 
 function SourceRow({ source }) {
   return (
-    <Card bg={'gray.600'} layerStyle={'card_bordered'}>
-      <Heading color="primary" size="md" align="center" w="40%" maxW="50%">
-        {source.name}
-      </Heading>
-      <Spacer />
-      <VStack p={2}>
-        <Text fontWeight="bolder" fontSize="md" color={source.color}>
-          {source.author}
-        </Text>
-        <Text fontSize="small" color="gray.400">
-          Product
-        </Text>
-      </VStack>
+    <Card layerStyle={'card_bordered'}>
+      <Flex direction="row" justifyContent={'space-between'} w="full" alignItems={'center'}>
+        <Heading color="primary" size="md" align="center" maxW="50%">
+          {source.name}
+        </Heading>
+        <Flex direction={'column'} w="10%">
+          <VStack>
+            <Text fontWeight="bolder" fontSize="md" color={source.color}>
+              {source.author}
+            </Text>
+            <Text fontSize="small" color="gray.400">
+              Product
+            </Text>
+          </VStack>
+        </Flex>
+      </Flex>
     </Card>
   );
 }
 
 export default function ResultPage() {
-  const { projectID } = useParams();
+  const { projectID, productAreaID } = useParams();
   const fetchResults = useStoreActions((actions) => actions.resultList.fetch);
   //const setResultsData = useStoreActions((actions) => actions.resultList.set);
 
@@ -74,28 +77,23 @@ export default function ResultPage() {
   }
   console.log('First', { results });
   return (
-    <div>
-      <Page title="Results">
-        <Flex
-          flexDirection="column"
-          w="full"
-          gridGap={1}
-          justifyContent="space-between"
-          alignItems="stretch"
-        >
-          <Figure results={results}></Figure>
-          <Heading size="lg">Sources</Heading>
-          {sources.map((source) => (
-            <SourceRow source={source} key={source.id} />
-          ))}
-        </Flex>
-        <HStack>
-          <Button> Export Results </Button>
-          <Link href={'/projects'}>
-            <Button> Back</Button>
-          </Link>
-        </HStack>
-      </Page>
-    </div>
+    <Page title="Results" backref={`/projects/${projectID}/productArea/${productAreaID}`}>
+      <Flex
+        flexDirection="column"
+        w="full"
+        gridGap={1}
+        justifyContent="space-between"
+        alignItems="stretch"
+      >
+        <Figure results={results}></Figure>
+        <Heading size="lg" mt={5}>
+          Sources
+        </Heading>
+        {sources.map((source) => (
+          <SourceRow source={source} key={source.id} />
+        ))}
+      </Flex>
+      <Button> Export Results </Button>
+    </Page>
   );
 }

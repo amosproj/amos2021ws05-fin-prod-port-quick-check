@@ -23,7 +23,7 @@ function App() {
           <Router>
             <Routes>
               {/* TODO: use proper redirect (see https://gist.github.com/mjackson/b5748add2795ce7448a366ae8f8ae3bb) */}
-              <Route path="test" element={<TestRange />} />
+              {/* <Route path="test" element={<TestRange />} /> */}
               <Route path="/" element={<Navigate replace to="/login" />} />
               <Route path="login" element={<Login />} />
               <Route path="projects" element={<ProjectOverview />} />
@@ -46,12 +46,6 @@ function App() {
                 element={<Evaluation />}
               />
             </Routes>
-            <Link to="login"> [Login] </Link>
-            <Link to="projects"> [Projects] </Link>
-            <Link to="products"> [Products] </Link>
-            <Link to="ratings"> [Ratings] </Link>
-            <Link to="evaluation"> [Evaluation] </Link>
-            <Link to="results"> [Results] </Link>
           </Router>
         </StoreProvider>
       </ChakraProvider>
