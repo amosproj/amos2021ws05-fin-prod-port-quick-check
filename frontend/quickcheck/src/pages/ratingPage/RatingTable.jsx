@@ -11,22 +11,25 @@ import UploadButton from '../../components/Upload';
 const validCategoricalPercentage = (str) => {
   // valid format: "int,int,int"
   // example: "15,5,80"
-  const percentages = str.split(',')
+  const percentages = str.split(',');
 
-  if (percentages.length !== 3) { // check if three percentage values
-    return false
+  if (percentages.length !== 3) {
+    // check if three percentage values
+    return false;
   }
   for (let p in percentages) {
-    if (isNaN(p)) { // check if each value is a number
-      return false
+    if (isNaN(p)) {
+      // check if each value is a number
+      return false;
     }
-    const value = parseInt(p)
-    if (value < 0 || value>100){ // check if each value is in range [0, 100]
-      return false
+    const value = parseInt(p);
+    if (value < 0 || value > 100) {
+      // check if each value is in range [0, 100]
+      return false;
     }
   }
-  return true // format valid
-}
+  return true; // format valid
+};
 
 function RatingRow({ rating }) {
   const updateRating = useStoreActions((actions) => actions.rating.updateRating);
@@ -34,7 +37,7 @@ function RatingRow({ rating }) {
   const updateRatingAttribute = (key) => (value) => {
     let change = {};
     change[key] = value;
-    updateRating({ratingID: rating.ratingID, ...change});
+    updateRating({ ratingID: rating.ratingID, ...change });
   };
 
   const handleUpdateComment = updateRatingAttribute('comment');
@@ -46,7 +49,7 @@ function RatingRow({ rating }) {
       }
     }
     updateRatingAttribute('answer')(newAnswer);
-  } 
+  };
 
   return (
     <Card layerStyle="card_bordered" justifyContent="space-between" direction="column">
