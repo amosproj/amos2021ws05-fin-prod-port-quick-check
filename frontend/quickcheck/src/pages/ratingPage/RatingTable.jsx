@@ -1,9 +1,13 @@
-import { Flex, Text, List, Textarea, IconButton, VStack } from '@chakra-ui/react';
 import React from 'react';
+import { Flex, Text, List, Textarea, IconButton, VStack } from '@chakra-ui/react';
+import { AttachmentIcon } from '@chakra-ui/icons';
+import { useStoreActions, useStoreState } from 'easy-peasy';
+
+import { score } from '../../utils/const';
+
 import Card from '../../components/Card';
 import Selection from '../../components/Selection';
-import { useStoreActions, useStoreState } from 'easy-peasy';
-import { AttachmentIcon } from '@chakra-ui/icons';
+import UploadButton from '../../components/Upload';
 
 function RatingRow({ rating }) {
   const updateRating = useStoreActions((actions) => actions.rating.updateRating);
@@ -43,7 +47,7 @@ function RatingRow({ rating }) {
           selected={rating.score ? rating.score : score.MITTEL }
           onChange={handleUpdateScore}
         ></Selection>
-        <VStack w="40%" alignItems="left" spacing="0" mx={1}>
+        <VStack w="40%" alignItems="left" spacing={0} mx={1}>
           <Text fontSize="sm" align="left">
             Comment
           </Text>
@@ -53,7 +57,7 @@ function RatingRow({ rating }) {
             onChange={(e) => handleUpdateComment(e.target.value)}
           />
         </VStack>
-        <IconButton variant="whisper" icon={<AttachmentIcon />} />
+        <UploadButton variant="whisper"/>
       </Flex>
     </Card>
   );
