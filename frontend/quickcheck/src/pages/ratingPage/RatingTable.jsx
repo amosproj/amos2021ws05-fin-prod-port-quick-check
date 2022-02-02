@@ -43,8 +43,8 @@ function RatingRow({ rating }) {
         <Selection
           w="125px"
           mb="5"
-          options={[score.GERING, score.MITTEL, score.HOCH]} 
-          selected={rating.score ? rating.score : score.MITTEL }
+          options={[score.GERING, score.MITTEL, score.HOCH]}
+          selected={rating.score ? rating.score : score.MITTEL}
           onChange={handleUpdateScore}
         ></Selection>
         <VStack w="40%" alignItems="left" spacing={0} mx={1}>
@@ -57,7 +57,7 @@ function RatingRow({ rating }) {
             onChange={(e) => handleUpdateComment(e.target.value)}
           />
         </VStack>
-        <UploadButton variant="whisper"/>
+        <UploadButton variant="whisper" />
       </Flex>
     </Card>
   );
