@@ -93,7 +93,6 @@ export default function ResultPage() {
           <SourceRow source={source} key={source.id} />
         ))}
       </Flex>
-      <Button> Export Results </Button>
     </Page>
   );
 }
