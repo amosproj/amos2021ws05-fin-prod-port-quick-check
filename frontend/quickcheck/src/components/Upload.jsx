@@ -1,9 +1,10 @@
 import React, { useState, useRef } from "react";
-import { AttachmentIcon } from '@chakra-ui/icons';
+
 import { IconButton } from "@chakra-ui/react";
 import { notification } from "../utils/notification";
+import { AttachmentIcon } from '@chakra-ui/icons';
 
-const ImageUpload = () => {
+export default function UploadButton(buttonProps) {
   const [image, setImage] = useState("");
   const inputFile = useRef(null);
 
@@ -35,10 +36,9 @@ const ImageUpload = () => {
         type="file"
       />
       <div className="button" onClick={onButtonClick}>
-      <IconButton variant="whisper"  icon={<AttachmentIcon />}/>
+      <IconButton {...buttonProps} icon={<AttachmentIcon/>}/>
       </div>
     </div>
   );
 };
 
-export default ImageUpload;
