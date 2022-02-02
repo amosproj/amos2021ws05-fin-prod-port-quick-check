@@ -35,14 +35,14 @@ export default function Rating() {
     >
       <Tabs w="full">
         <TabList>
-          {categories.map((c) => (
-            <Tab key={c}>{c}</Tab>
+          {categories.map((category) => (
+            <Tab key={category}>{category}</Tab>
           ))}
         </TabList>
         <TabPanels>
-          {categories.map((c) => (
-            <TabPanel p={4} key={c}>
-              <RatingTable category={c} />
+          {categories.map((category) => (
+            <TabPanel p={4} key={category}>
+              <RatingTable category={category} />
             </TabPanel>
           ))}
         </TabPanels>

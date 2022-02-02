@@ -63,13 +63,10 @@ export default function RatingTable({ category }) {
   const getRatingsByCategory = useStoreState((state) => state.rating.getRatingsByCategory);
 
   return (
-    <>
-      <List spacing={2} direction="column" w="full" align="center">
-        {getRatingsByCategory(category).map((rating) => (
-          <RatingRow rating={rating} key={rating.ratingID}></RatingRow>
-        ))}
-      </List>
-      <p>{JSON.stringify(getRatingsByCategory(category))}</p>
-    </>
+    <List spacing={2} direction="column" w="full" align="center">
+      {getRatingsByCategory(category).map((rating) => (
+        <RatingRow rating={rating} key={rating.ratingID}></RatingRow>
+      ))}
+    </List>
   );
 }
