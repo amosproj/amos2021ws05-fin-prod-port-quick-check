@@ -122,6 +122,15 @@ const projectModel = {
     productAreas: [],
   },
 
+  init: action((state, payload) => {
+    state.data = {
+      projectID: 0,
+      creatorID: '0fef539d-69be-4013-9380-6a12c3534c67',
+      projectName: '',
+      members: [],
+      productAreas: [],
+    };
+  }),
   // general actions
   set: action((state, project) => {
     state.data = project;
