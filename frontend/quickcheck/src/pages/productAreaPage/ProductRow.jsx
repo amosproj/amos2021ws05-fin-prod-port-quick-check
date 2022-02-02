@@ -13,6 +13,8 @@ import {
   IconButton,
 } from '@chakra-ui/react';
 
+import { useFilePicker } from 'use-file-picker';
+
 import { TriangleUpIcon, TriangleDownIcon } from '@chakra-ui/icons';
 import { AttachmentIcon } from '@chakra-ui/icons';
 import AddProductButton from './AddProductButton';
@@ -20,6 +22,9 @@ import React, { useState } from 'react';
 import Card from '../../components/Card';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import ProductVariant from './ProductVariant';
+
+import Upload from '../../components/Upload';
+
 
 export default function ProductRow({ product, editMode }) {
   const { isOpen, onToggle } = useDisclosure();
@@ -39,6 +44,12 @@ export default function ProductRow({ product, editMode }) {
   const setComment = (newComment) => {
     updateProductComment({ productID: product.productID, newComment });
   };
+
+  const [filesContent, errors, openFileSelector, loading] = useFilePicker({
+    multiple: true,
+    // accept: '.ics,.pdf',
+    accept: ['.json', '.pdf'],
+  }); 
 
   return (
     <Card
@@ -93,8 +104,8 @@ export default function ProductRow({ product, editMode }) {
             }}
             placeholder="Anmerkung"
           />
-
-          <IconButton variant="whisper" icon={<AttachmentIcon />} />
+          <Upload/>
+          
         </Flex>
 
         <Flex w="full">
