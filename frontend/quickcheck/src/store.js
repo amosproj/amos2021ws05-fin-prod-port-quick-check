@@ -58,7 +58,6 @@ const productAreaModel = {
       .catch(console.error);
   }),
   createProduct: thunk(async (actions, newProduct) => {
-    //console.log(JSON.stringify({projectID, ...newProduct}))
     console.log(JSON.stringify(newProduct));
     await api
       .url('/projects/' + newProduct.projectID + '/products')
@@ -118,7 +117,7 @@ const projectModel = {
   data: {
     projectID: 0,
     projectName: '',
-    creatorID: '0fef539d-69be-4013-9380-6a12c3534c67',
+    creatorID: '',
     members: [],
     productAreas: [],
   },
@@ -203,12 +202,12 @@ const product_rating = {
     ratings: [
       {
         ratingID: 10,
-        answer: 'test answer',
-        comment: 'test comment',
-        score: score.gering,
+        answer: '',
+        comment: '',
+        score: score.GERING,
         rating: {
-          category: 'Treiber 1',
-          criterion: 'test frage',
+          category: '',
+          criterion: '',
           ratingArea: ratingArea.ECONOMIC,
         },
       },
@@ -223,6 +222,11 @@ const product_rating = {
     let index = state.product.ratings.map((r) => r.ratingID).indexOf(rat.ratingID);
     state.product.ratings[index] = { ...state.product.ratings[index], comment: rat.comment };
   }),
+
+  changeScore: action((state, rat) => {
+    let index = state.product.ratings.map((r) => r.ratingID).indexOf(rat.ratingID);
+    state.product.ratings[index] = { ...state.product.ratings[index], score: rat.score };
+  }),
 };
 
 const ratingModel = {
@@ -232,12 +236,12 @@ const ratingModel = {
     ratings: [
       {
         ratingID: 10,
-        answer: 'test answer',
-        comment: 'test comment',
-        score: score.gering,
+        answer: '',
+        comment: '',
+        score: score.GERING,
         rating: {
-          category: 'Treiber 1',
-          criterion: 'test frage',
+          category: '',
+          criterion: '',
           ratingArea: ratingArea.ECONOMIC,
         },
       },
@@ -251,7 +255,7 @@ const ratingModel = {
         ratingID: 0,
         answer: 'test answer',
         comment: 'test comment',
-        score: score.gering,
+        score: score.GERING,
         rating: {
           ratingID: 0,
           category: 'Treiber 1',

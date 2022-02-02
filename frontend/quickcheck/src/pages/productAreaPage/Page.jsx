@@ -59,7 +59,7 @@ export default function ProductOverview() {
 
   return (
     <div>
-      <Page title="Product Overview">
+      <Page title="Product Overview" backref={`/projects/${projectID}`}>
         <List spacing={2} w="full">
           {getAreaProducts(parseInt(productAreaID)).map((product) => (
             <ProductRow
@@ -72,7 +72,7 @@ export default function ProductOverview() {
         </List>
         <HStack>
           <EditButtons />
-          <Link href={`${productAreaID}/results`}>
+          <Link href={`/projects/${projectID}/productArea/${productAreaID}/results`}>
             <Button>Generate Results</Button>
           </Link>
         </HStack>

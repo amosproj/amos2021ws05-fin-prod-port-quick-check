@@ -1,56 +1,29 @@
 import { React, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useStoreActions, useStoreState } from 'easy-peasy';
-import { Button, HStack, Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
+import { Button, Tabs, TabList, TabPanels, Tab, TabPanel, HStack } from '@chakra-ui/react';
+import { notification } from '../../utils/notification';
 
-import { score } from '../../utils/const';
 import Page from '../../components/Page';
 import Card from '../../components/Card';
 import RatingTable from './RatingTable';
 
 //http://localhost:3000/projects/100/productArea/1/products/100/ratings
 
-const mockRatings = {
-  ratings: [
-    {
-      answer: 'test answer',
-      comment: 'test comment',
-      score: score.gering,
-      rating: {
-        category: 'Treiber 1',
-        criterion: 'test frage',
-      },
-    },
-    {
-      answer: 'test answer',
-      comment: 'test comment',
-      score: score.gering,
-      rating: {
-        category: 'Treiber 1',
-        criterion: 'test frage 1',
-      },
-    },
-    {
-      answer: '',
-      comment: '',
-      score: score.mittel,
-      rating: {
-        category: 'Treiber 2',
-        criterion: 'Wer bin ich',
-      },
-    },
-  ],
-};
+function capitalizeFirst(str) {
+  const first = str.charAt(0);
+  const rest = str.substr(1);
+  return first.toUpperCase() + rest;
+}
 
 export default function Rating() {
   const [ratingsPerCategory, setRatingsPerCategory] = useState([]);
   const productData = useStoreState((state) => state.rating.product);
-  const createNew = useStoreActions((actions) => actions.rating.createNew);
   const setRatingsData = useStoreActions((actions) => actions.rating.set);
   const fetchRatings = useStoreActions((actions) => actions.rating.fetch);
   const sendRatings = useStoreActions((actions) => actions.rating.sendUpdate);
 
-  const { productID, ratingArea } = useParams();
+  const { productID, ratingArea, productAreaID, projectID } = useParams();
 
   const handleChange = (key) => (value) => {
     let newProductData = Object.assign({}, productData); // creating copy of state variable jasper
@@ -60,7 +33,7 @@ export default function Rating() {
   const setRatings = handleChange('ratings');
 
   function computeRatingsPerCategory(ratings) {
-    if (ratings.length === 0 || Object.keys(ratingsPerCategory).length != 0) {
+    if (ratings.length === 0 || Object.keys(ratingsPerCategory).length !== 0) {
       return [];
     }
     for (const rating of ratings) {
@@ -80,8 +53,11 @@ export default function Rating() {
 
   function DataTabs({ data }) {
     return (
-      <Page title={ratingArea + '-Rating'}>
-        <Tabs>
+      <Page
+        title={capitalizeFirst(ratingArea) + ' Rating'}
+        backref={`/projects/${projectID}/productArea/${productAreaID}`}
+      >
+        <Tabs w="full">
           <TabList>
             {data.map((complexityDriver) => (
               <Tab key={complexityDriver[1]}>{complexityDriver[0]}</Tab>
@@ -97,15 +73,18 @@ export default function Rating() {
             ))}
           </TabPanels>
         </Tabs>
-        <Button
-          variant="whisper"
-          size="md"
-          onClick={() => {
-            sendRatings(productData);
-          }}
-        >
-          Save
-        </Button>
+        <HStack>
+          <Button
+            variant="whisper"
+            size="md"
+            onClick={() => {
+              sendRatings(productData);
+              notification('Rating Saved!', '', 'success');
+            }}
+          >
+            Save
+          </Button>
+        </HStack>
       </Page>
     );
   }
