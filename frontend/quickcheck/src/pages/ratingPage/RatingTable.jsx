@@ -9,27 +9,32 @@ import Card from '../../components/Card';
 import Selection from '../../components/Selection';
 import UploadButton from '../../components/Upload';
 
+const validCategoricalPercentage = (value) => {
+  // valid format: "int,int,int"
+  // example: "15,5,80"
+  return (value.match('^[1-9]\\d{0,2}(?:,\\d{0,2}(?:,\\d{0,2})?)?$') != null)
+}
+
 function RatingRow({ rating }) {
   const updateRating = useStoreActions((actions) => actions.rating.updateRating);
 
   const updateRatingAttribute = (key) => (value) => {
     let change = {};
-    if (rating.ratingID == 10 && key === 'answer') {
-      if (value.match('^[1-9]\\d{0,2}(?:,\\d{0,2}(?:,\\d{0,2})?)?$') == null) {
-        alert('Falsches Format');
-      } else {
-        change[key] = value;
-        updateRating({ ratingID: rating.ratingID, ...change });
-      }
-    } else {
-      change[key] = value;
-      updateRating({ ratingID: rating.ratingID, ...change });
-    }
+    change[key] = value;
+    updateRating({ratingID: rating.ratingID, ...change});
   };
 
   const handleUpdateComment = updateRatingAttribute('comment');
-  const handleUpdateAnswer = updateRatingAttribute('answer');
   const handleUpdateScore = updateRatingAttribute('score');
+  const handleUpdateAnswer = (newAnswer) => {
+    if (rating.ratingID === 10) {
+      if (validCategoricalPercentage(newAnswer)) {
+        alert('Falsches Format');
+        return
+      }
+    }
+    updateRatingAttribute('answer')(newAnswer);
+  } 
 
   return (
     <Card layerStyle="card_bordered" justifyContent="space-between" direction="column">
