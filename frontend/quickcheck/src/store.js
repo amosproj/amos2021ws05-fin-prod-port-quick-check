@@ -122,15 +122,6 @@ const projectModel = {
     productAreas: [],
   },
 
-  init: action((state, payload) => {
-    state.data = {
-      projectID: 0,
-      creatorID: '0fef539d-69be-4013-9380-6a12c3534c67',
-      projectName: '',
-      members: [],
-      productAreas: [],
-    };
-  }),
   // general actions
   set: action((state, project) => {
     state.data = project;
@@ -195,13 +186,13 @@ const projectModel = {
   }),
 };
 
-const product_rating = {
+const productRatingModel = {
   product: {
-    productID: 0,
+    productID: -1,
     ratingID: 0,
     ratings: [
       {
-        ratingID: 10,
+        ratingID: -1,
         answer: '',
         comment: '',
         score: score.GERING,
@@ -284,14 +275,11 @@ const ratingModel = {
   }),
 
   sendUpdate: thunk(async (actions, product) => {
-    //console.log('send UPDATE project:', { projectData });
-    actions.set(product);
     await api
       .url('/products/' + product.productID + '/ratings')
       .put(product)
       .res(console.log)
       .catch(console.error);
-
     actions.set(product);
   }),
 };
@@ -299,10 +287,9 @@ const ratingModel = {
 const store = createStore({
   projectList: projectListModel,
   project: projectModel,
-  rating: ratingModel,
+  rating: productRatingModel,
   productList: productAreaModel,
   resultList: resultModel,
-  product_rating: product_rating,
 });
 
 export default store;
