@@ -39,7 +39,7 @@ function ShowPieCharts({ results }) {
       for (let r = 0; r < results[j]['ratings'].length; r++) {
         if (results[j]['ratings'][r]['answer'] == null) {
           unfinishedFlag = 1;
-        } else if (results[j]['ratings'][r]['rating']['criterion'] == 'Kunde') {
+      } else if (results[j]['ratings'][r]['rating']["id"] == 10) {
           var kundenValuesTmp = results[j]['ratings'][r]['answer'].split(', ');
           for (let k = 0; k < kundenValuesTmp.length; k++) {
             kundenValues[k] = parseFloat(kundenValuesTmp[k]);
@@ -149,11 +149,11 @@ function Figure({ results }) {
     for (let i = 0; i < results.length; i++) {
       for (let r = 0; r < results[i]['ratings'].length; r++) {
         //console.log(results[i]["ratings"][r]["rating"]["criterion"])
-        if (results[i]['ratings'][r]['rating']['criterion'] == 'Marge') {
+        if (results[i]['ratings'][r]['rating']['id'] == 5) {
           marge = parseFloat(results[i]['ratings'][r]['answer']);
           //console.log(marge)
         }
-        if (results[i]['ratings'][r]['rating']['criterion'] == 'Kreditvolumen im Bestand') {
+        if (results[i]['ratings'][r]['rating']['id'] == 4) {
           kreditvolumen = parseFloat(results[i]['ratings'][r]['answer']);
           kreditradius = kreditvolumen / 3.14;
           kreditradius = Math.sqrt(kreditradius);

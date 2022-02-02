@@ -95,7 +95,7 @@ export default function ResultPage() {
           ))}
         </Flex>
         <HStack>
-          <Button> Export Results </Button>
+        
           <Link href={'/projects'}>
             <Button> Back</Button>
           </Link>
