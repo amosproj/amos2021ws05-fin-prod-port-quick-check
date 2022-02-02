@@ -39,7 +39,7 @@ function ShowPieCharts({ results }) {
       for (let r = 0; r < results[j]['ratings'].length; r++) {
         if (results[j]['ratings'][r]['answer'] == null) {
           unfinishedFlag = 1;
-      } else if (results[j]['ratings'][r]['rating']["id"] == 10) {
+        } else if (results[j]['ratings'][r]['rating']['id'] == 10) {
           var kundenValuesTmp = results[j]['ratings'][r]['answer'].split(', ');
           for (let k = 0; k < kundenValuesTmp.length; k++) {
             kundenValues[k] = parseFloat(kundenValuesTmp[k]);
