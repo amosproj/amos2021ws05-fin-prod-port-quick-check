@@ -103,7 +103,11 @@ export default function RatingTable({ ratings, handleChange }) {
   return (
     <List spacing={2} direction="column" w="full" align="center">
       {ratings.map((rating) => (
-          <RatingRow rating={rating} key={rating.ratingID} onChangeScore={handleScoreChange(rating)}></RatingRow>
+        <RatingRow
+          rating={rating}
+          key={rating.ratingID}
+          onChangeScore={handleScoreChange(rating)}
+        ></RatingRow>
       ))}
     </List>
   );
