@@ -1,5 +1,6 @@
 package com.tu.FinancialQuickCheck.IntegrationTests;
 
+import com.tu.FinancialQuickCheck.Role;
 import com.tu.FinancialQuickCheck.db.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +15,7 @@ import org.springframework.http.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -42,6 +44,9 @@ public class ProjectControllerIntegrationTest {
     @Autowired
     private ProjectUserRepository projectUserRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     private String host = "http://localhost:";
     private String projects = "/projects";
     private String projectIDExistsNot = "/0";
@@ -59,25 +64,18 @@ public class ProjectControllerIntegrationTest {
             "\"members\" : [404]" +
             "\"productAreas\" : [404]" +
             "}";
-    private String jsonStringCorrect =
-            "{" +
-                    "\"projectID\":\"66\"," +
-                    " \"creatorID\":\"666\", " +
-                    "\"projectName:\" : \"Test Project\"," +
-                    "\"productAreas\" : [12]" +
-                    "\"members\": [\n" +
-                        "{\n" +
-                        "\"userEmail\": \"alex@amos.de\",\n" +
-                        "\"userName\": \"exampleUsername@web.de\",\n" +
-                        "\"role\": \"CLIENT\"\n" +
-                        "},\n" +
-                    "}";
+    private String jsonStringCorrect;
+
+    private String jsonStringUpdateCorrect;
+
+
 
     private ProductAreaEntity tmpArea;
     private ProductEntity tmpProduct;
     private ProductRatingEntity tmpRating;
     private ProductRatingId tmpRatingID;
     private UserEntity tmpUser;
+    private UserEntity tmpUpdatedUser;
     private ProjectUserEntity tmpProjectUser;
     private ProjectUserId tmpUserID;
     private ProjectEntity tmp;
@@ -87,14 +85,20 @@ public class ProjectControllerIntegrationTest {
     private ProductEntity afterProductEntity;
 
 
+
     @BeforeEach
     public void init(){
+
+        productAreaRepository.deleteAll();
+        projectUserRepository.deleteAll();
+        userRepository.deleteAll();
+        repository.deleteAll();
 
         header.setContentType(MediaType.APPLICATION_JSON);
 
         //create Product Area
         tmpArea = new ProductAreaEntity();
-        tmpArea.id = 12;
+        tmpArea.id = 1;
         tmpArea.name = "KREDIT";
         tmpArea.category = "PRIVAT";
 
@@ -119,13 +123,16 @@ public class ProjectControllerIntegrationTest {
         tmpRatingList.add(tmpRating);
 
         //create Product
-        /**tmpProduct = new ProductEntity();
+        tmpProduct = new ProductEntity();
         tmpProduct.id = 24;
         tmpProduct.name = "exampleProduct";
         tmpProduct.productarea = tmpArea;
         tmpProduct.comment = "example Product Comment";
         tmpProduct.project = tmp;
         tmpProduct.productRatingEntities = tmpRatingList;
+
+        List<ProductEntity> tmpProductList = new ArrayList<>();
+        tmpProductList.add(tmpProduct);
 
         productRepository.save(tmpProduct);
 
@@ -137,13 +144,12 @@ public class ProjectControllerIntegrationTest {
         afterProductEntity.productarea = tmpProductOut.get(0).productarea;
         afterProductEntity.comment = tmpProductOut.get(0).comment;
 
-        List<ProductEntity> tmpProductList = new ArrayList<>();
-        tmpProductList.add(tmpProduct);**/
 
         //create Project
         tmp = new ProjectEntity();
-        tmp.id = 42;
+        tmp.id = 1;
         tmp.name = "exampleProject";
+        tmp.creatorID = UUID.randomUUID().toString();
         //tmp.productEntities = tmpProductList;
 
         repository.save(tmp);
@@ -152,38 +158,81 @@ public class ProjectControllerIntegrationTest {
         afterEntity = new ProjectEntity();
         afterEntity.id = out.get(0).id;
         afterEntity.name = out.get(0).name;
+        afterEntity.creatorID = out.get(0).creatorID;
         afterEntity.productEntities = out.get(0).productEntities;
 
         //create User
         tmpUser = new UserEntity();
-        tmpUser.id = "4";
+
+        tmpUser.id = "185fd119-ac2a-42ab-a1bf-8a891003ab0e";
         tmpUser.username = "exampleUsername";
         tmpUser.email = "exampleUsername@web.de";
-        tmpUser.password = "12345";
 
-        tmpUserID = new ProjectUserId(tmp, tmpUser);
+        //create User
+        tmpUpdatedUser = new UserEntity();
 
+        tmpUpdatedUser.id = "185fd119-ac2a-42ab-a1bf-8a891003ab0e";
+        tmpUpdatedUser.username = "updatedUsername";
+        tmpUpdatedUser.email = "updatedUsername@web.de";
+
+        userRepository.save(tmpUser);
+        userRepository.save(tmpUpdatedUser);
+
+        //create Project User
         tmpProjectUser = new ProjectUserEntity();
-
-        tmpProjectUser.projectUserId = tmpUserID;
+        tmpProjectUser.projectUserId = new ProjectUserId();
+        tmpProjectUser.projectUserId.setUser(tmpUser);
+        tmpProjectUser.projectUserId.setProject(tmp);
+        tmpProjectUser.role = Role.CLIENT;
 
         //projectUserRepository.save(tmpProjectUser);
 
+        jsonStringCorrect = "{" +
+                "\"projectID\" : \"66\"," +
+                "\"creatorID\" : \"7bc6cbbf-5455-4c8e-946c-495ee8a993e5\"," +
+                "\"projectName\" : \"TestProject\"," +
+                "\"productAreas\" : [{" +
+                "\"id\" : " + afterAreaEntity.id + "," +
+                "\"name\" : \"KREDIT\"," +
+                "\"category\" : \"PRIVAT\"" +
+                "}]," +
+                "\"members\": [{" +
+                "\"userID\" : \"185fd119-ac2a-42ab-a1bf-8a891003ab0e\"," +
+                "\"userEmail\" : \"exampleUsername@web.de\"," +
+                "\"userName\" : \"exampleUser\"," +
+                "\"role\" : \"CLIENT\"" +
+                "}]" +
+                "}";
 
+        jsonStringUpdateCorrect =
+                "{" +
+                        "\"projectID\" : \"" + afterEntity.id + "\"," +
+                        "\"creatorID\" : \"" + afterEntity.creatorID + "\"," +
+                        "\"projectName\" : \"Updated Project\"," +
+                        "\"productAreas\" : [{" +
+                        "\"id\" : " + afterAreaEntity.id + "," +
+                        "\"name\" : \"KREDIT\"," +
+                        "\"category\" : \"PRIVAT\"" +
+                        "}]," +
+                        "\"members\": [{" +
+                        "\"userID\" : \"185fd119-ac2a-42ab-a1bf-8a891003ab0e\"," +
+                        "\"userEmail\" : \"exampleUsername@web.de\"," +
+                        "\"userName\" : \"exampleUser\"," +
+                        "\"role\" : \"CLIENT\"" +
+                        "}]" +
+                        "}";
     }
 
     @AfterEach
     public void reset(){
-        repository.delete(afterEntity);
-        productAreaRepository.delete(afterAreaEntity);
-        projectUserRepository.delete(tmpProjectUser);
-        //productRepository.delete(afterProductEntity);
+        productAreaRepository.deleteAll();
+        projectUserRepository.deleteAll();
+        userRepository.deleteAll();
+        repository.deleteAll(repository.findAll());
     }
 
     @Test
-    public void testCreateProject_1_noRequestBody(){
-
-        header.setContentType(MediaType.APPLICATION_JSON);
+    public void testPOSTCreateProject_1_emptyBody(){
 
         ResponseEntity<String> response = restTemplate.exchange(
                 host + port + projects,
@@ -191,11 +240,25 @@ public class ProjectControllerIntegrationTest {
                 null,
                 String.class);
 
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+    }
+
+    @Test
+    public void testPOSTCreateProject_2_emptyJson(){
+
+        HttpEntity<String> request = new HttpEntity<>(jsonStringEmpty, header);
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                host + port + projects,
+                HttpMethod.POST,
+                request,
+                String.class);
+
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     @Test
-    public void testCreateProject_2_wrongRequestBody(){
+    public void testPOSTCreateProject_3_wrongRequestBody(){
 
         HttpEntity<String> request = new HttpEntity<>(jsonStringIncorrectFormat, header);
 
@@ -209,7 +272,7 @@ public class ProjectControllerIntegrationTest {
     }
 
     @Test
-    public void testCreateProject_3_wrongData(){
+    public void testPOSTCreateProject_4_wrongData(){
 
         HttpEntity<String> request = new HttpEntity<>(jsonStringIncorrectData, header);
 
@@ -223,9 +286,111 @@ public class ProjectControllerIntegrationTest {
     }
 
     @Test
-    public void testCreateProject_4(){
+    public void testPOSTCreateProject_5_success(){
+
 
         HttpEntity<String> request = new HttpEntity<>(jsonStringCorrect, header);
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                host + port + projects,
+                HttpMethod.POST,
+                request,
+                String.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+    }
+
+
+    @Test
+    public void testGETFindAll_6_emptyRepo() {
+
+        productAreaRepository.deleteAll();
+        projectUserRepository.deleteAll();
+        userRepository.deleteAll();
+        repository.deleteAll();
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                host + port + projects,
+                HttpMethod.GET,
+                null,
+                String.class);
+
+        assertThat(response.getBody()).isEqualTo("[]");
+
+    }
+
+    @Test
+    public void testGETFindAll_7_success() {
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                host + port + projects,
+                HttpMethod.GET,
+                null,
+                String.class);
+
+        assertThat(response.getBody()).isEqualTo("[{\"projectID\":" + afterEntity.id +",\"projectName\":\"exampleProject\"}]");
+
+    }
+
+    @Test
+    public void testGetFindByID_8_emptyRepo() {
+
+        productAreaRepository.deleteAll();
+        projectUserRepository.deleteAll();
+        userRepository.deleteAll();
+        repository.deleteAll();
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                host + port + projects + "/1",
+                HttpMethod.GET,
+                null,
+                String.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+
+    }
+
+    @Test
+    public void testGETFindByID_9_IdNotExisting() {
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                host + port + projects + "/404",
+                HttpMethod.GET,
+                null,
+                String.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+
+    }
+
+    @Test
+    public void testGETFindByID_10_IdExisting() {
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                host + port + projects + "/" + afterEntity.id,
+                HttpMethod.GET,
+                null,
+                String.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+
+    @Test
+    public void testGETFindByID_11_IdWrongFormat() {
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                host + port + projects + "/zweulf",
+                HttpMethod.GET,
+                null,
+                String.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
+    public void testPUTUpdateByID_12_incorrectJSON() {
+
+        HttpEntity<String> request = new HttpEntity<>(jsonStringIncorrectFormat, header);
 
         ResponseEntity<String> response = restTemplate.exchange(
                 host + port + projects,
@@ -236,124 +401,56 @@ public class ProjectControllerIntegrationTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
-    //TODO: (alex) from here swrite new Tests
     @Test
-    public void putProjectIdExists() throws Exception {
+    public void testPUTUpdateByID_13_areaNotFound() {
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+        String jsonString = "{" +
+                "\"projectID\" : \"66\"," +
+                "\"creatorID\" : \"7bc6cbbf-5455-4c8e-946c-495ee8a993e5\"," +
+                "\"projectName\" : \"TestProject\"," +
+                "\"productAreas\" : [{" +
+                "\"id\" : " + 404 + "," +
+                "\"name\" : \"KREDIT\"," +
+                "\"category\" : \"PRIVAT\"" +
+                "}]," +
+                "\"members\": [{" +
+                "\"userID\" : \"185fd119-ac2a-42ab-a1bf-8a891003ab0e\"," +
+                "\"userEmail\" : \"exampleUsername@web.de\"," +
+                "\"userName\" : \"exampleUser\"," +
+                "\"role\" : \"CLIENT\"" +
+                "}]" +
+                "}";
 
-        HttpEntity<String> request = new HttpEntity<>(
-                "{\"id\":1,\"name\": \"neuer Bankname\",\"creatorID\":1,\"members\":[1,2,3],\"productAreas\":[]}",
-                headers
-        );
+        HttpEntity<String> request = new HttpEntity<>(jsonString, header);
 
-
-        ResponseEntity<String> response = restTemplate.exchange(
-                host + port + projects + projectID1,
-                HttpMethod.PUT,
-                request,
-                String.class);
-
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-
-        //        System.out.println("Response Status: " + response.getStatusCode());
-
-    }
-
-    @Test
-    public void getProjects() throws Exception {
         ResponseEntity<String> response = restTemplate.exchange(
                 host + port + projects,
-                HttpMethod.GET,
-                null,
-                String.class);
-
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-//        System.out.println("Response Status: " + response.getStatusCode());
-    }
-
-    @Test
-    public void notAllowedMethodsProjects() throws Exception {
-
-        HttpMethod[] notAllowed = new HttpMethod[]{HttpMethod.PUT, HttpMethod.DELETE};
-        for (HttpMethod httpMethod : notAllowed) {
-            ResponseEntity<String> response = restTemplate.exchange(
-                    host + port + projects,
-                    httpMethod,
-                    null,
-                    String.class);
-
-            assertThat(response.getStatusCode()).isEqualTo(HttpStatus.METHOD_NOT_ALLOWED);
-//            System.out.println("Response Status: " + response.getStatusCode());
-        }
-    }
-
-    @Test
-    public void allowedMethodsProjectIdDoesNotExist() throws Exception {
-        HttpMethod[] allowed = new HttpMethod[]{HttpMethod.GET, HttpMethod.DELETE};
-        for (HttpMethod httpMethod : allowed) {
-            ResponseEntity<String> response = restTemplate.exchange(
-                    host + port + projects + projectIDExistsNot,
-                    httpMethod,
-                    null,
-                    String.class);
-
-            assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-            //        System.out.println("Response Status: " + response.getStatusCode());
-        }
-    }
-
-    @Test
-    public void notAllowedMethodsProjectId() throws Exception {
-
-        HttpMethod[] notAllowed = new HttpMethod[]{HttpMethod.POST};
-        for (HttpMethod httpMethod : notAllowed) {
-            ResponseEntity<String> response = restTemplate.exchange(
-                    host + port + projects + projectID1,
-                    httpMethod,
-                    null,
-                    String.class);
-
-            assertThat(response.getStatusCode()).isEqualTo(HttpStatus.METHOD_NOT_ALLOWED);
-//            System.out.println("Response Status: " + response.getStatusCode());
-        }
-    }
-
-    @Test
-    public void allowedMethodsProjectIdExists() throws Exception {
-        HttpMethod[] allowed = new HttpMethod[]{HttpMethod.GET, HttpMethod.DELETE};
-        for (HttpMethod httpMethod : allowed) {
-            ResponseEntity<String> response = restTemplate.exchange(
-                    host + port + projects + projectID1,
-                    httpMethod,
-                    null,
-                    String.class);
-
-            assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-            System.out.println("Response Status: " + response.getStatusCode());
-        }
-    }
-
-    @Test
-    public void putProjectIdDoesNotExist() throws Exception {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        HttpEntity<String> request = new HttpEntity<>(
-                "{ }",
-                headers
-        );
-
-
-        ResponseEntity<String> response = restTemplate.exchange(
-                host + port + projects + projectIDExistsNot,
-                HttpMethod.PUT,
+                HttpMethod.POST,
                 request,
                 String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-        //        System.out.println("Response Status: " + response.getStatusCode());
+    }
+
+    @Test
+    public void testPUTUpdateByID_14_success() {
+
+        HttpEntity<String> request = new HttpEntity<>(jsonStringUpdateCorrect, header);
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                host + port + projects + "/" + afterEntity.id,
+                HttpMethod.PUT,
+                request,
+                String.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+    }
+
+    @Test
+    public void testGETFindProductsByProject(){
+
+
     }
 
 }
