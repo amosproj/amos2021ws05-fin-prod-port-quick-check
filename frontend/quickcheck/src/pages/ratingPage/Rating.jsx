@@ -58,12 +58,12 @@ export default function Rating() {
         backref={`/projects/${projectID}/productArea/${productAreaID}`}
       >
         <Tabs w="full">
-          <TabList >
+          <TabList>
             {data.map((complexityDriver) => (
               <Tab key={complexityDriver[1]}>{complexityDriver[0]}</Tab>
             ))}
           </TabList>
-          <TabPanels >
+          <TabPanels>
             {data.map((complexityDriver) => (
               <TabPanel p={4} key={complexityDriver[0]}>
                 <Card direction="column">
@@ -79,7 +79,7 @@ export default function Rating() {
             size="md"
             onClick={() => {
               sendRatings(productData);
-              notification("Rating Saved!", "", "success")
+              notification('Rating Saved!', '', 'success');
             }}
           >
             Save

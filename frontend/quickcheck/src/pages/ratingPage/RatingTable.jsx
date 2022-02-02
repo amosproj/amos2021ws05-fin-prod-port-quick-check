@@ -1,8 +1,18 @@
-import { Flex, Input, Text, Spacer, List, Textarea, IconButton, HStack, VStack } from '@chakra-ui/react';
+import {
+  Flex,
+  Input,
+  Text,
+  Spacer,
+  List,
+  Textarea,
+  IconButton,
+  HStack,
+  VStack,
+} from '@chakra-ui/react';
 import Card from '../../components/Card';
 import Selection from '../../components/Selection';
 import { useStoreActions, useStoreState } from 'easy-peasy';
-import { AttachmentIcon } from "@chakra-ui/icons";
+import { AttachmentIcon } from '@chakra-ui/icons';
 
 function RatingRow({ rating, onChangeScore }) {
   const changeRatingAnswer = useStoreActions((actions) => actions.product_rating.changeAnswer);
@@ -11,15 +21,13 @@ function RatingRow({ rating, onChangeScore }) {
 
   const handleAnswerChange = (newRating) => {
     if (rating.ratingID == 10) {
-      if (newRating.match("^[1-9]\\d{0,2}(?:,\\d{0,2}(?:,\\d{0,2})?)?$") == null) {
-        alert("Falsches Format")
-      }
-      else {
+      if (newRating.match('^[1-9]\\d{0,2}(?:,\\d{0,2}(?:,\\d{0,2})?)?$') == null) {
+        alert('Falsches Format');
+      } else {
         rating.answer = newRating;
         changeRatingAnswer(rating);
       }
-    }
-    else {
+    } else {
       rating.answer = newRating;
       changeRatingAnswer(rating);
     }
@@ -36,12 +44,12 @@ function RatingRow({ rating, onChangeScore }) {
       // w={(parentID > 0) ? ' 90%' : 'full'}
       direction="column"
     >
-      <Flex direction="row" justifyContent={"space-between"} w="full" mb={4}>
-        <Text fontSize='xl'>{rating.rating.criterion}</Text>
+      <Flex direction="row" justifyContent={'space-between'} w="full" mb={4}>
+        <Text fontSize="xl">{rating.rating.criterion}</Text>
       </Flex>
-      <Flex direction="row" justifyContent={"space-between"} w="full" mb={2} alignItems={"center"}>
-        <VStack w="40%" alignItems={"left"} spacing="0">
-          <Text fontSize={"sm"}>Answer</Text>
+      <Flex direction="row" justifyContent={'space-between'} w="full" mb={2} alignItems={'center'}>
+        <VStack w="40%" alignItems={'left'} spacing="0">
+          <Text fontSize={'sm'}>Answer</Text>
           <Textarea
             align="center"
             placeholder={'Answer'}
@@ -58,10 +66,9 @@ function RatingRow({ rating, onChangeScore }) {
           options={['GERING', 'MITTEL', 'HOCH']}
           selected={rating.score}
           onChange={onChangeScore}
-        >
-        </Selection>
-        <VStack w="40%" alignItems={"left"} spacing="0">
-          <Text fontSize={"sm"}>Comment</Text>
+        ></Selection>
+        <VStack w="40%" alignItems={'left'} spacing="0">
+          <Text fontSize={'sm'}>Comment</Text>
           <Textarea
             placeholder={'Comment'}
             value={rating.comment}
@@ -72,7 +79,7 @@ function RatingRow({ rating, onChangeScore }) {
         </VStack>
         <IconButton variant="whisper" icon={<AttachmentIcon />} />
       </Flex>
-    </Card >
+    </Card>
   );
 }
 
