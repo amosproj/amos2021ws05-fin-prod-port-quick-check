@@ -204,35 +204,18 @@ const productRatingModel = {
       },
     ],
   },
-  changeAnswer: action((state, rat) => {
-    let index = state.product.ratings.map((r) => r.ratingID).indexOf(rat.ratingID);
-    state.product.ratings[index] = { ...state.product.ratings[index], answer: rat.answer };
+  categories: [],
+
+  makeCategories: action((state, payload) => {
+    // run in fetch action
+    const ratingCategories = state.product.ratings.map((r) => r.rating.category);
+    state.categories = [...new Set(ratingCategories)];
   }),
 
-  changeComment: action((state, rat) => {
-    let index = state.product.ratings.map((r) => r.ratingID).indexOf(rat.ratingID);
-    state.product.ratings[index] = { ...state.product.ratings[index], comment: rat.comment };
+  getRatingsByCategory: computed((state) => {
+    return (category) =>
+      state.product.ratings.filter((rating) => rating.rating.category === category);
   }),
-};
-
-const ratingModel = {
-  product: {
-    productID: -1,
-    ratingID: 0,
-    ratings: [
-      {
-        ratingID: 10,
-        answer: '',
-        comment: '',
-        score: score.GERING,
-        rating: {
-          category: '',
-          criterion: '',
-          ratingArea: ratingArea.ECONOMIC,
-        },
-      },
-    ],
-  },
 
   init: action((state, payload) => {
     state.product = [
@@ -253,16 +236,18 @@ const ratingModel = {
   }),
 
   // general actions
-  set: action((state, ratings) => {
-    state.product = ratings;
+  set: action((state, product) => {
+    state.product = product;
   }),
+
   update: action((state, updatedProps) => {
     state.product = { ...state.product, ...updatedProps };
   }),
 
-  changeAnswer: action((state, rat) => {
-    let index = state.product.ratings.map((r) => r.ratingID).indexOf(rat.ratingID);
-    state.product.ratings[index] = { ...state.product.ratings[index], answer: rat.answer };
+  updateRating: action((state, rating) => {
+    // overwrite single rating with same id
+    let index = state.product.ratings.map((r) => r.ratingID).indexOf(rating.ratingID);
+    state.product.ratings[index] = { ...state.product.ratings[index], ...rating };
   }),
 
   // GET all ratings
@@ -272,6 +257,8 @@ const ratingModel = {
       .get()
       .json((json) => actions.set(json))
       .catch(console.error);
+
+    actions.makeCategories();
   }),
 
   sendUpdate: thunk(async (actions, product) => {
