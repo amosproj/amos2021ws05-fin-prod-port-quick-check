@@ -195,7 +195,7 @@ const projectModel = {
   }),
 };
 
-const product_rating = {
+const productRating = {
   product: {
     productID: 0,
     ratingID: 0,
@@ -307,7 +307,7 @@ const store = createStore({
   rating: ratingModel,
   productList: productAreaModel,
   resultList: resultModel,
-  product_rating: product_rating,
+  productRating: productRating,
 });
 
 export default store;

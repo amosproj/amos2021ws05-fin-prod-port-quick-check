@@ -15,10 +15,10 @@ import { useStoreActions, useStoreState } from 'easy-peasy';
 import { AttachmentIcon } from '@chakra-ui/icons';
 
 function RatingRow({ rating, onChangeScore }) {
-  const changeRatingAnswer = useStoreActions((actions) => actions.product_rating.changeAnswer);
-  const changeRatingCommet = useStoreActions((actions) => actions.product_rating.changeComment);
-  const changeRatingScore = useStoreActions((actions) => actions.product_rating.changeScore);
-  const productData = useStoreState((state) => state.product_rating.product);
+  const changeRatingAnswer = useStoreActions((actions) => actions.productRating.changeAnswer);
+  const changeRatingCommet = useStoreActions((actions) => actions.productRating.changeComment);
+  const changeRatingScore = useStoreActions((actions) => actions.productRating.changeScore);
+  const productData = useStoreState((state) => state.productRating.product);
 
   const handleAnswerChange = (newRating) => {
     if (rating.ratingID == 10) {
