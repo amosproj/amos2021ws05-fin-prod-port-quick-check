@@ -10,51 +10,11 @@ import RatingTable from './RatingTable';
 
 //http://localhost:3000/projects/100/productArea/1/products/100/ratings
 
-<<<<<<< HEAD
-function toTitles(s) {
-  return s.replace(/\w\S*/g, function (t) {
-    return t.charAt(0).toUpperCase() + t.substr(1).toLowerCase();
-  });
-}
-
-const mockRatings = {
-  ratings: [
-    {
-      answer: 'test answer',
-      comment: 'test comment',
-      score: score.gering,
-      rating: {
-        category: 'Treiber 1',
-        criterion: 'test frage',
-      },
-    },
-    {
-      answer: 'test answer',
-      comment: 'test comment',
-      score: score.gering,
-      rating: {
-        category: 'Treiber 1',
-        criterion: 'test frage 1',
-      },
-    },
-    {
-      answer: '',
-      comment: '',
-      score: score.mittel,
-      rating: {
-        category: 'Treiber 2',
-        criterion: 'Wer bin ich',
-      },
-    },
-  ],
-};
-=======
 function capitalizeFirst(str) {
   const first = str.charAt(0);
   const rest = str.substr(1);
   return first.toUpperCase() + rest;
 }
->>>>>>> development
 
 export default function Rating() {
   const [ratingsPerCategory, setRatingsPerCategory] = useState([]);
@@ -106,9 +66,7 @@ export default function Rating() {
           <TabPanels>
             {data.map((complexityDriver) => (
               <TabPanel p={4} key={complexityDriver[0]}>
-                <Card direction="column">
                   <RatingTable ratings={complexityDriver[1]} handleChange={setRatings} />
-                </Card>
               </TabPanel>
             ))}
           </TabPanels>

@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-import { Flex, Input, Spacer, List, Textarea, IconButton } from '@chakra-ui/react';
-import React, { useState } from 'react';
-=======
 import {
   Flex,
   Input,
@@ -13,7 +9,6 @@ import {
   HStack,
   VStack,
 } from '@chakra-ui/react';
->>>>>>> development
 import Card from '../../components/Card';
 import Selection from '../../components/Selection';
 import { useStoreActions, useStoreState } from 'easy-peasy';

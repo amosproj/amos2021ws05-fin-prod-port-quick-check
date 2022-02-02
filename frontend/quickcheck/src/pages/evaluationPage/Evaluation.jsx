@@ -45,19 +45,11 @@ export default function Evaluation() {
           <TabPanels>
             {data.map((complexityDriver) => (
               <TabPanel p={5} key={complexityDriver[0]}>
-                <Card direction="column">
                   <EvaluationTable ratings={complexityDriver[1]} />
-                </Card>
               </TabPanel>
             ))}
           </TabPanels>
         </Tabs>
-<<<<<<< HEAD
-        <Link href={`/projects/${projectID}/productArea/${productAreaID}/`}>
-          <Button variant="whisper">Back</Button>
-        </Link>
-=======
->>>>>>> development
       </Page>
     );
   }
