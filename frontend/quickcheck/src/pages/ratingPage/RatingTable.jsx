@@ -14,8 +14,18 @@ function RatingRow({ rating }) {
 
   const updateRatingAttribute = (key) => (value) => {
     let change = {};
-    change[key] = value;
-    updateRating({ ratingID: rating.ratingID, ...change });
+    if (rating.ratingID == 10 && key === 'answer') {
+      if (value.match('^[1-9]\\d{0,2}(?:,\\d{0,2}(?:,\\d{0,2})?)?$') == null) {
+        alert('Falsches Format');
+      } else {
+        change[key] = value;
+        updateRating({ratingID: rating.ratingID, ...change});
+      }
+    }
+    else {
+      change[key] = value;
+      updateRating({ratingID: rating.ratingID, ...change});
+    }
   };
 
   const handleUpdateComment = updateRatingAttribute('comment');
