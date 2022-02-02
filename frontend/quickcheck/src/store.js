@@ -117,7 +117,7 @@ const projectModel = {
   data: {
     projectID: 0,
     projectName: '',
-    creatorID: '0fef539d-69be-4013-9380-6a12c3534c67',
+    creatorID: '',
     members: [],
     productAreas: [],
   },
@@ -202,12 +202,12 @@ const product_rating = {
     ratings: [
       {
         ratingID: 10,
-        answer: 'test answer',
-        comment: 'test comment',
-        score: score.gering,
+        answer: '',
+        comment: '',
+        score: score.GERING,
         rating: {
-          category: 'Treiber 1',
-          criterion: 'test frage',
+          category: '',
+          criterion: '',
           ratingArea: ratingArea.ECONOMIC,
         },
       },
@@ -236,12 +236,12 @@ const ratingModel = {
     ratings: [
       {
         ratingID: 10,
-        answer: 'test answer',
-        comment: 'test comment',
-        score: score.gering,
+        answer: '',
+        comment: '',
+        score: score.GERING,
         rating: {
-          category: 'Treiber 1',
-          criterion: 'test frage',
+          category: '',
+          criterion: '',
           ratingArea: ratingArea.ECONOMIC,
         },
       },
@@ -255,7 +255,7 @@ const ratingModel = {
         ratingID: 0,
         answer: 'test answer',
         comment: 'test comment',
-        score: score.gering,
+        score: score.GERING,
         rating: {
           ratingID: 0,
           category: 'Treiber 1',
