@@ -10,16 +10,15 @@ import {
   Link,
   Collapse,
   useDisclosure,
-  IconButton,
 } from '@chakra-ui/react';
 
 import { TriangleUpIcon, TriangleDownIcon } from '@chakra-ui/icons';
-import { AttachmentIcon } from '@chakra-ui/icons';
 import AddProductButton from './AddProductButton';
 import React, { useState } from 'react';
 import Card from '../../components/Card';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import ProductVariant from './ProductVariant';
+import UploadButton from '../../components/Upload';
 
 export default function ProductRow({ product, editMode }) {
   const { isOpen, onToggle } = useDisclosure();
@@ -93,8 +92,7 @@ export default function ProductRow({ product, editMode }) {
             }}
             placeholder="Anmerkung"
           />
-
-          <IconButton variant="whisper" icon={<AttachmentIcon />} />
+          <UploadButton variant="whisper" />
         </Flex>
 
         <Flex w="full">
