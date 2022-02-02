@@ -5,7 +5,7 @@ import { notification } from '../utils/notification';
 import { AttachmentIcon } from '@chakra-ui/icons';
 
 export default function UploadButton(buttonProps) {
-  const [image, setImage] = useState('');
+  const [file, setFile] = useState('');
   const inputFile = useRef(null);
 
   const handleFileUpload = (e) => {
@@ -13,11 +13,9 @@ export default function UploadButton(buttonProps) {
     if (files && files.length) {
       const filename = files[0].name;
 
-      var parts = filename.split('.');
-      const fileType = parts[parts.length - 1];
-      console.log('fileType', fileType); //ex: zip, rar, jpg, svg etc.
-      notification('Upload succeeded', '', 'success');
-      setImage(files[0]);
+      notification('Uploading...', `file: ${filename}`, 'info');
+      setFile(files[0]);
+      // send_to_backend(file)
     }
   };
 
@@ -25,19 +23,11 @@ export default function UploadButton(buttonProps) {
     inputFile.current.click();
   };
 
-  console.log('imageimage', image);
   return (
     <div>
-      <input
-        style={{ display: 'none' }}
-        // accept=".zip,.rar"
-        ref={inputFile}
-        onChange={handleFileUpload}
-        type="file"
-      />
-      <div className="button" onClick={onButtonClick}>
-        <IconButton {...buttonProps} icon={<AttachmentIcon />} />
-      </div>
+      <input style={{ display: 'none' }} ref={inputFile} onChange={handleFileUpload} type="file" />
+      <IconButton {...buttonProps} icon={<AttachmentIcon onClick={onButtonClick} />} />
+      <IconButton onClick={console.log(file)}></IconButton>
     </div>
   );
 }
