@@ -186,6 +186,7 @@ const projectModel = {
   }),
 };
 
+
 const productRatingModel = {
   product: {
     productID: -1,

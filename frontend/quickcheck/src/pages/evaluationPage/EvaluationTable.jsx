@@ -17,7 +17,7 @@ function RatingRow({ rating }) {
             {rating.answer}
           </Text>
         </VStack>
-        <Text variant="cell">{rating.score}</Text>
+        <Text variant="cell">{(rating.score != null) ? rating.score : 'Nicht gesetzt'}</Text>
         <VStack w="40%" alignItems="left" spacing={0}>
           <Text fontSize="sm" align="left">
             Comment
