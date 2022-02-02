@@ -10,8 +10,11 @@ import RatingTable from './RatingTable';
 
 //http://localhost:3000/projects/100/productArea/1/products/100/ratings
 
-function toTitles(s) { return s.replace(/\w\S*/g, function (t) { return t.charAt(0).toUpperCase() + t.substr(1).toLowerCase(); }); }
-
+function toTitles(s) {
+  return s.replace(/\w\S*/g, function (t) {
+    return t.charAt(0).toUpperCase() + t.substr(1).toLowerCase();
+  });
+}
 
 const mockRatings = {
   ratings: [
@@ -101,7 +104,6 @@ export default function Rating() {
           </TabPanels>
         </Tabs>
         <HStack>
-
           <Button
             variant="whisper"
             size="md"

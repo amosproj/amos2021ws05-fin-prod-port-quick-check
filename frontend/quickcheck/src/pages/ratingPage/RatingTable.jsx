@@ -1,9 +1,9 @@
-import {Flex, Input, Spacer, List, Textarea, IconButton} from '@chakra-ui/react';
+import { Flex, Input, Spacer, List, Textarea, IconButton } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import Card from '../../components/Card';
 import Selection from '../../components/Selection';
 import { useStoreActions, useStoreState } from 'easy-peasy';
-import {AttachmentIcon} from "@chakra-ui/icons";
+import { AttachmentIcon } from '@chakra-ui/icons';
 
 function RatingRow({ rating, onChangeScore }) {
   const changeRatingAnswer = useStoreActions((actions) => actions.product_rating.changeAnswer);
@@ -12,18 +12,14 @@ function RatingRow({ rating, onChangeScore }) {
   const productData = useStoreState((state) => state.product_rating.product);
 
   const handleAnswerChange = (newRating) => {
-    if (rating.ratingID == 10)
-    {
-      if(newRating.match("^[1-9]\\d{0,2}(?:,\\d{0,2}(?:,\\d{0,2})?)?$") == null)
-      {
-        alert("Falsches Format")
-      }
-      else {
+    if (rating.ratingID == 10) {
+      if (newRating.match('^[1-9]\\d{0,2}(?:,\\d{0,2}(?:,\\d{0,2})?)?$') == null) {
+        alert('Falsches Format');
+      } else {
         rating.answer = newRating;
         changeRatingAnswer(rating);
       }
-    }
-    else {
+    } else {
       rating.answer = newRating;
       changeRatingAnswer(rating);
     }

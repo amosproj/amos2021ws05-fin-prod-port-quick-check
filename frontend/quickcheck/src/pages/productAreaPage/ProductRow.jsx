@@ -20,7 +20,6 @@ import { useStoreActions, useStoreState } from 'easy-peasy';
 import ProductVariant from './ProductVariant';
 import UploadButton from '../../components/Upload';
 
-
 export default function ProductRow({ product, editMode }) {
   const { isOpen, onToggle } = useDisclosure();
 
@@ -39,7 +38,6 @@ export default function ProductRow({ product, editMode }) {
   const setComment = (newComment) => {
     updateProductComment({ productID: product.productID, newComment });
   };
-
 
   return (
     <Card
@@ -94,8 +92,7 @@ export default function ProductRow({ product, editMode }) {
             }}
             placeholder="Anmerkung"
           />
-          <UploadButton variant="whisper"/>
-          
+          <UploadButton variant="whisper" />
         </Flex>
 
         <Flex w="full">
