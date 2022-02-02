@@ -122,15 +122,6 @@ const projectModel = {
     productAreas: [],
   },
 
-  init: action((state, payload) => {
-    state.data = {
-      projectID: 0,
-      creatorID: '0fef539d-69be-4013-9380-6a12c3534c67',
-      projectName: '',
-      members: [],
-      productAreas: [],
-    };
-  }),
   // general actions
   set: action((state, project) => {
     state.data = project;
@@ -195,47 +186,13 @@ const projectModel = {
   }),
 };
 
-const productRating = {
-  product: {
-    productID: 0,
-    ratingID: 0,
-    ratings: [
-      {
-        ratingID: 10,
-        answer: '',
-        comment: '',
-        score: score.GERING,
-        rating: {
-          category: '',
-          criterion: '',
-          ratingArea: ratingArea.ECONOMIC,
-        },
-      },
-    ],
-  },
-  changeAnswer: action((state, rat) => {
-    let index = state.product.ratings.map((r) => r.ratingID).indexOf(rat.ratingID);
-    state.product.ratings[index] = { ...state.product.ratings[index], answer: rat.answer };
-  }),
-
-  changeComment: action((state, rat) => {
-    let index = state.product.ratings.map((r) => r.ratingID).indexOf(rat.ratingID);
-    state.product.ratings[index] = { ...state.product.ratings[index], comment: rat.comment };
-  }),
-
-  changeScore: action((state, rat) => {
-    let index = state.product.ratings.map((r) => r.ratingID).indexOf(rat.ratingID);
-    state.product.ratings[index] = { ...state.product.ratings[index], score: rat.score };
-  }),
-};
-
-const ratingModel = {
+const productRatingModel = {
   product: {
     productID: -1,
     ratingID: 0,
     ratings: [
       {
-        ratingID: 10,
+        ratingID: -1,
         answer: '',
         comment: '',
         score: score.GERING,
@@ -247,6 +204,18 @@ const ratingModel = {
       },
     ],
   },
+  categories: [],
+
+  makeCategories: action((state, payload) => {
+    // run in fetch action
+    const ratingCategories = state.product.ratings.map((r) => r.rating.category);
+    state.categories = [...new Set(ratingCategories)];
+  }),
+
+  getRatingsByCategory: computed((state) => {
+    return (category) =>
+      state.product.ratings.filter((rating) => rating.rating.category === category);
+  }),
 
   init: action((state, payload) => {
     state.product = [
@@ -267,16 +236,18 @@ const ratingModel = {
   }),
 
   // general actions
-  set: action((state, ratings) => {
-    state.product = ratings;
+  set: action((state, product) => {
+    state.product = product;
   }),
+
   update: action((state, updatedProps) => {
     state.product = { ...state.product, ...updatedProps };
   }),
 
-  changeAnswer: action((state, rat) => {
-    let index = state.product.ratings.map((r) => r.ratingID).indexOf(rat.ratingID);
-    state.product.ratings[index] = { ...state.product.ratings[index], answer: rat.answer };
+  updateRating: action((state, rating) => {
+    // overwrite single rating with same id
+    let index = state.product.ratings.map((r) => r.ratingID).indexOf(rating.ratingID);
+    state.product.ratings[index] = { ...state.product.ratings[index], ...rating };
   }),
 
   // GET all ratings
@@ -286,17 +257,16 @@ const ratingModel = {
       .get()
       .json((json) => actions.set(json))
       .catch(console.error);
+
+    actions.makeCategories();
   }),
 
   sendUpdate: thunk(async (actions, product) => {
-    //console.log('send UPDATE project:', { projectData });
-    actions.set(product);
     await api
       .url('/products/' + product.productID + '/ratings')
       .put(product)
       .res(console.log)
       .catch(console.error);
-
     actions.set(product);
   }),
 };
@@ -304,10 +274,9 @@ const ratingModel = {
 const store = createStore({
   projectList: projectListModel,
   project: projectModel,
-  rating: ratingModel,
+  rating: productRatingModel,
   productList: productAreaModel,
   resultList: resultModel,
-  productRating: productRating,
 });
 
 export default store;

@@ -27,7 +27,6 @@ export default function UploadButton(buttonProps) {
     <div>
       <input style={{ display: 'none' }} ref={inputFile} onChange={handleFileUpload} type="file" />
       <IconButton {...buttonProps} icon={<AttachmentIcon onClick={onButtonClick} />} />
-      <IconButton onClick={console.log(file)}></IconButton>
     </div>
   );
 }
