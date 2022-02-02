@@ -86,7 +86,7 @@ export default function ProductRow({ product, editMode }) {
             width="50%"
             mr="3"
             isReadOnly={!editMode}
-            value={product.comment !== null ? product.comment : ''}
+            value={product.comment ? product.comment : ''}
             onChange={(e) => {
               setComment(e.target.value);
             }}

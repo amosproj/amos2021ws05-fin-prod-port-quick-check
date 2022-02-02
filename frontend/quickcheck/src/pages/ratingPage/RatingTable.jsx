@@ -31,7 +31,7 @@ function RatingRow({ rating }) {
           <Textarea
             align="center"
             placeholder="Answer"
-            value={rating.answer}
+            value={rating.answer ? rating.answer : ''}
             onChange={(e) => handleUpdateAnswer(e.target.value)}
           />
         </VStack>
@@ -39,8 +39,8 @@ function RatingRow({ rating }) {
         <Selection
           w="125px"
           mb="5"
-          options={['GERING', 'MITTEL', 'HOCH']}
-          selected={rating.score}
+          options={[score.GERING, score.MITTEL, score.HOCH]} 
+          selected={rating.score ? rating.score : score.MITTEL }
           onChange={handleUpdateScore}
         ></Selection>
         <VStack w="40%" alignItems="left" spacing="0" mx={1}>
@@ -49,7 +49,7 @@ function RatingRow({ rating }) {
           </Text>
           <Textarea
             placeholder="Comment"
-            value={rating.comment}
+            value={rating.comment ? rating.comment : ''}
             onChange={(e) => handleUpdateComment(e.target.value)}
           />
         </VStack>
