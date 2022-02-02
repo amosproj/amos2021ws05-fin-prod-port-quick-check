@@ -1,6 +1,5 @@
 import React from 'react';
-import { Flex, Text, List, Textarea, IconButton, VStack } from '@chakra-ui/react';
-import { AttachmentIcon } from '@chakra-ui/icons';
+import { Flex, Text, List, Textarea, VStack } from '@chakra-ui/react';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 
 import { score } from '../../utils/const';
@@ -9,10 +8,24 @@ import Card from '../../components/Card';
 import Selection from '../../components/Selection';
 import UploadButton from '../../components/Upload';
 
-const validCategoricalPercentage = (value) => {
+const validCategoricalPercentage = (str) => {
   // valid format: "int,int,int"
   // example: "15,5,80"
-  return (value.match('^[1-9]\\d{0,2}(?:,\\d{0,2}(?:,\\d{0,2})?)?$') != null)
+  const percentages = str.split(',')
+
+  if (percentages.length !== 3) { // check if three percentage values
+    return false
+  }
+  for (let p in percentages) {
+    if (isNaN(p)) { // check if each value is a number
+      return false
+    }
+    const value = parseInt(p)
+    if (value < 0 || value>100){ // check if each value is in range [0, 100]
+      return false
+    }
+  }
+  return true // format valid
 }
 
 function RatingRow({ rating }) {
@@ -30,7 +43,6 @@ function RatingRow({ rating }) {
     if (rating.ratingID === 10) {
       if (validCategoricalPercentage(newAnswer)) {
         alert('Falsches Format');
-        return
       }
     }
     updateRatingAttribute('answer')(newAnswer);
