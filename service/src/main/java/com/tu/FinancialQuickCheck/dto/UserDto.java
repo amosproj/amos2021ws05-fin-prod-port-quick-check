@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
  * This class represents the user data transfer object, which is used for reducing the number of multiple
  * method calls into a single one
  */
-//TODO: (done - already had it) create userPasswordDto to manage Password outside of userDto --> ProjectUserDto
 public class UserDto {
 
     public UUID userID;
@@ -56,7 +55,5 @@ public class UserDto {
     public int hashCode() {
         return Objects.hash(userEmail);
     }
-
-
 
 }
