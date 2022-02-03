@@ -1,6 +1,5 @@
 package com.tu.FinancialQuickCheck.UnitTests.Service;
 
-
 import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.RatingArea;
 import com.tu.FinancialQuickCheck.Score;
@@ -220,150 +219,6 @@ public class ProductRatingServiceTest {
     }
 
 
-
-    /**
-     * tests for createProductRatings()
-     *
-     * testCreateProductRatings: input contains required information (projectId, ratingID and NO data)
-     *                            --> return ProductDto with created empty ratings
-     * testCreateProductRatings: input contains required information (projectId, ratingID and data)
-     *                            --> return ProductDto with created ratings
-     * testCreateProductRatings: input projectID does not exist
-     *                            --> throw ResourceNotFound Exception
-     * testCreateProductRatings: input ratingID does not exist
-     *                            --> throw ResourceNotFound Exception
-     */
-    @Test
-    public void testCreateProductRatings_createRatingsWithoutData() {
-        // Step 0: init test object
-        int productID = 1;
-
-        // Step 1: provide knowledge
-        when(productRepository.existsById(productID)).thenReturn(true);
-        when(productRepository.getById(productID)).thenReturn(entity);
-        when(ratingRepository.existsById(1)).thenReturn(true);
-        when(ratingRepository.existsById(2)).thenReturn(true);
-        when(ratingRepository.existsById(3)).thenReturn(true);
-        when(ratingRepository.existsById(4)).thenReturn(true);
-        when(ratingRepository.existsById(5)).thenReturn(true);
-        when(ratingRepository.existsById(6)).thenReturn(true);
-        when(ratingRepository.existsById(7)).thenReturn(true);
-        when(ratingRepository.findById(1)).thenReturn(Optional.of(ratingEntities.get(0)));
-
-        when(ratingRepository.findByRatingarea(RatingArea.ECONOMIC)).thenReturn(econimicRatingEntities);
-
-        // Step 2: Execute updateProject()
-        ProductDto out = service.createProductRatings(createEmptyDto, productID);
-
-        // Step 3: assert exception
-        assertEquals(createDto.productName , out.productName);
-        out.ratings.forEach(rating ->
-                assertAll(
-                        () -> assertThat(rating.ratingID).isGreaterThan(0),
-                        () -> assertNull(rating.answer),
-                        () -> assertNull(rating.comment),
-                        () -> assertNull(rating.score)
-                )
-        );
-    }
-
-
-    @Test
-    public void testCreateProductRatings_createRatingsWithData() {
-        // Step 0: init test object
-        int productID = 1;
-
-        // Step 1: provide knowledge
-        when(productRepository.existsById(productID)).thenReturn(true);
-        when(productRepository.getById(productID)).thenReturn(entity);
-        when(ratingRepository.existsById(1)).thenReturn(true);
-        when(ratingRepository.existsById(2)).thenReturn(true);
-        when(ratingRepository.existsById(3)).thenReturn(true);
-        when(ratingRepository.existsById(4)).thenReturn(true);
-        when(ratingRepository.existsById(5)).thenReturn(true);
-        when(ratingRepository.existsById(6)).thenReturn(true);
-        when(ratingRepository.existsById(7)).thenReturn(true);
-        when(ratingRepository.findById(1)).thenReturn(Optional.of(ratingEntities.get(0)));
-
-        when(ratingRepository.findByRatingarea(RatingArea.ECONOMIC)).thenReturn(econimicRatingEntities);
-
-
-        // Step 2: Execute updateProject()
-        ProductDto out = service.createProductRatings(createDto, productID);
-
-        // Step 3: assert exception
-        assertEquals(createDto.productName , out.productName);
-        assertThat(out.ratings.size()).isEqualTo(econimicRatingEntities.size());
-
-        for (ProductRatingDto rating : out.ratings) {
-            assertThat(rating.ratingID).isBetween(1,8);
-        }
-    }
-
-
-    @Test
-    public void testCreateProductRatings_resourceNotFound_projectID() {
-        // Step 0: init test object
-        int productID = 1;
-
-        // Step 1: provide knowledge
-        when(productRepository.existsById(productID)).thenReturn(false);
-
-        // Step 2: Execute and Assert testcase
-        assertNull(service.createProductRatings(createDto, productID));
-    }
-
-
-    @Test
-    public void testCreateProductRatings_resourceNotFound_ratingID_single() {
-        // Step 0: init test object
-        int productID = 1;
-
-        // Step 1: provide knowledge
-        when(productRepository.existsById(productID)).thenReturn(true);
-        when(ratingRepository.existsById(1)).thenReturn(false);
-
-        // Step 2: Execute updateProject()
-        Exception exception = assertThrows(ResourceNotFound.class,
-                () -> service.createProductRatings(createDto, productID));
-
-        // Step 3: assert exception
-        String expectedMessage = "ratingID " + 1 + " not found";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));
-    }
-
-
-    @Test
-    public void testCreateProductRatings_resourceNotFound_ratingID_multiple() {
-        // Step 0: init test object
-        int productID = 1;
-
-        // Step 1: provide knowledge
-        when(productRepository.existsById(productID)).thenReturn(true);
-        when(productRepository.getById(productID)).thenReturn(entity);
-        when(ratingRepository.existsById(1)).thenReturn(true);
-        when(ratingRepository.existsById(2)).thenReturn(true);
-        when(ratingRepository.existsById(3)).thenReturn(false);
-        when(ratingRepository.findById(1)).thenReturn(Optional.of(ratingEntities.get(0)));
-
-        when(ratingRepository.findByRatingarea(RatingArea.ECONOMIC)).thenReturn(econimicRatingEntities);
-
-        // Step 2: Execute updateProject()
-        Exception exception = assertThrows(ResourceNotFound.class,
-                () -> service.createProductRatings(createDto, productID));
-
-        // Step 3: assert exception
-        String expectedMessage = "ratingID " + 3 + " not found";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));
-    }
-
-
-
-
     /**
      * tests for updateProductRatings()
      *
@@ -487,7 +342,6 @@ public class ProductRatingServiceTest {
 
         assertTrue(actualMessage.contains(expectedMessage));
     }
-
 
 
     /**
