@@ -12,10 +12,10 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<UserEntity, String> {
 
     /**
-     * This method returns the user entity belonging to an email address.
+     * Retrieves user entity based on attribute email.
      *
-     * @param email Email address for which a user entity should be returned.
-     * @return User entity for a email address.
+     * @param email The email address of a user, should be unique.
+     * @return Optional of UserEntity
      */
     Optional<UserEntity> findByEmail(String email);
 

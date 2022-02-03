@@ -16,8 +16,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -31,7 +30,6 @@ public class UserControllerTest {
     private UserController controller;
 
     private UserDto dto1;
-    private List<UserDto> listDtos;
 
     @BeforeEach
     public void init() {
@@ -42,22 +40,30 @@ public class UserControllerTest {
         dto1 = new UserDto();
         dto1.userEmail = "test@test.com";
 
-        listDtos = new ArrayList<>();
+        List<UserDto> listDtos = new ArrayList<>();
     }
 
+    /**
+     * tests for findAllUsers()
+     *
+     * testFindAllUsers1: no users exist --> return empty List<UserDto>
+     */
     @Test
-    public void testFindAllUsers() {
-        // Step 1: provide knowledge
-        when(service.getAllUsers()).thenReturn(listDtos);
-
-        // Step 2: execute test method and assert
+    public void test_findAllUsers_returnEmptyList() {
         List<UserDto> out = controller.findAllUser();
 
         assertTrue(out.isEmpty());
     }
 
+
+    /**
+     * tests for createUser()
+     *
+     * testCreateUser: input is missing information -> return BadRequest
+     * testCreateUser: input contains necessary information -> return UserDto with created userID
+     */
     @Test
-    public void testCreateUser_badRequest() {
+    public void test_createUser_badRequest() {
         // Step 1: provide knowledge
         when(service.createUser(dto1)).thenReturn(null);
 
@@ -73,18 +79,25 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testCreateUser_success() {
+    public void test_createUser_success() {
         // Step 1: provide knowledge
         when(service.createUser(dto1)).thenReturn(dto1);
 
         // Step 2: execute test method and assert
         UserDto out = controller.createUser(dto1);
 
-        assertTrue(out.userEmail == dto1.userEmail);
+        assertEquals(out.userEmail, dto1.userEmail);
     }
 
+
+    /**
+     * tests for findByEmail()
+     *
+     * testFindByEmail: email does not exist --> throw ResourceNotFound Exception
+     * testFindByEmail: input correct --> return UserDto
+     */
     @Test
-    public void testFindByEmail_resourceNotFound() {
+    public void test_findByEmail_resourceNotFound() {
         String email = "test@test.com";
 
         // Step 1: provide knowledge
@@ -102,7 +115,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testFindByEmail_resourceExists() {
+    public void test_findByEmail_resourceExists() {
         String email = "test@test.com";
 
         // Step 1: provide knowledge
@@ -111,12 +124,19 @@ public class UserControllerTest {
         // Step 2: execute test method and assert
         UserDto out = controller.findByEmail(email);
 
-        assertTrue(out.userEmail == dto1.userEmail);
+        assertEquals(out.userEmail, dto1.userEmail);
     }
 
+
+    /**
+     * tests for updateUser()
+     *
+     * testUpdateUser: email does not exist -> throw ResourceNotFound
+     */
     @Test
-    public void testUpdateUser_resourceNotFound() {
+    public void test_updateUser_resourceNotFound() {
         String email = "test@test.com";
+
         // Step 1: provide knowledge
         when(service.updateUserByEmail(dto1, email)).thenReturn(null);
 
@@ -131,9 +151,17 @@ public class UserControllerTest {
         assertTrue(actualMessage.contains(expectedMessage));
     }
 
+
+    /**
+     * tests for deleteUserById()
+     *
+     * testDeleteUserById1: userId does not exist -> throw ResourceNotFound Exception
+     * testDeleteUserById2: userId exists -> void
+     */
     @Test
-    public void testDeleteUser_resourceNotFound() {
+    public void test_deleteUser_resourceNotFound() {
         UUID userID = UUID.fromString("5710db7c-e875-4e63-9e03-7f6ad85cc429");
+
         // Step 1: provide knowledge
         when(service.deleteUserById(userID)).thenReturn(null);
 
@@ -149,8 +177,9 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testDeleteUser_resourceExists() {
+    public void test_deleteUser_resourceExists() {
         UUID userID = UUID.fromString("5710db7c-e875-4e63-9e03-7f6ad85cc429");
+
         // Step 1: provide knowledge
         when(service.deleteUserById(userID)).thenReturn(Boolean.TRUE);
 
