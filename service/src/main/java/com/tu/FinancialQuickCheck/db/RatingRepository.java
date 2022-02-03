@@ -11,7 +11,12 @@ import java.util.List;
  */
 public interface RatingRepository extends JpaRepository<RatingEntity, Integer> {
 
-
+    /**
+     * Retrieves all rating entities, that belong to specified ratingArea, from db or the ones for the
+     *
+     * @param ratingArea The rating area is used in the WHERE-clausel of the sql query
+     * @return A list of ratings if exist else empty list.
+     */
     List<RatingEntity> findByRatingarea(RatingArea ratingArea);
 
 }

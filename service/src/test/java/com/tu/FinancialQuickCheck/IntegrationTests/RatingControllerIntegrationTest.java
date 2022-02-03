@@ -42,9 +42,6 @@ public class RatingControllerIntegrationTest {
     private String complexity = "?ratingArea=COMPLEXITY";
     private String economic = "?ratingArea=ECONOMIC";
 
-    private HttpHeaders header = new HttpHeaders();
-    private String jsonStringEmpty = "{}";
-
     private List<RatingEntity> entities;
     private List<RatingEntity> entitiesEconomic;
     private List<RatingEntity> entitiesComplexity;
@@ -52,8 +49,6 @@ public class RatingControllerIntegrationTest {
     @BeforeEach
     public void init(){
         log.info("@BeforeEach - setup for Tests in RatingControllerIntegrationTest.class");
-
-        header.setContentType(MediaType.APPLICATION_JSON);
 
         entities = new ArrayList<>();
         entitiesEconomic = new ArrayList<>();
@@ -83,6 +78,13 @@ public class RatingControllerIntegrationTest {
         repository.deleteAll();
     }
 
+
+    /**
+     * tests for getRatings()
+     *
+     * testGetRatings: no ratings exist with/without ratingArea--> return HTTP.NOT_FOUND
+     * testGetRatings: ratings exist with/without ratingArea --> return HTTP.OK and json string containing ratings
+     */
     @Test
     public void test1_getRatings_resourceNotFound() {
         repository.deleteAll();
