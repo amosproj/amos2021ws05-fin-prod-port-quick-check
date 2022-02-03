@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Underlying Service for (un)assigning users to projects.
@@ -35,7 +34,6 @@ public class ProjectUserService {
         this.repository = projectUserRepository;
     }
 
-    //TODO: (prio: high) include in API documentation (Project.yaml)
     public List<ProjectUserDto> getProjectUsersByProjectId(int projectID) {
         Optional<ProjectEntity> entity = projectRepository.findById(projectID);
 
@@ -76,8 +74,6 @@ public class ProjectUserService {
         }
     }
 
-
-    //TODO: (test)
     public ProjectUserEntity updateProjectUser(int projectID, ProjectUserDto u) {
 
         if (userRepository.existsById(u.userID.toString())) {
@@ -112,8 +108,6 @@ public class ProjectUserService {
         return tmp;
     }
 
-
-    // TODO: (test)
     public Boolean deleteProjectUser(int projectID, ProjectUserDto projectUserDto) {
 
         if (projectUserDto.userID != null) {

@@ -3,16 +3,13 @@ package com.tu.FinancialQuickCheck.Service;
 import com.tu.FinancialQuickCheck.Exceptions.BadRequest;
 import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.db.*;
-import com.tu.FinancialQuickCheck.dto.ListOfRatingDto;
 import com.tu.FinancialQuickCheck.dto.ListOfUserDto;
 import com.tu.FinancialQuickCheck.dto.UserDto;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.regex.Pattern;
 
 /**
  * Underlying Service for User- aka. member-management.
@@ -34,7 +31,6 @@ public class UserService {
         return new ListOfUserDto(this.repository.findAll()).users;
     }
 
-
     /**
      * Search for User by given email.
      *
@@ -49,14 +45,12 @@ public class UserService {
         return entity.map(UserDto::new).orElse(null);
     }
 
-
     /**
      * Create new User and saves in (user)repository.
      *
      * @param userDto The user data transfer object.
      * @return UserDto The user data transfer object.
      */
-    //TODO: (prio: low) add constraints for input --> check if String is empty else return Bad Request
     public UserDto createUser(UserDto userDto) {
 
         if (userDto.userName != null && userDto.userEmail != null && userDto.password != null
@@ -74,7 +68,6 @@ public class UserService {
         }
     }
 
-
     /**
      * This method is updating a user by its email.
      *
@@ -83,7 +76,6 @@ public class UserService {
      * @throws ResourceNotFound When the user cannot be find.
      * @return The updated user data transfer object.
      */
-    //TODO: (prio: low) add constraints for input --> check if String is empty else return Bad Request
     public UserDto updateUserByEmail(UserDto userDto, String email) {
 
         if ((userDto.userEmail == null && userDto.userName == null && userDto.password == null) ||
@@ -117,7 +109,6 @@ public class UserService {
         }
     }
 
-
     /**
      * Deletes user.
      *
@@ -133,6 +124,5 @@ public class UserService {
             return Boolean.TRUE;
         }
     }
-
 
 }
