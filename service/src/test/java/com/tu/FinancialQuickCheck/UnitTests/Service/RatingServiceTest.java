@@ -12,7 +12,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -30,24 +29,6 @@ public class RatingServiceTest {
 
     private RatingService service;
 
-    private String criterion1;
-    private String criterion2;
-
-    private String criterion3;
-    private String criterion4;
-    private String category3;
-    private String category4;
-
-    private RatingDto dto1;
-    private RatingDto dto2;
-    private RatingDto dto3;
-    private RatingDto dto4;
-    private RatingDto emptyDto;
-
-    private RatingEntity entity1;
-    private RatingEntity entity2;
-    private RatingEntity entity3;
-    private RatingEntity entity4;
     private List<RatingEntity> entities;
     private List<RatingEntity> entitiesComplexity;
     private List<RatingEntity> entitiesEconomic;
@@ -59,49 +40,51 @@ public class RatingServiceTest {
 
         service = new RatingService(repository);
 
-        criterion1 = "Frequenz";
-        criterion2 = "Produktabschlüsse";
+        String criterion1 = "Frequenz";
+        String criterion2 = "Produktabschlüsse";
 
+        RatingDto dto1;
         dto1 = new RatingDto();
         dto1.criterion = criterion1;
         dto1.ratingArea = RatingArea.ECONOMIC;
 
+        RatingDto dto2;
         dto2 = new RatingDto();
         dto2.criterion = criterion2;
         dto2.ratingArea = RatingArea.ECONOMIC;
 
-        criterion3 = "Frage für Kreditrating";
-        criterion4 = "Frage für Zahlungsbedingungen";
-        category3 = "Kreditrating";
-        category4 = "Zahlungsbedingungen";
+        String criterion3 = "Frage für Kreditrating";
+        String criterion4 = "Frage für Zahlungsbedingungen";
+        String category3 = "Kreditrating";
+        String category4 = "Zahlungsbedingungen";
 
+        RatingDto dto3;
         dto3 = new RatingDto();
         dto3.criterion = criterion3;
         dto3.category = category3;
         dto3.ratingArea = RatingArea.COMPLEXITY;
 
+        RatingDto dto4;
         dto4 = new RatingDto();
         dto4.criterion = criterion4;
         dto4.category = category4;
         dto4.ratingArea = RatingArea.COMPLEXITY;
 
-        emptyDto = new RatingDto();
-
-        entity1 = new RatingEntity();
+        RatingEntity entity1 = new RatingEntity();
         entity1.criterion = criterion1;
         entity1.ratingarea = RatingArea.ECONOMIC;
-        entity2 = new RatingEntity();
+        RatingEntity entity2 = new RatingEntity();
         entity2.criterion = criterion2;
         entity2.ratingarea = RatingArea.ECONOMIC;
         entitiesEconomic = new ArrayList<>();
         entitiesEconomic.add(entity1);
         entitiesEconomic.add(entity2);
 
-        entity3 = new RatingEntity();
+        RatingEntity entity3 = new RatingEntity();
         entity3.criterion = criterion3;
         entity3.category = category3;
         entity3.ratingarea = RatingArea.COMPLEXITY;
-        entity4 = new RatingEntity();
+        RatingEntity entity4 = new RatingEntity();
         entity4.criterion = criterion4;
         entity4.category = category4;
         entity4.ratingarea = RatingArea.COMPLEXITY;
@@ -124,9 +107,9 @@ public class RatingServiceTest {
      * testGetAllRatings2: ratings exist --> return List<RatingDto>
      */
     @Test
-    public void testGetAllRatings1() {
+    public void test_getAllRatings_noRatingsExist_returnEmptyList() {
         // Step 1: init test object         
-        List ratingEntities = Collections.EMPTY_LIST;
+        List<RatingEntity> ratingEntities = new ArrayList<>();
         
         // Step 2: provide knowledge
         when(repository.findAll()).thenReturn(ratingEntities);
@@ -139,11 +122,11 @@ public class RatingServiceTest {
     }
 
     @Test
-    public void testGetAllRatings2() {
+    public void test_getAllRatings_ratingsExist() {
         // Step 1: provide knowledge
         when(repository.findAll()).thenReturn(entities);
 
-        // Step 2: execute getAllProductAreas()
+        // Step 2: execute test method and assert result
         List<RatingDto> out = service.getAllRatings();
 
         out.forEach(
@@ -167,11 +150,11 @@ public class RatingServiceTest {
      * testGetRatingsByRatingArea4: ratingArea = ECONOMIC, no rating exists --> return empty List<RatingDto>
      */
     @Test
-    public void testGetRatingsByRatingArea1() {
+    public void test_getRatingsByRatingArea_ratingsExist_ratingAreaCOMPLEXITY() {
         // Step 1: provide knowledge
         when(repository.findByRatingarea(RatingArea.COMPLEXITY)).thenReturn(entitiesComplexity);
 
-        // Step 2: execute getAllProductAreas()
+        // Step 2: execute test method and assert result
         List<RatingDto> out = service.getRatingsByRatingArea(RatingArea.COMPLEXITY);
 
         out.forEach(
@@ -187,11 +170,11 @@ public class RatingServiceTest {
     }
 
     @Test
-    public void testGetRatingsByRatingArea2() {
+    public void test_getRatingsByRatingArea_ratingsExist_ratingAreaECONOMIC() {
         // Step 1: provide knowledge
         when(repository.findByRatingarea(RatingArea.ECONOMIC)).thenReturn(entitiesEconomic);
 
-        // Step 2: execute getAllProductAreas()
+        // Step 2: execute test method and assert result
         List<RatingDto> out = service.getRatingsByRatingArea(RatingArea.ECONOMIC);
 
         out.forEach(
@@ -207,14 +190,14 @@ public class RatingServiceTest {
     }
 
     @Test
-    public void testGetRatingsByRatingArea3() {
+    public void test_getRatingsByRatingArea_noRatingsExists_ratingAreaCOMPLEXITY() {
         // Step 1: init test object
-        List ratingEntities = Collections.EMPTY_LIST;
+        List<RatingEntity> ratingEntities = new ArrayList<>();
 
         // Step 2: provide knowledge
         when(repository.findByRatingarea(RatingArea.COMPLEXITY)).thenReturn(ratingEntities);
 
-        // Step 3: execute getAllRatings()
+        // Step 3: execute test method and assert result
         List<RatingDto> out = service.getRatingsByRatingArea(RatingArea.COMPLEXITY);
         List<RatingDto> expected = new ArrayList<>();
 
@@ -222,14 +205,14 @@ public class RatingServiceTest {
     }
 
     @Test
-    public void testGetRatingsByRatingArea4() {
+    public void test_getRatingsByRatingArea_noRatingsExists_ratingAreaECONOMIC() {
         // Step 1: init test object
-        List ratingEntities = Collections.EMPTY_LIST;
+        List<RatingEntity> ratingEntities = new ArrayList<>();
 
         // Step 2: provide knowledge
         when(repository.findByRatingarea(RatingArea.ECONOMIC)).thenReturn(ratingEntities);
 
-        // Step 3: execute getAllRatings()
+        // Step 3: execute test method and assert result
         List<RatingDto> out = service.getRatingsByRatingArea(RatingArea.ECONOMIC);
         List<RatingDto> expected = new ArrayList<>();
 
