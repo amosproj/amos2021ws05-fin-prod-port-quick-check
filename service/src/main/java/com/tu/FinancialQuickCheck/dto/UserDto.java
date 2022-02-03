@@ -9,6 +9,11 @@ import java.util.regex.Pattern;
 /**
  * This class represents the user data transfer object, which is used for reducing the number of multiple
  * method calls into a single one
+ *
+ * id: The unique identifier of a user
+ * userEmail: The email address of a user, should also be unique to a user
+ * userName: The name of a user, can be used for displaying purposes
+ * password: The password used for login, functionality currently not supported by backend
  */
 public class UserDto {
 
@@ -19,7 +24,9 @@ public class UserDto {
 
     public UserDto(){}
 
-
+    /**
+     * Class Constructor specfying userID, userEmail and userName.
+     */
     public UserDto(UUID userID, String email, String username)
     {
         this.userID = userID;
@@ -27,6 +34,9 @@ public class UserDto {
         this.userName = username;
     }
 
+    /**
+     * Class Constructor specfying userID, userEmail and userName through userEntity
+     */
     public UserDto(UserEntity user)
     {
         this.userID = UUID.fromString(user.id);
@@ -34,9 +44,10 @@ public class UserDto {
         this.userName = user.username;
     }
 
-
+    /**
+     * Validates an email address according to RFC 5322.
+     */
     public boolean validateEmail(String emailAddress){
-        // regexPattern from RFC 5322 for Email Validation
         String regexPattern = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
         return Pattern.compile(regexPattern)
                 .matcher(emailAddress)

@@ -46,7 +46,7 @@ public class ProductAreaController {
      * Creates and persists a productArea entity to db.
      *
      * @param productArea The productArea object contains the necessary information.
-     * @throws BadRequest When name and category are missing in productArea.
+     * @throws BadRequest When name and category of productArea are missing.
      * @return The created product area incl. unique identifier.
      */
     @PostMapping(consumes = "application/json")

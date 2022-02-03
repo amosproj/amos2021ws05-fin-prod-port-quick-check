@@ -31,9 +31,9 @@ public class UserController {
     public UserController(UserService userService){this.service = userService;}
 
     /**
-     * This method can return all users.
+     * Retrieves all existing users from db.
      *
-     * @return A list of all users.
+     * @return A list of users, is empty if no users exists.
      */
     @GetMapping(produces = "application/json")
     public List<UserDto> findAllUser(){
@@ -41,11 +41,11 @@ public class UserController {
     }
 
     /**
-     * This method can create users.
+     * Creates and persists a user entity to db.
      *
-     * @param userDto The user data transfer object.
-     * @throws BadRequest When the user cannot be created due to missing or incorrect information.
-     * @return The created user entity in database.
+     * @param userDto The user object contains the necessary information.
+     * @throws BadRequest When userName, userEmail and password of user are missing or userEmail is not valid.
+     * @return The created user incl. unique identifier.
      */
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
@@ -60,10 +60,11 @@ public class UserController {
     }
 
     /**
-     * This method is finding users by their email.
+     * Retrieves a user from db.
      *
-     * @param email The email of the user who can be found.
-     * @return The user who had to be found.
+     * @param email The email of the user.
+     * @throws ResourceNotFound if user does not exist
+     * @return user
      */
     @GetMapping("/email/{email}")
     public UserDto findByEmail(@PathVariable String email){
@@ -77,11 +78,13 @@ public class UserController {
     }
 
     /**
-     * This method is updating user information by their email.
+     * Updates user information in db.
      *
-     * @param userDto The user data transfer object.
-     * @throws BadRequest When the user cannot be updated due to missing or incorrect information.
-     * @param email The email of the user for which information can be updated.
+     * Attributes that can be updated: userEmail, userName, password
+     *
+     * @param userDto The user object contains the necessary information.
+     * @param email The email of the user used as a unique identifier for search
+     * @throws ResourceNotFound if user does not exist
      */
     @PutMapping("/email/{email}")
     public void updateUserByEmail(@RequestBody UserDto userDto, @PathVariable String email) {
@@ -92,9 +95,10 @@ public class UserController {
     }
 
     /**
-     * This method is deleting users by their ID.
+     * Removes user from db.
      *
-     * @param userID The ID of the user who can be deleted.
+     * @param userID The unique identifier of the user.
+     * @throws ResourceNotFound if user does not exist in db.
      */
     @DeleteMapping("/{userID}")
     public void deleteByUserId(@PathVariable UUID userID){
