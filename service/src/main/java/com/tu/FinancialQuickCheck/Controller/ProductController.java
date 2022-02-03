@@ -46,8 +46,6 @@ public class ProductController {
      * @param productID The ID of the product.
      * @throws BadRequest When a product cannot be updated because the input is missing or incorrect.
      */
-    //TODO: (done - needs review) add attribute comment
-    //TODO: (prio: ??) change output --> waiting for API review to finilize
     @PutMapping("/{productID}")
     public void updateProduct(@RequestBody ProductDto productDto, @PathVariable Integer productID) {
 

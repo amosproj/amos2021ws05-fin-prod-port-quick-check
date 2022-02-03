@@ -53,7 +53,6 @@ public class ProjectUserService {
      * @param projectUsers A list of project users for which specific project users should be updated or added.
      * @return A updated list of project user data transfer object and new users.
      */
-    //TODO: (test)
     public List<ProjectUserDto> updateProjectUsers(int projectID, List<ProjectUserDto> projectUsers) {
 
         if(projectRepository.existsById(projectID)){
@@ -102,10 +101,14 @@ public class ProjectUserService {
     //TODO: (test)
     public Boolean wrapperDeleteProjectUser(int projectID, List<ProjectUserDto> projectUsers){
         Boolean tmp = Boolean.TRUE;
-        for(ProjectUserDto projectUser: projectUsers){
-            if(tmp){
-                tmp = deleteProjectUser(projectID, projectUser);
+        if(projectRepository.existsById(projectID)){
+            for(ProjectUserDto projectUser: projectUsers){
+                if(tmp){
+                    tmp = deleteProjectUser(projectID, projectUser);
+                }
             }
+        }else{
+            tmp = Boolean.FALSE;
         }
 
         return tmp;

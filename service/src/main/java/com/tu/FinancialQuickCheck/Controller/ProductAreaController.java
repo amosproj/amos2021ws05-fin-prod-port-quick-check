@@ -4,6 +4,7 @@ import com.tu.FinancialQuickCheck.Exceptions.BadRequest;
 import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.Service.ProductAreaService;
 import com.tu.FinancialQuickCheck.dto.ProductAreaDto;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -49,6 +50,7 @@ public class ProductAreaController {
      * @return The created product area as a ProductAreaDto.
      */
     @PostMapping(consumes = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
     public ProductAreaDto createProductArea(@RequestBody ProductAreaDto productArea) {
         ProductAreaDto tmp = service.createProductArea(productArea);
 

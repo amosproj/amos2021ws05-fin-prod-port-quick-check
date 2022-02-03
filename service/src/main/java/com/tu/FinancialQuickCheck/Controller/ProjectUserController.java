@@ -43,7 +43,6 @@ public class ProjectUserController {
      */
     //TODO: (done - needs review) change according to API
     @PutMapping(produces = "application/json")
-    @ResponseStatus(HttpStatus.CREATED)
     public List<ProjectUserDto> updateProjectUser(@RequestBody List<ProjectUserDto> projectUsers,
                                   @PathVariable int projectID) {
 
