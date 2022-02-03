@@ -94,14 +94,6 @@ public class ProjectController {
     }
 
 
-// TODO: auskommentiert lassen bisher keine Anforderung für diese Funktionalität
-//    @DeleteMapping("/{projectID}")
-//    void deleteByID(@PathVariable int projectID) {
-//
-//        projectService.deleteProject(projectID);
-//
-//    }
-
     /**
      * This method is finding the products for projects.
      *
@@ -110,7 +102,6 @@ public class ProjectController {
      * @throws BadRequest When the input is missing or incorrect.
      * @return The products for a project or the products for a project and their related product area.
      */
-    //TODO (done - needs review) change output to empty list if no products exist
     @GetMapping("/{projectID}/products")
     public List<ProductDto> findProductsByProject(@PathVariable int projectID,
                                                   @RequestParam(required = false) Optional<String> productArea) {
@@ -138,8 +129,7 @@ public class ProjectController {
      * @throws BadRequest When the input is incorrect or missing.
      * @return A list of products which have been added to the project.
      */
-    //TODO: (done: needs review) change Path (see api def)
-    //TODO: (prio: ???) fix output --> does not propagate values for productArea and projectID
+    //TODO: fix output --> does not propagate values for productArea and projectID
     @PostMapping(value = "/{projectID}/products",
             consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
@@ -165,7 +155,6 @@ public class ProjectController {
      * @param projectID The ID of the project for which members/users can be added.
      * @return New users/members were added to the project.
      */
-//    TODO: (done - needs review) change according to API
     @PostMapping( value = "/{projectID}/users", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public List<ProjectUserDto> createProjectUser(@RequestBody List<ProjectUserDto> members,

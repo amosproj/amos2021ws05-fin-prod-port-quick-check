@@ -65,7 +65,6 @@ public class UserController {
      * @param email The email of the user who can be found.
      * @return The user who had to be found.
      */
-    //TODO: (prio: low) change path-var to request-body userDto & change path
     @GetMapping("/email/{email}")
     public UserDto findByEmail(@PathVariable String email){
         UserDto tmp = service.findByEmail(email);
@@ -84,7 +83,6 @@ public class UserController {
      * @throws BadRequest When the user cannot be updated due to missing or incorrect information.
      * @param email The email of the user for which information can be updated.
      */
-    //TODO: (prio: low) change path-var to request-body userDto & change path
     @PutMapping("/email/{email}")
     public void updateUserByEmail(@RequestBody UserDto userDto, @PathVariable String email) {
 
