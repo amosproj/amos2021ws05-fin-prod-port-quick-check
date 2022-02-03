@@ -8,6 +8,7 @@ import {
   NumberInput,
   NumberInputField,
   Spacer,
+  IconButton,
 } from '@chakra-ui/react';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 
@@ -17,6 +18,7 @@ import Card from '../../components/Card';
 import Selection from '../../components/Selection';
 import UploadButton from '../../components/Upload';
 import { useState, useEffect } from 'react';
+import { CheckIcon } from '@chakra-ui/icons';
 
 function RatingRowPercentage({ rating }) {
   const [low, setLow] = useState(0);
@@ -32,14 +34,28 @@ function RatingRowPercentage({ rating }) {
 
   const handleUpdateComment = updateRatingAttribute('comment');
 
+  const getAnswerArray = () => {
+    const answerValues = rating.answer.split(',').map((s) => parseInt(s));
+    console.log(answerValues);
+    if (answerValues.length === 3) {
+      return answerValues;
+    } else {
+      return [0, 0, 0];
+    }
+  };
+
   const updateAnswer = () => {
     const percentageString = `${low},${medium},${high}`;
+    console.log('answer set to', percentageString);
     updateRatingAttribute('answer')(percentageString);
   };
 
   useEffect(() => {
-    updateAnswer();
-  }, [low, medium, high]);
+    const values = getAnswerArray();
+    setLow(values[0]);
+    setMedium(values[1]);
+    setHigh(values[2]);
+  }, []);
 
   return (
     <Card layerStyle="card_bordered" justifyContent="space-between" direction="column">
@@ -55,6 +71,7 @@ function RatingRowPercentage({ rating }) {
           <NumberInput
             min={0}
             max={100}
+            value={low}
             onChange={(value) => {
               setLow(value);
             }}
@@ -69,6 +86,7 @@ function RatingRowPercentage({ rating }) {
           <NumberInput
             min={0}
             max={100}
+            value={medium}
             onChange={(value) => {
               setMedium(value);
             }}
@@ -83,6 +101,7 @@ function RatingRowPercentage({ rating }) {
           <NumberInput
             min={0}
             max={100}
+            value={high}
             onChange={(value) => {
               setHigh(value);
             }}
@@ -90,7 +109,13 @@ function RatingRowPercentage({ rating }) {
             <NumberInputField></NumberInputField>
           </NumberInput>
         </VStack>
-
+        <IconButton
+          aria-label="confirm percentages"
+          variant="whisper"
+          size="sm"
+          onClick={updateAnswer}
+          icon={<CheckIcon />}
+        />
         <Spacer />
         <VStack w="40%" alignItems="left" spacing={0} mx={1}>
           <Text fontSize="sm" align="left">
