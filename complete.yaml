@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   version: "0.3"
   title: API for AMOS5 Financial QuickCheck
-  description: defines endpoints for resource "Project"
+  description: defines all endpoints for financial quickcheck application
 paths:
   /productareas:
     get:
@@ -474,6 +474,17 @@ paths:
                           count:
                             type: integer
                             example: 4
+                    counts:
+                      type: array
+                      description: aggregated values of field "Gesamteinschätzung wirtschaftlicher
+                        Bewertung" for productvariants in ascending order of
+                        scores
+                      example:
+                        - 4
+                        - 3
+                        - 2
+                      items:
+                        type: integer
         "400":
           $ref: "#/paths/~1projects/post/responses/400"
         "404":
