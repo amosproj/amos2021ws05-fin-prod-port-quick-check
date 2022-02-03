@@ -60,8 +60,6 @@ public class ProductRatingServiceTest {
         productRatingEntity = new ProductRatingEntity();
         entity = new ProductEntity();
         entity.name = name;
-        //TODO: anpassen
-//        entity.productarea = 1;
         entity.project = projectEntity;
         entity.productRatingEntities = new ArrayList<>();
         ratingEntities = new ArrayList<>();
@@ -386,9 +384,7 @@ public class ProductRatingServiceTest {
         int productID = 1;
 
         // Step 1: provide knowledge
-        when(productRepository.existsById(productID)).thenReturn(true);
         when(productRepository.findById(productID)).thenReturn(Optional.of(entity));
-        when(productRepository.getById(productID)).thenReturn(entity);
         when(ratingRepository.getById(1)).thenReturn(ratingEntities.get(0));
         when(ratingRepository.getById(2)).thenReturn(ratingEntities.get(1));
         when(ratingRepository.getById(3)).thenReturn(ratingEntities.get(2));
@@ -434,9 +430,7 @@ public class ProductRatingServiceTest {
         int productID = 1;
 
         // Step 1: provide knowledge
-        when(productRepository.existsById(productID)).thenReturn(true);
         when(productRepository.findById(productID)).thenReturn(Optional.of(entity));
-        when(productRepository.getById(productID)).thenReturn(entity);
         when(ratingRepository.getById(entity.productRatingEntities.get(0).productRatingId.getRating().id)).thenReturn(ratingEntities.get(0));
         when(ratingRepository.getById(entity.productRatingEntities.get(1).productRatingId.getRating().id)).thenReturn(ratingEntities.get(1));
         when(ratingRepository.getById(entity.productRatingEntities.get(2).productRatingId.getRating().id)).thenReturn(ratingEntities.get(2));
@@ -461,9 +455,6 @@ public class ProductRatingServiceTest {
         // Step 0: init test object
         int productID = 1;
 
-        // Step 1: provide knowledge
-        when(productRepository.existsById(productID)).thenReturn(false);
-
         // Step 2: assert null
         assertNull(service.updateProductRatings(createDto, productID));
     }
@@ -475,9 +466,7 @@ public class ProductRatingServiceTest {
         int productID = 1;
 
         // Step 1: provide knowledge
-        when(productRepository.existsById(productID)).thenReturn(true);
         when(productRepository.findById(productID)).thenReturn(Optional.of(entity));
-        when(productRepository.getById(productID)).thenReturn(entity);
         when(ratingRepository.getById(entity.productRatingEntities.get(0).productRatingId.getRating().id)).thenReturn(ratingEntities.get(0));
         when(ratingRepository.getById(entity.productRatingEntities.get(1).productRatingId.getRating().id)).thenReturn(ratingEntities.get(1));
         when(ratingRepository.getById(entity.productRatingEntities.get(2).productRatingId.getRating().id)).thenReturn(ratingEntities.get(2));
@@ -504,7 +493,6 @@ public class ProductRatingServiceTest {
     /**
      * tests for assignAttributes():
      * attributes: answer, comment, score
-     * //TODO: (discuss) what should happen if input is null or can this even happen?
      * testAssignAttributes: input is empty
      *                       --> ???
      * testAssignAttributes: assign any combination of attributes

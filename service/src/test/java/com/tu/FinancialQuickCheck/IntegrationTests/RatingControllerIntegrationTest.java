@@ -31,6 +31,8 @@ public class RatingControllerIntegrationTest {
 
     @Autowired
     private RatingRepository repository;
+    @Autowired
+    private ProductRatingRepository productRatingRepository;
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -77,6 +79,7 @@ public class RatingControllerIntegrationTest {
 
     @AfterEach
     public void reset(){
+        productRatingRepository.deleteAll();
         repository.deleteAll();
     }
 

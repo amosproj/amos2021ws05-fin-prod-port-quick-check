@@ -391,13 +391,6 @@ public class ProjectUserServiceTest {
         listDtos.add(dto1);
         listDtos.add(dto2);
 
-        //provide knowledge
-        when(userRepository.findById(dto1.userID.toString())).thenReturn(Optional.of(user1));
-        when(projectRepository.findById(projectID2)).thenReturn(Optional.of(project1));
-        when(repository.existsById(projectUserId)).thenReturn(Boolean.TRUE);
-        when(userRepository.getById(dto1.userID.toString())).thenReturn(user1);
-        when(projectRepository.getById(projectID2)).thenReturn(project1);
-
         // Execute and assert test method()
         assertFalse(service.wrapperDeleteProjectUser(projectID2, listDtos));
     }
@@ -408,6 +401,7 @@ public class ProjectUserServiceTest {
         listDtos.add(dto1);
 
         //provide knowledge
+        when(projectRepository.existsById(projectID2)).thenReturn(Boolean.TRUE);
         when(userRepository.findById(dto1.userID.toString())).thenReturn(Optional.of(user1));
         when(projectRepository.findById(projectID2)).thenReturn(Optional.of(project1));
         when(repository.existsById(projectUserId)).thenReturn(Boolean.TRUE);
@@ -425,6 +419,7 @@ public class ProjectUserServiceTest {
         listDtos.add(dto2);
 
         //provide knowledge
+        when(projectRepository.existsById(projectID2)).thenReturn(Boolean.TRUE);
         when(userRepository.findById(dto1.userID.toString())).thenReturn(Optional.of(user1));
         when(projectRepository.findById(projectID2)).thenReturn(Optional.of(project1));
         when(repository.existsById(projectUserId)).thenReturn(Boolean.TRUE);
