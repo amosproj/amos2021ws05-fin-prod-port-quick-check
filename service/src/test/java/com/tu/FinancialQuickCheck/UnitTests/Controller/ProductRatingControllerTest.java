@@ -1,14 +1,10 @@
 package com.tu.FinancialQuickCheck.UnitTests.Controller;
 
 import com.tu.FinancialQuickCheck.Controller.ProductRatingController;
-import com.tu.FinancialQuickCheck.Controller.RatingController;
 import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.RatingArea;
 import com.tu.FinancialQuickCheck.Service.ProductRatingService;
-import com.tu.FinancialQuickCheck.Service.RatingService;
 import com.tu.FinancialQuickCheck.dto.ProductDto;
-import com.tu.FinancialQuickCheck.dto.ProductRatingDto;
-import com.tu.FinancialQuickCheck.dto.RatingDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -90,35 +86,6 @@ public class ProductRatingControllerTest {
 
             assertTrue(out.productID == productID);
         }
-    }
-
-    @Test
-    public void testCreateProductRatings_resourceNotFound() {
-        int productID = 1;
-        // Step 1: provide knowledge
-        when(service.createProductRatings(dto1, productID)).thenReturn(null);
-
-        // Step 2: execute test method and assert
-        Exception exception;
-        exception = assertThrows(ResourceNotFound.class,
-                () -> controller.createProductRatings(dto1, productID));
-
-        String expectedMessage = "productID 1 does not exist";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));
-    }
-
-    @Test
-    public void testCreateProductRatings_resourceExists() {
-        int productID = 1;
-        // Step 1: provide knowledge
-        when(service.createProductRatings(dto1, productID)).thenReturn(dto1);
-
-        // Step 2: execute test method and assert
-        ProductDto out = controller.createProductRatings(dto1, productID);
-
-        assertTrue(out.productID == productID);
     }
 
     @Test

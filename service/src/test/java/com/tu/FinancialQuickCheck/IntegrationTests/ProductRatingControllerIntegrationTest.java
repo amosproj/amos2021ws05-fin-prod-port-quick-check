@@ -15,6 +15,7 @@ import org.springframework.http.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -104,20 +105,28 @@ public class ProductRatingControllerIntegrationTest {
             tmp.score = Score.HOCH;
             tmp.comment = "comment" + i;
 
-            RatingEntity ratingEntity = new RatingEntity();
-            ratingEntity.criterion = "criterion" + i;
-            ratingEntity.category = "category";
-            ratingEntity.ratingarea = (i < 9) ? RatingArea.ECONOMIC : RatingArea.COMPLEXITY;
+            Optional<RatingEntity> ratingEntity = ratingRepository.findById(i);
+            if(ratingEntity.isEmpty()){
+                RatingEntity rating = new RatingEntity();
+                rating.criterion = "criterion" + i;
+                rating.category = "category";
+                rating.ratingarea = (i < 9) ? RatingArea.ECONOMIC : RatingArea.COMPLEXITY;
+                ratingEntities.add(rating);
+                tmp.productRatingId = new ProductRatingId(product, rating);
+                if(i < 9){
+                    econimicRatingEntities.add(rating);
+                }else{
+                    complexityRatingEntities.add(rating);
+                }
+            }else{
+                tmp.productRatingId = new ProductRatingId(product, ratingEntity.get());
+            }
 
-            ratingEntities.add(ratingEntity);
-            tmp.productRatingId = new ProductRatingId(product, ratingEntity);
             entities.add(tmp);
 
             if(i < 9){
-                econimicRatingEntities.add(ratingEntity);
                 entitiesEconomic.add(tmp);
             }else{
-                complexityRatingEntities.add(ratingEntity);
                 entitiesComplexity.add(tmp);
             }
         }
@@ -128,7 +137,12 @@ public class ProductRatingControllerIntegrationTest {
 
     @AfterEach
     public void reset(){
-        repository.deleteAll();
+        List<ProductRatingEntity> tmp = repository.findAll();
+        if(!tmp.isEmpty()){
+            for(ProductRatingEntity pr: tmp){
+                repository.deleteById(pr.productRatingId);
+            }
+        }
     }
 
     @Test
@@ -232,18 +246,19 @@ public class ProductRatingControllerIntegrationTest {
 
     @Test
     public void test8_updateProductRatings_success_partialUpdate_missingAnswer(){
-        String[] testobjects = {jsonStringMissingAnswer};
+//        String[] testobjects = {jsonStringMissingAnswer};
+        List<RatingEntity> test = ratingRepository.findAll();
+        List<ProductRatingEntity> tmp = repository.findAll();
+//        for(String jsonString: testobjects){
+        ResponseEntity<String> response = restTemplate.exchange(host + port + products + product.id + ratings,
+                HttpMethod.PUT,new HttpEntity<>(jsonStringMissingAnswer, header), String.class);
 
-        for(String jsonString: testobjects){
-            ResponseEntity<String> response = restTemplate.exchange(host + port + products + product.id + ratings,
-                    HttpMethod.PUT,new HttpEntity<>(jsonString, header), String.class);
+        log.info("@Test 8 - updateProductRatings_success - comment and score of one product rating entity updated");
+        log.info("@Test 8 - Response Body: " + response.getBody());
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-            log.info("@Test 8 - updateProductRatings_success - comment and score of one product rating entity updated");
-            log.info("@Test 8 - Response Body: " + response.getBody());
-            assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-
-            //TODO: check output against original db entry
-        }
+        //TODO: check output against original db entry
+//        }
     }
 
     @Test
