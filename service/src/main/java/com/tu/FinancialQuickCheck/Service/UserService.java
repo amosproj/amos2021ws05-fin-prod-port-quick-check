@@ -46,12 +46,7 @@ public class UserService {
     public UserDto findByEmail(String email) {
         Optional<UserEntity> entity = repository.findByEmail(email);
 
-        if(entity.isPresent()){
-            return new UserDto(entity.get());
-
-        }else{
-            return null;
-        }
+        return entity.map(UserDto::new).orElse(null);
     }
 
 
@@ -88,7 +83,6 @@ public class UserService {
      * @throws ResourceNotFound When the user cannot be find.
      * @return The updated user data transfer object.
      */
-    //TODO: (prio: medium) Discuss Update By ID and Update By Email with Frontend, should it be possible to update userEmail --> yes
     //TODO: (prio: low) add constraints for input --> check if String is empty else return Bad Request
     public UserDto updateUserByEmail(UserDto userDto, String email) {
 

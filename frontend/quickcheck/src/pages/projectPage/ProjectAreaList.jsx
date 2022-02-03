@@ -37,7 +37,7 @@ export default function ProductAreaList({ editMode }) {
 
   return (
     <>
-      <List w="full" maxW={500} align="center" spacing={4} pb={5}>
+      <List w="full" maxW={500} alignItems="center" align="center" spacing={4} pb={5}>
         {productAreas.map((area) => (
           <Flex gridGap={2} w="full" align="center" key={area.id}>
             <ProductArea productArea={area} />

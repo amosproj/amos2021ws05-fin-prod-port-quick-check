@@ -1,62 +1,39 @@
-import { Flex, Input, Spacer, List, Text, Textarea } from '@chakra-ui/react';
+import { Flex, VStack, List, Text } from '@chakra-ui/react';
 import React from 'react';
 import Card from '../../components/Card';
-import Selection from '../../components/Selection';
 
 function RatingRow({ rating }) {
   return (
-    <div>
-      <Card
-        layerStyle="card_bordered"
-        justifyContent="space-between"
-        // w={(parentID > 0) ? ' 90%' : 'full'}
-        _hover={{ boxShadow: '2xl' }}
-      >
-        <Spacer />
-        <Textarea
-          isReadOnly={true}
-          align="center"
-          size="md"
-          width="100%"
-          placeholder={'catgegory'}
-          value={rating.rating.category}
-        />
-        <Spacer />
-        <Textarea
-          isReadOnly={true}
-          align="center"
-          size="md"
-          width="100%"
-          placeholder={'Frage'}
-          value={rating.rating.criterion}
-        />
-        <Spacer />
-        <Selection
-          options={['GERING', 'MITTEL', 'HOCH']}
-          isDisabled={true}
-          selected={rating.score}
-        ></Selection>
-        <Spacer />
-        <Textarea align="center" size="md" width="100%" isReadOnly={true} value={rating.comment} />
-        <Spacer />
-        <Input
-          align="center"
-          size="md"
-          w="100%"
-          isDisabled={true}
-          onChange={(e) => {
-            console.log(e.target.value);
-          }}
-          value={'Upload'}
-        />
-      </Card>
-    </div>
+    <Card layerStyle="card_bordered" justifyContent="space-between" direction="column">
+      <Flex direction="row" justifyContent="space-between" w="full" mb={4}>
+        <Text fontSize="xl">{rating.rating.criterion}</Text>
+      </Flex>
+      <Flex direction="row" justifyContent="space-between" w="full" mb={2} alignItems="center">
+        <VStack w="40%" alignItems="left" spacing={0}>
+          <Text fontSize="sm" align="left">
+            Answer
+          </Text>
+          <Text variant="cell" minH="5rem" align="left" placeholder="Answer">
+            {rating.answer}
+          </Text>
+        </VStack>
+        <Text variant="cell">{rating.score != null ? rating.score : 'Nicht gesetzt'}</Text>
+        <VStack w="40%" alignItems="left" spacing={0}>
+          <Text fontSize="sm" align="left">
+            Comment
+          </Text>
+          <Text variant="cell" minH="5rem" placeholder="Comment" align="left">
+            {rating.comment}
+          </Text>
+        </VStack>
+      </Flex>
+    </Card>
   );
 }
 
 export default function EvaluationTable({ ratings }) {
   return (
-    <List spacing={2} direction="column" w="full" align="center">
+    <List spacing={2} w="full" align="center">
       {ratings.map((rating) => (
         <Flex gridGap={3}>
           <RatingRow rating={rating}></RatingRow>

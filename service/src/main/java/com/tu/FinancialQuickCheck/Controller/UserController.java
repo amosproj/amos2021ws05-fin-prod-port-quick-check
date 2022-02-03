@@ -66,7 +66,7 @@ public class UserController {
      * @return The user who had to be found.
      */
     //TODO: (prio: low) change path-var to request-body userDto & change path
-    @GetMapping("email/{email}")
+    @GetMapping("/email/{email}")
     public UserDto findByEmail(@PathVariable String email){
         UserDto tmp = service.findByEmail(email);
 
@@ -85,7 +85,7 @@ public class UserController {
      * @param email The email of the user for which information can be updated.
      */
     //TODO: (prio: low) change path-var to request-body userDto & change path
-    @PutMapping("email/{email}")
+    @PutMapping("/email/{email}")
     public void updateUserByEmail(@RequestBody UserDto userDto, @PathVariable String email) {
 
         if (service.updateUserByEmail(userDto, email) == null){

@@ -2,7 +2,6 @@ package com.tu.FinancialQuickCheck.Controller;
 
 import com.tu.FinancialQuickCheck.Exceptions.BadRequest;
 import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
-import com.tu.FinancialQuickCheck.RatingArea;
 import com.tu.FinancialQuickCheck.Service.ProductService;
 import com.tu.FinancialQuickCheck.Service.ProjectService;
 import com.tu.FinancialQuickCheck.Service.ResultService;
@@ -11,10 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.OptionalInt;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -149,7 +146,7 @@ public class ProjectController {
     public List<ProductDto> createProduct(@PathVariable int projectID, @RequestBody ProductDto productDto) {
 
         if(productDto.productArea != null && productDto.productName != null){
-            List<ProductDto> tmp = productService.wrapper_createProduct(projectID, productDto);
+            List<ProductDto> tmp = productService.wrapperCreateProduct(projectID, productDto);
             if(tmp == null){
                 throw new BadRequest("Input is missing/incorrect");
             }else{

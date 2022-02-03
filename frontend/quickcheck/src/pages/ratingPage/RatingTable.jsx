@@ -1,102 +1,207 @@
-import { Flex, Input, Spacer, List, Textarea } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React from 'react';
+import {
+  Flex,
+  Text,
+  List,
+  Textarea,
+  VStack,
+  NumberInput,
+  NumberInputField,
+  Spacer,
+  IconButton,
+} from '@chakra-ui/react';
+import { useStoreActions, useStoreState } from 'easy-peasy';
+
+import { score } from '../../utils/const';
+
 import Card from '../../components/Card';
 import Selection from '../../components/Selection';
+import UploadButton from '../../components/Upload';
+import { useState, useEffect } from 'react';
+import { CheckIcon } from '@chakra-ui/icons';
 
-function RatingRow({ rating, onChangeScore, onChangeComment, onChangeAnswer }) {
+function RatingRowPercentage({ rating }) {
+  const [low, setLow] = useState(0);
+  const [medium, setMedium] = useState(0);
+  const [high, setHigh] = useState(0);
+  const updateRating = useStoreActions((actions) => actions.rating.updateRating);
+
+  const updateRatingAttribute = (key) => (value) => {
+    let change = {};
+    change[key] = value;
+    updateRating({ ratingID: rating.ratingID, ...change });
+  };
+
+  const handleUpdateComment = updateRatingAttribute('comment');
+
+  const getAnswerArray = () => {
+    const answerValues = rating.answer.split(',').map((s) => parseInt(s));
+    console.log(answerValues);
+    if (answerValues.length === 3) {
+      return answerValues;
+    } else {
+      return [0, 0, 0];
+    }
+  };
+
+  const updateAnswer = () => {
+    const percentageString = `${low},${medium},${high}`;
+    console.log('answer set to', percentageString);
+    updateRatingAttribute('answer')(percentageString);
+  };
+
+  useEffect(() => {
+    const values = getAnswerArray();
+    setLow(values[0]);
+    setMedium(values[1]);
+    setHigh(values[2]);
+  }, []);
+
   return (
-    <div>
-      <Card
-        layerStyle="card_bordered"
-        justifyContent="space-between"
-        // w={(parentID > 0) ? ' 90%' : 'full'}
-        _hover={{ boxShadow: '2xl' }}
-        align="center"
-      >
-        <Textarea
-          isReadOnly={true}
-          align="center"
-          size="md"
-          width="100%"
-          placeholder={'Frage'}
-          value={rating.rating.criterion}
-        />
-      </Card>
-      <Card layerStyle="card_bordered" justifyContent="space-between" _hover={{ boxShadow: '2xl' }}>
+    <Card layerStyle="card_bordered" justifyContent="space-between" direction="column">
+      <Text fontSize="xl" mb={4} align="left" w="full">
+        {rating.rating.criterion}
+      </Text>
+      <Flex direction="row" justifyContent="space-between" w="full" mb={2} alignItems={'center'}>
         <Spacer />
-        <Input
-          align="center"
-          size="md"
-          width="100%"
-          placeholder={'Anwort'}
-          value={rating.answer}
-          onChange={onChangeAnswer}
+        <VStack spacing={0} mx={1} w={24} alignItems="left">
+          <Text fontSize={'sm'} align="left">
+            Low
+          </Text>
+          <NumberInput
+            min={0}
+            max={100}
+            value={low}
+            onChange={(value) => {
+              setLow(value);
+            }}
+          >
+            <NumberInputField></NumberInputField>
+          </NumberInput>
+        </VStack>
+        <VStack spacing={0} mx={1} w={24} alignItems="left">
+          <Text fontSize={'sm'} align="left">
+            Medium
+          </Text>
+          <NumberInput
+            min={0}
+            max={100}
+            value={medium}
+            onChange={(value) => {
+              setMedium(value);
+            }}
+          >
+            <NumberInputField></NumberInputField>
+          </NumberInput>
+        </VStack>
+        <VStack spacing={0} mx={1} w={24} alignItems="left">
+          <Text fontSize={'sm'} align="left">
+            High
+          </Text>
+          <NumberInput
+            min={0}
+            max={100}
+            value={high}
+            onChange={(value) => {
+              setHigh(value);
+            }}
+          >
+            <NumberInputField></NumberInputField>
+          </NumberInput>
+        </VStack>
+        <IconButton
+          aria-label="confirm percentages"
+          variant="whisper"
+          size="sm"
+          onClick={updateAnswer}
+          icon={<CheckIcon />}
         />
         <Spacer />
-        <Selection
-          options={['GERING', 'MITTEL', 'HOCH']}
-          selected={rating.score}
-          onChange={onChangeScore}
-        ></Selection>
-        <Spacer />
-        <Input
-          align="center"
-          size="md"
-          width="100%"
-          placeholder={'Anmerkungen'}
-          value={rating.comment}
-          onChange={onChangeComment}
-        />
-        <Spacer />
-        <Input
-          align="center"
-          size="md"
-          w="25%"
-          isDisabled={true}
-          onChange={(e) => {
-            console.log(e.target.value);
-          }}
-          value={'Upload'}
-        />
-      </Card>
-    </div>
+        <VStack w="40%" alignItems="left" spacing={0} mx={1}>
+          <Text fontSize="sm" align="left">
+            Comment
+          </Text>
+          <Textarea
+            placeholder="Comment"
+            value={rating.comment ? rating.comment : ''}
+            onChange={(e) => handleUpdateComment(e.target.value)}
+          />
+        </VStack>
+        <UploadButton variant="whisper" />
+      </Flex>
+    </Card>
   );
 }
 
-export default function RatingTable({ ratings, handleChange }) {
-  const handleScoreChange = (rating) => (newRating) => {
-    // This is a curried function in JS
-    let index = ratings.map((r) => r.rating.criterion).indexOf(rating.rating.criterion);
-    rating.score = newRating;
-    ratings[index] = rating;
-    handleChange(ratings);
+function RatingRowCategorical({ rating }) {
+  const updateRating = useStoreActions((actions) => actions.rating.updateRating);
+
+  const updateRatingAttribute = (key) => (value) => {
+    let change = {};
+    change[key] = value;
+    updateRating({ ratingID: rating.ratingID, ...change });
   };
 
-  const handleCommentChange = (rating) => (newRating) => {
-    let index = ratings.map((r) => r.rating.criterion).indexOf(rating.rating.criterion);
-    rating.comment = newRating.target.value;
-    ratings[index] = rating;
-    handleChange(ratings);
-  };
+  const handleUpdateComment = updateRatingAttribute('comment');
+  const handleUpdateScore = updateRatingAttribute('score');
+  const handleUpdateAnswer = updateRatingAttribute('answer');
 
-  const handleAnswerChange = (rating) => (newRating) => {
-    let index = ratings.map((r) => r.rating.criterion).indexOf(rating.rating.criterion);
-    rating.answer = newRating.target.value;
-    ratings[index] = rating;
-    handleChange(ratings);
-  };
+  return (
+    <Card layerStyle="card_bordered" justifyContent="space-between" direction="column">
+      <Text fontSize="xl" mb={4} align="left" w="full">
+        {rating.rating.criterion}
+      </Text>
+      <Flex direction="row" justifyContent="space-between" w="full" mb={2} alignItems={'center'}>
+        <VStack w="40%" alignItems="left" spacing={0} mx={1}>
+          <Text fontSize={'sm'} align="left">
+            Answer
+          </Text>
+          <Textarea
+            align="center"
+            placeholder="Answer"
+            value={rating.answer ? rating.answer : ''}
+            onChange={(e) => handleUpdateAnswer(e.target.value)}
+          />
+        </VStack>
+
+        <Selection
+          w="125px"
+          mb="5"
+          options={[score.GERING, score.MITTEL, score.HOCH]}
+          selected={rating.score ? rating.score : score.MITTEL}
+          onChange={handleUpdateScore}
+        ></Selection>
+        <VStack w="40%" alignItems="left" spacing={0} mx={1}>
+          <Text fontSize="sm" align="left">
+            Comment
+          </Text>
+          <Textarea
+            placeholder="Comment"
+            value={rating.comment ? rating.comment : ''}
+            onChange={(e) => handleUpdateComment(e.target.value)}
+          />
+        </VStack>
+        <UploadButton variant="whisper" />
+      </Flex>
+    </Card>
+  );
+}
+
+function RatingRow({ rating }) {
+  return rating.ratingID === 10 ? (
+    <RatingRowPercentage rating={rating} />
+  ) : (
+    <RatingRowCategorical rating={rating} />
+  );
+}
+
+export default function RatingTable({ category }) {
+  const getRatingsByCategory = useStoreState((state) => state.rating.getRatingsByCategory);
 
   return (
     <List spacing={2} direction="column" w="full" align="center">
-      {ratings.map((rating) => (
-        <Flex gridGap={3}>
-          <RatingRow
-            rating={rating}
-            onChangeScore={handleScoreChange(rating)}
-            onChangeComment={handleCommentChange(rating)}
-            onChangeAnswer={handleAnswerChange(rating)}
-          ></RatingRow>
-        </Flex>
+      {getRatingsByCategory(category).map((rating) => (
+        <RatingRow rating={rating} key={rating.ratingID}></RatingRow>
       ))}
     </List>
   );

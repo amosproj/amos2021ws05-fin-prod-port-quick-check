@@ -1,11 +1,21 @@
-id,comment,name,parent_product_id,productarea,project
-100,,Dispokredit,,1,100
-101,,Ratenkredit,,1,100
-102,,Ratenkredit Standard,101,1,100
-103,,Ratenkredit Flex,101,1,100
-104,,Ratenkredit 3,101,1,100
-105,,Ratenkredit 4,101,1,100
-106,,Baufinanzierung,,1,100
-107,,Baufinanzierung Standard,106,1,100
-108,,Baufinanzierung Flex,106,1,100
-109,,Baufinanzierung Nachhaltigkeit,106,1,100
+id,name,comment,parent_product_id,productAreaID,projectID
+1,Dispokredit,,,1,1
+2,Ratenkredit,,,1,1
+3,Ratenkredit Standard,,2,1,1
+4,Ratenkredit Flex,,2,1,1
+5,Ratenkredit 3,,2,1,1
+6,Ratenkredit 4,,2,1,1
+7,Baufinanzierung,,,1,1
+8,Baufinanzierung Standard,,7,1,1
+9,Baufinanzierung Flex,,7,1,1
+10,Baufinanzierung Nachhaltigkeit,,7,1,1
+11,DUMMY,,,1,2
+12,DUMMY,,,2,2
+13,DUMMY,,,3,3
+14,DUMMY,,,4,3
+15,DUMMY,,,5,3
+16,DUMMY,,,6,4
+17,DUMMY,,,1,5
+18,DUMMY,,,2,5
+19,DUMMY,,,3,6
+20,DUMMY,,,4,6

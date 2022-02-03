@@ -43,7 +43,7 @@ function MemberRow({ editMode, member, ...rest }) {
 
 const RemoveButton = ({ handleRemove, ...buttonProps }) => {
   return (
-    <ConfirmClick onConfirm={handleRemove} confirmPrompt="Remove this product area?">
+    <ConfirmClick onConfirm={handleRemove} confirmPrompt="Remove this project member?">
       <IconButton icon={<DeleteIcon />} {...buttonProps} />
     </ConfirmClick>
   );

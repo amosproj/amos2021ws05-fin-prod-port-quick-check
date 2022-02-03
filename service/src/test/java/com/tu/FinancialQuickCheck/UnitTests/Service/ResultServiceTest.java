@@ -202,7 +202,7 @@ public class ResultServiceTest {
     @Test
     public void testUpdateResultRating_emptyRatingEntity(){
 
-        Exception exception = assertThrows(BadRequest.class,
+        Exception exception = assertThrows(NullPointerException.class,
                 () -> service.updateResultRating(ResultTable, productRatingEntityForResult));
 
         String expectedMessage = "Table is Empty or ProductRatingEntity is missing";
@@ -214,7 +214,7 @@ public class ResultServiceTest {
     @Test
     public void testUpdateResultRating_emptyTable(){
 
-        Exception exception = assertThrows(BadRequest.class,
+        Exception exception = assertThrows(NullPointerException.class,
                 () -> service.updateResultRating(emptyTable, productRatingEntityForResult));
 
         String expectedMessage = "Table is Empty or ProductRatingEntity is missing";
@@ -377,64 +377,6 @@ public class ResultServiceTest {
                 () -> assertEquals(42, tmpResultDto.productID),
                 () -> assertEquals("newName", tmpResultDto.productName)
         );
-    }
-
-    @Test
-    public void testResultDto_equals(){
-
-        ResultDto tmpResultDto          = listDtos.get(0);
-        ResultDto tmpResultDtoSame      = listDtos.get(0);
-        ResultDto tmpResultDtoDifferent = listDtos.get(0);
-        tmpResultDtoDifferent.updateProductInfos(66, "differentName");
-
-        //TODO: discuss equals
-        assertTrue(tmpResultDto.equals(tmpResultDtoSame));
-        assertFalse(tmpResultDto.equals(tmpResultDtoDifferent));
-    }
-
-    @Test
-    public void testResultDto_hashCode(){
-
-        ResultDto tmpResultDto = listDtos.get(0);
-        assertEquals((-212165700), tmpResultDto.hashCode());
-
-
-        tmpResultDto.updateProductInfos(66, "newName");
-        assertEquals((1880436434), tmpResultDto.hashCode());
-    }
-
-    /** test for ScoreDto **/
-
-    @Test
-    public void testScoreDto_equals() {
-
-        ScoreDto[] scores1 = new ScoreDto[3];
-        scores1[2] = new ScoreDto(Score.HOCH, 5);
-        scores1[1] = new ScoreDto(Score.MITTEL, 7);
-        scores1[0] = new ScoreDto(Score.GERING, 0);
-
-        ScoreDto[] scores1_same = scores1;
-
-        ScoreDto[] scores2 = new ScoreDto[3];
-        scores2[2] = new ScoreDto(Score.HOCH, 5);
-        scores2[1] = new ScoreDto(Score.MITTEL, 8);
-        scores2[0] = new ScoreDto(Score.GERING, 1);
-
-        assertFalse(scores1.equals(scores2));
-        assertTrue(scores1.equals(scores1_same));
-
-    }
-
-    @Test
-    public void testScoreDto_hashCode(){
-
-        ScoreDto[] scores = new ScoreDto[3];
-        scores[2] = new ScoreDto(Score.HOCH, 5);
-        scores[1] = new ScoreDto(Score.MITTEL, 7);
-        scores[0] = new ScoreDto(Score.GERING, 0);
-
-        assertEquals(1572127577, scores.hashCode());
-
     }
 
 
