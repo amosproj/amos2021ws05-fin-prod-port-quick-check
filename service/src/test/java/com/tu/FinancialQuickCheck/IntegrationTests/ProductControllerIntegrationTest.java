@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ProductControllerIntegrationTest {
 
-    static Logger log = Logger.getLogger(ProductAreaControllerIntegrationTest.class.getName());
+    static Logger log = Logger.getLogger(ProductControllerIntegrationTest.class.getName());
 
     @LocalServerPort
     private int port = 8080;
@@ -56,7 +56,7 @@ public class ProductControllerIntegrationTest {
 
     @BeforeEach
     public void initEach(){
-        log.info("@BeforeEach - setup for Tests in ProjectUserControllerIntegrationTest.class");
+        log.info("@BeforeEach - setup for Tests in ProductControllerIntegrationTest.class");
 
         productAreaEntities = new ArrayList<>();
         for(int i = 1; i < 3; i++){

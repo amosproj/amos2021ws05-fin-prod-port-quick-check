@@ -1,5 +1,6 @@
 package com.tu.FinancialQuickCheck.Service;
 
+import com.tu.FinancialQuickCheck.Exceptions.BadRequest;
 import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.RatingArea;
 import com.tu.FinancialQuickCheck.db.*;
@@ -43,7 +44,6 @@ public class ProductRatingService {
      * @param ratingArea The rating area of the product for which the rating has to be returned.
      * @return The rating for a specific product.
      */
-    //TODO: (done - needs review) test output against api definition
     public ProductDto getProductRatings(int productID, RatingArea ratingArea) {
 
         Optional<ProductEntity> productEntity = productRepository.findById(productID);
@@ -69,7 +69,6 @@ public class ProductRatingService {
     }
 
 
-    //TODO: (done - needs review)
     @Transactional
     public ProductDto createProductRatings(ProductDto productDto, int productID){
         //Step 1: check if productRatings can be created
@@ -82,7 +81,9 @@ public class ProductRatingService {
             HashMap<Integer, ProductRatingEntity> newProductRatings = initProductRatings(product, productDto);
 
             //Step 3: map input to created productRatingEntities
-            assignInputToAttributes(productDto.ratings, newProductRatings);
+            if(productDto.ratings != null){
+                assignInputToAttributes(productDto.ratings, newProductRatings);
+            }
 
             //Step 4: persist to db
             List<ProductRatingEntity> tmp = new ArrayList<>(newProductRatings.values());
@@ -93,7 +94,6 @@ public class ProductRatingService {
     }
 
 
-    //TODO: (test)
     @Transactional
     public ProductDto updateProductRatings(ProductDto productDto, int productID) {
 
@@ -104,24 +104,27 @@ public class ProductRatingService {
 
             List<ProductRatingEntity> updates = new ArrayList<>();
 
-            for (ProductRatingDto tmp : productDto.ratings) {
-                ProductRatingId tmpId = new ProductRatingId(productRepository.getById(productID),
-                        ratingRepository.getById(tmp.ratingID));
+            if(productDto.ratings != null){
+                for (ProductRatingDto tmp : productDto.ratings) {
+                    ProductRatingId tmpId = new ProductRatingId(productRepository.getById(productID),
+                            ratingRepository.getById(tmp.ratingID));
 
-                Optional<ProductRatingEntity> updateEntity = repository.findById(tmpId);
+                    Optional<ProductRatingEntity> updateEntity = repository.findById(tmpId);
 
-                if(updateEntity.isPresent()){
-                    updateEntity.map(
+                    if(updateEntity.isPresent()){
+                        updateEntity.map(
                                 productRating -> {
                                     assignAttributes(tmp, productRating);
                                     return updates.add(productRating);
                                 });
-                }else{
-                    throw new ResourceNotFound("ratingID " + tmp.ratingID + " not found");
+                    }else{
+                        throw new ResourceNotFound("ratingID " + tmp.ratingID + " not found");
+                    }
                 }
+                repository.saveAll(updates);
+            }else{
+                throw new BadRequest("Input missing/incorrect");
             }
-
-            repository.saveAll(updates);
 
             return new ProductDto(productEntity , updates);
         }
@@ -173,6 +176,4 @@ public class ProductRatingService {
 
         return newProductRatings;
     }
-
-
 }
