@@ -31,7 +31,6 @@ public class ProductRatingController {
      * @throws ResourceNotFound When the productID does not exist.
      * @return The economic and the complexity rating for a product by their ID.
      */
-    //TODO: (done - needs review) return empty list or return Error if no ratings exist? --> empty list
     @GetMapping()
     public ProductDto getProductRatings(
             @PathVariable int productID,
@@ -44,7 +43,6 @@ public class ProductRatingController {
         }else{
             return tmp;
         }
-
     }
 
     /**
