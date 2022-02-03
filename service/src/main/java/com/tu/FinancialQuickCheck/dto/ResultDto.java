@@ -2,7 +2,6 @@ package com.tu.FinancialQuickCheck.dto;
 
 import com.tu.FinancialQuickCheck.Score;
 
-import java.sql.Array;
 import java.util.*;
 
 /**
