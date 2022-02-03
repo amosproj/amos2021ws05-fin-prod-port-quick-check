@@ -1,7 +1,6 @@
 package com.tu.FinancialQuickCheck.db;
 
 import com.tu.FinancialQuickCheck.Score;
-
 import javax.persistence.*;
 
 /**
@@ -15,7 +14,6 @@ import javax.persistence.*;
  */
 @Entity
 public class ProductRatingEntity {
-    // TODO: (tbd) überlegen wie Dateien gespeicht werden, und ob hier ein Verweis notwendig ist
 
     @EmbeddedId
     public ProductRatingId productRatingId;
@@ -23,7 +21,6 @@ public class ProductRatingEntity {
     @Column(name = "answer")
     public String answer;
 
-    // TODO: (prio: low) wie gehen wir mit anderen Scalenwerten um?
     @Column(name = "score")
     public Score score;
 
@@ -31,4 +28,5 @@ public class ProductRatingEntity {
     public String comment;
 
     public ProductRatingEntity(){}
+
 }

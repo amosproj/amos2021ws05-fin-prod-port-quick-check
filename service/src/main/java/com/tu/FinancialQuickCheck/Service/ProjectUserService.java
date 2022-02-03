@@ -97,8 +97,6 @@ public class ProjectUserService {
         }
     }
 
-
-    //TODO: (test)
     public Boolean wrapperDeleteProjectUser(int projectID, List<ProjectUserDto> projectUsers){
         Boolean tmp = Boolean.TRUE;
         if(projectRepository.existsById(projectID)){

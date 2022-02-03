@@ -1,7 +1,6 @@
 package com.tu.FinancialQuickCheck.db;
 
 import com.tu.FinancialQuickCheck.RatingArea;
-
 import javax.persistence.*;
 
 /**

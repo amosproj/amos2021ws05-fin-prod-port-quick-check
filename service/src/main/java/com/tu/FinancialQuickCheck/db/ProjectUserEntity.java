@@ -11,7 +11,6 @@ import java.util.Objects;
  */
 @Entity // This tells Hibernate to make a table out of this class
 public class ProjectUserEntity {
-    //TODO: (prio: medium) UserManagement - add link to projectEntity to be able to fetch all projects for one user
 
     /**
      * ID of project user (as composite primary key).
