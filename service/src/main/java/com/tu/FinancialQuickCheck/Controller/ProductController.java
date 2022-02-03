@@ -59,10 +59,4 @@ public class ProductController {
         }
     }
 
-// TODO: auskommentiert lassen bis geklärt ist, wie mit ProductVarianten umgegangen werden soll und was mit evtl. Ratings passieren soll die bereits existieren
-//    @DeleteMapping("/{productID}")
-//    void deleteByID(@PathVariable int productID) {
-//        service.deleteProduct(productID);
-//    }
-
 }
