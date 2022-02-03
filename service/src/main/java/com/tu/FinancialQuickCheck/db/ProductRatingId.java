@@ -63,6 +63,8 @@ public class ProductRatingId implements Serializable {
         return product.equals(that.product) && rating.equals(that.rating);
     }
 
+
+
     /**
      * Gives back the hashcode value of product rating ID.
      *

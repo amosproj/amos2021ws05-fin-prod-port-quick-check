@@ -2,7 +2,6 @@ package com.tu.FinancialQuickCheck.db;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
 import java.util.Optional;
 
 /**
@@ -19,13 +18,5 @@ public interface UserRepository extends JpaRepository<UserEntity, String> {
      * @return User entity for a email address.
      */
     Optional<UserEntity> findByEmail(String email);
-
-    /**
-     * This method checks if a user exists by their email address.
-     *
-     * @param email Email Address for which the existence of user should be checked.
-     * @return True if the user exists which is checked by their email address.
-     */
-    Boolean existsByEmail(String email);
 
 }

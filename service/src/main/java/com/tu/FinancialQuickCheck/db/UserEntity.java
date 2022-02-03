@@ -8,7 +8,6 @@ import javax.persistence.*;
  */
 @Entity // This tells Hibernate to make a table out of this class
 public class UserEntity {
-    //TODO: (done --needs review) change primary key to id
 
     /**
      * ID of user (as primary key).

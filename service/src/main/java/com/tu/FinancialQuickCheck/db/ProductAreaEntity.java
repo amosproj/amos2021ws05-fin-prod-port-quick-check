@@ -36,5 +36,4 @@ public class ProductAreaEntity {
     @JoinColumn(name = "productarea")
     public List<ProductEntity> productEntities;
 
-
 }

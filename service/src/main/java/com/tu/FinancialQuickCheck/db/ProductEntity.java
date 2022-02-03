@@ -9,9 +9,6 @@ import java.util.List;
  */
 @Entity
 public class ProductEntity {
-    //TODO: (done: needs review) add missing attribute: comment
-    //TODO: (prio: medium) (Topic: Dateien abspeichern) add missing attribute: list of resources or something else (?)
-
     /**
      * ID of the product (as primary key).
      */
@@ -54,9 +51,6 @@ public class ProductEntity {
      */
     @ManyToOne(fetch = FetchType.EAGER)
     public ProductEntity parentProduct;
-
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy="parentProduct")
-//    public List<ProductEntity> subProducts = new ArrayList<>();
 
     /**
      * Constructor for class ProductEntity.
