@@ -69,7 +69,6 @@ public class ProjectService {
      * Creator of project needs to be included in projectDto.members
      * @return ProjectDto projectDto including created projectID
      */
-    //TODO: (done - nothing changed) is the creator of the project included in the members list? --> answer: yes
     @Transactional
     public ProjectDto createProject(ProjectDto projectDto) {
         // Step 0: Check if input contains required information
@@ -167,7 +166,6 @@ public class ProjectService {
      * @param members The project user with information like email, name or ID.
      * @return A list of project user data transfer objects for a specific project.
      */
-    //TODO: (done - needs review) --> write automated tests
     public List<ProjectUserDto> createProjectUsers(int projectID, List<ProjectUserDto> members) {
 
         if(!repository.existsById(projectID)){
@@ -196,7 +194,6 @@ public class ProjectService {
      * @throws ResourceNotFound When the user does not exist.
      * @return A list of the users which are assgined to the specific project.
      */
-    //TODO: (done - needs review) --> user_entity primary key changed
     public List<ProjectUserEntity> assignMembersToProject(List<ProjectUserDto> members, ProjectEntity projectEntity){
         List<ProjectUserEntity> assignedMembers = new ArrayList<>();
 
@@ -228,7 +225,6 @@ public class ProjectService {
      * @throws BadRequest When the input is missing or incorrect.
      * @return The entity of the user if already existent in database.
      */
-    //TODO: (done - needs review)
     public Optional<UserEntity> userExists(ProjectUserDto user){
         if(user.userID != null){
             return userRepository.findById(user.userID.toString());
@@ -273,13 +269,4 @@ public class ProjectService {
         return productEntities;
     }
 
-// TODO: auskommentiert lassen bisher keine Anforderung dafür vorhanden
-//    public void deleteProject(int projectID) {
-//        Optional<ProjectEntity> projectEntity = projectRepository.findById(projectID);
-//        if (projectEntity.isEmpty()) {
-//            throw new ResourceNotFound("projectID " + projectID + " not found");
-//        }else{
-//            projectRepository.deleteById(projectID);
-//        }
-//    }
 }

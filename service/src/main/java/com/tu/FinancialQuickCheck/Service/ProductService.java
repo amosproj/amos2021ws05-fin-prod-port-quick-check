@@ -113,7 +113,6 @@ public class ProductService {
 
             repository.saveAllAndFlush(entities);
 
-            //TODO: Product Area is missing in entity produces a nullpoint exception
             List<ProductDto> createdProducts = new ArrayList<>();
 //            entities.forEach(entity -> createdProducts.add(new ProductDto(entity)));
 
@@ -122,19 +121,11 @@ public class ProductService {
             }
 
             return createdProducts;
-
         }else {
             throw new ResourceNotFound("Resource not Found. ProjectID and/or ProjectAreaID does not exist.");
         }
     }
 
-    /**
-     * Retrieve parent entity of a product
-     *
-     * @param productDto contains product information
-     * @throws BadRequest if parent entity with parentID does not exist
-     * @return parent product entity
-     */
     /**
      * Retrieves parent entity of product from db
      *
@@ -153,7 +144,6 @@ public class ProductService {
         }
         return parentEntity;
     }
-
 
     /**
      * Creates a product entity.
@@ -187,6 +177,7 @@ public class ProductService {
      * @return updated product if exists else null
      */
     public ProductDto updateById(ProductDto productDto, int productID) {
+
         if (!repository.existsById(productID)) {
             return null;
         }else{
@@ -215,7 +206,6 @@ public class ProductService {
         }
     }
 
-
     /**
      * Updates attributes name of product entity.
      *
@@ -232,7 +222,6 @@ public class ProductService {
             }
         }
     }
-
 
     /**
      * Retrieve all product entities from db for project entity with projectID.
@@ -259,7 +248,6 @@ public class ProductService {
         }
     }
 
-
     /**
      * Retrieve all product entities from db for project entity with projectID and
      * product area entity with product area ID.
@@ -269,7 +257,6 @@ public class ProductService {
      * @throws ResourceNotFound When the project ID does not exist.
      * @return list of products
      */
-    //TODO: (discuss with Alex) return Resource not found if projectAreaID does not exist?
     public List<ProductDto> getProductsByProjectIdAndProductAreaId(int projectID, int projectAreaID){
         if(projectRepository.existsById(projectID)){
             List<ProductDto> productsByProjectAndProductArea = new ArrayList<>();
@@ -330,19 +317,6 @@ public class ProductService {
             return progressValues;
         }
     }
-
-
-
-//    public void deleteProduct(int productID) {
-//        // TODO: (ask PO) was soll mit ProductVarianten beim löschen passieren? sollen die auch mit gelöscht werden?
-//        Optional<ProductEntity> productEntity = repository.findById(productID);
-//
-//        if (productEntity.isEmpty()) {
-//            throw new ResourceNotFound("productID " + productID + " not found");
-//        }else{
-//            repository.deleteById(productID);
-//        }
-//    }
 
     /**
      * Adds for one product all existing ratings to db.

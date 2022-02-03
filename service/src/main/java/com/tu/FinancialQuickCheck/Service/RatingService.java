@@ -21,13 +21,10 @@ public class RatingService {
         this.repository = ratingRepository;
     }
 
-
     public List<RatingDto>  getAllRatings() {
 
         return new ListOfRatingDto(this.repository.findAll()).ratings;
-
     }
-
 
     /**
      * This method is giving back the ratings for a specific rating area (complexity or economical).
