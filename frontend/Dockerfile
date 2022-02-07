@@ -2,13 +2,8 @@ FROM node:16-alpine
 
 WORKDIR /app
 
-COPY ./quickcheck/package*.json ./
+COPY . .
 
-RUN yarn install
-
-# overwritten in dev-container by mount
-COPY ./quickcheck .
-
-EXPOSE 3000
+RUN yarn install --frozen-lockfile
 
 CMD ["yarn", "start"]
