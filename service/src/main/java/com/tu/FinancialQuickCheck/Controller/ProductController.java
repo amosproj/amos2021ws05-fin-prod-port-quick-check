@@ -14,19 +14,18 @@ public class ProductController {
     private ProductService service;
 
     /**
-     * Constructor for class ProductController.
-     *
-     * @param productService The different services for the product.
+     * Class Constructor specifying ProductService.
      */
     public ProductController(ProductService productService){
         this.service = productService;
     }
 
     /**
-     * This method can find different products by their related ID.
+     * Retrieves product information from db based on productID.
      *
-     * @param productID The ID of the product.
-     * @return The product to their related ID.
+     * @param productID The productID is the unique identifier of the product entity in db
+     * @throws ResourceNotFound if product entity with productID does not exist in db.
+     * @return A ProductDto if exist
      */
     @GetMapping("/{productID}")
     public ProductDto findById(@PathVariable int productID) {
@@ -40,11 +39,13 @@ public class ProductController {
     }
 
     /**
-     * This method can update the products information like name, comments or resources.
+     * Updates attributes name and comment of product entity in db. At least one of the attributes
+     * has to be provided.
      *
-     * @param productDto The product data transfer object.
-     * @param productID The ID of the product.
-     * @throws BadRequest When a product cannot be updated because the input is missing or incorrect.
+     * @param productDto The productDto contains attributes productName and comment for update
+     * @param productID The productID is the unique identifier of the product entity in db
+     * @throws BadRequest if no information for update is provided
+     * @throws ResourceNotFound if product entity with productID does not exist in db.
      */
     @PutMapping("/{productID}")
     public void updateProduct(@RequestBody ProductDto productDto, @PathVariable Integer productID) {

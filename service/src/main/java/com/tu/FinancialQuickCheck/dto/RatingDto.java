@@ -25,7 +25,7 @@ public class RatingDto {
     public RatingDto(){}
 
     /**
-     * Class Constructor specfying rating with id, criterion, category and ratingArea through ratingEntity
+     * Class Constructor specifying rating with id, criterion, category and ratingArea through ratingEntity
      */
     public RatingDto(RatingEntity ratingEntity)
     {
