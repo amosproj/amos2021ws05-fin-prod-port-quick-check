@@ -11,7 +11,9 @@ import org.springframework.http.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
+/**
+ * The current test class verifies the functionalities of the Product Rating Controller.
+ */
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class ProductRatingControllerIntegrationTest {
 
@@ -32,7 +34,9 @@ public class ProductRatingControllerIntegrationTest {
     private String IDExistsNot = "/0";
 
 
-
+    /**
+     * This annotated method should be executed before each invocation of @Test
+     */
     @BeforeEach
     public void initEach(){
         System.out.println("Initilize ProductRatingControllerTest.........");
@@ -88,6 +92,12 @@ public class ProductRatingControllerIntegrationTest {
 //    }
 
 
+    /**
+     * The test indicates that the server knows the request method, but the target resource doesn't support this
+     * method
+     *
+     * @result The status code indicates that the method was not allowed
+     */
     @Test
     public void notAllowedMethodsProductRatings() throws Exception {
 
@@ -106,6 +116,11 @@ public class ProductRatingControllerIntegrationTest {
         }
     }
 
+    /**
+     * This test tries to find a product rating ID, but the ID wasn't found
+     *
+     * @result The status code indicates that the method was not allowed
+     */
     @Test
     public void allowedMethodsProductIdDoesNotExist() throws Exception {
         HttpHeaders headers = new HttpHeaders();
@@ -130,8 +145,12 @@ public class ProductRatingControllerIntegrationTest {
     }
 
 
-
-
+    /**
+     * This test  tries to return a Method object that reflects the specified public member method of the class
+     * or interface
+     *
+     *  @result The status code indicates that the method was alright
+     */
     @Test
     public void getMethod() throws Exception {
 
