@@ -46,6 +46,9 @@ public class ProductAreaControllerIntegrationTest {
 
     private ProductAreaEntity entity;
 
+    /**
+     * This annotated method should be executed before each invocation of @Test
+     */
     @BeforeEach
     public void init(){
         log.info("@BeforeEach - setup for Tests in ProductAreaControllerIntegrationTest.class");
@@ -58,11 +61,19 @@ public class ProductAreaControllerIntegrationTest {
         repository.save(entity);
     }
 
+    /**
+     * The method should be run after every @Test
+     */
     @AfterEach
     public void reset(){
         repository.deleteAll();
     }
 
+    /**
+     * This test tries to get a product area from database, but there is no product area in database
+     *
+     * @result The status code that the product area wasn't found in database
+     */
     @Test
     public void test1_getProductAreas_resourceNotFound() {
         // delete all existing productAreas
@@ -76,6 +87,11 @@ public class ProductAreaControllerIntegrationTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * This test tries to get all product area from database
+     *
+     * @result The status code that the product area was found in database
+     */
     @Test
     public void test2_getProductAreas_success_200(){
         ResponseEntity<String> response = restTemplate.exchange(host + port + productAreas,
@@ -86,6 +102,11 @@ public class ProductAreaControllerIntegrationTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
+    /**
+     * This test tries to store product areas in database
+     *
+     * @result Indicators that the created product area is stored in database
+     */
     @Test
     public void test3_postProductAreas_created_201() throws JsonProcessingException {
         HttpEntity<String> request = new HttpEntity<>(jsonStringCorrect, header);
@@ -104,6 +125,11 @@ public class ProductAreaControllerIntegrationTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     }
 
+    /**
+     * This test tries to store product areas in database
+     *
+     * @result Indicators that the created product area wasn't stored in database
+     */
     @Test
     public void test4_postProductAreas_badRequest(){
         String[] testObjects = new String[]{"", jsonStringEmpty, jsonStringMissingName, jsonStringMissingCategory};
@@ -117,6 +143,12 @@ public class ProductAreaControllerIntegrationTest {
         }
     }
 
+    /**
+     * The test indicates that the server knows the request method, but the target resource doesn't support this
+     * method.
+     *
+     * @result The status code indicates that the method was not allowed.
+     */
     @Test
     public void test5_notAllowedMethodsProductAreas() {
         HttpMethod[] notAllowed = new HttpMethod[]{HttpMethod.PUT, HttpMethod.DELETE};
