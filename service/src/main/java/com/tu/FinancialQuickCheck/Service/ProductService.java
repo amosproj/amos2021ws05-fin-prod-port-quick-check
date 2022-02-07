@@ -8,7 +8,6 @@ import com.tu.FinancialQuickCheck.dto.ProductDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
 import java.util.*;
 
 /**
@@ -106,6 +105,7 @@ public class ProductService {
 
             repository.saveAllAndFlush(entities);
 
+            //TODO: Product Area is missing in entity produces a nullpoint exception
             List<ProductDto> createdProducts = new ArrayList<>();
 //            entities.forEach(entity -> createdProducts.add(new ProductDto(entity)));
 
@@ -225,6 +225,7 @@ public class ProductService {
         }
     }
 
+
     /**
      * Updates attributes name of product entity.
      *
@@ -241,6 +242,7 @@ public class ProductService {
             }
         }
     }
+
 
     /**
      * Retrieve all product entities of a project entity from db.
