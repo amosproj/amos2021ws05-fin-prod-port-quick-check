@@ -27,7 +27,7 @@ public class ProductAreaController {
     /**
      * Retrieves all existing product areas from db.
      *
-     * @throws ResourceNotFound When product_area_entity table is empty.
+     * @throws ResourceNotFound if product_area_entity table is empty.
      * @return A list of all existing product areas.
      */
     @GetMapping(produces = "application/json")
@@ -46,7 +46,7 @@ public class ProductAreaController {
      * Creates and persists a productArea entity to db.
      *
      * @param productArea The productArea object contains the necessary information.
-     * @throws BadRequest When name and category of productArea are missing.
+     * @throws BadRequest if name and category of productArea are missing.
      * @return The created product area incl. unique identifier.
      */
     @PostMapping(consumes = "application/json")
