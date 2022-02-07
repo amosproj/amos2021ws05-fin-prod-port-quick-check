@@ -255,7 +255,7 @@ public class ProductService {
         Optional<ProjectEntity> projectEntity = projectRepository.findById(projectID);
         if(projectEntity.isPresent()){
             List<ProductDto> productsByProject = new ArrayList<>();
-            Iterable<ProductEntity> productEntities = projectEntity.get().productEntities;
+            Iterable<ProductEntity> productEntities = repository.findByProject(projectEntity.get());
             for(ProductEntity tmp : productEntities){
                 if(!tmp.name.equals("DUMMY")){
                     float[] progress = calculateProductRatingProgress(tmp);
