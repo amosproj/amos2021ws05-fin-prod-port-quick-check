@@ -17,6 +17,9 @@ import java.util.logging.Logger;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * The current test class verifies the functionalities of the Product Controller
+ */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ProductControllerIntegrationTest {
 
@@ -53,7 +56,9 @@ public class ProductControllerIntegrationTest {
     ProjectEntity project;
     List<ProductAreaEntity> productAreaEntities;
 
-
+    /**
+     * This annotated method should be executed before each invocation of @Test
+     */
     @BeforeEach
     public void initEach(){
         log.info("@BeforeEach - setup for Tests in ProjectUserControllerIntegrationTest.class");
@@ -86,6 +91,9 @@ public class ProductControllerIntegrationTest {
         header.setContentType(MediaType.APPLICATION_JSON);
     }
 
+    /**
+     * The method should be run after every @Test
+     */
     @AfterEach
     public void reset() {
         repository.deleteAll();
@@ -95,6 +103,11 @@ public class ProductControllerIntegrationTest {
         log.info("@AfterEach - db reset");
     }
 
+    /**
+     * This test checked the response status code and then the body elements
+     *
+     * @result Indicators that the elements are the expected elements
+     */
     public void assertResponseBody(ResponseEntity<String> response, ProductEntity product){
         ProductDto tmp = new ProductDto(product);
         String[] object = Objects.requireNonNull(response.getBody()).split(",");
@@ -123,6 +136,11 @@ public class ProductControllerIntegrationTest {
         assertEquals("resources:" + tmp.resources , object[12]);
     }
 
+    /**
+     * This test tries to find a product database by its ID, but there is no product in database with that ID
+     *
+     * @result The status code that the product wasn't found in database
+     */
     @Test
     public void test1_findById_resourceNotFound() {
         // delete all existing entries
@@ -137,6 +155,11 @@ public class ProductControllerIntegrationTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * This test tries to find a product in database by its ID
+     *
+     * @result The status code that the product was found in database by its ID
+     */
     @Test
     public void test2_findById_success_product() {
         ResponseEntity<String> response = restTemplate.exchange(host + port + products + product.id,
@@ -148,6 +171,11 @@ public class ProductControllerIntegrationTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
+    /**
+     * This test tries to find a product variant in database by its ID
+     *
+     * @result The status code that the product variant was found in database by its ID
+     */
     @Test
     public void test3_findById_success_productVariant() {
         ResponseEntity<String> response = restTemplate.exchange(host + port + products + productVariant.id,
@@ -159,6 +187,11 @@ public class ProductControllerIntegrationTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
+    /**
+     * This test tries to update a product
+     *
+     * @result The status code that the product area wasn't updated because the JSON is empty
+     */
     @Test
     public void test4_updateProduct_badRequest_emptyJSON() {
         ResponseEntity<String> response = restTemplate.exchange(host + port + products + product.id,
@@ -170,6 +203,11 @@ public class ProductControllerIntegrationTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * This test tries to update a product, but there is no product with that ID in database
+     *
+     * @result The status code that the product wasn't found in database by its ID
+     */
     @Test
     public void test5_updateProduct_resourceNotFound() {
         ResponseEntity<String> response = restTemplate.exchange(host + port + products + "0",
@@ -180,6 +218,11 @@ public class ProductControllerIntegrationTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * This test tries to update a product
+     *
+     * @result The status code that the product was updated
+     */
     @Test
     public void test6_updateProduct_success_fullUpdate() {
         ResponseEntity<String> response = restTemplate.exchange(host + port + products + product.id,
@@ -191,6 +234,11 @@ public class ProductControllerIntegrationTest {
         //TODO: test output against original entity
     }
 
+    /**
+     * This test tries to update partial information for a product
+     *
+     * @result The status code that the partial information (comment and resource) was updated, but not the missing name
+     */
     @Test
     public void test7_updateProduct_success_partialUpdate_MissingName() {
         ResponseEntity<String> response = restTemplate.exchange(host + port + products + product.id,
@@ -202,6 +250,11 @@ public class ProductControllerIntegrationTest {
         //TODO: test output against original entity
     }
 
+    /**
+     * This test tries to update partial information for a product
+     *
+     * @result The status code that the partial information (name and resource) was updated, but not the missing comment
+     */
     @Test
     public void test8_updateProduct_success_partialUpdate_MissingComment() {
         ResponseEntity<String> response = restTemplate.exchange(host + port + products + product.id,
@@ -213,6 +266,11 @@ public class ProductControllerIntegrationTest {
         //TODO: test output against original entity
     }
 
+    /**
+     * This test tries to update partial information for a product
+     *
+     * @result The status code that the partial information (name and comment) was updated, but not the missing resource
+     */
     @Test
     public void test9_updateProduct_success_partialUpdate_MissingResources() {
         ResponseEntity<String> response = restTemplate.exchange(host + port + products + product.id,
