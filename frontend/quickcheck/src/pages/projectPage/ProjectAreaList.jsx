@@ -9,7 +9,7 @@ import ConfirmClick from '../../components/ConfirmClick.jsx';
 import AddAreaButton from './AddAreaButton.jsx';
 
 function ProductArea({ productArea }) {
-  const { projectID } = useParams();
+  const { projectID } = useStoreState((state) => state.project.data);
 
   return (
     <>
