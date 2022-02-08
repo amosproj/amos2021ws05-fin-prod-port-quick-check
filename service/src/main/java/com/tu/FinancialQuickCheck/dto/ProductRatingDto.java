@@ -7,6 +7,11 @@ import com.tu.FinancialQuickCheck.db.RatingEntity;
 /**
  * This class represents the product rating data transfer object, which is used for reducing the number of multiple
  * method calls into a single one
+ *
+ * ratingID: The unique identifier of product rating
+ * answer: The answer for the questions of economical and complexity evaluation which is inserted by the consultant
+ * comment: The comment from the consultant (for example an explanation for the rating)
+ * score: The score which can be low, medium or high
  */
 public class ProductRatingDto {
 

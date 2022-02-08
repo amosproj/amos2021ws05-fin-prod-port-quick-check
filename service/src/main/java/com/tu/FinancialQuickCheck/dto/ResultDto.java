@@ -5,8 +5,13 @@ import com.tu.FinancialQuickCheck.Score;
 import java.util.*;
 
 /**
+ * This class represents the rasult data transfer object, which is used for reducing the number of multiple
+ * method calls into a single one
  *
- *
+ * productID: The unique identifier of product
+ * productName: The name of a product, no restrictions currently
+ * rating: The rating for a product which gets inserted by the consultant
+ * score: The score which can be low, medium or high
  */
 public class ResultDto {
 
