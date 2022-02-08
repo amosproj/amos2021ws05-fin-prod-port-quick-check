@@ -173,6 +173,13 @@ public class ProjectController {
         }
     }
 
+    /**
+     * This method can retrieve the result for a complete project or for a specified product area
+     *
+     * @param projectID The project ID for which a result should get retrieved
+     * @param productAreaID The product area ID for which a result should get retrieved
+     * @return The result for either a hole project or the result for a specific product area
+     */
     @GetMapping("/{projectID}/results")
     public List<ResultDto> getResults(@PathVariable int projectID,
                                        @RequestParam(required = false) Optional<String> productAreaID) {

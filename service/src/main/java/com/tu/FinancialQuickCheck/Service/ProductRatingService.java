@@ -29,6 +29,9 @@ public class ProductRatingService {
     @Autowired
     private final RatingRepository ratingRepository;
 
+    /**
+     * Class constructor initializes productRating repository
+     * */
     public ProductRatingService(ProductRatingRepository repository, ProductRepository productRepository,
                                 RatingRepository ratingRepository) {
         this.repository = repository;
@@ -67,6 +70,14 @@ public class ProductRatingService {
         }
     }
 
+    /**
+     * Updates an existing ProductRatingEntity in DB
+     * Attributes/relations that can be updated: The rating for a product
+     * Attributes/relations that can not be updated: The productID
+     * @param productDto contains data that needs to be updated
+     * @param productID unique identifier for ProductEntity
+     * @throws ResourceNotFound When the product ID is not found.
+     */
     @Transactional
     public ProductDto updateProductRatings(ProductDto productDto, int productID) {
 
@@ -102,6 +113,11 @@ public class ProductRatingService {
         }
     }
 
+    /**
+     * This method is assigning information (answer, comment & score) to specific ratings
+     *
+     * @param tmp The product rating transfer object for which information (answer, comment & score) should be assigned
+     */
     public void assignAttributes(ProductRatingDto tmp, ProductRatingEntity newEntity) {
         if(tmp.answer != null){
             newEntity.answer = tmp.answer;

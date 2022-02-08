@@ -17,7 +17,7 @@ public class ProductAreaService {
     private ProductAreaRepository repository;
 
     /**
-     * Class constructor initilizes productArea repository
+     * Class constructor initializes productArea repository
      * */
     public ProductAreaService(ProductAreaRepository productAreaRepository) {
         this.repository = productAreaRepository;
