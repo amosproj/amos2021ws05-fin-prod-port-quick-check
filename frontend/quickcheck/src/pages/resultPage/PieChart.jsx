@@ -10,7 +10,14 @@ var red = 'rgba(239, 65, 56, .7 )';
 var fullyellow = 'rgba(255, 195, 0, 1)';
 var fullgreen = 'rgba(131, 239, 56,1 )';
 var fullred = 'rgba(239, 65, 56, 1)';
-
+/**
+ * Show a single Pie chart Graph
+ * @param {list} data_inner - inner piechart ring
+ * @param {list} data_outer - outer piechart ring
+ * @param {String} Title - Piechart title (Here the product area name)
+ * @param {rgba color value} color - innermost circle color
+ * @param {list} ratings - ratings unproccessed (not in percent)
+ */
 function PieChartGraph({ data_outer, data_inner, title, color, ratings }) {
   var ChartData = {
     labels: [],
@@ -58,7 +65,6 @@ function PieChartGraph({ data_outer, data_inner, title, color, ratings }) {
                 to_return = [to_return + ':', +tooltipItem['formattedValue'] + '% Complex'];
               }
             } else {
-              //console.log("rating ", dataset)
               if (dataset['rating'] == 'unfinished') {
                 to_return = [to_return + ':', 'Evaluation not yet completed.'];
               } else if (dataset['rating'] == null) {
