@@ -21,7 +21,10 @@ const CircleIcon = (props) => (
     <path fill={props.color} d="m 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0" />
   </Icon>
 );
-
+/**
+ * Proccess results to rows of Pie charts
+ * @param {JSON} Results - Returned JSON from backend
+ */
 function ShowPieCharts({ results }) {
   //console.log('test', { results });
   var rows = [];
@@ -101,7 +104,10 @@ function ShowPieCharts({ results }) {
     </Flex>
   );
 }
-
+/**
+ * Make a single row of pie charts
+ * @param {list} row_data - list of lists of content for one row of pie charts
+ */
 function PieChartRow({ row_data }) {
   return (
     <Flex
@@ -125,7 +131,10 @@ function PieChartRow({ row_data }) {
     </Flex>
   );
 }
-
+/**
+ * Proccess results to show Figure of one bubble graph and sub pie plots/
+ * @param {JSON} Results - Returned JSON from backend
+ */
 function Figure({ results }) {
   var maxbX = 0;
   var maxbY = 0;
