@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * This is our main method, witch is starting the Financial Quick Check Application
+ * This is the main method, witch is starting the Financial Quick Check Application
  */
 @SpringBootApplication
 public class FinancialQuickCheckApplication {

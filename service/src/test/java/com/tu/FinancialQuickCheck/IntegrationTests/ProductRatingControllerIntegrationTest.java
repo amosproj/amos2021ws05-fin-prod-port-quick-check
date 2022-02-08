@@ -20,7 +20,9 @@ import java.util.logging.Logger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
+/**
+ * The current test class verifies the functionalities of the Product Rating Controller
+ */
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class ProductRatingControllerIntegrationTest {
 
@@ -72,7 +74,9 @@ public class ProductRatingControllerIntegrationTest {
     private List<ProductRatingEntity> entitiesComplexity;
     private List<ProductRatingEntity> entitiesEconomic;
 
-
+    /**
+     * This annotated method should be executed before each invocation of @Test
+     */
     @BeforeEach
     public void initEach(){
         System.out.println("Initilize ProductRatingControllerTest.........");
@@ -135,6 +139,9 @@ public class ProductRatingControllerIntegrationTest {
         repository.saveAll(entities);
     }
 
+    /**
+     * The method should be run after every @Test
+     */
     @AfterEach
     public void reset(){
         List<ProductRatingEntity> tmp = repository.findAll();
@@ -145,6 +152,14 @@ public class ProductRatingControllerIntegrationTest {
         }
     }
 
+    /**
+     * tests for getProductRatings()
+     *
+     * testGetProductRatings: no product rating exist with/without productID--> return HTTP.NOT_FOUND
+     * testGetProductRatings: no product rating exist with/without product rating--> return HTTP.OK and empty list
+     * testGetProductRatings: ratings exist with/without productID--> return HTTP.OK and json string containing product
+     * ratings
+     */
     @Test
     public void test1_getProductRatings_resourceNotFound_productID(){
         // test object
@@ -194,6 +209,21 @@ public class ProductRatingControllerIntegrationTest {
         }
     }
 
+    /**
+     * tests for updateProductRatings()
+     *
+     * testUpdateProductRatings: no product rating exist with/without productID--> return HTTP.NOT_FOUND
+     * testUpdateProductRatings: no product rating exist with/without ratingID--> return HTTP.NOT_FOUND
+     * testUpdateProductRatings: no product rating exist with/without empty JSON--> return HTTP.BAD_REQUEST
+     * testUpdateProductRatings: product ratings exist with/without ratingID--> return HTTP.OK and json string
+     * containing product ratings
+     * testUpdateProductRatings: product rating exists with/without answer --> return HTTP.OK and json string
+     * containing product ratings
+     * testUpdateProductRatings: product rating exists with/without comment --> return HTTP.OK and json string
+     * containing product ratings
+     * testUpdateProductRatings: product rating exists with/without score --> return HTTP.OK and json string
+     * containing product ratings
+     */
     @Test
     public void test4_updateProductRatings_resourceNotFound_productID(){
         ResponseEntity<String> response = restTemplate.exchange(host + port + products + "0" + ratings,
@@ -293,6 +323,12 @@ public class ProductRatingControllerIntegrationTest {
         }
     }
 
+    /**
+     * The test should indicate that the server knows the request method, but the target resource doesn't support this
+     * method.
+     *
+     * @result The status code indicates that the method was not allowed.
+     */
     @Test
     public void notAllowedMethodsProductRatings() {
         String[] urls = {host + port + products + product.id + ratings,
