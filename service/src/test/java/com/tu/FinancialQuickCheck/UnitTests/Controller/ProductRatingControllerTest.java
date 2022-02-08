@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
+
 @ExtendWith(MockitoExtension.class)
 public class ProductRatingControllerTest {
 
@@ -42,6 +43,13 @@ public class ProductRatingControllerTest {
         
     }
 
+    /**
+     * Tests for getProductRatings()
+     *
+     * testGetProductRatings_resourceNotFound: No productID exists in db --> return ResourceNotFound
+     * testGetProductRatings_resourceExists_ratingAreaNull: productID exists, ratingArea is null --> return ProductDto
+     * testGetProductRatings_resourceExists_ratingAreaNotNull: productID exists, ratingArea exists --> return ProductDto
+     */
     @Test
     public void testGetProductRatings_resourceNotFound() {
         int productID = 1;
@@ -88,6 +96,12 @@ public class ProductRatingControllerTest {
         }
     }
 
+    /**
+     * Tests for updateProductRatings()
+     *
+     * testUpdateProductRatings_resourceNotFound: No productID exists in db --> return ResourceNotFound
+     * testUpdateProductRatings_resourceExists: ProductID exists in db --> return ProductDto
+     */
     @Test
     public void testUpdateProductRatings_resourceNotFound() {
         int productID = 1;
