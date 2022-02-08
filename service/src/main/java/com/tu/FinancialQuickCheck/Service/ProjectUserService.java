@@ -13,8 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Underlying Service for (un)assigning users to projects.
- * Acts as connection between presentation Layer and persistence layer.
+ * Service for (un)assigning users to projects, alternative updating existing assigned Users.
  */
 @Service
 public class ProjectUserService {
@@ -45,11 +44,11 @@ public class ProjectUserService {
     }
 
     /**
-     * This method is updating a list of users for projects by its ID.
+     * This method is updating a list of users for projects by its ID. Updating Existing Users or adding new.
      *
      * @param projectID The ID of the project for which users should be updated.
-     * @param projectUsers A list of project users for which specific project users should be updated or added.
-     * @return A updated list of project user data transfer object and new users.
+     * @param projectUsers A list of project users for which specific project, users should be updated or added.
+     * @return A updated list of project user data transfer object and new users. null at failure
      */
     public List<ProjectUserDto> updateProjectUsers(int projectID, List<ProjectUserDto> projectUsers) {
 
@@ -74,6 +73,13 @@ public class ProjectUserService {
         }
     }
 
+    /**
+     * Updates single User of a specific Project (over projectID). Used in updateProjectUsers.
+     *
+     * @param projectID The ID of the project for which user should be updated.
+     * @param u UserDto of User who should be updated
+     * @return updated ProjectUserDto at success. null at failure
+     */
     public ProjectUserEntity updateProjectUser(int projectID, ProjectUserDto u) {
 
         if (userRepository.existsById(u.userID.toString())) {
@@ -93,6 +99,13 @@ public class ProjectUserService {
         }
     }
 
+    /**
+     * Multiple deleting (removing) of Project Users from Project.
+     *
+     * @param projectID the ID of the project for which users should be removed.
+     * @param projectUsers List of UserDto's of projectUsers who should be removed.
+     * @return true at success, false at failure
+     */
     public Boolean wrapperDeleteProjectUser(int projectID, List<ProjectUserDto> projectUsers){
         Boolean tmp = Boolean.TRUE;
         if(projectRepository.existsById(projectID)){
@@ -108,6 +121,13 @@ public class ProjectUserService {
         return tmp;
     }
 
+    /**
+     * Single deleting (removing) of Project User from Project.
+     *
+     * @param projectID the ID of the project for which user should be removed.
+     * @param projectUserDto UserDto of projectUser who should be removed.
+     * @return true at success, false at failure
+     */
     public Boolean deleteProjectUser(int projectID, ProjectUserDto projectUserDto) {
 
         if (projectUserDto.userID != null) {
