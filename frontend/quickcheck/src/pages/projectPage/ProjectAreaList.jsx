@@ -8,6 +8,10 @@ import ConfirmClick from '../../components/ConfirmClick.jsx';
 
 import AddAreaButton from './AddAreaButton.jsx';
 
+/**
+ * Show information for single product area
+ * @param {dictionary} productArea - ProductArea information.
+ */
 function ProductArea({ productArea }) {
   const { projectID } = useParams();
 
@@ -30,7 +34,10 @@ function ProductArea({ productArea }) {
     </>
   );
 }
-
+/**
+ * List of Product Areas
+ * @param {state} editMode - Is the user in edit mode or not.
+ */
 export default function ProductAreaList({ editMode }) {
   const productAreas = useStoreState((state) => state.project.data.productAreas);
   const removeProductArea = useStoreActions((actions) => actions.project.removeProductArea);
