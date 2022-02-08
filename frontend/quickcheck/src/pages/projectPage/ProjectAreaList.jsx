@@ -2,7 +2,6 @@ import { React } from 'react';
 import { Button, Heading, IconButton, Spacer, List, Flex } from '@chakra-ui/react';
 import { DeleteIcon } from '@chakra-ui/icons';
 import { useStoreActions, useStoreState } from 'easy-peasy';
-import { useParams } from 'react-router-dom';
 
 import ConfirmClick from '../../components/ConfirmClick.jsx';
 
