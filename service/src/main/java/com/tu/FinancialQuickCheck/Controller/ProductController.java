@@ -6,6 +6,9 @@ import com.tu.FinancialQuickCheck.Service.ProductService;
 import com.tu.FinancialQuickCheck.dto.ProductDto;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * The ProductController manages and processes requests for finding products or updating product information.
+ */
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/products")

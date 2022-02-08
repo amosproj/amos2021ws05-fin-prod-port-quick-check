@@ -6,6 +6,9 @@ import com.tu.FinancialQuickCheck.Service.ProductRatingService;
 import com.tu.FinancialQuickCheck.dto.ProductDto;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * The ProductRatingController manages and processes requests for finding and updating ratings for a product
+ */
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/products/{productID}/ratings")

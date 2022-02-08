@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The ProjectController manages and processes requests for finding, updating and creating projects. It is also possible
+ * to find products in projects and add products and members for projects.
+ */
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/projects")
