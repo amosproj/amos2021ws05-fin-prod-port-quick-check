@@ -69,18 +69,12 @@ public class RatingControllerTest {
         listDtos = new ArrayList<>();
     }
 
-    /**
-     * tests for getRatings()
-     *
-     * testGetRatings: no ratings exist with/without ratingArea--> throw ResourceNotFound
-     * testGetRatings: ratings exist with/without ratingArea --> return List<RatingDto>
-     */
     @Test
-    public void test_getRatings_noRatingArea_resourceNotFound() {
+    public void testGetRatings_noRatingArea_resourceNotFound() {
         // Step 1: provide knowledge
         when(service.getAllRatings()).thenReturn(new ArrayList<>());
 
-        // Step 2: execute test method and assert
+        // Step 3: execute test method and assert
         Exception exception;
         exception = assertThrows(ResourceNotFound.class,
                 () -> controller.getRatings(null));
@@ -92,11 +86,11 @@ public class RatingControllerTest {
     }
 
     @Test
-    public void test_getRatings_economicRatingArea_resourceNotFound() {
+    public void testGetRatings_economicRatingArea_resourceNotFound() {
         // Step 1: provide knowledge
         when(service.getRatingsByRatingArea(RatingArea.ECONOMIC)).thenReturn(new ArrayList<>());
 
-        // Step 2: execute test method and assert
+        // Step 3: execute test method and assert
         Exception exception;
         exception = assertThrows(ResourceNotFound.class,
                 () -> controller.getRatings(RatingArea.ECONOMIC));
@@ -108,7 +102,7 @@ public class RatingControllerTest {
     }
 
     @Test
-    public void test_getRatings_complexityRatingArea_resourceNotFound() {
+    public void testGetRatings_complexityRatingArea_resourceNotFound() {
         // Step 1: provide knowledge
         when(service.getRatingsByRatingArea(RatingArea.COMPLEXITY)).thenReturn(new ArrayList<>());
 
@@ -124,7 +118,7 @@ public class RatingControllerTest {
     }
 
     @Test
-    public void test_getRatings_noRatingArea_resourceExists() {
+    public void testGetRatings_noRatingArea_resourceExists() {
         listDtos.add(dto1);
         listDtos.add(dto2);
         listDtos.add(dto3);
@@ -133,40 +127,40 @@ public class RatingControllerTest {
         // Step 1: provide knowledge
         when(service.getAllRatings()).thenReturn(listDtos);
 
-        // Step 2: execute test method and assert
+        // Step 3: execute test method and assert
         List<RatingDto> out = controller.getRatings(null);
 
-        assertEquals(out.size(), listDtos.size());
+        assertTrue(out.size() == listDtos.size());
     }
 
     @Test
-    public void test_getRatings_economicRatingArea_resourceExists() {
+    public void testGetRatings_economicRatingArea_resourceExists() {
         listDtos.add(dto1);
         listDtos.add(dto2);
 
         // Step 1: provide knowledge
         when(service.getRatingsByRatingArea(RatingArea.ECONOMIC)).thenReturn(listDtos);
 
-        // Step 2: execute test method and assert
+        // Step 3: execute test method and assert
         List<RatingDto> out = controller.getRatings(RatingArea.ECONOMIC);
 
-        assertEquals(out.size(), listDtos.size());
-        out.forEach(o -> assertEquals(o.ratingArea, RatingArea.ECONOMIC));
+        assertTrue(out.size() == listDtos.size());
+        out.forEach(o -> assertTrue(o.ratingArea == RatingArea.ECONOMIC));
     }
 
     @Test
-    public void test_getRatings_complexityRatingArea_resourceExists() {
+    public void testGetRatings_complexityRatingArea_resourceExists() {
         listDtos.add(dto3);
         listDtos.add(dto4);
 
         // Step 1: provide knowledge
         when(service.getRatingsByRatingArea(RatingArea.COMPLEXITY)).thenReturn(listDtos);
 
-        // Step 2: execute test method and assert
+        // Step 3: execute test method and assert
         List<RatingDto> out = controller.getRatings(RatingArea.COMPLEXITY);
 
-        assertEquals(out.size(), listDtos.size());
-        out.forEach(o -> assertEquals(o.ratingArea, RatingArea.COMPLEXITY));
+        assertTrue(out.size() == listDtos.size());
+        out.forEach(o -> assertTrue(o.ratingArea == RatingArea.COMPLEXITY));
     }
 
 }

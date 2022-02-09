@@ -45,15 +45,15 @@ public class UserDtoTest {
      * testEqualsTrue: two objects are  NOT equal --> return False
      */
     @Test
-    public void test_equals_true() {
-        assertEquals(user1, user1_copy);
-        assertEquals(user2, user2_copy);
+    public void testEquals_true() {
+        assertTrue(user1.equals(user1_copy));
+        assertTrue(user2.equals(user2_copy));
     }
 
     @Test
-    public void test_equals_false() {
-        assertNotEquals(user1, user2);
-        assertNotEquals(user2, user1);
+    public void testEquals_false() {
+        assertFalse(user1.equals(user2));
+        assertFalse(user2.equals(user1));
     }
 
     /**
@@ -63,13 +63,13 @@ public class UserDtoTest {
      * testHashCode: hashCodes of the two different objects are NOT equal
      */
     @Test
-    public void test_hashCode_equal() {
+    public void testHashCode_equal() {
         assertEquals(user1.hashCode(), user1_copy.hashCode());
         assertEquals(user2.hashCode(), user2_copy.hashCode());
     }
 
     @Test
-    public void test_hashCode_notEqual() {
+    public void testHashCode_notEqual() {
         assertNotEquals(user1.hashCode(), user2.hashCode());
     }
 
@@ -81,9 +81,9 @@ public class UserDtoTest {
      * testInvalidEmail: email is NOT valid --> return False
      */
     @Test
-    public void test_validEmail_true() {
+    public void testValidEmail_true() {
 
-        valid_emails = new ArrayList<>();
+        valid_emails = new ArrayList();
         valid_emails.add("test@googlemail.com");
         valid_emails.add("test.test@gmail.de");
         valid_emails.add("test_test@gmail.de");
@@ -97,9 +97,9 @@ public class UserDtoTest {
     }
 
     @Test
-    public void test_invalidEmail_false() {
+    public void testInvalidEmail_false() {
 
-        invalid_emails = new ArrayList<>();
+        invalid_emails = new ArrayList();
         invalid_emails.add("testgooglemail.com");
         invalid_emails.add("test.test@");
         invalid_emails.add("@gmail");

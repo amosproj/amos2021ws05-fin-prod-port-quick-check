@@ -74,4 +74,9 @@ public class ProductDtoTest {
         assertFalse(dto3.isProductVariant());
     }
 
+    @Test
+    public void testEquals_false(){
+        assertFalse(dto1.equals(dto2));
+        assertFalse(dto2.equals(dto1));
+    }
 }

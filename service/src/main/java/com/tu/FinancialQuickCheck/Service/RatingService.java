@@ -16,26 +16,27 @@ public class RatingService {
 
     private RatingRepository repository;
 
+
     public RatingService(RatingRepository ratingRepository) {
         this.repository = ratingRepository;
     }
 
-    /**
-     * Retrieves all existing rating entities from db.
-     *
-     * @return A list of all ratings if exist else empty list.
-     */
+
     public List<RatingDto>  getAllRatings() {
+
         return new ListOfRatingDto(this.repository.findAll()).ratings;
+
     }
 
+
     /**
-     * Retrieves all rating entities, that belong to specified ratingArea, from db.
+     * This method is giving back the ratings for a specific rating area (complexity or economical).
      *
-     * @param ratingArea The rating area is used to filter the output.
-     * @return A list of ratings if exist else empty list.
+     * @param ratingArea The rating area for which ratings should be returned.
+     * @return A list of ratings data transfer object for the specific rating area.
      */
     public List<RatingDto> getRatingsByRatingArea(RatingArea ratingArea) {
+
         return new ListOfRatingDto(this.repository.findByRatingarea(ratingArea)).ratings;
     }
 

@@ -38,6 +38,7 @@ public class UserControllerIntegrationTest {
 
     private HttpHeaders header = new HttpHeaders();
     private String jsonStringCorrect = "{\"userName\":\"testUser\", \"userEmail\":\"testUser@mail.com\", \"password\":\"4321\"}";
+    private String jsonStringEmpty = "{}";
     private String jsonStringInvalidEmail = "{\"userName\":\"testUser\", \"userEmail\":\"testUsermail.com\", \"password\":\"4321\"}";
     private String jsonStringMissingPW = "{\"userName\":\"testUser\", \"userEmail\":\"testUser@mail.com\"}";
     private String jsonStringMissingEmail = "{\"userName\":\"testUser\", \"password\":\"4321\"}";
@@ -110,12 +111,6 @@ public class UserControllerIntegrationTest {
         }
     }
 
-    /**
-     * tests for findAllUser()
-     *
-     * testFindAllUser: users exist in db --> return HttpStatus.OK and json string containing all existing users
-     * testFindAllUser: no users exist in db --> return HttpStatus.OK and empty json string
-     */
     @Test
     public void test1_findAllUser_success_returnNonEmptyString(){
         ResponseEntity<String> response = restTemplate.exchange(host + port + users,
@@ -141,13 +136,6 @@ public class UserControllerIntegrationTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
-
-    /**
-     * tests for createUser()
-     *
-     * testCreateUser: input correct -> return HttpStatus.CREATED and json string containing created user incl. userID
-     * testCreateUser: input is missing/incorrect information -> return HttpStatus.BadRequest
-     */
     @Test
     public void test3_createUser_success(){
         ResponseEntity<String> response = restTemplate.exchange(host + port + users,
@@ -200,13 +188,6 @@ public class UserControllerIntegrationTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
-
-    /**
-     * tests for findUserByEmail()
-     *
-     * testFindByEmail: input correct --> return HttpStatus.OK and json string containing user information
-     * testFindByEmail: email does not exist --> return HttpStatus.NOT_FOUND
-     */
     @Test
     public void test8_findUserByEmail_success(){
         ResponseEntity<String> response = restTemplate.exchange(host + port + users + email + entities.get(0).email,
@@ -229,16 +210,6 @@ public class UserControllerIntegrationTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
-
-    /**
-     * tests for updateUserByEmail()
-     *
-     * testUpdateUser: input correct (full update) --> return HttpStatus.OK and json string containing updated user information
-     * testUpdateUser: input correct (partial update) --> return HttpStatus.OK and json string containing updated user information
-     * testUpdateUser: input missing --> return HttpStatus.BAD_REQUEST
-     * testUpdateUser: invalid email --> return HttpStatus.BAD_REQUEST
-     * testUpdateUser: email does not exist -> throw ResourceNotFound
-     */
     @Test
     public void test10_updateUserByEmail_success_fullUpdate(){
         ResponseEntity<String> response = restTemplate.exchange(
@@ -297,7 +268,6 @@ public class UserControllerIntegrationTest {
 
     @Test
     public void test14_updateUserByEmail_badRequest_emptyJSON(){
-        String jsonStringEmpty = "{}";
         ResponseEntity<String> response = restTemplate.exchange(host + port + users + email + entities.get(0).email,
                 HttpMethod.PUT, new HttpEntity<>(jsonStringEmpty, header), String.class);
 
@@ -326,14 +296,6 @@ public class UserControllerIntegrationTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
-
-    /**
-     * tests for deleteByUserId()
-     *
-     * testDeleteUserById: userId does not exist in db -> return HTTP.NOT_FOUND
-     * testDeleteUserById: userId not in form of a UUID -> return HTTP.BAD_REQUEST
-     * testDeleteUserById: userId not in form of a UUID -> return HTTP.OK
-     */
     @Test
     public void test17_deleteByUserId_resourceNotFound(){
         String userID = "/" + UUID.randomUUID();
@@ -369,5 +331,6 @@ public class UserControllerIntegrationTest {
         Optional<UserEntity> user = repository.findById(userID);
         assertEquals(Optional.empty(), user);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
     }
 }

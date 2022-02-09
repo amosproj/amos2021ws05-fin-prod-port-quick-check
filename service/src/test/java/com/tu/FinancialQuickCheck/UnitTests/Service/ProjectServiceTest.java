@@ -198,20 +198,12 @@ public class ProjectServiceTest {
     /**
      * tests for createProject()
      *
-     * testCreateProject1: input contains required information, multiple Members and Product Areas
-     *                      --> project is created correctly and projectDto returned
-     * testCreateProject2: input contains required information, single Members and Product Area
-     *                      --> project is created correctly and projectDto returned
-     * testCreateProject3: input missing each project one information
+     * testCreateProject1: input contains required information
+     *                      --> project is created correctly and projectID returned
+     * testCreateProject2: input missing required information
      *                      --> output == null
-     * testCreateProject4: input has empty member list
-     *                      --> output == null
-     * testCreateProject5: input has empty productArea List
-     *                      --> output == null
-     * testCreateProject6: input has product area wich not exist
-     *                      --> throws ResourceNotFound
-     * testCreateProject7: input has member who not exist
-     *                      --> throws ResourceNotFound
+     * testCreateProject2: input contains resources that do not exist
+     *                      --> return ResourceNotFound
      */
     @Test
     public void testCreateProject_allNecessaryInformationProvided_withMultipleMembersAndProductAreas() {
@@ -421,7 +413,7 @@ public class ProjectServiceTest {
      *
      * testFindById1: projectID exists
      *                  --> return projectDto for projectID
-     * testFindById2: projectID does not exist
+     * testFindById2: projectID does not exists
      *                  --> return null
      */
     @Test
@@ -457,31 +449,16 @@ public class ProjectServiceTest {
     /**
      * tests for updateProject()
      * //TODO: (add testcase)
-     * testUpdateProject1: updates all attributes
+     * testUpdateProject: updates all attributes
      *                    --> ProjectEntity attributes are updated accordingly
-     * testUpdateProject2: partial update: only add new ProductAreas (single ProductArea at the moment)
+     * testUpdateProject: partial update: only add new ProductAreas
      *                    --> ProjectEntity attributes are updated accordingly
-     * testUpdateProject3: partial update: only add new ProductAreas (multiple ProductAreas at the moment)
-     *                    --> ProjectEntity attributes are updated accordingly (return updated ProjectDto)
-     * testUpdateProject4: partial update: replace existing project members with new single one
+     * testUpdateProject: partial update: replace existing project members with new ones
      *                    --> ProjectEntity attributes are updated accordingly
-     * testUpdateProject5: partial update: replace existing project members new members
-     *                    --> ProjectEntity attributes are updated accordingly
-     * testUpdateProject6: input missing required information: members
-     *                      --> return null
-     * testUpdateProject7: empty members in update (input) data
-     *                     --> return null
-     * testUpdateProject8: projectID does not exist
-     *                      --> throws ResourceNotFound
-     * testUpdateProject9: (single) productArea does not exist
-     *                      --> throws ResourceNotFound
-     * testUpdateProject10: (multiple) productAreas does not exist
-     *                      --> throws ResourceNotFound
-     * testUpdateProject10: (single) member (user) does not exist
-     *                      --> throws ResourceNotFound
-     * testUpdateProject10: (multiple) member (user) does not exist
-     *                      --> throws ResourceNotFound
-     *
+     * testUpdateProject: input missing required information: members
+     *                      --> throw Exception BadRequest
+     * testUpdateProject: projectID, member or productArea does not exists
+     *                     --> throw Exception ResourceNotFound
      */
 
     @Test
@@ -878,32 +855,14 @@ public class ProjectServiceTest {
     /**
      * tests for assignMembersToProject()
      *
-     * testAssignMembersToProject1: input contains required information (single user, with ID)
-     *                              --> success ProjectEntity contains assigned members
-     * testAssignMembersToProject2: input contains required information (multiple user, with ID)
-     *                              --> success ProjectEntity contains assigned members
-     * testAssignMembersToProject3: input contains required information (single user, with email)
-     *                              --> success ProjectEntity contains assigned members
-     * testAssignMembersToProject4: input contains required information (multiple user, with email)
-     *                              --> success ProjectEntity contains assigned members
-     * testAssignMembersToProject5: input invalid Email (single user)
+     * testAssignMembersToProject: input contains required information
+     *                              --> ProjectEntity contains assigned members
+     * testAssignMembersToProject: invalid Email
      *                              --> throw Exception BadRequest
-     * testAssignMembersToProject6: input invalid Email (multiple user)
-     *                              --> throw Exception BadRequest
-     * testAssignMembersToProject7: input userEmail/userID does not exist (single user)
-     *                              --> throw Exception BadRequest
-     * testAssignMembersToProject8: input user role is missing (single user)
-     *                              --> throw BadRequest
-     * testAssignMembersToProject9: userID dos not exist in db (single user)
-     *                              --> throw ResourceNotFound
-     * testAssignMembersToProject10: userID dos not exist in db (multiple user)
-     *                              --> throw ResourceNotFound
-     * testAssignMembersToProject11: userEmail dos not exist in db (single user)
-     *                              --> throw ResourceNotFound
-     * testAssignMembersToProject12: userEmail dos not exist in db (multiple user)
-     *                              --> throw ResourceNotFound
-     * testAssignMembersToProject13: input contains duplicated user name
-     *                              --> success ProjectEntity contains assigned members
+     * testAssignMembersToProject: userEmail/userID does not exist
+     *                             --> throw Exception ResourceNotFound
+     * testAssignMembersToProject: input contains same member twice
+     *                             --> ProjectEntity contains member only once
      */
 
     @Test
@@ -1154,7 +1113,7 @@ public class ProjectServiceTest {
 
 
     @Test
-    public void testAssignMembersToProject_resourceNotFound_userEmailDoesNotExist_singleUser() {
+    public void testAssignMembersToProject_resourceNotFound_serEmailDoesNotExist_singleUser() {
         // Step 1: init test object
         List<ProjectUserDto> membersIn = new ArrayList<>();
         ProjectUserDto userDoesNotExist = new ProjectUserDto();
@@ -1233,14 +1192,8 @@ public class ProjectServiceTest {
      * tests for createProjectUsers()
      *
      * testCreateProjectUser: projectID does not exist --> throw ResourceNotFound Exception
-     * testCreateProjectUser: userEmail does not exist in db (single user) --> throw ResourceNotFound Exception
-     * testCreateProjectUser: userEmail does not exist in db (multiple user) --> throw ResourceNotFound Exception
-     * testCreateProjectUser: Role is missing (single user) --> throw BadRequest Exception
-     * testCreateProjectUser: Role is missing (multiple user) --> throw BadRequest Exception
-     * testCreateProjectUser: Email is missing (single user) --> throw BadRequest Exception
-     * testCreateProjectUser: Email is missing (multiple user) --> throw BadRequest Exception
-     * testCreateProjectUser: Input correct (single user) --> return created user
-     * testCreateProjectUser: Input correct (multiple user) --> return created user
+     * testCreateProjectUser2: IDs exist, Role is missing --> throw BadRequest Exception
+     * testCreateProjectUser4: Input correct --> tbd
      */
     @Test
     public void testCreateProjectUser_resourceNotFound_projectID() {
@@ -1450,20 +1403,14 @@ public class ProjectServiceTest {
     /**
      * tests for assignProductAreasToProject()
      *
-     * testAssignProductAreasToProject1: input contains required information (single product area)
-     *                                  --> return ProductEntity contains assigned productAreas only once
-     * testAssignProductAreasToProject2: input contains required information (multiple product area)
-     *                                  --> return List of ProductEntitys containing assigned productAreas
-     * testAssignProductAreasToProject3: productArea does not exist in db (single product area)
+     * testAssignProductAreasToProject: input contains required information
+     *                                  --> ProjectEntity contains assigned productAreas only once
+     * testAssignProductAreasToProject: productArea does not exist
      *                                  --> throw Exception ResourceNotFound
-     * testAssignProductAreasToProject4: productArea does not exist in db (multiple product areas)
-     *                                  --> throw Exception ResourceNotFound
-     * testAssignProductAreasToProject5: input contains duplicate product areas (update)
-     *                                  --> success returns List of ProductEntitys
-     * testAssignProductAreasToProject6: input contains duplicate product areas (create)
-     *                                  --> success returns List of ProductEntitys
-     * testAssignProductAreasToProect7: productArea is already assigned to project
-     *                                  --> return empty List, ProjectEntity does not change
+     * testAssignProductAreasToProject: productArea is already assigned to project
+     *                                  --> ProjectEntity does not change
+     * testAssignProductAreasToProject: input contains duplicate new productAreas
+     *                                  --> ProjectEntity contains only one entry for duplicates
      */
 
     @Test

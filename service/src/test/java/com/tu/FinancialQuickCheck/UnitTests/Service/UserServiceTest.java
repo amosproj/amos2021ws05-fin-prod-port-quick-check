@@ -30,10 +30,16 @@ public class UserServiceTest {
 
     private UserService service;
 
+    private String username1;
+    private String username2;
     private String email1;
+    private String email2;
     private String email404;
     private String keineEmail;
+    private String pw1;
+    private String pw2;
     private UUID userID1;
+    private UUID userID2;
 
     private UserDto dto1;
     private UserDto dto2;
@@ -41,7 +47,9 @@ public class UserServiceTest {
     private UserDto emptyDto;
 
     private UserEntity entity1;
+    private UserEntity entity2;
     private List<UserEntity> entities;
+
 
 
     @BeforeEach
@@ -50,18 +58,18 @@ public class UserServiceTest {
 
         service = new UserService(repository);
 
-        String username1 = "Max Mustermann";
-        String username2 = "Nina Nichtmustermann";
+        username1 = "Max Mustermann";
+        username2 = "Nina Nichtmustermann";
 
         email1 = "max@mustermann.com";
-        String email2 = "NinaNichtmustermann@gmail.de";
+        email2 = "NinaNichtmustermann@gmail.de";
         email404 = "user404@mail.com";
         keineEmail = "test";
-        String pw1 = "advnkjbgdvj";
-        String pw2 = "nvkjavdfihvs";
+        pw1 = "advnkjbgdvj";
+        pw2 = "nvkjavdfihvs";
 
         userID1 = UUID.fromString("5710db7c-e875-4e63-9e03-7f6ad85cc429");
-        UUID userID2 = UUID.fromString("4710db7c-e875-4e63-9e03-7f6ad85cc428");
+        userID2 = UUID.fromString("4710db7c-e875-4e63-9e03-7f6ad85cc428");
 
         dto1 = new UserDto();
         dto1.userName = username1;
@@ -86,7 +94,7 @@ public class UserServiceTest {
         entity1.password = pw1;
         entity1.email = email1;
 
-        UserEntity entity2 = new UserEntity();
+        entity2 = new UserEntity();
         entity2.id = userID2.toString();
         entity2.username = username2;
         entity2.password = pw2;
@@ -104,14 +112,14 @@ public class UserServiceTest {
      * testGetAllUsers2: users exist --> return List<UserDto>
      */
     @Test
-    public void test_getAllUsers1_noUsersExist() {
+    public void testGetAllUsers1_noUsersExist() {
         // Step 1: init test object
-        List<UserEntity> userEntities = new ArrayList<>();
+        List<UserEntity> userEntities = Collections.EMPTY_LIST;
 
         // Step 2: provide knowledge
         when(repository.findAll()).thenReturn(userEntities);
 
-        // Step 3: execute and assert test method
+        // Step 3: execute getProjectById()
         List<UserDto> out = service.getAllUsers();
         List<UserDto> expected = new ArrayList<>();
 
@@ -119,11 +127,11 @@ public class UserServiceTest {
     }
 
     @Test
-    public void test_getAllUsers2_UsersExist() {
+    public void testGetAllUsers2_UsersExist() {
         // Step 1: provide knowledge
         when(repository.findAll()).thenReturn(entities);
 
-        // Step 2: execute and assert test method
+        // Step 2: execute getAllUsers()
         List<UserDto> out = service.getAllUsers();
 
         out.forEach(
@@ -147,22 +155,22 @@ public class UserServiceTest {
      * testFindByEmail3: input correct --> return UserDto
      */
     @Test
-    public void test_findByEmail1_incorrectInput() {
+    public void testFindByEmail1_incorrectInput() {
         assertNull(service.findByEmail(keineEmail));
     }
 
     @Test
-    public void test_findByEmail2_emailNotFound() {
+    public void testFindByEmail2_emailNotFound() {
         assertNull(service.findByEmail(email1));
     }
 
     @Test
-    public void test_findByEmail3_emailFound() {
+    public void testFindByEmail3_emailFound() {
 
         // Step 1: provide knowledge
         when(repository.findByEmail(email1)).thenReturn(Optional.of(entity1));
 
-        // Step 2: execute and assert test method
+        // Step 2: execute updateByUserID()
         UserDto out = service.findByEmail(email1);
 
         assertAll("get User",
@@ -182,7 +190,7 @@ public class UserServiceTest {
      * testCreateUser3: input attributes do not comply with requirements -> return null
      */
     @Test
-    public void test_createUser1_succesfulCreation() {
+    public void testCreateUser1_succesfulCreation() {
         for(int i = 1; i <= 11; i++){
             // Step 1: init test object
             dto1.userID = UUID.randomUUID();
@@ -203,22 +211,23 @@ public class UserServiceTest {
     }
 
     @Test
-    public void test_createUser2a_missingOneAttribute() {
+    public void testCreateUser2a_missingOneAttribute() {
         // Step 1: init test object
         dto1.password = null;
         dto2.userName = null;
         dto3.userEmail = null;
 
 
-        // Step 2 and 3: execute and assert test method
+        // Step 2 and 3: execute createUser and assert result
         assertNull(service.createUser(dto1));
         assertNull(service.createUser(dto2));
         assertNull(service.createUser(dto3));
         assertNull(service.createUser(emptyDto));
+
     }
 
     @Test
-    public void test_createUser2b_missingTwoAttributes() {
+    public void testCreateUser2b_missingTwoAttributes() {
         // Step 1: init test object
         dto1.password = null;
         dto1.userName = null;
@@ -229,40 +238,44 @@ public class UserServiceTest {
         dto3.userEmail = null;
         dto3.password = null;
 
-        // Step 2 and 3: execute and assert test method
+        // Step 2 and 3: execute createUser and assert result
         assertNull(service.createUser(dto1));
         assertNull(service.createUser(dto2));
         assertNull(service.createUser(dto3));
     }
 
     @Test
-    public void test_createUser2c_missingAllAttributes() {
+    public void testCreateUser2c_missingAllAttributes() {
+        // Step 2 and 3: execute createUser and assert result
         assertNull(service.createUser(emptyDto));
     }
 
     @Test
-    public void test_createUser3a_invalidEmail() {
+    public void testCreateUser3a_invalidEmail() {
         assertNull(service.createUser(dto3));
     }
 
     @Test
     @Disabled("implement after requirements for pw are clear")
-    public void test_createUser3b_invalidPassword() {
+    public void testCreateUser3b_invalidPassword() {
         // TODO: define requirements for input attribute pw, e.g. pw length
         // Test: attribute password
     }
 
 
     /**
-     * tests for updateByEmail()
+     * tests for updateByByEmail()
      *
-     * testUpdateByEmail: email does not exist -> return null
-     * testUpdateByEmail: email exists, misses attributes to update -> throw BadRequest
-     * testUpdateByEmail: email exists, full update -> return updated UserDto
-     * testUpdateByEmail: email exists, partial update -> return updated UserDto
+     * testUpdateByUserID1: userId does not exist -> throw ResourceNotFound Exception
+     * testUpdateByUserID2: userId exists, misses attributes to update -> return null
+     * testUpdateByUserID3: userID exists, attributes do not comply with requirements -> return  null
+     * testUpdateByUserID4: userID exists, input correct -> return updated UserDto
+     * testUpdateByUserID5: userID exists, partial update -> return updated UserDto
+     *
+     * UUID.fromString("5710db7c-e875-4e63-9e03-7f6ad85cc429")
      */
     @Test
-    public void test_updateUser_userMailNotFound() {
+    public void testUpdateUser1_userMailNotFound() {
         // Step 1: provide knowledge
         when(repository.findByEmail(email404)).thenReturn(Optional.empty());
 
@@ -271,8 +284,8 @@ public class UserServiceTest {
     }
 
     @Test
-    public void test_updateUser_badRequest_NothingToUpdate() {
-        // execute and assert test method
+    public void testUpdateUser2_NothingToUpdate() {
+        // execute updateByUserID() and assert result
         Exception exception;
         exception = assertThrows(BadRequest.class,
                 () -> service.updateUserByEmail(emptyDto, email1));
@@ -283,12 +296,13 @@ public class UserServiceTest {
         assertTrue(actualMessage.contains(expectedMessage));
     }
 
+
     @Test
-    public void test_updateUser_fullValidUpdate() {
-        // Step 1: provide knowledge
+    public void testUpdateUser4_fullValidUpdate() {
+        // Step 2: provide knowledge
         when(repository.findByEmail(email1)).thenReturn(Optional.of(entity1));
 
-        // Step 2 and 3: execute and assert test method
+        // Step 2 and 3: execute updateByUserID() and assert result
         UserDto out = service.updateUserByEmail(dto2, email1);
 
         assertAll("update User",
@@ -299,7 +313,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void test_updateUser_partialUpdate_email() {
+    public void testUpdateUser5a_partialUpdate_email() {
         // Step 1: init test object
         dto2.userName = null;
         dto2.password = null;
@@ -307,7 +321,7 @@ public class UserServiceTest {
         // Step 2: provide knowledge
         when(repository.findByEmail(email1)).thenReturn(Optional.of(entity1));
 
-        // Step 3: execute and assert test method
+        // Step 3: execute updateByUserID() and assert result
         UserDto out = service.updateUserByEmail(dto2, email1);
 
         assertAll("update User",
@@ -318,7 +332,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void test_updateUser_partialUpdate_username() {
+    public void testUpdateUser5b_partialUpdate_username() {
         // Step 1: init test object
         dto2.userEmail = null;
         dto2.password = null;
@@ -326,7 +340,7 @@ public class UserServiceTest {
         // Step 2: provide knowledge
         when(repository.findByEmail(email1)).thenReturn(Optional.of(entity1));
 
-        // Step 3: execute and assert test method
+        // Step 3: execute updateByUserID() and assert result
         UserDto out = service.updateUserByEmail(dto2, email1);
 
         assertAll("update User",
@@ -337,7 +351,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void test_updateUser_partialUpdate_password() {
+    public void testUpdateUser5c_partialUpdate_password() {
         // Step 1: init test object
         dto2.userEmail = null;
         dto2.userName = null;
@@ -345,7 +359,7 @@ public class UserServiceTest {
         // Step 2: provide knowledge
         when(repository.findByEmail(email1)).thenReturn(Optional.of(entity1));
 
-        // Step 3: execute and assert test method
+        // Step 3: execute updateByUserID() and assert result
         UserDto out = service.updateUserByEmail(dto2, email1);
 
         assertAll("update User",
@@ -356,14 +370,14 @@ public class UserServiceTest {
     }
 
     @Test
-    public void test_updateUser_partialUpdate_usernameAndPassword() {
+    public void testUpdateUser5e_partialUpdate_usernameAndPassword() {
         // Step 1: init test object
         dto2.userEmail = null;
 
         // Step 2: provide knowledge
         when(repository.findByEmail(email1)).thenReturn(Optional.of(entity1));
 
-        // Step 3: execute and assert test method
+        // Step 3: execute updateByUserID() and assert result
         UserDto out = service.updateUserByEmail(dto2, email1);
 
         assertAll("update User",
@@ -376,26 +390,26 @@ public class UserServiceTest {
     /**
      * tests for deleteUserById()
      *
-     * testDeleteUserById1: userId does not exist -> return null
-     * testDeleteUserById2: userId exists -> return True
+     * testDeleteUserById1: userId does not exist -> throw ResourceNotFound Exception
+     * testDeleteUserById2: userId exists -> void
      */
     @Test
-    public void test_deleteUserById1_userIdNotFound()
+    public void testDeleteUserById1_userIdNotFound()
     {
         // Step 1: provide knowledge
         when(repository.existsById(userID1.toString())).thenReturn(false);
 
-        // Step 2: execute and assert test method
+        // Step 2: execute updateByUserID()
         assertNull(service.deleteUserById(UUID.fromString("5710db7c-e875-4e63-9e03-7f6ad85cc429")));
     }
 
     @Test
-    public void test_deleteUserById2_userIdExists()
+    public void testDeleteUserById2_userIdExists()
     {
         // Step 1: provide knowledge
         when(repository.existsById(userID1.toString())).thenReturn(true);
 
-        // Step 2: execute and assert test method
+        // Step 2: execute updateByUserID()
         Boolean out = service.deleteUserById(UUID.fromString("5710db7c-e875-4e63-9e03-7f6ad85cc429"));
 
         assertTrue(out);

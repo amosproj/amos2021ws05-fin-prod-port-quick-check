@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.*;
 import java.util.logging.Logger;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -25,6 +26,10 @@ public class ResultServiceTest {
 
     static Logger log = Logger.getLogger(ResultServiceTest.class.getName());
 
+    @Mock
+    private ProjectRepository projectRepository;
+    @Mock
+    private ProductRepository productRepository;
     @Mock
     private ProductRatingRepository productRatingRepository;
 
@@ -50,7 +55,7 @@ public class ResultServiceTest {
     public void init() {
         log.info("@BeforeEach - setup for Tests in ResultServiceTest.class");
         // init ProductRatingService
-        service = new ResultService(productRatingRepository);
+        service = new ResultService(projectRepository, productRepository, productRatingRepository);
 
         projectID = 1;
         productAreaID = 6;

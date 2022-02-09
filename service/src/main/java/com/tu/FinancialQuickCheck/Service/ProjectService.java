@@ -48,7 +48,7 @@ public class ProjectService {
     /**
      * Lookup of all ProjectEntities in DB
      *
-     * @return List<SmallProjectDto> only provides projectID and projectName. Empty List if no Projects exists.
+     * @return List<SmallProjectDto> only provides projectID and projectName
      */
     public List<SmallProjectDto> getAllProjects(){
 
@@ -67,10 +67,9 @@ public class ProjectService {
      * Adds a new ProjectEntity to DB
      * Required information: see Project.yaml
      * Creator of project needs to be included in projectDto.members
-     *
-     * @param projectDto Dto of Project that should be created
-     * @return projectDto including created projectID (success). null (failure)
+     * @return ProjectDto projectDto including created projectID
      */
+    //TODO: (done - nothing changed) is the creator of the project included in the members list? --> answer: yes
     @Transactional
     public ProjectDto createProject(ProjectDto projectDto) {
         // Step 0: Check if input contains required information
@@ -103,7 +102,7 @@ public class ProjectService {
      * Lookup of ProjectEntity in DB based on projectID
      *
      * @param projectID unique identifier for ProjectEntity
-     * @return The project data transfer object (dto) for the belonging project ID (at success). null (at failure)
+     * @return The project data transfer object for the belonging project ID.
      */
     public ProjectDto getProjectById(int projectID) {
 
@@ -122,11 +121,9 @@ public class ProjectService {
      * Updates an existing ProjectEntity in DB
      * Attributes/relations that can be updated: projectName, productAreas, members
      * Attributes that can not be updated: creatorID, projectID
-     *
      * @param projectID unique identifier for ProjectEntity
      * @param projectDto contains data that needs to be updated
      * @throws ResourceNotFound When the project ID is not found.
-     * @return ProjectDto of updated Project
      */
     @Transactional
     public ProjectDto updateProject(ProjectDto projectDto, int projectID) {
@@ -164,14 +161,13 @@ public class ProjectService {
 
 
     /**
-     * This method is creating or adding users for projects. User and Project must exist.
+     * This method is creating or adding users for projects.
      *
      * @param projectID The ID of the project for which users should be added.
      * @param members The project user with information like email, name or ID.
-     * @throws ResourceNotFound when Project or User does not exist
-     * @throws BadRequest When the input is missing or incorrect.
      * @return A list of project user data transfer objects for a specific project.
      */
+    //TODO: (done - needs review) --> write automated tests
     public List<ProjectUserDto> createProjectUsers(int projectID, List<ProjectUserDto> members) {
 
         if(!repository.existsById(projectID)){
@@ -192,7 +188,7 @@ public class ProjectService {
     }
 
     /**
-     * This method is assigning users and their roles to specific projects. User and Project must exist.
+     * This method is assigning users and their roles to specific projects.
      *
      * @param members The users which should be assigned to a project.
      * @param projectEntity The project for witch users should be assigned.
@@ -200,6 +196,7 @@ public class ProjectService {
      * @throws ResourceNotFound When the user does not exist.
      * @return A list of the users which are assgined to the specific project.
      */
+    //TODO: (done - needs review) --> user_entity primary key changed
     public List<ProjectUserEntity> assignMembersToProject(List<ProjectUserDto> members, ProjectEntity projectEntity){
         List<ProjectUserEntity> assignedMembers = new ArrayList<>();
 
@@ -231,6 +228,7 @@ public class ProjectService {
      * @throws BadRequest When the input is missing or incorrect.
      * @return The entity of the user if already existent in database.
      */
+    //TODO: (done - needs review)
     public Optional<UserEntity> userExists(ProjectUserDto user){
         if(user.userID != null){
             return userRepository.findById(user.userID.toString());
@@ -275,4 +273,13 @@ public class ProjectService {
         return productEntities;
     }
 
+// TODO: auskommentiert lassen bisher keine Anforderung dafür vorhanden
+//    public void deleteProject(int projectID) {
+//        Optional<ProjectEntity> projectEntity = projectRepository.findById(projectID);
+//        if (projectEntity.isEmpty()) {
+//            throw new ResourceNotFound("projectID " + projectID + " not found");
+//        }else{
+//            projectRepository.deleteById(projectID);
+//        }
+//    }
 }

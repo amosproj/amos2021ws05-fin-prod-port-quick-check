@@ -39,6 +39,10 @@ public class ProductAreaControllerIntegrationTest {
     private String productAreas = "/productareas";
 
     private HttpHeaders header = new HttpHeaders();
+    private String jsonStringCorrect = "{\"category\":\"PRIVAT\", \"name\":\"KREDIT\"}";
+    private String jsonStringEmpty = "{}";
+    private String jsonStringMissingCategory = "{\"name\":\"KREDIT\"}";
+    private String jsonStringMissingName = "{\"category\":\"PRIVAT\"}";
 
     private ProductAreaEntity entity;
 
@@ -84,7 +88,6 @@ public class ProductAreaControllerIntegrationTest {
 
     @Test
     public void test3_postProductAreas_created_201() throws JsonProcessingException {
-        String jsonStringCorrect = "{\"category\":\"PRIVAT\", \"name\":\"KREDIT\"}";
         HttpEntity<String> request = new HttpEntity<>(jsonStringCorrect, header);
 
         ResponseEntity<String> response = restTemplate.exchange(host + port + productAreas,
@@ -97,14 +100,12 @@ public class ProductAreaControllerIntegrationTest {
         assertEquals(entity.id + 1, out.id);
         assertEquals("KREDIT", out.name);
         assertEquals("PRIVAT", out.category);
+        assertNull(out.productEntities);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     }
 
     @Test
     public void test4_postProductAreas_badRequest(){
-        String jsonStringEmpty = "{}";
-        String jsonStringMissingCategory = "{\"name\":\"KREDIT\"}";
-        String jsonStringMissingName = "{\"category\":\"PRIVAT\"}";
         String[] testObjects = new String[]{"", jsonStringEmpty, jsonStringMissingName, jsonStringMissingCategory};
         for (String jsonString: testObjects) {
             ResponseEntity<String> response = restTemplate.exchange(host + port + productAreas,
