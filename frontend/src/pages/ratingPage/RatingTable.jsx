@@ -43,8 +43,7 @@ function RatingRowPercentage({ rating }) {
 
   /** speacial case for rating with the id 10, answer must be seperated */
   const getAnswerArray = () => {
-    if (rating.answer == null || !rating.answer.includes(','))
-    {
+    if (rating.answer == null || !rating.answer.includes(',')) {
       return [0, 0, 0];
     }
     const answerValues = rating.answer.split(',').map((s) => parseInt(s));
