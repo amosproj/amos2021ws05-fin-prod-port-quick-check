@@ -6,7 +6,11 @@ import { List, Button, HStack, Link } from '@chakra-ui/react';
 
 import AddProductButton from './AddProductButton';
 import ProductRow from './ProductRow';
-
+/**
+ * Displays the product area page. 
+ * The product area page contains products of a specific product area.
+ * 
+ */
 export default function ProductOverview() {
   const items = useStoreState((state) => state.productList.items);
   const fetchProducts = useStoreActions((actions) => actions.productList.fetch);
@@ -26,7 +30,10 @@ export default function ProductOverview() {
     setEditMode(false);
     updateAllProducts(items);
   };
-
+  /**
+   * Displays buttons to edit the products when editMode is true.
+   * If editMode is turned off buttons to edit the products are is displayed.
+   */
   const EditButtons = () => {
     if (editMode) {
       return (
