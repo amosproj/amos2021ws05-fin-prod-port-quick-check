@@ -8,9 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * The RatingController manages and processes requests for retrieving all ratings or for specified rating areas.
- */
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/ratings")
@@ -28,11 +25,11 @@ public class RatingController {
     }
 
     /**
-     * Retrieves either all existing rating entities from db or the ones for the specified ratingArea.
+     * This method can return ratings for the economical and/or complexity rating.
      *
-     * @param ratingArea The rating area is used to filter the output.
-     * @throws ResourceNotFound if no rating entities exist in db.
-     * @return A list of ratings.
+     * @param ratingArea The rating area which can be economical or cemplexity.
+     * @throws ResourceNotFound When there is no ratings for an area found.
+     * @return A list of ratings for their related area.
      */
     @GetMapping(produces = "application/json")
     public List<RatingDto> getRatings(@RequestParam(required = false) RatingArea ratingArea) {

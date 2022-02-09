@@ -4,13 +4,11 @@ import com.tu.FinancialQuickCheck.Controller.HelloWorldController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.logging.Logger;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 public class HelloWorldControllerTest {
-
     static Logger log = Logger.getLogger(HelloWorldControllerTest.class.getName());
-
     private HelloWorldController controller;
 
     @BeforeEach
@@ -18,14 +16,15 @@ public class HelloWorldControllerTest {
         log.info("@BeforeEach - setup for Tests in HelloWorldControllerTest.class");
 
         controller = new HelloWorldController();
+
     }
 
     @Test
-    public void test1_index() {
+    public void testIndex() {
+        // Step 1: execute test method and assert
         String expectedOut = "Hello World!";
         String out = controller.index();
 
-        assertEquals(expectedOut, out);
+        assertTrue(out == expectedOut);
     }
-
 }

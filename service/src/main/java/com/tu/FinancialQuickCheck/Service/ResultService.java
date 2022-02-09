@@ -1,6 +1,7 @@
 package com.tu.FinancialQuickCheck.Service;
 
 import com.tu.FinancialQuickCheck.Exceptions.BadRequest;
+import com.tu.FinancialQuickCheck.Score;
 import com.tu.FinancialQuickCheck.db.*;
 import com.tu.FinancialQuickCheck.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,13 +9,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-/**
- * The ResultService class performs service tasks and defines the logic for the results. This includes
- * updating result scores or ratings, updating those and returning the result ratings or scores.
- */
+
 @Service
 public class ResultService {
-
+    @Autowired
+    private final ProjectRepository projectRepository;
+    @Autowired
+    private final ProductRepository productRepository;
     @Autowired
     private final ProductRatingRepository productRatingRepository;
 
@@ -22,18 +23,13 @@ public class ResultService {
     public static final Set<Integer> RATINGS = new HashSet<>(Arrays.asList(SET_VALUES));
     public static final Integer SCORES = 9;
 
-    /**
-     * Class constructor initializes result repository
-     * */
-    public ResultService(ProductRatingRepository productRatingRepository) {
+    public ResultService(ProjectRepository repository, ProductRepository productRepository,
+                         ProductRatingRepository productRatingRepository) {
+        this.projectRepository = repository;
+        this.productRepository = productRepository;
         this.productRatingRepository = productRatingRepository;
     }
 
-    /**
-     * Retrieves all existing results from db.
-     *
-     * @return A list of results, is empty if no results exist
-     * */
     public List<ResultDto> getResults(int projectID, Optional<String> productAreaID) {
         List<ProductRatingEntity> tmp;
 
@@ -74,13 +70,6 @@ public class ResultService {
         }
     }
 
-    /**
-     * Updates the result rating for a result entity
-     *
-     * @param table A list of results which should get updated
-     * @param p Product Rating's database entity
-     * @throws NullPointerException if the rating table or the ProductRatingEntity is missing
-     */
     public void updateResultRating(Hashtable<Integer, ResultDto> table, ProductRatingEntity p){
 
         try {
@@ -96,12 +85,6 @@ public class ResultService {
 
     }
 
-    /**
-     * This method can update a result score between 1 and 9
-     *
-     * @param table The resultDto contains information for a result
-     * @param p Product Rating's database entity
-     */
     public void updateResultScore(Hashtable<Integer, ResultDto> table, ProductRatingEntity p){
         try {
             ResultDto tmp = getResultDto(table, p.productRatingId.getProduct().parentProduct.id);
@@ -119,13 +102,6 @@ public class ResultService {
         }
     }
 
-    /**
-     * Retrieves a result data transfer object from db.
-     *
-     * @param table The resultDto contains information for a result
-     * @param productId The productID of the product entity for which results want to get retrieved
-     * @return
-     */
     public ResultDto getResultDto(Hashtable<Integer, ResultDto> table, Integer productId){
         try {
             if (table.containsKey(productId)) {
@@ -138,5 +114,35 @@ public class ResultService {
         }
 
     }
+
+    // TODO: use if we do not finish the implementation
+//    public List<ResultDto> returnDummyData() {
+//
+//        List<ResultDto> dummyResult = new ArrayList<>();
+//        String[] ratingNames = {"Kreditvolumen im Bestand", "Marge", "Kunde"};
+//        String[] answers = {"700 Mio EUR", "2,5%", "10.0, 20.0, 70.0"};
+//
+//        for(int i = 1; i < 2; i++){
+//            List<ProductRatingDto> ratings = new ArrayList<>();
+//            for(int j = 0; j < ratingNames.length; j++){
+//                ProductRatingDto p = new ProductRatingDto();
+//                RatingDto tmp = new RatingDto();
+//                tmp.id = j;
+//                tmp.criterion = ratingNames[j];
+//                p.rating = tmp;
+//                p.answer = answers[j];
+//                ratings.add(p);
+//            }
+//
+//            ScoreDto[] scores = new ScoreDto[3];
+//            scores[2] = new ScoreDto(Score.HOCH, 5);
+//            scores[1] = new ScoreDto(Score.MITTEL, 7);
+//            scores[0] = new ScoreDto(Score.GERING, 0);
+//
+//            dummyResult.add(new ResultDto(i, "productName" + i, ratings, scores));
+//        }
+//
+//        return dummyResult;
+//    }
 
 }

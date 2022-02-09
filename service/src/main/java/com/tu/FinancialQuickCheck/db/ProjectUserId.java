@@ -16,6 +16,7 @@ public class ProjectUserId implements Serializable {
     /**
      * Project to which a User is assigned to.
      */
+    //TODO: (done - need review) rename ...id declarations
     @ManyToOne(targetEntity = ProjectEntity.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "project")
     private ProjectEntity project;

@@ -10,9 +10,6 @@ public class ListOfUserDto {
 
     public List<UserDto> users;
 
-    /**
-     * Class Constructor specfying list of users with userID, userEmail and userName through userEntities
-     */
     public ListOfUserDto(Iterable<UserEntity> userEntities){
 
         this.users = new ArrayList<>();

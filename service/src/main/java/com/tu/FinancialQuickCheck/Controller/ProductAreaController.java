@@ -8,9 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
-/**
- * The ProductAreaController manages and processes requests for creating and returning product areas.
- */
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/productareas")
@@ -28,10 +25,10 @@ public class ProductAreaController {
     }
 
     /**
-     * Retrieves all existing product areas from db.
+     * This method is returning existing product areas for a project.
      *
-     * @throws ResourceNotFound if product_area_entity table is empty.
-     * @return A list of all existing product areas.
+     * @throws ResourceNotFound When no product area was found.
+     * @return All product areas for a project.
      */
     @GetMapping(produces = "application/json")
     public List<ProductAreaDto> findALL() {
@@ -46,11 +43,11 @@ public class ProductAreaController {
     }
 
     /**
-     * Creates and persists a productArea entity to db.
+     * This method is for creating and adding product areas to projects.
      *
-     * @param productArea The productArea object contains the necessary information.
-     * @throws BadRequest if name and category of productArea are missing.
-     * @return The created product area incl. unique identifier.
+     * @param productArea The product area with related information about name, id and category.
+     * @throws BadRequest When a product area cannot be created.
+     * @return The created product area as a ProductAreaDto.
      */
     @PostMapping(consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)

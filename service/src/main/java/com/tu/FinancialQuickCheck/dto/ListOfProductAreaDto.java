@@ -1,5 +1,6 @@
 package com.tu.FinancialQuickCheck.dto;
 
+
 import com.tu.FinancialQuickCheck.db.ProductAreaEntity;
 import com.tu.FinancialQuickCheck.db.ProductEntity;
 import com.tu.FinancialQuickCheck.db.ProjectEntity;
@@ -22,8 +23,7 @@ public class ListOfProductAreaDto {
     }
 
     public ListOfProductAreaDto(ProjectEntity project) {
-        //TODO: (prio: low) greift alle Produktdaten für project ab, es würde ausreichen
-        // nur Produkte mit Namem = "DUMMY" abzufragen
+        //TODO: (prio: low) greift alle Produktdaten für project ab, es würde ausreichen nur die DUMMY Daten abzugreifen
         HashSet<ProductAreaDto> areas = new HashSet<>();
 
         for (ProductEntity product: project.productEntities)

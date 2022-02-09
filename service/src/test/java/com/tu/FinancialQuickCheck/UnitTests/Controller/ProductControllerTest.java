@@ -1,9 +1,11 @@
 package com.tu.FinancialQuickCheck.UnitTests.Controller;
 
+import com.tu.FinancialQuickCheck.Controller.ProductAreaController;
 import com.tu.FinancialQuickCheck.Controller.ProductController;
 import com.tu.FinancialQuickCheck.Exceptions.BadRequest;
 import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.Service.ProductService;
+import com.tu.FinancialQuickCheck.dto.ProductAreaDto;
 import com.tu.FinancialQuickCheck.dto.ProductDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,21 +40,16 @@ public class ProductControllerTest {
 
         String name1 = "Produkt 1";
         String comment1 = "comment1";
-        List<String> resources = new ArrayList<>();
+        List resources = new ArrayList<>();
 
         dto1 = new ProductDto();
         dto1.productName = name1;
         dto1.comment = comment1;
+        dto1.resources = resources;
     }
 
-    /**
-     * tests for findById()
-     *
-     * testFindById1: productID doesnt exist --> throw ResourceNotFound
-     * testFindById2: productID exists --> return ProductDto
-     */
     @Test
-    public void test_findById_resourceNotFound() {
+    public void testFindById_resourceNotFound() {
         int productId = 1;
 
         // Step 1: provide knowledge
@@ -70,7 +67,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void test_findById_resourceExists() {
+    public void testFindById_resourceExists() {
         int productId = 1;
 
         // Step 1: provide knowledge
@@ -81,18 +78,12 @@ public class ProductControllerTest {
 
         assertAll("find product by id",
                 () -> assertNotNull(out.productName),
-                () -> assertNotNull(out.comment));
+                () -> assertNotNull(out.comment),
+                () -> assertNotNull(out.resources));
     }
 
-
-    /**
-     * tests for updateProduct()
-     *
-     * testUpdateProduct: productID does not exist -> throw ResourceNotFound
-     * testUpdateProduct: productID exists, input missing -> throw BadRequest
-     */
     @Test
-    public void test_updateProduct_resourceNotFound() {
+    public void testUpdateProduct_resourceNotFound() {
         int productId = 1;
 
         // Step 1: provide knowledge
@@ -110,7 +101,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void test_updateProduct_badRequest() {
+    public void testUpdateProduct_badRequest() {
         int productId = 1;
 
         // Step 1: execute test method and assert

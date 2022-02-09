@@ -6,9 +6,6 @@ import com.tu.FinancialQuickCheck.Service.ProductService;
 import com.tu.FinancialQuickCheck.dto.ProductDto;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * The ProductController manages and processes requests for finding products or updating product information.
- */
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/products")
@@ -17,18 +14,19 @@ public class ProductController {
     private ProductService service;
 
     /**
-     * Class Constructor specifying ProductService.
+     * Constructor for class ProductController.
+     *
+     * @param productService The different services for the product.
      */
     public ProductController(ProductService productService){
         this.service = productService;
     }
 
     /**
-     * Retrieves product information from db based on productID.
+     * This method can find different products by their related ID.
      *
-     * @param productID The productID is the unique identifier of the product entity in db
-     * @throws ResourceNotFound if product entity with productID does not exist in db.
-     * @return A ProductDto if exist
+     * @param productID The ID of the product.
+     * @return The product to their related ID.
      */
     @GetMapping("/{productID}")
     public ProductDto findById(@PathVariable int productID) {
@@ -42,13 +40,11 @@ public class ProductController {
     }
 
     /**
-     * Updates attributes name and comment of product entity in db. At least one of the attributes
-     * has to be provided.
+     * This method can update the products information like name, comments or resources.
      *
-     * @param productDto The productDto contains attributes productName and comment for update
-     * @param productID The productID is the unique identifier of the product entity in db
-     * @throws BadRequest if no information for update is provided
-     * @throws ResourceNotFound if product entity with productID does not exist in db.
+     * @param productDto The product data transfer object.
+     * @param productID The ID of the product.
+     * @throws BadRequest When a product cannot be updated because the input is missing or incorrect.
      */
     @PutMapping("/{productID}")
     public void updateProduct(@RequestBody ProductDto productDto, @PathVariable Integer productID) {
@@ -62,5 +58,11 @@ public class ProductController {
             }
         }
     }
+
+// TODO: auskommentiert lassen bis geklärt ist, wie mit ProductVarianten umgegangen werden soll und was mit evtl. Ratings passieren soll die bereits existieren
+//    @DeleteMapping("/{productID}")
+//    void deleteByID(@PathVariable int productID) {
+//        service.deleteProduct(productID);
+//    }
 
 }
