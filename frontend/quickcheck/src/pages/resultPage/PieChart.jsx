@@ -59,7 +59,7 @@ function PieChartGraph({ data_outer, data_inner, title, color, ratings }) {
               }
             } else {
               //console.log("rating ", dataset)
-              if (dataset['rating'] === 'unfinished') {
+              if (dataset['rating'] == 'unfinished') {
                 to_return = [to_return + ':', 'Evaluation not yet completed.'];
               } else if (dataset['rating'] == null) {
                 to_return = [to_return + ' Ratings:', 'None'];
@@ -67,11 +67,11 @@ function PieChartGraph({ data_outer, data_inner, title, color, ratings }) {
                 to_return = [to_return + ' Ratings:'];
 
                 for (let x = 0; x < dataset['rating'].length; x++) {
-                  if (x === 0) {
+                  if (x == 0) {
                     rName = 'Simple';
-                  } else if (x === 1) {
+                  } else if (x == 1) {
                     rName = 'Medium';
-                  } else if (x === 2) {
+                  } else if (x == 2) {
                     rName = 'Complex';
                   }
                   to_return.push(rName + ' : ' + dataset['rating'][x]);
