@@ -6,7 +6,7 @@ import { useStoreActions, useStoreState } from 'easy-peasy';
 import { useParams } from 'react-router-dom';
 
 //http://localhost:3000/projects/100/productArea/1/products/100/ratings
-
+/** Renders the evaluation page */
 export default function Evaluation() {
   const [ratingsPerCategory, setRatingsPerCategory] = useState([]);
   const productData = useStoreState((state) => state.rating.product);
@@ -14,6 +14,11 @@ export default function Evaluation() {
 
   const { projectID, productAreaID, productID } = useParams();
 
+  /**
+   *
+   * @param ratings - A list of ratings
+   * @returns dict - A dictionary with a category as key and a list of ratings as value
+   */
   function computeEvaluationPerCategory(ratings) {
     if (ratings.length === 0 || Object.keys(ratingsPerCategory).length !== 0) {
       return [];
@@ -32,6 +37,12 @@ export default function Evaluation() {
     fetchRatings([productID, 'COMPLEXITY']);
   }, []);
 
+  /**
+   * Creates the tabs
+   * @param data - A dictionary with a category as key and a list of ratings as value
+   * @returns renders the page
+   * @constructor
+   */
   function DataTabs({ data }) {
     return (
       <Page title="Evaluation" backref={`/projects/${projectID}/productArea/${productAreaID}`}>

@@ -31,7 +31,10 @@ const mock = [
     id: 3,
   },
 ];
-
+/**
+ * Show a single source
+ * @param {dictionary} source - Source Information
+ */
 function SourceRow({ source }) {
   return (
     <Card layerStyle={'card_bordered'}>
@@ -53,7 +56,9 @@ function SourceRow({ source }) {
     </Card>
   );
 }
-
+/**
+ Shows result page
+ */
 export default function ResultPage() {
   const { projectID, productAreaID } = useParams();
   const fetchResults = useStoreActions((actions) => actions.resultList.fetch);
@@ -74,7 +79,6 @@ export default function ResultPage() {
       sources[s]['author'] = results[s % results.length]['productName'];
     }
   }
-  console.log('First', { results });
   return (
     <Page title="Results" backref={`/projects/${projectID}/productArea/${productAreaID}`}>
       <Flex
