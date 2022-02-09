@@ -1,12 +1,9 @@
 package com.tu.FinancialQuickCheck.dto;
 
-import com.tu.FinancialQuickCheck.db.ProductAreaEntity;
-import com.tu.FinancialQuickCheck.db.ProductEntity;
 import com.tu.FinancialQuickCheck.db.ProjectEntity;
 import com.tu.FinancialQuickCheck.db.ProjectUserEntity;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 /**
@@ -14,16 +11,14 @@ import java.util.UUID;
  * method calls into a single one
  */
 public class ProjectDto {
+
     public int projectID;
     public UUID creatorID;
     public String projectName;
     public List<ProjectUserDto> members;
     public List<ProductAreaDto> productAreas;
-//    public List<Product> products;
 
-    //necessary for mapping
     public ProjectDto() {}
-
 
     public ProjectDto(ProjectEntity project){
         this.projectID = project.id;
@@ -33,7 +28,12 @@ public class ProjectDto {
         this.productAreas = new ListOfProductAreaDto(project).productAreas;
     }
 
-
+    /**
+     * Gets a List of projectUserEntities and returns a List of projectUserDtos
+     *
+     * @param projectUserEntities
+     * @return members (List of projectUserDtos)
+     */
     private List<ProjectUserDto> convertProjectUserEntities(List<ProjectUserEntity> projectUserEntities) {
         List<ProjectUserDto> members = new ArrayList<>();
 

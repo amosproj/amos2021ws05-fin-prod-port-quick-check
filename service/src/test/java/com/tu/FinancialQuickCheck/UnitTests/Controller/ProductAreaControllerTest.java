@@ -1,14 +1,10 @@
 package com.tu.FinancialQuickCheck.UnitTests.Controller;
 
 import com.tu.FinancialQuickCheck.Controller.ProductAreaController;
-import com.tu.FinancialQuickCheck.Controller.RatingController;
 import com.tu.FinancialQuickCheck.Exceptions.BadRequest;
 import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
-import com.tu.FinancialQuickCheck.RatingArea;
 import com.tu.FinancialQuickCheck.Service.ProductAreaService;
-import com.tu.FinancialQuickCheck.Service.RatingService;
 import com.tu.FinancialQuickCheck.dto.ProductAreaDto;
-import com.tu.FinancialQuickCheck.dto.RatingDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -59,8 +55,15 @@ public class ProductAreaControllerTest {
         listDtos = new ArrayList<>();
     }
 
+
+    /**
+     * Tests for findALL()
+     *
+     * test_findALL_resourceNotFound: no productAreas exist in db --> return ResourceNotFound
+     * test_findALL_resourcesExist: productAreas exist in db --> return List<ProductAreaDto>
+     */
     @Test
-    public void testFindALL_resourceNotFound() {
+    public void test_findALL_resourceNotFound() {
         // Step 1: provide knowledge
         when(service.getAllProductAreas()).thenReturn(new ArrayList<>());
 
@@ -76,7 +79,7 @@ public class ProductAreaControllerTest {
     }
 
     @Test
-    public void testFindALL_resourceExists() {
+    public void test_findALL_resourceExist() {
         listDtos.add(dto1);
         listDtos.add(dto2);
 
@@ -86,11 +89,17 @@ public class ProductAreaControllerTest {
         // Step 2: execute test method and assert
         List<ProductAreaDto> out = controller.findALL();
 
-        assertTrue(out.size() == listDtos.size());
+        assertEquals(out.size(), listDtos.size());
     }
 
+    /**
+     * Tests for createProductArea()
+     *
+     * test_createProductArea_badRequest: name and category missing --> return BadRequest
+     * test_createProductArea_success: input correct --> return created product area
+     */
     @Test
-    public void testCreateProductArea_badRequest(){
+    public void test_createProductArea_badRequest(){
         ProductAreaDto emptyDto = new ProductAreaDto();
 
         // Step 1: provide knowledge
@@ -108,7 +117,7 @@ public class ProductAreaControllerTest {
     }
 
     @Test
-    public void testCreateProductArea_success() {
+    public void test_createProductArea_success() {
         // Step 1: provide knowledge
         when(service.createProductArea(dto1)).thenReturn(dto1);
 

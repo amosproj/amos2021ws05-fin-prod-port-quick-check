@@ -47,16 +47,17 @@ public class ProductAreaDtoTest {
      * testEqualsTrue: two objects are  NOT equal --> return False
      */
     @Test
-    public void testEquals_true() {
-        assertTrue(productArea1.equals(productArea1_copy));
-        assertTrue(productArea2.equals(productArea2_copy));
+    public void test_equals_true() {
+        assertEquals(productArea1, productArea1_copy);
+        assertEquals(productArea2, productArea2_copy);
     }
 
     @Test
-    public void testEquals_false() {
-        assertFalse(productArea2.equals(productArea1));
-        assertFalse(productArea1.equals(productArea2));
+    public void test_equals_false() {
+        assertNotEquals(productArea2, productArea1);
+        assertNotEquals(productArea1, productArea2);
     }
+
 
     /**
      * tests for hashCode()
@@ -65,19 +66,21 @@ public class ProductAreaDtoTest {
      * testHashCode: hashCodes of the two different objects are NOT equal
      */
     @Test
-    public void testHashCode_equal() {
+    public void test_hashCode_equal() {
         assertEquals(productArea1.hashCode(), productArea1_copy.hashCode());
         assertEquals(productArea2.hashCode(), productArea2_copy.hashCode());
     }
 
-    @org.junit.jupiter.api.Test
-    public void testHashCode_notEqual() {
+    @Test
+    public void test_hashCode_notEqual() {
         assertNotEquals(productArea1.hashCode(), productArea2.hashCode());
     }
 
-
+    /**
+     * tests for Constructor
+     */
     @Test
-    public void createProductAreaTest()
+    public void test_constructor_allAttributesHaveValues()
     {
         int id = 1;
         String name = "testCriterion";
@@ -89,7 +92,7 @@ public class ProductAreaDtoTest {
     }
 
     @Test
-    public void createProductAreaTest_emptyString()
+    public void test_constructor_emptyString()
     {
         int id = 1;
         String name = "";
@@ -101,7 +104,7 @@ public class ProductAreaDtoTest {
     }
 
     @Test
-    public void createProductAreaTest_nullString()
+    public void test_constructor_nullString()
     {
         int id = 1;
         ProductAreaDto productAreaDto = new ProductAreaDto(id, null, null);

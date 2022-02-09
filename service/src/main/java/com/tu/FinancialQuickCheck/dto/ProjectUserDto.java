@@ -17,7 +17,6 @@ public class ProjectUserDto {
     public String userEmail;
     public Role role;
 
-
     public ProjectUserDto(){}
 
     public ProjectUserDto(String email, Role role)
@@ -25,7 +24,6 @@ public class ProjectUserDto {
         this.userEmail = email;
         this.role = role;
     }
-
 
     public ProjectUserDto(ProjectUserEntity entity)
     {

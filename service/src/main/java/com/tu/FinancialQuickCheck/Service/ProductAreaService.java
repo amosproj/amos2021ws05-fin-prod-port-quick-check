@@ -16,27 +16,27 @@ public class ProductAreaService {
 
     private ProductAreaRepository repository;
 
+    /**
+     * Class constructor initializes productArea repository
+     * */
     public ProductAreaService(ProductAreaRepository productAreaRepository) {
         this.repository = productAreaRepository;
     }
 
     /**
-     * This method is giving back a list of product areas with the ID, name and category.
+     * Retrieves all existing product areas from db.
      *
-     * @return A list of product area DTO's.
-     */
+     * @return A list of product areas, is empty if no product areas exist
+     * */
     public List<ProductAreaDto> getAllProductAreas() {
-
         return new ListOfProductAreaDto(this.repository.findAll()).productAreas;
-
     }
 
     /**
-     * This method is creating a new product area (credit, client or payment). Before the method is checking if there is
-     * already a product area with same category, name and ID existent in database.
+     * Creates and persists a productArea entity to db if name and category are provided.
      *
-     * @param productArea The product area which is to be created.
-     * @return A new product area DTO.
+     * @param productArea The productArea object contains the necessary information.
+     * @return The created product area incl. unique identifier or null if input is missing
      */
     // TODO: (prio: super low) check einbauen, ob Kombination aus Name und Category bereits besteht (wie geht man mit Rechtschreibfehlern um?)
     public ProductAreaDto createProductArea(ProductAreaDto productArea) {

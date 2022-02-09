@@ -10,6 +10,9 @@ public class ListOfRatingDto {
 
     public List<RatingDto> ratings;
 
+    /**
+     * Class Constructor specfying list of ratings with id, criterion, category and ratingArea through ratingEntities
+     */
     public ListOfRatingDto(List<RatingEntity> ratingEntities)
     {
         this.ratings = new ArrayList<>();

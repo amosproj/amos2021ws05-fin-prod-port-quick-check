@@ -26,7 +26,10 @@ public class ProductDto {
 
     public ProductDto(){}
 
-    // used for ProductRatings
+    /**
+     * Class Constructor specifying attributes through product entity and product rating entities
+     * used in ProductRatingService.class
+     */
     public ProductDto(ProductEntity product, List<ProductRatingEntity> productRatingEntities)
     {
         this.comment = product.comment;
@@ -37,7 +40,10 @@ public class ProductDto {
         this.ratings = convertProductRatingEntities(productRatingEntities);
     }
 
-    // used in ProductService to get products
+    /**
+     * Class Constructor specifying attributes through product entity and result of calculateProgress()
+     * used in ProductService.class to get products
+     */
     public ProductDto(ProductEntity product, float[] progress){
         this.productID = product.id;
         this.productName = product.name;
@@ -50,7 +56,9 @@ public class ProductDto {
         this.resources = new ArrayList<>();
     }
 
-    // used in ProductService to created products
+    /**
+     * Class Constructor specifying attributes through product entity, used in ProductService.class to create products
+     */
     public ProductDto(ProductEntity product){
         this.productID = product.id;
         this.productName = product.name;
@@ -63,6 +71,9 @@ public class ProductDto {
         this.resources = new ArrayList<>();
     }
 
+    /**
+     * Converts list of product rating entities into product rating dtos
+     */
     private List<ProductRatingDto> convertProductRatingEntities(List<ProductRatingEntity> productRatingEntities) {
         List<ProductRatingDto> tmp = new ArrayList<>();
 
@@ -72,6 +83,9 @@ public class ProductDto {
         return tmp;
     }
 
+    /**
+     * Retrieves parent entity id if exist, else 0
+     */
     public int convertParentEntity(ProductEntity parentEntity) {
         if(parentEntity != null){
             return parentEntity.id;
@@ -80,6 +94,9 @@ public class ProductDto {
         }
     }
 
+    /**
+     * Returns True if parentID != 0, else False
+     */
     public boolean isProductVariant(){
         if(this.parentID != 0){
             return Boolean.TRUE;

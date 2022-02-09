@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ProductControllerIntegrationTest {
 
-    static Logger log = Logger.getLogger(ProductAreaControllerIntegrationTest.class.getName());
+    static Logger log = Logger.getLogger(ProductControllerIntegrationTest.class.getName());
 
     @LocalServerPort
     private int port = 8080;
@@ -41,10 +41,6 @@ public class ProductControllerIntegrationTest {
 
     private String jsonStringCorrect = "{\"productName\":\"Neuer Produkt Name\", \"comment\":\"Neuer Kommentar\", \"resources\": [\"string\"]}";
     private String jsonStringEmpty = "{}";
-    private String jsonStringMissingName = "{\"comment\":\"Neuer Kommentar\", \"resources\": [\"string\"]}";
-    private String jsonStringMissingComment = "{\"productName\":\"Neuer Produkt Name\", \"resources\": [\"string\"]}";
-    private String jsonStringMissingResources = "{\"productName\":\"Neuer Produkt Name\", \"comment\":\"Neuer Kommentar\"}";
-
 
     HttpHeaders header = new HttpHeaders();
 
@@ -56,7 +52,7 @@ public class ProductControllerIntegrationTest {
 
     @BeforeEach
     public void initEach(){
-        log.info("@BeforeEach - setup for Tests in ProjectUserControllerIntegrationTest.class");
+        log.info("@BeforeEach - setup for Tests in ProductControllerIntegrationTest.class");
 
         productAreaEntities = new ArrayList<>();
         for(int i = 1; i < 3; i++){
@@ -123,6 +119,12 @@ public class ProductControllerIntegrationTest {
         assertEquals("resources:" + tmp.resources , object[12]);
     }
 
+    /**
+     * tests for findById()
+     *
+     * testFindById1: productID doesnt exist --> return HTTP.NOT_FOUND
+     * testFindById2: productID exists --> return HTTP.OK and ProductDto
+     */
     @Test
     public void test1_findById_resourceNotFound() {
         // delete all existing entries
@@ -159,6 +161,14 @@ public class ProductControllerIntegrationTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
+
+    /**
+     * tests for updateProduct()
+     *
+     * testUpdateProduct: productID does not exist -> return HTTP.NOT_FOUND
+     * testUpdateProduct: productID exists, input missing -> return HTTP.BadRequest
+     * testUpdateProduct: productID exists, input correct -> return HTTP.OK
+     */
     @Test
     public void test4_updateProduct_badRequest_emptyJSON() {
         ResponseEntity<String> response = restTemplate.exchange(host + port + products + product.id,
@@ -193,6 +203,7 @@ public class ProductControllerIntegrationTest {
 
     @Test
     public void test7_updateProduct_success_partialUpdate_MissingName() {
+        String jsonStringMissingName = "{\"comment\":\"Neuer Kommentar\", \"resources\": [\"string\"]}";
         ResponseEntity<String> response = restTemplate.exchange(host + port + products + product.id,
                 HttpMethod.PUT,new HttpEntity<>(jsonStringMissingName, header), String.class);
 
@@ -204,6 +215,7 @@ public class ProductControllerIntegrationTest {
 
     @Test
     public void test8_updateProduct_success_partialUpdate_MissingComment() {
+        String jsonStringMissingComment = "{\"productName\":\"Neuer Produkt Name\", \"resources\": [\"string\"]}";
         ResponseEntity<String> response = restTemplate.exchange(host + port + products + product.id,
                 HttpMethod.PUT,new HttpEntity<>(jsonStringMissingComment, header), String.class);
 
@@ -215,6 +227,7 @@ public class ProductControllerIntegrationTest {
 
     @Test
     public void test9_updateProduct_success_partialUpdate_MissingResources() {
+        String jsonStringMissingResources = "{\"productName\":\"Neuer Produkt Name\", \"comment\":\"Neuer Kommentar\"}";
         ResponseEntity<String> response = restTemplate.exchange(host + port + products + product.id,
                 HttpMethod.PUT,new HttpEntity<>(jsonStringMissingResources, header), String.class);
 
