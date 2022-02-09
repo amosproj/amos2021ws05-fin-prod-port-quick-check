@@ -20,12 +20,19 @@ import UploadButton from '../../components/Upload';
 import { useState, useEffect } from 'react';
 import { CheckIcon } from '@chakra-ui/icons';
 
+/**
+ *
+ * @param rating - a rating - most likely the rating with id = 10
+ * @returns renders a rating row for percentage
+ * @constructor
+ */
 function RatingRowPercentage({ rating }) {
   const [low, setLow] = useState(0);
   const [medium, setMedium] = useState(0);
   const [high, setHigh] = useState(0);
   const updateRating = useStoreActions((actions) => actions.rating.updateRating);
 
+  /** This function updates an attribute of rating. possible attributes are score, answer, comment  */
   const updateRatingAttribute = (key) => (value) => {
     let change = {};
     change[key] = value;
@@ -34,6 +41,7 @@ function RatingRowPercentage({ rating }) {
 
   const handleUpdateComment = updateRatingAttribute('comment');
 
+  /** speacial case for rating with the id 10, answer must be seperated */
   const getAnswerArray = () => {
     const answerValues = rating.answer.split(',').map((s) => parseInt(s));
     console.log(answerValues);
@@ -133,9 +141,16 @@ function RatingRowPercentage({ rating }) {
   );
 }
 
+/**
+ *
+ * @param rating - A rating
+ * @returns Renders A normal rating row
+ * @constructor
+ */
 function RatingRowCategorical({ rating }) {
   const updateRating = useStoreActions((actions) => actions.rating.updateRating);
 
+  /** The update function for comment, score or answer */
   const updateRatingAttribute = (key) => (value) => {
     let change = {};
     change[key] = value;
@@ -187,6 +202,12 @@ function RatingRowCategorical({ rating }) {
   );
 }
 
+/**
+ * Select which type of rating row should be created based on rating id
+ * @param rating - A rating with an id
+ * @returns
+ * @constructor
+ */
 function RatingRow({ rating }) {
   return rating.ratingID === 10 ? (
     <RatingRowPercentage rating={rating} />
@@ -195,6 +216,12 @@ function RatingRow({ rating }) {
   );
 }
 
+/**
+ *
+ * @param category - A category
+ * @returns Renders the rating table
+ * @constructor
+ */
 export default function RatingTable({ category }) {
   const getRatingsByCategory = useStoreState((state) => state.rating.getRatingsByCategory);
 
