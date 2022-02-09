@@ -20,7 +20,7 @@ import ProductRow from './ProductRow';
  * the user clicks it. Then the edit mode is activated and changes to product names and comments can be 
  * made. Clicking on the then appearing confirm button sends the updates made to the backend and ends the 
  * edit mode. Clicking on cancel aborts the updating and discards the changes made. The edit mode will be 
- * switched off. 
+ * switched off.
  */
 export default function ProductOverview() {
   const items = useStoreState((state) => state.productList.items);
@@ -37,6 +37,10 @@ export default function ProductOverview() {
     console.log('rendered');
   }, []);
 
+  /**
+   * Posts all updated product to backend and
+   * turns edit mode off.
+   */
   const updateProducts = () => {
     setEditMode(false);
     updateAllProducts(items);
