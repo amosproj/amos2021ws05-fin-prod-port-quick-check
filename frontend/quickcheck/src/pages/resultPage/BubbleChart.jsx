@@ -4,10 +4,12 @@ import { Bubble } from 'react-chartjs-2';
 import annotationPlugin from 'chartjs-plugin-annotation';
 
 Chart.register(LineController, LineElement, PointElement, LinearScale, Title, annotationPlugin);
-
+/**
+ * Builds BubbleGraph
+ * @param {dictionary} Data - Content of BubbleGraph
+ * @param {int} min/max{x,y} - Bounds for dynamic scale of BubbleGraph
+ */
 function BubbleGraph({ data, minbY, maxbY, minbX, maxbX }) {
-  //console.log("limits", minbY, maxbY, minbX, maxbX)
-
   var options = {
     scales: {
       y: {

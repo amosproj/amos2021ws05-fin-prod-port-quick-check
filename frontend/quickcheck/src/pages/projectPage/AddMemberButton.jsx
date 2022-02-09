@@ -22,6 +22,9 @@ import { roles } from '../../utils/const';
 import Selection from '../../components/Selection.jsx';
 import { api } from '../../utils/apiClient';
 
+/**
+ * Popup button for adding member
+ */
 export default function AddMemberButton(buttonProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const addMember = useStoreActions((actions) => actions.project.addMember);

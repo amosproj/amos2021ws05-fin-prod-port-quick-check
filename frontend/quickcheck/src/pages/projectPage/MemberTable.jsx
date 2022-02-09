@@ -9,6 +9,11 @@ import Selection from '../../components/Selection.jsx';
 import ConfirmClick from '../../components/ConfirmClick';
 import AddMemberButton from './AddMemberButton';
 
+/**
+ * Row of information for a single member.
+ * @param {state} editMode - Is the user in edit mode or not.
+ * @param {dictionary} member - Member information.
+ */
 function MemberRow({ editMode, member, ...rest }) {
   const updateMember = useStoreActions((actions) => actions.project.updateMember);
   const handleRoleChange = (newRole) => {
@@ -50,6 +55,10 @@ const RemoveButton = ({ handleRemove, ...buttonProps }) => {
 };
 // Assumption: ProjectMembers is a list of object: {id, role}
 
+/**
+ * Table of member information.
+ * @param {state} editMode - Is the user in edit mode or not.
+ */
 export default function MemberTable({ editMode }) {
   const members = useStoreState((state) => state.project.data.members);
   const removeMember = useStoreActions((actions) => actions.project.removeMember);

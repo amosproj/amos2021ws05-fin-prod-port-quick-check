@@ -9,7 +9,9 @@ import Card from '../../components/Card';
 
 import ProductAreaList from './ProjectAreaList';
 import MemberTable from './MemberTable';
-
+/**
+ * Show project information
+ */
 export default function Project() {
   const project = useStoreState((state) => state.project.data);
   const setName = useStoreActions((actions) => actions.project.setProjectName);
