@@ -16,7 +16,9 @@ import java.util.logging.Logger;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-
+/**
+ * The current test class verifies the functionalities of the User Controller
+ */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UserControllerIntegrationTest {
 
@@ -47,6 +49,9 @@ public class UserControllerIntegrationTest {
 
     private List<UserEntity> entities;
 
+    /**
+     * This annotated method should be executed before each invocation of @Test
+     */
     @BeforeEach
     public void initEach(){
         log.info("@BeforeEach - setup for Tests in UserControllerIntegrationTest.class");
@@ -65,6 +70,9 @@ public class UserControllerIntegrationTest {
         header.setContentType(MediaType.APPLICATION_JSON);
     }
 
+    /**
+     * The method should be run after every @Test
+     */
     @AfterEach
     public void reset(){
         repository.deleteAll();
@@ -72,6 +80,11 @@ public class UserControllerIntegrationTest {
         log.info("@AfterEach - db reset");
     }
 
+    /**
+     * This test checks the response status code and the body elements
+     *
+     * @result That the response body is what was inserted
+     */
     public void assertResponseBody(ResponseEntity<String> response, String userEmail, String userName){
         String[] bodyStringList = Objects.requireNonNull(response.getBody()).split("},");
 
@@ -136,6 +149,11 @@ public class UserControllerIntegrationTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
+    /**
+     * This test tries to create a user
+     *
+     * @result The status code that the user was created
+     */
     @Test
     public void test3_createUser_success(){
         ResponseEntity<String> response = restTemplate.exchange(host + port + users,
@@ -148,6 +166,11 @@ public class UserControllerIntegrationTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     }
 
+    /**
+     * This test tries to create a user, but the email address isn't valid
+     *
+     * @result The status code that the user wasn't created due to an invalid email address
+     */
     @Test
     public void test4_createUser_badRequest_InvalidEmail(){
         ResponseEntity<String> response = restTemplate.exchange(host + port + users,
@@ -158,6 +181,11 @@ public class UserControllerIntegrationTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * This test tries to create a user, but the password is missing
+     *
+     * @result The status code that the user wasn't created due to a missing password
+     */
     @Test
     public void test5_createUser_badRequest_MissingPW(){
         ResponseEntity<String> response = restTemplate.exchange(host + port + users,
@@ -168,6 +196,11 @@ public class UserControllerIntegrationTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * This test tries to create a user, but the email address is missing
+     *
+     * @result The status code that the user wasn't created due to a missing email address
+     */
     @Test
     public void test6_createUser_badRequest_MissingEmail(){
         ResponseEntity<String> response = restTemplate.exchange(host + port + users,
@@ -178,6 +211,11 @@ public class UserControllerIntegrationTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * This test tries to create a user, but the user name is missing
+     *
+     * @result The status code that the user wasn't created due to a missing user name
+     */
     @Test
     public void test7_createUser_badRequest_MissingUsername(){
         ResponseEntity<String> response = restTemplate.exchange(host + port + users,
@@ -188,6 +226,11 @@ public class UserControllerIntegrationTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * This test tries to find a user by its email
+     *
+     * @result The status code that the user was found by its email
+     */
     @Test
     public void test8_findUserByEmail_success(){
         ResponseEntity<String> response = restTemplate.exchange(host + port + users + email + entities.get(0).email,
@@ -200,6 +243,11 @@ public class UserControllerIntegrationTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
+    /**
+     * This test tries to find a user by its email, but the user email address wasn't found
+     *
+     * @result The status code that the user wasn't found by its email, because the email address wasn't found
+     */
     @Test
     public void test9_findUserByEmail_resourceNotFound_userEmail(){
         ResponseEntity<String> response = restTemplate.exchange(host + port + users + email + "/testUser404@mail.com",
@@ -210,6 +258,11 @@ public class UserControllerIntegrationTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * This test tries to update the email of a user
+     *
+     * @result The status code that the user's email was updated
+     */
     @Test
     public void test10_updateUserByEmail_success_fullUpdate(){
         ResponseEntity<String> response = restTemplate.exchange(
@@ -224,6 +277,11 @@ public class UserControllerIntegrationTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
+    /**
+     * This test tries to update the information of a user, but the email is missing
+     *
+     * @result The status code that the user's information wasn't updated due to a missing email address
+     */
     @Test
     public void test11_updateUserByEmail_success_partialUpdate_MissingEmail(){
         ResponseEntity<String> response = restTemplate.exchange(
@@ -238,6 +296,11 @@ public class UserControllerIntegrationTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
+    /**
+     * This test tries to update the information of a user, but the email is missing
+     *
+     * @result The status code that the user's information wasn't updated due to a missing email address
+     */
     @Test
     public void test12_updateUserByEmail_success_partialUpdate_MissingEmail(){
         ResponseEntity<String> response = restTemplate.exchange(
@@ -252,6 +315,11 @@ public class UserControllerIntegrationTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
+    /**
+     * This test tries to update the information of a user, but the password is missing
+     *
+     * @result The status code that the user's information wasn't updated due to a missing password
+     */
     @Test
     public void test13_updateUserByEmail_success_partialUpdate_MissingPassword(){
         ResponseEntity<String> response = restTemplate.exchange(
@@ -266,6 +334,11 @@ public class UserControllerIntegrationTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
+    /**
+     * This test tries to update the information of a user, but the JSON is empty
+     *
+     * @result The status code that the user's information wasn't updated due to a empty JSON
+     */
     @Test
     public void test14_updateUserByEmail_badRequest_emptyJSON(){
         ResponseEntity<String> response = restTemplate.exchange(host + port + users + email + entities.get(0).email,
@@ -276,6 +349,11 @@ public class UserControllerIntegrationTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * This test tries to update the information of a user, but the email address is invalid
+     *
+     * @result The status code that the user's information wasn't updated due to an invalid email address
+     */
     @Test
     public void test15_updateUserByEmail_badRequest_invalidEmail(){
         ResponseEntity<String> response = restTemplate.exchange(host + port + users + email + "testUsermail.com",
@@ -286,6 +364,11 @@ public class UserControllerIntegrationTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * This test tries to update the information of a user, but the email address wasn't found
+     *
+     * @result The status code that the user's information wasn't updated because the email address wasn't found
+     */
     @Test
     public void test16_updateUserByEmail_resourceNotFound_userEmail(){
         ResponseEntity<String> response = restTemplate.exchange(host + port + users + email + "testUser@mail.com",
@@ -296,6 +379,11 @@ public class UserControllerIntegrationTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * This test tries to delete a user by its ID, but the ID wasn't found
+     *
+     * @result The status code that the user wasn't deleted, because the ID wasn't found
+     */
     @Test
     public void test17_deleteByUserId_resourceNotFound(){
         String userID = "/" + UUID.randomUUID();
@@ -308,6 +396,11 @@ public class UserControllerIntegrationTest {
 
     }
 
+    /**
+     * This test tries to delete a user by its ID, but the inserted ID is not a UUID
+     *
+     * @result The status code that the user wasn't deleted, because the inserted ID was not a UUID
+     */
     @Test
     public void test18_deleteByUserId_badRequest(){
         String userID = "/" + "123456";
@@ -320,6 +413,11 @@ public class UserControllerIntegrationTest {
 
     }
 
+    /**
+     * This test tries to delete a user by its ID
+     *
+     * @result The status code that the user was deleted from database
+     */
     @Test
     public void test19_deleteByUserId_success(){
         String userID = "/" + entities.get(0).id;
