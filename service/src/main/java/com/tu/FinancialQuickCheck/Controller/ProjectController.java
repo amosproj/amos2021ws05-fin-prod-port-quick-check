@@ -42,11 +42,20 @@ public class ProjectController {
         this.resultService = resultService;
     }
 
+    /**
+     * @return a List of (SmallProjectDto) all Projects. Empty if no Projects exist.
+     */
     @GetMapping(produces = "application/json")
     public List<SmallProjectDto> findALL() {
         return service.getAllProjects();
     }
 
+    /**
+     * Creates a Project from a projectDto
+     * @param projectDto input information for the project to be created
+     * @throws BadRequest at incorrect or missing input
+     * @return the projectDto of the created Project
+     */
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public ProjectDto createProject(@RequestBody ProjectDto projectDto) {
@@ -79,7 +88,7 @@ public class ProjectController {
     }
 
     /**
-     * This method is updating project information like name, areas or members.
+     * This method is updating project information like: name, areas or members.
      *
      * @param projectDto The project data transfer object.
      * @param projectID The ID of the project that has to be updated.
@@ -157,6 +166,7 @@ public class ProjectController {
      *
      * @param members The users/members who can be added to the project.
      * @param projectID The ID of the project for which members/users can be added.
+     * @throws ResourceNotFound if ProjectID does not exist
      * @return New users/members were added to the project.
      */
     @PostMapping( value = "/{projectID}/users", produces = "application/json")
@@ -178,6 +188,7 @@ public class ProjectController {
      *
      * @param projectID The project ID for which a result should get retrieved
      * @param productAreaID The product area ID for which a result should get retrieved
+     * @throws ResourceNotFound if ProjectID does not exist
      * @return The result for either a hole project or the result for a specific product area
      */
     @GetMapping("/{projectID}/results")
