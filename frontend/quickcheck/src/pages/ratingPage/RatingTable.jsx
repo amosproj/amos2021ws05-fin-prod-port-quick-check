@@ -151,7 +151,7 @@ function RatingRowCategorical({ rating }) {
       <Text fontSize="xl" mb={4} align="left" w="full">
         {rating.rating.criterion}
       </Text>
-      <Flex direction="row" justifyContent="space-between" w="full" mb={2} alignItems='flex-start'>
+      <Flex direction="row" justifyContent="space-between" w="full" mb={2} alignItems="flex-start">
         <VStack w="40%" alignItems="left" spacing={0} mx={1}>
           <Text fontSize={'sm'} align="left">
             Answer
