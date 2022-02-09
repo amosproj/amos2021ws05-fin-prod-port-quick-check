@@ -75,6 +75,12 @@ public class ProjectUserServiceTest {
         projectUserEntity.projectUserId = projectUserId;
     }
 
+    /**
+     * tests for getProjectUsersByProjectId
+     *
+     * getProjectUsersByProjectId1: projectID does not exist --> return null
+     * getProjectUsersByProjectId2: projectID exists --> return projectUserEntity
+     */
     @Test
     public void testGetProjectUsersByProjectId_projectIdDoesNotExist() {
         // init test object
@@ -103,10 +109,13 @@ public class ProjectUserServiceTest {
     /**
      * tests for updateProjectUsers() --> list of ProjectUserDtos
      *
-     * testUpdateProjectUsers1: userID does not exist --> return null
-     * testUpdateProjectUsers2: projectID does not exist --> return null
-     * testUpdateProjectUsers3: IDs exist, Role is missing --> return NOT updated List<ProjectUserEntity>
-     * testUpdateProjectUsers4: IDs exist, Role exists --> return updated List<ProjectUserEntity>
+     * testUpdateProjectUsers1: projectID does not exist --> return null
+     * testUpdateProjectUsers2: (single) userID does not exist --> return null
+     * testUpdateProjectUsers3: (multiple) userID does not exist --> return null
+     * testUpdateProjectUsers4: IDs exist, (single user) Role (in update)  is missing --> return NO (null) role in returned list
+     * testUpdateProjectUsers5: IDs exist, (multiple users) Role (in update) is missing --> return NO (null) role in returned list
+     * testUpdateProjectUsers6: (one user) IDs exist, Role exists --> return updated List<ProjectUserEntity>
+     * testUpdateProjectUsers7: (multiple user) IDs exist, Role exists --> return updated List<ProjectUserEntity>
      */
     @Test
     public void testUpdateListProjectUsers_projectIdDoesNotExist() {
@@ -329,10 +338,13 @@ public class ProjectUserServiceTest {
     /**
      * tests for deleteProjectUser()
      *
-     * testUpdateProjectUser1: one or both of the necessary IDs do not exist --> throw ResourceNotFound Exception
-     * testUpdateProjectUser2: IDs exist, Role is missing --> throw BadRequest Exception
-     * testUpdateProjectUser3: IDs exist, Role does not exist --> throw BadRequest Exception
-     * testUpdateProjectUser4: Input correct --> tbd
+     * testDeleteProjectUser1: no (null) userID --> return false
+     * testDeleteProjectUser2: projectUserID does not exist (user is not assigned to project) --> throw ResourceNotFound Exception
+     * testDeleteProjectUser3: all necessary resources exist --> return true
+     * testDeleteProjectUser4 (wrapper): (single) no (null) userID --> return false
+     * testDeleteProjectUser5 (wrapper): (multiple) no (null) userID --> return false
+     * testDeleteProjectUser4 (wrapper): (single) all necessary resources exist --> return true
+     * testDeleteProjectUser4 (wrapper): (multiple) all necessary resources exist --> return true
      */
     @Test
     public void testDeleteProjectUser_userIdNull() {
