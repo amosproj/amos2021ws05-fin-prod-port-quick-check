@@ -113,6 +113,7 @@ const projectListModel = {
   }),
 };
 
+/** state model for individual projects */
 const projectModel = {
   data: {
     projectID: 0,
@@ -121,7 +122,7 @@ const projectModel = {
     members: [],
     productAreas: [],
   },
-
+  /** set the project data to its initial state. */
   init: action((state, payload) => {
     state.data = {
       projectID: 0,
@@ -132,37 +133,79 @@ const projectModel = {
     };
   }),
   // general actions
+  /** Overwrite the the complete stored project with a new project
+   * @param {Object} project - Project that will be stored
+   * @example
+   *    set({projectID: 1, projectName: 'Foo', creatorID: 'max', members: [{...}], ...})
+   */
   set: action((state, project) => {
     state.data = project;
   }),
+
+  /** Set the project attributes to a new value if provided in the parameter `updatedProps`
+   * @param {Object} updatedProps - project attributes and their new values
+   * @example
+   *    update({projectName: 'NewName' })
+   *    --> will set the projectName attribute of the stored project to value `NewName`
+   */
   update: action((state, updatedProps) => {
     state.data = { ...state.data, ...updatedProps };
   }),
 
+  /** Set the project name to a new value
+   * @param {string} projectName
+   */
   setProjectName: action((state, projectName) => {
     state.data.projectName = projectName;
   }),
+
+  /** Add a member to the stored project
+   * @param {Object} Member - member that will be added to the project
+   * @example
+   *    addMember({userID: "1234", userName: "Max", userEmail: "max@amos.de", role:  "CLIENT"})
+   */
   addMember: action((state, newMember) => {
     state.data.members.push(newMember);
   }),
+  /**
+   * removes member from a project
+   * @param {Object} member - member which should be removed from the project, only the userEmail has to be provided in the member object
+   * @example
+   *    removeMember({userEmail: 'max@amos.de'})
+   */
   removeMember: action((state, member) => {
     // remove member with matching email from items
     state.data.members = state.data.members.filter((m) => m.userEmail !== member.userEmail);
   }),
+
+  /**
+   * update the stored attributes for a single project member
+   * @param {Object} member - object that contains the member email as well as the updated attributes
+   * @example
+   *    removeMember({userEmail: 'max@amos.de', name: 'Maximilian'})
+   */
   updateMember: action((state, member) => {
     // overwrite member with same email
     const index = state.data.members.map((m) => m.userEmail).indexOf(member.userEmail); // get index of member with same email. if not found, index=-1
     state.data.members[index] = { ...state.data.members[index], ...member };
   }),
+  /** add product area to the project */
   addProductArea: action((state, newArea) => {
     state.data.productAreas.push(newArea);
   }),
+
+  /** remove a product area from the project */
   removeProductArea: action((state, remArea) => {
     // remove member with matching email from items
     state.data.productAreas = state.data.productAreas.filter((a) => a.id !== remArea.id);
   }),
 
-  // GET project by id
+  /**
+   * fetch and store a project by projectID from the backend
+   * @param {string} projectID - ID of the project that will be fetched from the backend
+   * @example
+   *   fetch(1) --> fetch and store project with id 1
+   */
   fetch: thunk(async (actions, id) => {
     await api
       .url('/projects/' + id)
@@ -172,7 +215,10 @@ const projectModel = {
       .catch(console.error);
   }),
 
-  // POST new Project
+  /**
+   * create a new project in the backend
+   * @param {Object} projectData - project Object that will be created in the backend
+   */
   sendCreate: thunk(async (actions, projectData) => {
     console.log('send CREATE project:', { projectData });
     await api
@@ -182,6 +228,10 @@ const projectModel = {
       .catch(console.error);
   }),
 
+  /**
+   * update attributes of a project stored in the backend
+   * @param {Object} projectData - project Object that will be updated in the backend, `projectID`  must be set as a project attribute
+   */
   sendUpdate: thunk(async (actions, projectData) => {
     console.log('send UPDATE project:', { projectData });
     actions.set(projectData);
@@ -190,7 +240,6 @@ const projectModel = {
       .put(projectData)
       .res(console.log)
       .catch(console.error);
-
     actions.set(projectData);
   }),
 };
