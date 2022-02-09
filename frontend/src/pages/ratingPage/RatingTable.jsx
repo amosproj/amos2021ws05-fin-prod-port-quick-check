@@ -166,7 +166,7 @@ function RatingRowCategorical({ rating }) {
       <Text fontSize="xl" mb={4} align="left" w="full">
         {rating.rating.criterion}
       </Text>
-      <Flex direction="row" justifyContent="space-between" w="full" mb={2} alignItems={'center'}>
+      <Flex direction="row" justifyContent="space-between" w="full" mb={2} alignItems="flex-start">
         <VStack w="40%" alignItems="left" spacing={0} mx={1}>
           <Text fontSize={'sm'} align="left">
             Answer
@@ -178,21 +178,27 @@ function RatingRowCategorical({ rating }) {
             onChange={(e) => handleUpdateAnswer(e.target.value)}
           />
         </VStack>
+        <VStack w={40} alignItems="left" spacing={0} mx={1}>
+          <Text fontSize={'sm'} align="left">
+            Complexity
+          </Text>
+          <Selection
+            // w="9rem"
+            w="full"
+            options={[score.GERING, score.MITTEL, score.HOCH]}
+            selected={rating.score ? rating.score : undefined}
+            placeholder="---"
+            onChange={handleUpdateScore}
+          />
+        </VStack>
 
-        <Selection
-          w="125px"
-          mb="5"
-          options={[score.GERING, score.MITTEL, score.HOCH]}
-          selected={rating.score ? rating.score : score.MITTEL}
-          onChange={handleUpdateScore}
-        ></Selection>
         <VStack w="40%" alignItems="left" spacing={0} mx={1}>
           <Text fontSize="sm" align="left">
             Comment
           </Text>
           <Textarea
             placeholder="Comment"
-            value={rating.comment ? rating.comment : ''}
+            value={rating.comment}
             onChange={(e) => handleUpdateComment(e.target.value)}
           />
         </VStack>

@@ -1,7 +1,6 @@
 import { React, useEffect, useState } from 'react';
-import { Button, Link, Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
+import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 import Page from '../../components/Page';
-import Card from '../../components/Card';
 import EvaluationTable from './EvaluationTable';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 import { useParams } from 'react-router-dom';

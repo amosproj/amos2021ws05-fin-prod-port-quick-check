@@ -1,9 +1,8 @@
 import React from 'react';
-import { Button, Heading, VStack, Text, Flex, HStack, Spacer, Link } from '@chakra-ui/react';
+import { Heading, VStack, Text, Flex } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { score } from '../../utils/const';
 import { useStoreActions, useStoreState } from 'easy-peasy';
 
 import Card from '../../components/Card';
