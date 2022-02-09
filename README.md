@@ -40,21 +40,6 @@ The core feature of the software is a calculation of benchmarks regarding comple
 
  ```
 --- 
-<!-- USAGE EXAMPLES -->
-## Usage/ Properties??
-TODO was soll hier hin? Properties (functional/nonfunctional?)
-### Basics
-### Configuration
-
-## Project Repository
-
-TODO: GitHUb Repository einzelne Ordner beschreiben
------------------------------------------------------------------------ 
-
-## Bill of Materials
-TODO: Bill of Materials hinzufügen
------------------------------------------------------------------------ 
-
 
 <!-- LICENSE -->
 ## License
