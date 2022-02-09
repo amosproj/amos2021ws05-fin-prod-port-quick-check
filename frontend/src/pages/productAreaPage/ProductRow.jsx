@@ -20,6 +20,13 @@ import { useStoreActions, useStoreState } from 'easy-peasy';
 import ProductVariant from './ProductVariant';
 import UploadButton from '../../components/Upload';
 
+/**
+ * Displays a contents related to a single product.
+ * 
+ * @param {Object} product - product to be depicted in ProductRow
+ * @param {boolean} editMode - determines if edit mode is turn on  
+ * @returns 
+ */
 export default function ProductRow({ product, editMode }) {
   const { isOpen, onToggle } = useDisclosure();
 

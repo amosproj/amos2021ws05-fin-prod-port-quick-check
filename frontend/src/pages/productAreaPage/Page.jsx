@@ -32,6 +32,10 @@ export default function ProductOverview() {
 
   const { projectID, productAreaID } = useParams();
 
+  /** 
+   * Fetches products initially from backend.
+   * Only executed when rendered.
+   */
   useEffect(() => {
     fetchProducts(projectID);
     console.log('rendered');
