@@ -39,7 +39,7 @@ public class HelloWorldControllerIntegrationTest {
     }
 
     /**
-     * The test should indicate that the server knows the request method, but the target resource doesn't support this
+     * The test indicates that the server knows the request method, but the target resource doesn't support this
      * method.
      *
      * @result The status code indicates that the method was not allowed.
@@ -59,6 +59,12 @@ public class HelloWorldControllerIntegrationTest {
     }
 
 
+    /**
+     * The test indicates that the server knows the request method "PUT", but the target resource doesn't support this
+     * method.
+     *
+     * @result The status code indicates that the method was not allowed.
+     */
     @Test
     public void notAllowedHTTPMethodPOST() throws Exception {
         assertThat(this.restTemplate.postForObject(
