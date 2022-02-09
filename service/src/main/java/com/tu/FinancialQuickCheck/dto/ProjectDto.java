@@ -28,6 +28,12 @@ public class ProjectDto {
         this.productAreas = new ListOfProductAreaDto(project).productAreas;
     }
 
+    /**
+     * Gets a List of projectUserEntities and returns a List of projectUserDtos
+     *
+     * @param projectUserEntities
+     * @return members (List of projectUserDtos)
+     */
     private List<ProjectUserDto> convertProjectUserEntities(List<ProjectUserEntity> projectUserEntities) {
         List<ProjectUserDto> members = new ArrayList<>();
 
