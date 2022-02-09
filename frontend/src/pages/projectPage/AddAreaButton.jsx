@@ -17,6 +17,9 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 
 import { api } from '../../utils/apiClient.js';
 
+/**
+ * button to add a project area
+ */
 export default function AddAreaButton(buttonProps) {
   const productAreas = useStoreState((state) => state.project.data.productAreas);
   const addProductArea = useStoreActions((actions) => actions.project.addProductArea);

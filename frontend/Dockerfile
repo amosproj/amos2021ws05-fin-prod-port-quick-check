@@ -1,14 +1,21 @@
-FROM node:16-alpine
+###    1. build react frontend
 
+FROM node:16-alpine AS builder
 WORKDIR /app
+COPY . .
+RUN yarn install --frozen-lockfile
+RUN yarn build
 
-COPY ./quickcheck/package*.json ./
 
-RUN yarn install
 
-# overwritten in dev-container by mount
-COPY ./quickcheck .
+###    2. build nginx server to host frontend
+
+FROM nginx:alpine
+WORKDIR /usr/share/nginx/html
+RUN rm -rf ./*
+
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder /app/build .
 
 EXPOSE 3000
-
-CMD ["yarn", "start"]
+ENTRYPOINT ["nginx", "-g", "daemon off;"]

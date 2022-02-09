@@ -2,14 +2,17 @@ import { React } from 'react';
 import { Button, Heading, IconButton, Spacer, List, Flex } from '@chakra-ui/react';
 import { DeleteIcon } from '@chakra-ui/icons';
 import { useStoreActions, useStoreState } from 'easy-peasy';
-import { useParams } from 'react-router-dom';
 
 import ConfirmClick from '../../components/ConfirmClick.jsx';
 
 import AddAreaButton from './AddAreaButton.jsx';
 
+/**
+ * Show information for single product area
+ * @param {dictionary} productArea - ProductArea information.
+ */
 function ProductArea({ productArea }) {
-  const { projectID } = useParams();
+  const { projectID } = useStoreState((state) => state.project.data);
 
   return (
     <>
@@ -30,7 +33,10 @@ function ProductArea({ productArea }) {
     </>
   );
 }
-
+/**
+ * List of Product Areas
+ * @param {state} editMode - Is the user in edit mode or not.
+ */
 export default function ProductAreaList({ editMode }) {
   const productAreas = useStoreState((state) => state.project.data.productAreas);
   const removeProductArea = useStoreActions((actions) => actions.project.removeProductArea);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Link, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import { StoreProvider } from 'easy-peasy';
 
@@ -9,7 +9,6 @@ import ProductOverview from './pages/productAreaPage/Page';
 import Project from './pages/projectPage/Page';
 import ResultPage from './pages/resultPage/Page';
 import Rating from './pages/ratingPage/Rating';
-import TestRange from './pages/TestRange';
 
 import store from './store';
 import theme from './styles/theme';
@@ -22,8 +21,6 @@ function App() {
         <StoreProvider store={store}>
           <Router>
             <Routes>
-              {/* TODO: use proper redirect (see https://gist.github.com/mjackson/b5748add2795ce7448a366ae8f8ae3bb) */}
-              {/* <Route path="test" element={<TestRange />} /> */}
               <Route path="/" element={<Navigate replace to="/login" />} />
               <Route path="login" element={<Login />} />
               <Route path="projects" element={<ProjectOverview />} />

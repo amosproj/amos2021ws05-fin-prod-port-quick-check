@@ -14,7 +14,7 @@ function capitalizeFirst(str) {
   const rest = str.substr(1);
   return first.toUpperCase() + rest;
 }
-
+/** Renders the rating page */
 export default function Rating() {
   const product = useStoreState((state) => state.rating.product);
   const categories = useStoreState((state) => state.rating.categories);

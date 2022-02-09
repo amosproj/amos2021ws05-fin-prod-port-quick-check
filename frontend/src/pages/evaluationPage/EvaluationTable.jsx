@@ -2,6 +2,7 @@ import { Flex, VStack, List, Text } from '@chakra-ui/react';
 import React from 'react';
 import Card from '../../components/Card';
 
+/** Renders a evaluation row */
 function RatingRow({ rating }) {
   return (
     <Card layerStyle="card_bordered" justifyContent="space-between" direction="column">
@@ -31,6 +32,7 @@ function RatingRow({ rating }) {
   );
 }
 
+/** Renders the evaluation table */
 export default function EvaluationTable({ ratings }) {
   return (
     <List spacing={2} w="full" align="center">
