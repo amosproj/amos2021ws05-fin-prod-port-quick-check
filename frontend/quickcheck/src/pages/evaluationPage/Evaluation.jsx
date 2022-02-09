@@ -52,7 +52,7 @@ export default function Evaluation() {
       </Page>
     );
   }
-  if (productData.ratings != undefined && productData.productID != -1) {
+  if (productData.ratings !== undefined && productData.productID !== -1) {
     computeEvaluationPerCategory(productData.ratings);
   }
   return <DataTabs data={Object.entries(ratingsPerCategory)} />;

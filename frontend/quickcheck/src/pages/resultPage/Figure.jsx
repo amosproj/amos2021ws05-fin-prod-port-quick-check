@@ -39,7 +39,7 @@ function ShowPieCharts({ results }) {
       for (let r = 0; r < results[j]['ratings'].length; r++) {
         if (results[j]['ratings'][r]['answer'] == null) {
           unfinishedFlag = 1;
-        } else if (results[j]['ratings'][r]['rating']['id'] == 10) {
+        } else if (results[j]['ratings'][r]['rating']['id'] === 10) {
           var kundenValuesTmp = results[j]['ratings'][r]['answer'].split(', ');
           for (let k = 0; k < kundenValuesTmp.length; k++) {
             kundenValues[k] = parseFloat(kundenValuesTmp[k]);
@@ -79,7 +79,7 @@ function ShowPieCharts({ results }) {
       rows[i][j][1] = results[index]['productName'];
       rows[i][j][2] = kundenValues;
       rows[i][j][3] = adaptedRatingValues;
-      if (unfinishedFlag == 1) {
+      if (unfinishedFlag === 1) {
         rows[i][j][4] = 'unfinished';
       } else {
         rows[i][j][4] = results[index]['counts'];
@@ -145,15 +145,14 @@ function Figure({ results }) {
 
     var kreditradius = 0;
     var kreditvolumen = 0;
-    var kundenValues = [0, 0, 0];
     for (let i = 0; i < results.length; i++) {
       for (let r = 0; r < results[i]['ratings'].length; r++) {
         //console.log(results[i]["ratings"][r]["rating"]["criterion"])
-        if (results[i]['ratings'][r]['rating']['id'] == 5) {
+        if (results[i]['ratings'][r]['rating']['id'] === 5) {
           marge = parseFloat(results[i]['ratings'][r]['answer']);
           //console.log(marge)
         }
-        if (results[i]['ratings'][r]['rating']['id'] == 4) {
+        if (results[i]['ratings'][r]['rating']['id'] === 4) {
           kreditvolumen = parseFloat(results[i]['ratings'][r]['answer']);
           kreditradius = kreditvolumen / 3.14;
           kreditradius = Math.sqrt(kreditradius);
