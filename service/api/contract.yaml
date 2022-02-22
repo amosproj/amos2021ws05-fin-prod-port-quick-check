@@ -340,6 +340,27 @@ paths:
           $ref: 'components_responses.yaml#/components/responses/404notfound'
         '5XX':
           $ref: 'components_responses.yaml#/components/responses/5XXserverError'
+    post:
+      summary: create data for economic or complexity rating
+      parameters:
+        - $ref: 'components_parameters.yaml#/components/parameters/productID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: 'components_schemas.yaml#/components/schemas/postProductRating'
+      responses:
+        201:
+          description: returns list of rating objects for productID
+          content:
+            application/json:
+              schema:
+                $ref: 'components_schemas.yaml#/components/schemas/postProductRating'
+        404:
+          $ref: 'components_responses.yaml#/components/responses/404notfound'
+        '5XX':
+          $ref: 'components_responses.yaml#/components/responses/5XXserverError'
     put:
       summary: updates data for economic or complexity rating
       parameters:

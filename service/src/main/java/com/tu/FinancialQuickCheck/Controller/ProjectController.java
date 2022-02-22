@@ -88,7 +88,7 @@ public class ProjectController {
     }
 
     /**
-     * This method is updating project information like: name, areas or members.
+     * This method is updating project information like name, areas or members.
      *
      * @param projectDto The project data transfer object.
      * @param projectID The ID of the project that has to be updated.

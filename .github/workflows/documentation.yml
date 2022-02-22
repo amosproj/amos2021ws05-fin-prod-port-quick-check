@@ -26,13 +26,24 @@ jobs:
     
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
+      
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      
+      - name: Install required tools
+        run: npm install speccy -g
+      
+      - name: Resolve api-spec file
+        run: speccy resolve service/api/contract.yaml -o service/api/complete.yaml
+                
       - name: Generate Swagger UI
         uses: Legion2/swagger-ui-action@v1
         with:
           generator: html
           output: swagger-ui
-          spec-file: service/api/contract.yaml
+          spec-file: service/api/complete.yaml
+      
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:

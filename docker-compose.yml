@@ -1,5 +1,7 @@
 version : '3.5'
 
+# file .env is sourced for env variables by docker compose
+
 services:
   database:
     image: "mysql:8"
@@ -9,13 +11,11 @@ services:
     volumes:
       - ./DummyData/customconfig.cnf:/etc/mysql/conf.d/custom.cnf
       - ./DummyData/sqlfiles:/docker-entrypoint-initdb.d
-    environment:
-      - "MYSQL_ROOT_PASSWORD=secret"
-      -  "MYSQL_DATABASE=bootdb"
+    env_file: database.env
     expose:
-      - "3306"
+      - 3306
     ports:
-      - "3306:3306"
+      - 3306:3306
 
   service:
     image: "maven:3.6.3-jdk-11-slim"
@@ -25,15 +25,17 @@ services:
       - ./service:/app
       - ./service/pom.xml:/app/pom.xml
     ports:
-      - "8080:8080"
+      - 8080:8080
     depends_on:
       - database
 
   frontend:
     build: ./frontend
     container_name: frontend
+    environment:
+      - "API_URL=localhost:8080/"
     ports:
-      - "80:3000"
+      - 3000:3000
     depends_on:
       - database
       - service
