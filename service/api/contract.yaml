@@ -19,6 +19,24 @@ paths:
                   $ref: 'components_schema_attributes.yaml#/components/schemas/productArea'
         404:
           $ref: 'components_responses.yaml#/components/responses/404notfound'
+    post:
+      summary: creates a new product area
+      requestBody:
+        description: product area object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: 'components_schema_attributes.yaml#/components/schemas/createProductArea'
+      responses:
+        200:
+          description: returns created product area object
+          content:
+            application/json:
+              schema:
+                $ref: 'components_schema_attributes.yaml#/components/schemas/productArea'
+        400:
+          $ref: 'components_responses.yaml#/components/responses/400badrequest'
 
   /ratings:
     get:
@@ -116,6 +134,21 @@ paths:
           $ref: 'components_responses.yaml#/components/responses/5XXserverError'
 
   /projects/{projectID}/users:
+    get:
+      summary: retrieves all assigned users of a project
+      parameters:
+        - $ref: 'components_parameters.yaml#/components/parameters/projectID'
+      responses:
+        200:
+          description: returns list of user objects
+          content:
+            application/json:
+              schema:
+                $ref: 'components_schemas.yaml#/components/schemas/members'
+        404:
+          $ref: 'components_responses.yaml#/components/responses/404notfound'
+        '5XX':
+          $ref: 'components_responses.yaml#/components/responses/5XXserverError'
     post:
       summary: assigns users to projectID
       parameters:

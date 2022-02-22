@@ -3,16 +3,13 @@ package com.tu.FinancialQuickCheck.Service;
 import com.tu.FinancialQuickCheck.Exceptions.BadRequest;
 import com.tu.FinancialQuickCheck.Exceptions.ResourceNotFound;
 import com.tu.FinancialQuickCheck.db.*;
-import com.tu.FinancialQuickCheck.dto.ListOfRatingDto;
 import com.tu.FinancialQuickCheck.dto.ListOfUserDto;
 import com.tu.FinancialQuickCheck.dto.UserDto;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.regex.Pattern;
 
 /**
  * Underlying Service for User- aka. member-management.
@@ -28,20 +25,19 @@ public class UserService {
     }
 
     /**
-     * Returns a List of all Users without passwords.
+     * Retrieves all existing users from db without passwords.
+     *
+     * @return A list of users, is empty if no users exists.
      */
     public List<UserDto> getAllUsers() {
         return new ListOfUserDto(this.repository.findAll()).users;
     }
 
-
     /**
-     * Search for User by given email.
+     * Retrieves a user from db without password.
      *
-     * @param email The email of the user which should be found.
-     * @throws ResourceNotFound When the user is not found.
-     * @throws BadRequest When the input is incorrect or missing.
-     * @return userDto The user data transfer object.
+     * @param email The email of the user used as a unique identifier for search
+     * @return user if exists, else null
      */
     public UserDto findByEmail(String email) {
         Optional<UserEntity> entity = repository.findByEmail(email);
@@ -49,14 +45,12 @@ public class UserService {
         return entity.map(UserDto::new).orElse(null);
     }
 
-
     /**
-     * Create new User and saves in (user)repository.
+     * Creates and persists a user entity to db if userName, userEmail and password are provided and userEmail is valid.
      *
-     * @param userDto The user data transfer object.
-     * @return UserDto The user data transfer object.
+     * @param userDto The user object contains the necessary information.
+     * @return The created user incl. unique identifier or null if input is missing/incorrect
      */
-    //TODO: (prio: low) add constraints for input --> check if String is empty else return Bad Request
     public UserDto createUser(UserDto userDto) {
 
         if (userDto.userName != null && userDto.userEmail != null && userDto.password != null
@@ -74,16 +68,16 @@ public class UserService {
         }
     }
 
-
     /**
-     * This method is updating a user by its email.
+     * Updates user information in db.
      *
-     * @param userDto The users data transfer object.
-     * @param email The email of the user which should be updated.
-     * @throws ResourceNotFound When the user cannot be find.
-     * @return The updated user data transfer object.
+     * Attributes that can be updated: userEmail, userName, password
+     *
+     * @param userDto The user object contains the necessary information.
+     * @param email The email of the user used as a unique identifier for search
+     * @throws BadRequest if userEmail, userName, password are null or if new userEmail is not valid
+     * @return userDto with updated information
      */
-    //TODO: (prio: low) add constraints for input --> check if String is empty else return Bad Request
     public UserDto updateUserByEmail(UserDto userDto, String email) {
 
         if ((userDto.userEmail == null && userDto.userName == null && userDto.password == null) ||
@@ -117,12 +111,11 @@ public class UserService {
         }
     }
 
-
     /**
-     * Deletes user.
+     * Removes user from db.
      *
-     * @param userID The ID of the user which should be deleted by its ID.
-     * @throws ResourceNotFound When the user ID cannot be found.
+     * @param userID The unique identifier of the user.
+     * @return True if user was deleted
      */
     public Boolean deleteUserById(UUID userID) {
 
@@ -133,6 +126,5 @@ public class UserService {
             return Boolean.TRUE;
         }
     }
-
 
 }

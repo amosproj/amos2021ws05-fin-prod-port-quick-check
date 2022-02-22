@@ -44,29 +44,19 @@ public class ProductServiceTest {
 
     private ProductDto emptyProductDto;
     private ProductDto tmpProductDto1;
-    private ProductDto updateDto;
     private ProductDto preProductDto;
     private ProductDto fullProductDto;
     private ProductDto productDtoVariation;
-
-    private ProductAreaDto fullProductAreaDto;
-    private ProductAreaDto preProductAreaDto;
 
     private ProductEntity preProductEntity;
 
     private ProjectEntity project;
     private ProjectEntity preProjectEntity;
 
-    private List<ProjectEntity> preProjectEntities;
-    private List<ProductAreaEntity> preProductAreaEntities;
-
     private ProductAreaEntity preProductAreaEntity;
 
-    private ProjectEntity projectEntity;
     private ProductEntity entity;
-    private ProductRatingEntity productRatingEntity;
     private List<RatingEntity> ratingEntities;
-    private List<RatingEntity> econimicRatingEntities;
     private List<RatingEntity> complexityRatingEntities;
     private ProductDto createDto;
     private ProductDto createEmptyDto;
@@ -100,7 +90,7 @@ public class ProductServiceTest {
         preProjectEntity.productEntities = emptyProductEntitiesList;
         preProjectEntity.projectUserEntities = emptyProjectUserEntitiesList;
 
-        preProjectEntities = new ArrayList<>();
+        List<ProjectEntity> preProjectEntities = new ArrayList<>();
         preProjectEntities.add(preProjectEntity);
 
         //create preProductArea for Testing
@@ -116,10 +106,10 @@ public class ProductServiceTest {
         preProductEntity.productarea = preProductAreaEntity;
         preProductEntity.project = preProjectEntity;
 
-        preProductAreaEntities = new ArrayList<>();
+        List<ProductAreaEntity> preProductAreaEntities = new ArrayList<>();
         preProductAreaEntities.add(preProductAreaEntity);
 
-        preProductAreaDto = new ProductAreaDto(
+        ProductAreaDto preProductAreaDto = new ProductAreaDto(
                 42,
                 "examplePreAreaName",
                 "examplePreCat"
@@ -131,7 +121,7 @@ public class ProductServiceTest {
         preProductDto.projectID = 1;
         preProductDto.productArea = preProductAreaDto;
 
-        fullProductAreaDto = new ProductAreaDto(1, "exampleAreaName", "exampleCat");
+        ProductAreaDto fullProductAreaDto = new ProductAreaDto(1, "exampleAreaName", "exampleCat");
 
         fullProductDto = new ProductDto();
         fullProductDto.productName = "exampleProduct";
@@ -145,24 +135,24 @@ public class ProductServiceTest {
         productDtoVariation.productArea = fullProductAreaDto;
         productDtoVariation.projectID = 1;
 
-        updateDto = new ProductDto();
+        ProductDto updateDto = new ProductDto();
         updateDto.productName = "updatedDto";
         updateDto.productID = 111;
         updateDto.productArea = preProductAreaDto;
         updateDto.projectID = 1;
 
-        projectEntity = new ProjectEntity();
+        ProjectEntity projectEntity = new ProjectEntity();
         projectEntity.name = "DKB";
 
         String name = "Produkt";
 
-        productRatingEntity = new ProductRatingEntity();
+        ProductRatingEntity productRatingEntity = new ProductRatingEntity();
         entity = new ProductEntity();
         entity.name = name;
         entity.project = projectEntity;
         entity.productRatingEntities = new ArrayList<>();
         ratingEntities = new ArrayList<>();
-        econimicRatingEntities = new ArrayList<>();
+        List<RatingEntity> econimicRatingEntities = new ArrayList<>();
         complexityRatingEntities = new ArrayList<>();
         for(int i = 1; i < 20; i++){
             ProductRatingEntity tmp = new ProductRatingEntity();
@@ -215,16 +205,16 @@ public class ProductServiceTest {
      * testFindById2: productID exists --> return ProductDto
      */
     @Test
-    public void testFindById_productNotFound_returnNull() {
+    public void test_findById_productNotFound_returnNull() {
         assertNull(service.findById(1));
     }
 
     @Test
-    public void testFindById_productExists_returnProductDto() {
-        // Step 1: provide knowledge
+    public void test_findById_productExists_returnProductDto() {
+        // provide knowledge
         when(repository.findById(preProductDto.productID)).thenReturn(Optional.of(preProductEntity));
 
-        // Step 2: execute findById()
+        // execute and assert test method
         ProductDto out = service.findById(preProductDto.productID);
 
         assertAll("find Product",
@@ -245,7 +235,7 @@ public class ProductServiceTest {
      * testWrapper_createProduct: projectID/productAreaID exists --> return List<ProductDto>
      */
     @Test
-    public void testWrapperCreateProduct_resourceNotFound_projectID() {
+    public void test_wrapperCreateProduct_resourceNotFound_projectID() {
         Exception exception = assertThrows(ResourceNotFound.class,
                 () -> service.wrapperCreateProduct(1, fullProductDto));
 
@@ -256,9 +246,9 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testWrapperCreateProduct_resourceNotFound_productAreaID() {
+    public void test_wrapperCreateProduct_resourceNotFound_productAreaID() {
         // provide knowledge
-        when(projectRepository.getById(1)).thenReturn(project);
+        when(projectRepository.findById(1)).thenReturn(Optional.of(project));
 
         // execute and assert test method
         Exception exception = assertThrows(ResourceNotFound.class,
@@ -271,19 +261,16 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testWrapperCreateProduct_success_withoutProductVariations() {
-        // Step 1: provide knowledge
+    public void test_wrapperCreateProduct_success_withoutProductVariations() {
+        // provide knowledge
         when(projectRepository.findById(1)).thenReturn(Optional.of(preProjectEntity));
-        when(repository.existsByProjectAndProductarea(
-                projectRepository.getById(1),
-                productAreaRepository.getById(1))).thenReturn(true);
+        when(productAreaRepository.findById(1)).thenReturn(Optional.of(preProductAreaEntity));
 
-        // Step 2: execute and assert test method
+        // execute and assert test method
         List<ProductDto> out = service.wrapperCreateProduct(1, fullProductDto);
 
         for(ProductDto productDtoOut : out) {
             assertAll("wrapper create product",
-                    () -> assertNotNull(productDtoOut.productID),
                     () -> assertEquals(fullProductDto.productID, productDtoOut.productID),
                     () -> assertEquals(fullProductDto.productName, productDtoOut.productName),
                     () -> assertEquals(fullProductDto.projectID, productDtoOut.projectID),
@@ -312,8 +299,7 @@ public class ProductServiceTest {
      * testCreateProduct7: input contains full Product
      */
     @Test
-    public void testCreateProduct_resourceNotFound_projectIdNotFound() {
-        // Step 1: execute and assert createProduct()
+    public void test_createProduct_resourceNotFound_projectIdNotFound() {
         Exception exception = assertThrows(ResourceNotFound.class,
                 () -> service.createProduct(1, fullProductDto));
 
@@ -324,11 +310,11 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testCreateProduct_resurceNotFound_productAreaIdNotFound() {
-        // Step 1: provide knowledge
-        when(projectRepository.getById(1)).thenReturn(preProjectEntity);
+    public void test_createProduct_resurceNotFound_productAreaIdNotFound() {
+        // provide knowledge
+        when(projectRepository.findById(1)).thenReturn(Optional.of(preProjectEntity));
 
-        // Step 2: execute and assert createProduct()
+        // execute and assert test method
         Exception exception = assertThrows(ResourceNotFound.class,
                 () -> service.createProduct(1, fullProductDto));
 
@@ -339,33 +325,35 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testCreateProduct_returnNull_projectNameMissing() {
-        // Step 0: init test object
+    public void test_createProduct_badRequest_productNameMissing() {
+        // init test object
         fullProductDto.productName = null;
 
-        // Step 1: provide knowledge
-        when(repository.existsByProjectAndProductarea(
-                projectRepository.getById(1),
-                productAreaRepository.getById(1))).thenReturn(true);
+        // provide knowledge
+        when(projectRepository.findById(1)).thenReturn(Optional.of(preProjectEntity));
+        when(productAreaRepository.findById(1)).thenReturn(Optional.of(preProductAreaEntity));
 
-        // Step 2: execute and assert test method
-        assertNull(service.createProduct(1, fullProductDto));
+        // execute and assert test method
+        Exception exception = assertThrows(BadRequest.class,
+                () -> service.createProduct(1, fullProductDto));
+
+        String expectedMessage = "Input is missing/incorrect";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 
     @Test
-    public void testCreateProduct_success_withoutProductVariations() {
-        // Step 1: provide knowledge
+    public void test_createProduct_success_withoutProductVariations() {
+        // provide knowledge
         when(projectRepository.findById(1)).thenReturn(Optional.of(preProjectEntity));
-        when(repository.existsByProjectAndProductarea(
-                projectRepository.getById(1),
-                productAreaRepository.getById(1))).thenReturn(true);
+        when(productAreaRepository.findById(1)).thenReturn(Optional.of(preProductAreaEntity));
 
-        // Step 2: execute and assert createProduct()
+        // execute and assert test method
         List<ProductDto> out = service.createProduct(1, fullProductDto);
 
         for(ProductDto productDtoOut : out) {
             assertAll("create Product",
-                    () -> assertNotNull(productDtoOut.productID),
                     () -> assertEquals(fullProductDto.productID, productDtoOut.productID),
                     () -> assertEquals(fullProductDto.productName, productDtoOut.productName),
                     () -> assertEquals(fullProductDto.projectID, productDtoOut.projectID),
@@ -380,22 +368,19 @@ public class ProductServiceTest {
 
 
     @Test
-    public void testCreateProduct_success_withProductVariations() {
-        // Step 1: provide knowledge
-        when(projectRepository.findById(1)).thenReturn(Optional.of(preProjectEntity));
-        when(repository.existsByProjectAndProductarea(
-                projectRepository.getById(1),
-                productAreaRepository.getById(1))).thenReturn(true);
-
+    public void test_createProduct_success_withProductVariations() {
         fullProductDto.productVariations = new ArrayList<>();
         fullProductDto.productVariations.add(productDtoVariation);
 
-        // Step 2: execute and assert createProduct()
+        // provide knowledge
+        when(projectRepository.findById(1)).thenReturn(Optional.of(preProjectEntity));
+        when(productAreaRepository.findById(1)).thenReturn(Optional.of(preProductAreaEntity));
+
+        // execute and assert test method
         List<ProductDto> out = service.createProduct(1, fullProductDto);
 
        for(ProductDto productDtoOut : out) {
            assertAll("create Product",
-                   () -> assertNotNull(productDtoOut.productID),
                    () -> assertEquals(fullProductDto.productName, productDtoOut.productName),
                    () -> assertEquals(1, productDtoOut.projectID),
                    () -> assertEquals(1, productDtoOut.productArea.id),
@@ -407,11 +392,13 @@ public class ProductServiceTest {
        }
     }
 
-    //TODO: (discuss with Alex) was soll der Test machen?
     @Test
-    @Disabled
-    public void testCreateProductVariation_1(){
-        // Step 1: provide knowledge
+    @Disabled("(discuss with Alex) was soll der Test machen?")
+    public void test_createProductVariation_1(){
+        fullProductDto.productID = 666;
+        fullProductDto.parentID = 1;
+
+        // provide knowledge
         when(repository.existsById(1)).thenReturn(true);
         when(repository.findById(1)).thenReturn(Optional.ofNullable(preProductEntity));
         when(repository.existsByProjectAndProductarea(
@@ -420,26 +407,20 @@ public class ProductServiceTest {
 
         when(projectRepository.findById(1)).thenReturn(Optional.of(preProjectEntity));
 
-        fullProductDto.productID = 666;
-        fullProductDto.parentID = 1;
+
+        // execute and assert test method
         List<ProductDto> out = service.createProduct(1, fullProductDto);
 
-        List<ProductDto> emptyList = new ArrayList<>();
-        assertNotEquals(emptyList.size(), out.size());
+        assertNotEquals(0, out.size());
     }
 
-    //TODO: implement when multiple creations is posible
     @Test
-    @Disabled
-    public void testCreateMultipleProducts1_withVariations(){
-
-        // Step 1: provide knowledge
+    @Disabled("implement when multiple creations is posible")
+    public void test_createMultipleProducts1_withVariations(){
+        // provide knowledge
         when(projectRepository.findById(1)).thenReturn(Optional.of(preProjectEntity));
-        when(repository.existsByProjectAndProductarea(
-                projectRepository.getById(1),
-                productAreaRepository.getById(1))).thenReturn(true);
 
-
+        // execute and assert test method
     }
 
 
@@ -450,11 +431,13 @@ public class ProductServiceTest {
      * testGetParentEntity: parentID does exist -> return parent entity
      */
     @Test
-    public void testGetParentEntity_badRequest_parentIdNotFound() {
+    public void test_getParentEntity_badRequest_parentIdNotFound() {
         fullProductDto.parentID = 1;
+
+        // provide knowledge
         when(repository.findById(fullProductDto.parentID)).thenReturn(Optional.empty());
 
-        // Step 1: execute and assert createProduct()
+        // execute and assert test method
         Exception exception = assertThrows(BadRequest.class,
                 () -> service.getParentEntity(fullProductDto));
 
@@ -465,11 +448,13 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testGetParentEntity_success_parentIdFound() {
+    public void test_getParentEntity_success_parentIdFound() {
         fullProductDto.parentID = 1;
+
+        // provide knowledge
         when(repository.findById(fullProductDto.parentID)).thenReturn(Optional.of(preProductEntity));
 
-        // Step 1: execute and assert createProduct()
+        // execute and assert test method
         ProductEntity out =  service.getParentEntity(fullProductDto);
 
         assertNotNull(out);
@@ -483,17 +468,16 @@ public class ProductServiceTest {
      * testUpdateById: correct input -> attributes changed according to input
      */
     @Test
-    public void testUpdateById_productIdNotFound_returnNull() {
+    public void test_updateById_productIdNotFound_returnNull() {
         assertNull(service.updateById(tmpProductDto1, 1));
     }
 
     @Test
-    public void testUpdateById_success_inputMissing_nothingToUpdate() {
-        // Step 1: provide knowledge
-        when(repository.existsById(1)).thenReturn(true);
+    public void test_updateById_success_inputMissing_nothingToUpdate() {
+        // provide knowledge
         when(repository.findById(1)).thenReturn(Optional.ofNullable(preProductEntity));
 
-        // Step 2: execute and assert createProduct()
+        // execute and assert test method
         ProductDto out = service.updateById(emptyProductDto, 1);
 
         assertEquals(preProductEntity.name, out.productName);
@@ -501,14 +485,14 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testUpdateById_success_updateNameAndComment() {
-        // Step 1: provide knowledge
-        when(repository.existsById(42)).thenReturn(true);
-        when(repository.findById(42)).thenReturn(Optional.of(preProductEntity));
-
-        // Step 2: execute and assert createProduct()
+    public void test_updateById_success_updateNameAndComment() {
         preProductDto.productName = "updatedName";
         preProductDto.comment = "updateComment";
+
+        // provide knowledge
+        when(repository.findById(42)).thenReturn(Optional.of(preProductEntity));
+
+        // execute and assert test method
         ProductDto out = service.updateById(preProductDto, 42);
 
         assertEquals("updatedName", out.productName);
@@ -516,33 +500,30 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testUpdateById_success_updateComment(){
-        // Step 1: provide knowledge
-        when(repository.existsById(42)).thenReturn(true);
-        when(repository.findById(42)).thenReturn(Optional.of(preProductEntity));
-
+    public void test_updateById_success_updateComment(){
         preProductDto.comment = "updateComment";
         preProductDto.productName = null;
 
-        // Step 2: execute and assert createProduct()
+        // provide knowledge
+        when(repository.findById(42)).thenReturn(Optional.of(preProductEntity));
+
+        // execute and assert test method
         ProductDto out = service.updateById(preProductDto, 42);
 
         assertAll("update Product",
-                () -> assertNotNull(out.productID),
                 () -> assertEquals(preProductEntity.name, out.productName),
                 () -> assertEquals("updateComment", out.comment),
                 () -> assertNull(out.ratings));
     }
 
     @Test
-    public void testUpdateById_success_updateComment_nothingToUpdate(){
+    public void test_updateById_success_updateComment_nothingToUpdate(){
         preProductDto.comment = "";
 
-        // Step 1: provide knowledge
-        when(repository.existsById(42)).thenReturn(true);
+        // provide knowledge
         when(repository.findById(42)).thenReturn(Optional.of(preProductEntity));
 
-        // Step 2: execute and assert createProduct()
+        // execute and assert test method
         ProductDto out = service.updateById(preProductDto, 42);
 
         assertAll("update Product comment",
@@ -551,26 +532,24 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testUpdateById_updateProductName_success(){
-        // Step 1: provide knowledge
-        when(repository.existsById(42)).thenReturn(true);
+    public void test_updateById_updateProductName_success(){
+        // provide knowledge
         when(repository.findById(42)).thenReturn(Optional.of(preProductEntity));
 
         preProductDto.productName = "updatedName";
         preProductDto.comment = null;
 
-        // Step 2: execute and assert createProduct()
+        // execute and assert test method
         ProductDto out = service.updateById(preProductDto, 42);
 
         assertAll("update Product",
-                () -> assertNotNull(out.productID),
                 () -> assertEquals(preProductDto.productName, out.productName),
                 () -> assertEquals(preProductEntity.comment, out.comment),
                 () -> assertNull(out.ratings));
     }
 
     @Test
-    public void testGetProductsByProjectId_IdNotFound(){
+    public void test_getProductsByProjectId_IdNotFound(){
 
         Exception exception = assertThrows(ResourceNotFound.class,
                 () -> service.getProductsByProjectId(404));
@@ -582,14 +561,13 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testUpdateById_badRequest_productNameEmptyString() {
-        // Step 1: provide knowledge
-        when(repository.existsById(42)).thenReturn(true);
-        when(repository.findById(42)).thenReturn(Optional.of(preProductEntity));
-
+    public void test_updateById_badRequest_productNameEmptyString() {
         preProductDto.productName = "";
 
-        // Step 1: execute and assert createProduct()
+        // provide knowledge
+        when(repository.findById(42)).thenReturn(Optional.of(preProductEntity));
+
+        // execute and assert test method
         Exception exception = assertThrows(BadRequest.class,
                 () -> service.updateById(preProductDto, 42));
 
@@ -603,7 +581,7 @@ public class ProductServiceTest {
      * tests for GetProductsByProjectId()
      */
     @Test
-    public void testGetProductsByProjectId_resourceNotFound_NotFound() {
+    public void test_getProductsByProjectId_resourceNotFound_NotFound() {
 
         Exception exception = assertThrows(ResourceNotFound.class,
                 () -> service.getProductsByProjectId(404));
@@ -616,16 +594,18 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testGetProductsByProjectId_succsess_withoutDUMMYProducts(){
-        //step 1: provide knowledge
+    public void test_getProductsByProjectId_succsess_withoutDUMMYProducts(){
         List<ProductEntity> productEntities = new ArrayList<>();
         preProductEntity.name = "Produkt1";
         productEntities.add(preProductEntity);
+        preProjectEntity.productEntities = new ArrayList<>();
+        preProjectEntity.productEntities.addAll(productEntities);
 
-        when(projectRepository.existsById(preProjectEntity.id)).thenReturn(true);
+        // provide knowledge
         when(projectRepository.findById(preProjectEntity.id)).thenReturn(Optional.of(preProjectEntity));
         when(repository.findByProject(preProjectEntity)).thenReturn(productEntities);
 
+        // execute and assert test method
         List<ProductDto> out = service.getProductsByProjectId(preProjectEntity.id);
 
         assertEquals(productEntities.size(), out.size());
@@ -633,16 +613,15 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testGetProductsByProjectId_succsess_withDUMMYProducts(){
-        //step 1: provide knowledge
+    public void test_getProductsByProjectId_succsess_withDUMMYProducts(){
         List<ProductEntity> productEntities = new ArrayList<>();
         preProductEntity.name = "DUMMY";
         productEntities.add(preProductEntity);
 
-        when(projectRepository.existsById(preProjectEntity.id)).thenReturn(true);
+        // provide knowledge
         when(projectRepository.findById(preProjectEntity.id)).thenReturn(Optional.of(preProjectEntity));
-        when(repository.findByProject(preProjectEntity)).thenReturn(productEntities);
 
+        // execute and assert test method
         List<ProductDto> out = service.getProductsByProjectId(preProjectEntity.id);
 
         assertNotEquals(productEntities.size(), out.size());
@@ -654,7 +633,7 @@ public class ProductServiceTest {
      * tests for getProductsByProjectIdAndProductAreaId()
      */
     @Test
-    public void testGetProductsByProjectIdAndProductAreaId_resourceNotFound_projectID() {
+    public void test_getProductsByProjectIdAndProductAreaId_resourceNotFound_projectID() {
         Exception exception = assertThrows(ResourceNotFound.class,
                 () -> service.getProductsByProjectIdAndProductAreaId(404, 404));
 
@@ -665,17 +644,17 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testGetProductsByProjectIdAndProductAreaId_succsess_withoutDUMMYProducts(){
-        //step 1: provide knowledge
+    public void test_getProductsByProjectIdAndProductAreaId_succsess_withoutDUMMYProducts(){
         List<ProductEntity> productEntities = new ArrayList<>();
         preProductEntity.name = "Produkt1";
         productEntities.add(preProductEntity);
 
-        when(projectRepository.existsById(preProjectEntity.id)).thenReturn(true);
+        // provide knowledge
         when(projectRepository.findById(preProjectEntity.id)).thenReturn(Optional.of(preProjectEntity));
         when(productAreaRepository.getById(preProductAreaEntity.id)).thenReturn(preProductAreaEntity);
         when(repository.findByProjectAndProductarea(preProjectEntity, preProductAreaEntity)).thenReturn(productEntities);
 
+        // execute and assert test method
         List<ProductDto> out = service.getProductsByProjectIdAndProductAreaId(preProjectEntity.id, 1);
 
         assertEquals(productEntities.size(), out.size());
@@ -683,17 +662,17 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testGetProductsByProjectIdAndProductAreaId_succsess_withDUMMYProducts(){
-        //step 1: provide knowledge
+    public void test_getProductsByProjectIdAndProductAreaId_succsess_withDUMMYProducts(){
         List<ProductEntity> productEntities = new ArrayList<>();
         preProductEntity.name = "DUMMY";
         productEntities.add(preProductEntity);
 
-        when(projectRepository.existsById(preProjectEntity.id)).thenReturn(true);
+        // provide knowledge
         when(projectRepository.findById(preProjectEntity.id)).thenReturn(Optional.of(preProjectEntity));
         when(productAreaRepository.getById(preProductAreaEntity.id)).thenReturn(preProductAreaEntity);
         when(repository.findByProjectAndProductarea(preProjectEntity, preProductAreaEntity)).thenReturn(productEntities);
 
+        // execute and assert test method
         List<ProductDto> out = service.getProductsByProjectIdAndProductAreaId(preProjectEntity.id, 1);
 
         assertNotEquals(productEntities.size(), out.size());
@@ -704,7 +683,7 @@ public class ProductServiceTest {
      * tests for calculateProductRatingProgress()
      */
     @Test
-    public void testCalculateProductRatingProgress_productRatingEntitiesIsNull(){
+    public void test_calculateProductRatingProgress_productRatingEntitiesIsNull(){
 
         float[] out = service.calculateProductRatingProgress(preProductEntity);
 
@@ -713,7 +692,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testCalculateProductRatingProgress_productRatingEntitiesIsEmpty(){
+    public void test_calculateProductRatingProgress_productRatingEntitiesIsEmpty(){
         preProductEntity.productRatingEntities = new ArrayList<>();
 
         float[] out = service.calculateProductRatingProgress(preProductEntity);
@@ -723,7 +702,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testCalculateProductRatingProgress_productRatingEntitiesExist(){
+    public void test_calculateProductRatingProgress_productRatingEntitiesExist(){
 
         float[] out = service.calculateProductRatingProgress(entity);
 
@@ -739,19 +718,18 @@ public class ProductServiceTest {
      * testCreateProductRatings: productID does not exist -> return null
      */
     @Test
-    public void testCreateProductRatings_success() {
-        // Step 0: init test object
+    public void test_createProductRatings_success() {
+        // init test object
         int productID = 1;
 
-        // Step 1: provide knowledge
+        // provide knowledge
         when(repository.existsById(productID)).thenReturn(true);
         when(repository.getById(productID)).thenReturn(entity);
         when(ratingRepository.findAll()).thenReturn(ratingEntities);
 
-        // Step 2: Execute updateProject()
+        // execute and assert test method
         ProductDto out = service.createProductRatings(productID);
 
-        // Step 3: assert exception
         assertEquals(createDto.productName , out.productName);
         out.ratings.forEach(rating ->
                 assertAll(
@@ -764,18 +742,18 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testCreateProductRatings_resourceNotFound_ratingsNotInitilizedInDB() {
-        // Step 0: init test object
+    public void test_createProductRatings_resourceNotFound_ratingsNotInitilizedInDB() {
+        // init test object
         int productID = 1;
         ratingEntities = new ArrayList<>();
 
-        // Step 1: provide knowledge
+        // provide knowledge
         when(repository.existsById(productID)).thenReturn(true);
         when(repository.getById(productID)).thenReturn(entity);
         when(ratingRepository.findAll()).thenReturn(ratingEntities);
 
 
-        // Step 2: Execute updateProject()
+        // execute and assert test method
         Exception exception = assertThrows(ResourceNotFound.class,
                 () -> service.createProductRatings(productID));
 
@@ -786,7 +764,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testCreateProductRatings_productIdDoesNotExist_returnNull() {
+    public void test_createProductRatings_productIdDoesNotExist_returnNull() {
         assertNull(service.createProductRatings(1));
     }
 }

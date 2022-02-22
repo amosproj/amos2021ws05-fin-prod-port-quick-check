@@ -1,89 +1,114 @@
 package com.tu.FinancialQuickCheck.IntegrationTests;
 
+import com.tu.FinancialQuickCheck.RatingArea;
+import com.tu.FinancialQuickCheck.db.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * The current test class verifies the functionalities of the Rating Controller
+ * The current test class verifies the functionalities of the Product Area Controller
  */
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class RatingControllerIntegrationTest {
 
+    static Logger log = Logger.getLogger(RatingControllerIntegrationTest.class.getName());
+
     @LocalServerPort
-    private int port;
+    private int port = 8080;
+
+    @Autowired
+    private RatingRepository repository;
+    @Autowired
+    private ProductRatingRepository productRatingRepository;
 
     @Autowired
     private TestRestTemplate restTemplate;
 
     private String host = "http://localhost:";
     private String ratings = "/ratings";
+    private String complexity = "?ratingArea=COMPLEXITY";
+    private String economic = "?ratingArea=ECONOMIC";
 
-    /**
-     * This test tries to find all ratings
-     *
-     * @result The status code that the ratings are found
-     */
-    @Test
-    public void getAllRatings() throws Exception {
-        ResponseEntity<String> response = restTemplate.exchange(
-                host + port + ratings,
-                HttpMethod.GET,
-                null,
-                String.class);
+    private List<RatingEntity> entities;
+    private List<RatingEntity> entitiesEconomic;
+    private List<RatingEntity> entitiesComplexity;
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-//        System.out.println("Response Status: " + response.getStatusCode());
+    @BeforeEach
+    public void init(){
+        log.info("@BeforeEach - setup for Tests in RatingControllerIntegrationTest.class");
+
+        entities = new ArrayList<>();
+        entitiesEconomic = new ArrayList<>();
+        entitiesComplexity = new ArrayList<>();
+
+        for(int i = 1; i < 48; i++){
+            RatingEntity ratingEntity = new RatingEntity();
+            ratingEntity.criterion = "criterion" + i;
+            ratingEntity.category = "category";
+            ratingEntity.ratingarea = (i < 9) ? RatingArea.ECONOMIC : RatingArea.COMPLEXITY;
+
+            entities.add(ratingEntity);
+
+            if(i < 9){
+                entitiesEconomic.add(ratingEntity);
+            }else{
+                entitiesComplexity.add(ratingEntity);
+            }
+        }
+
+        repository.saveAll(entities);
     }
 
+    @AfterEach
+    public void reset(){
+        productRatingRepository.deleteAll();
+        repository.deleteAll();
+    }
+
+
     /**
-     * This test tries to find all ratings for a rating area
+     * tests for getRatings()
      *
-     * @result The status code that the ratings for the rating area are found
+     * testGetRatings: no ratings exist with/without ratingArea--> return HTTP.NOT_FOUND
+     * testGetRatings: ratings exist with/without ratingArea --> return HTTP.OK and json string containing ratings
      */
-    public void getRatingsByRatingArea() throws Exception {
+    @Test
+    public void test1_getRatings_resourceNotFound() {
+        repository.deleteAll();
 
-        String[] ratingAreas = {"?ratingArea=COMPLEXITY", "?ratingArea=ECONOMIC"};
+        ResponseEntity<String> response = restTemplate.exchange(host + port + ratings,
+                HttpMethod.GET,null, String.class);
 
-        for(String ratingArea: ratingAreas){
-            ResponseEntity<String> response = restTemplate.exchange(
-                    host + port + ratings + ratingArea,
-                    HttpMethod.GET,
-                    null,
-                    String.class);
+        log.info("@Test 1 - getRatings_resourceNotFound - no ratings in db");
+        log.info("@Test 1 - Response Body: " + response.getBody());
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
 
+    @Test
+    public void test2_getRatings_success() {
+        String[] urls = {host + port + ratings, host + port + ratings + complexity, host + port + ratings + economic};
+
+        for (String tmpUrl : urls) {
+            ResponseEntity<String> response = restTemplate.exchange(tmpUrl, HttpMethod.GET,null, String.class);
+
+            log.info("@Test 2 - getRatings_success - ratings retrieved from db");
+            log.info("@Test 2 - Response Body: " + response.getBody());
             assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-//        System.out.println("Response Status: " + response.getStatusCode());
+
+            //TODO: test output against db entries
         }
     }
-    /**
-     * The test indicates that the server knows the request method, but the target resource doesn't support this
-     * method.
-     *
-     * @result The status code indicates that the method was not allowed.
-     */
-    @Test
-    public void notAllowedMethodsProductAreas() throws Exception {
-
-        HttpMethod[] notAllowed = new HttpMethod[]{HttpMethod.POST,HttpMethod.PUT, HttpMethod.DELETE};
-        for (HttpMethod httpMethod : notAllowed) {
-            ResponseEntity<String> response = restTemplate.exchange(
-                    host + port + ratings,
-                    httpMethod,
-                    null,
-                    String.class);
-
-            assertThat(response.getStatusCode()).isEqualTo(HttpStatus.METHOD_NOT_ALLOWED);
-//            System.out.println("Response Status: " + response.getStatusCode());
-        }
-    }
-
 }

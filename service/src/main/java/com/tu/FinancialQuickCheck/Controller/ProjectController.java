@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The ProjectController manages and processes requests for finding, updating and creating projects. It is also possible
+ * to find products in projects and add products and members for projects.
+ */
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/projects")
@@ -38,11 +42,20 @@ public class ProjectController {
         this.resultService = resultService;
     }
 
+    /**
+     * @return a List of (SmallProjectDto) all Projects. Empty if no Projects exist.
+     */
     @GetMapping(produces = "application/json")
     public List<SmallProjectDto> findALL() {
         return service.getAllProjects();
     }
 
+    /**
+     * Creates a Project from a projectDto
+     * @param projectDto input information for the project to be created
+     * @throws BadRequest at incorrect or missing input
+     * @return the projectDto of the created Project
+     */
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public ProjectDto createProject(@RequestBody ProjectDto projectDto) {
@@ -94,14 +107,6 @@ public class ProjectController {
     }
 
 
-// TODO: auskommentiert lassen bisher keine Anforderung für diese Funktionalität
-//    @DeleteMapping("/{projectID}")
-//    void deleteByID(@PathVariable int projectID) {
-//
-//        projectService.deleteProject(projectID);
-//
-//    }
-
     /**
      * This method is finding the products for projects.
      *
@@ -110,7 +115,6 @@ public class ProjectController {
      * @throws BadRequest When the input is missing or incorrect.
      * @return The products for a project or the products for a project and their related product area.
      */
-    //TODO (done - needs review) change output to empty list if no products exist
     @GetMapping("/{projectID}/products")
     public List<ProductDto> findProductsByProject(@PathVariable int projectID,
                                                   @RequestParam(required = false) Optional<String> productArea) {
@@ -138,8 +142,7 @@ public class ProjectController {
      * @throws BadRequest When the input is incorrect or missing.
      * @return A list of products which have been added to the project.
      */
-    //TODO: (done: needs review) change Path (see api def)
-    //TODO: (prio: ???) fix output --> does not propagate values for productArea and projectID
+    //TODO: fix output --> does not propagate values for productArea and projectID
     @PostMapping(value = "/{projectID}/products",
             consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
@@ -163,9 +166,9 @@ public class ProjectController {
      *
      * @param members The users/members who can be added to the project.
      * @param projectID The ID of the project for which members/users can be added.
+     * @throws ResourceNotFound if ProjectID does not exist
      * @return New users/members were added to the project.
      */
-//    TODO: (done - needs review) change according to API
     @PostMapping( value = "/{projectID}/users", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public List<ProjectUserDto> createProjectUser(@RequestBody List<ProjectUserDto> members,
@@ -180,6 +183,14 @@ public class ProjectController {
         }
     }
 
+    /**
+     * This method can retrieve the result for a complete project or for a specified product area
+     *
+     * @param projectID The project ID for which a result should get retrieved
+     * @param productAreaID The product area ID for which a result should get retrieved
+     * @throws ResourceNotFound if ProjectID does not exist
+     * @return The result for either a hole project or the result for a specific product area
+     */
     @GetMapping("/{projectID}/results")
     public List<ResultDto> getResults(@PathVariable int projectID,
                                        @RequestParam(required = false) Optional<String> productAreaID) {

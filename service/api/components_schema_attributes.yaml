@@ -55,6 +55,17 @@ components:
         category:
           type: string
           example: "Privat"
+    createProductArea:
+      required:
+        - name
+        - category
+      properties:
+        name:
+          type: string
+          example: "Kredit"
+        category:
+          type: string
+          example: "Privat"
     parentID:
       type: integer
       description: unique identifier of parent product, return value of 0 indicates that product does not have a parent
