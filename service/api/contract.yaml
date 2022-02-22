@@ -19,6 +19,24 @@ paths:
                   $ref: 'components_schema_attributes.yaml#/components/schemas/productArea'
         404:
           $ref: 'components_responses.yaml#/components/responses/404notfound'
+    post:
+      summary: creates a new product area
+      requestBody:
+        description: product area object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: 'components_schema_attributes.yaml#/components/schemas/createProductArea'
+      responses:
+        200:
+          description: returns created product area object
+          content:
+            application/json:
+              schema:
+                $ref: 'components_schema_attributes.yaml#/components/schemas/productArea'
+        400:
+          $ref: 'components_responses.yaml#/components/responses/400badrequest'
 
   /ratings:
     get:
