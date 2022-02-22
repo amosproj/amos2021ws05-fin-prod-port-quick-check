@@ -18,6 +18,33 @@ paths:
                   $ref: "#/components/schemas/productArea"
         "404":
           description: Resource does not exist.
+    post:
+      summary: creates a new product area
+      requestBody:
+        description: product area object
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - name
+                - category
+              properties:
+                name:
+                  type: string
+                  example: Kredit
+                category:
+                  type: string
+                  example: Privat
+      responses:
+        "200":
+          description: returns created product area object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/productArea"
+        "400":
+          description: Input is missing/incorrect.
   /ratings:
     get:
       summary: retrieves all ratings for economic and/or complexity rating area
@@ -181,7 +208,7 @@ paths:
                           $ref: "#/paths/~1projects/post/requestBody/content/application~1json/schema/pro\
                             perties/members/items/properties/role"
         "400":
-          description: Input is missing/incorrect.
+          $ref: "#/paths/~1productareas/post/responses/400"
         5XX:
           $ref: "#/paths/~1ratings/get/responses/5XX"
   "/projects/{projectID}":
@@ -285,12 +312,38 @@ paths:
                 $ref: "#/paths/~1projects~1%7BprojectID%7D/get/responses/200/content/applicatio\
                   n~1json/schema"
         "400":
-          $ref: "#/paths/~1projects/post/responses/400"
+          $ref: "#/paths/~1productareas/post/responses/400"
         "404":
           $ref: "#/paths/~1productareas/get/responses/404"
         5XX:
           $ref: "#/paths/~1ratings/get/responses/5XX"
   "/projects/{projectID}/users":
+    get:
+      summary: retrieves all assigned users of a project
+      parameters:
+        - $ref: "#/paths/~1projects~1%7BprojectID%7D/get/parameters/0"
+      responses:
+        "200":
+          description: returns list of user objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    userID:
+                      $ref: "#/paths/~1projects/post/requestBody/content/application~1json/schema/pro\
+                        perties/creatorID"
+                    userEmail:
+                      $ref: "#/paths/~1projects/post/requestBody/content/application~1json/schema/pro\
+                        perties/members/items/properties/userEmail"
+                    role:
+                      $ref: "#/paths/~1projects/post/requestBody/content/application~1json/schema/pro\
+                        perties/members/items/properties/role"
+        "404":
+          $ref: "#/paths/~1productareas/get/responses/404"
+        5XX:
+          $ref: "#/paths/~1ratings/get/responses/5XX"
     post:
       summary: assigns users to projectID
       parameters:
@@ -318,20 +371,10 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  properties:
-                    userID:
-                      $ref: "#/paths/~1projects/post/requestBody/content/application~1json/schema/pro\
-                        perties/creatorID"
-                    userEmail:
-                      $ref: "#/paths/~1projects/post/requestBody/content/application~1json/schema/pro\
-                        perties/members/items/properties/userEmail"
-                    role:
-                      $ref: "#/paths/~1projects/post/requestBody/content/application~1json/schema/pro\
-                        perties/members/items/properties/role"
+                $ref: "#/paths/~1projects~1%7BprojectID%7D~1users/get/responses/200/content/app\
+                  lication~1json/schema"
         "400":
-          $ref: "#/paths/~1projects/post/responses/400"
+          $ref: "#/paths/~1productareas/post/responses/400"
         "404":
           $ref: "#/paths/~1productareas/get/responses/404"
         5XX:
@@ -360,10 +403,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1projects~1%7BprojectID%7D~1users/post/responses/201/content/ap\
-                  plication~1json/schema"
+                $ref: "#/paths/~1projects~1%7BprojectID%7D~1users/get/responses/200/content/app\
+                  lication~1json/schema"
         "400":
-          $ref: "#/paths/~1projects/post/responses/400"
+          $ref: "#/paths/~1productareas/post/responses/400"
         "404":
           $ref: "#/paths/~1productareas/get/responses/404"
         5XX:
@@ -387,7 +430,7 @@ paths:
         "200":
           description: success
         "400":
-          $ref: "#/paths/~1projects/post/responses/400"
+          $ref: "#/paths/~1productareas/post/responses/400"
         "404":
           $ref: "#/paths/~1productareas/get/responses/404"
         5XX:
@@ -486,7 +529,7 @@ paths:
                       items:
                         type: integer
         "400":
-          $ref: "#/paths/~1projects/post/responses/400"
+          $ref: "#/paths/~1productareas/post/responses/400"
         "404":
           $ref: "#/paths/~1productareas/get/responses/404"
         5XX:
@@ -660,7 +703,7 @@ paths:
         "200":
           description: Update successful
         "400":
-          $ref: "#/paths/~1projects/post/responses/400"
+          $ref: "#/paths/~1productareas/post/responses/400"
         "404":
           $ref: "#/paths/~1productareas/get/responses/404"
         5XX:
@@ -782,7 +825,7 @@ paths:
                 $ref: "#/paths/~1products~1%7BproductID%7D~1ratings/post/requestBody/content/ap\
                   plication~1json/schema"
         "400":
-          $ref: "#/paths/~1projects/post/responses/400"
+          $ref: "#/paths/~1productareas/post/responses/400"
         "404":
           $ref: "#/paths/~1productareas/get/responses/404"
         5XX:
@@ -863,7 +906,7 @@ paths:
               schema:
                 $ref: "#/paths/~1users/get/responses/200/content/application~1json/schema/items"
         "400":
-          $ref: "#/paths/~1projects/post/responses/400"
+          $ref: "#/paths/~1productareas/post/responses/400"
         "404":
           $ref: "#/paths/~1productareas/get/responses/404"
         5XX:
