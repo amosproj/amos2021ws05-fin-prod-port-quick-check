@@ -50,7 +50,6 @@ public class ResultDtoTest {
      */
     @Test
     public void testEquals_true(){
-        //TODO: discuss equals
         assertTrue(dto1.equals(dto1Copy));
         assertTrue(dto2.equals(dto2Copy));
     }

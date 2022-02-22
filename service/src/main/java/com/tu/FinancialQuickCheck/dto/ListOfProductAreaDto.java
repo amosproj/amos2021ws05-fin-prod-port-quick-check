@@ -22,8 +22,7 @@ public class ListOfProductAreaDto {
     }
 
     public ListOfProductAreaDto(ProjectEntity project) {
-        //TODO: (prio: low) greift alle Produktdaten für project ab, es würde ausreichen
-        // nur Produkte mit Namem = "DUMMY" abzufragen
+        //TODO: (prio: low) greift alle Produktdaten für project ab, es würde ausreichen nur Produkte mit Namem = "DUMMY" abzufragen
         HashSet<ProductAreaDto> areas = new HashSet<>();
 
         for (ProductEntity product: project.productEntities)

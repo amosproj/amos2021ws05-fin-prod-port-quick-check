@@ -456,7 +456,6 @@ public class ProjectServiceTest {
 
     /**
      * tests for updateProject()
-     * //TODO: (add testcase)
      * testUpdateProject1: updates all attributes
      *                    --> ProjectEntity attributes are updated accordingly
      * testUpdateProject2: partial update: only add new ProductAreas (single ProductArea at the moment)
@@ -588,7 +587,6 @@ public class ProjectServiceTest {
 
     @Test
     public void testUpdateProject_partialUpdate_onlyAddNewProductAreas_MultipleProductArea(){
-        //TODO: (implement missing case)
         // Step 0: init test object
         int numProductAreasOld = entity.productEntities.size();
         ProjectDto projectIn = emptyProject;
@@ -1421,7 +1419,6 @@ public class ProjectServiceTest {
 
     @Test
     public void testCreateProjectUser_success_multiple() {
-        //TODO: (implement) --> done
         // Step 0: init test object
         List<ProjectUserDto> membersIn = members;
 
@@ -1468,7 +1465,6 @@ public class ProjectServiceTest {
 
     @Test
     public void testAssignProductAreasToProject_success_singleProductArea() {
-        //TODO: (implement missing case) -> done
         // Step 0: init test object
         ProjectDto projectIn = emptyProject;
         int idNewProductArea = newProductAreas.get(0).id;
@@ -1496,7 +1492,6 @@ public class ProjectServiceTest {
 
     @Test
     public void testAssignProductAreasToProject_success_multipleProductArea() {
-        //TODO: (implement missing case) -> done
         // Step 0: init test object
         ProjectDto projectIn = emptyProject;
         emptyProject.productAreas = newProductAreas;
@@ -1530,7 +1525,6 @@ public class ProjectServiceTest {
 
     @Test
     public void testAssignProductAreasToProject_resourceNotFound_productAreaIdDoesNotExist_singleProductArea() {
-        //TODO (implement missing case) -> done
         // Step 1: init test object
         ProjectDto projectDtoIn = emptyProject;
         projectDtoIn.productAreas = new ArrayList<>();
@@ -1620,7 +1614,6 @@ public class ProjectServiceTest {
 
     @Test
     public void testAssignProductAreasToProject_success_inputContainsDuplicateProductAreas_create() {
-        //TODO: (implement missing case) -> done
         ProjectDto projectIn = emptyProject;
         projectIn.productAreas = new ArrayList<>();
         projectIn.productAreas.add(productAreas.get(2));
