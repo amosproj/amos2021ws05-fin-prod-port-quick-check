@@ -603,7 +603,6 @@ public class ProductServiceTest {
 
         // provide knowledge
         when(projectRepository.findById(preProjectEntity.id)).thenReturn(Optional.of(preProjectEntity));
-        when(repository.findByProject(preProjectEntity)).thenReturn(productEntities);
 
         // execute and assert test method
         List<ProductDto> out = service.getProductsByProjectId(preProjectEntity.id);
